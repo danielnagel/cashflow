@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "module": "ES2015",
+        "moduleResolution": "node",
+        "strict": true,
+        "baseUrl": ".",
+        "paths": {}
+    },
+    "exclude": ["./node_modules", "./**/*.js"],
+    "include": ["./src/**/*.ts", "./tests/**/*.ts"]
+}
