@@ -1,3 +1,5 @@
+import { getTimeStampFromTransaction } from "src/utils/dates";
+
 export const filterTransactions = (transactions: Transaction[], samples: string[], toDate?: number, sinceDate?: number): Transaction[] => {
     let filteredTransactions: Transaction[] = [];
     for (const sample of samples) {
@@ -10,7 +12,7 @@ export const filterTransactions = (transactions: Transaction[], samples: string[
 
     if (typeof sinceDate !== "undefined") {
         filteredTransactions = filteredTransactions.filter((transaction) => {
-            return new Date(transaction.year, transaction.month, transaction.day).getTime() >= sinceDate;
+            return getTimeStampFromTransaction(transaction) >= sinceDate;
         })
         if (filteredTransactions.length === 0) return filteredTransactions;
     }
@@ -18,7 +20,7 @@ export const filterTransactions = (transactions: Transaction[], samples: string[
 
     if (typeof toDate !== "undefined") {
         filteredTransactions = filteredTransactions.filter((transaction) => {
-            return new Date(transaction.year, transaction.month, transaction.day).getTime() <= toDate;
+            return getTimeStampFromTransaction(transaction) <= toDate;
         });
         if (filteredTransactions.length === 0) return filteredTransactions;
     }
