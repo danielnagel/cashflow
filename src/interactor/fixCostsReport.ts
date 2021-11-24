@@ -1,32 +1,10 @@
+import { filterTransactions } from "src/utils/filters";
+
 export const generateFixCost = (transactions: Transaction[], samples: string[], toDate: number, sinceDate?: number): FixCost | null => {
     if(transactions.length === 0 || samples.length === 0 || typeof sinceDate !== "undefined" && sinceDate > toDate) return null;
 
-    // --- START FILTERING PROCESS ---
-
-    let matchedTransactions: Transaction[] = [];
-    for(const sample of samples) {
-        for(const transaction of transactions) {
-            if(transaction.initiator === sample) {
-                matchedTransactions.push(transaction);
-            }
-        }
-    }
-
-    if(typeof sinceDate !== "undefined") {
-        matchedTransactions = matchedTransactions.filter((transaction) => {
-            return new Date(transaction.year, transaction.month, transaction.day).getTime() >= sinceDate;
-        })
-    }
-
+    const matchedTransactions = filterTransactions(transactions, samples, toDate, sinceDate);
     if(matchedTransactions.length === 0) return null;
-
-    matchedTransactions = matchedTransactions.filter((transaction) => {
-        return new Date(transaction.year, transaction.month, transaction.day).getTime() <= toDate;
-    });
-
-    if(matchedTransactions.length === 0) return null;
-
-    // --- END FILTERING PROCESS ---
 
     // --- START SORTING TRANSACTIONS ---
 
