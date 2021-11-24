@@ -70,7 +70,7 @@ describe("Test utils/filters", () => {
                 ]
 
                 const filteredTransactions = filterTransactions(transactions, samples, new Date(2021, 11, 30).getTime());
-                expect(filteredTransactions).toHaveLength(6);
+                expect(filteredTransactions).toHaveLength(expected.length);
                 expect(filteredTransactions).toStrictEqual(expected);
             });
 
@@ -82,7 +82,7 @@ describe("Test utils/filters", () => {
                 ];
 
                 const filteredTransactions = filterTransactions(transactions, samples, new Date(2021, 11, 15).getTime(), new Date(2021, 9, 1).getTime());
-                expect(filteredTransactions).toHaveLength(3);
+                expect(filteredTransactions).toHaveLength(expected.length);
                 expect(filteredTransactions).toStrictEqual(expected);
             });
 
@@ -98,12 +98,58 @@ describe("Test utils/filters", () => {
                 ];
 
                 const filteredTransactions = filterTransactions(transactions, samples);
-                expect(filteredTransactions).toHaveLength(7);
+                expect(filteredTransactions).toHaveLength(expected.length);
                 expect(filteredTransactions).toStrictEqual(expected);
             });
         });
 
         describe("Test filtering transactions by multiple samples", () => {
+            const samples = ["Beef Burger Palace", "Almost Healthy Inc.", "Grocerie Land"];
+
+            test("Filter transactions until specific to date", () => {
+                const expected = [
+                    { day: 1, month: 6, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                    { day: 2, month: 8, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                    { day: 1, month: 7, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                    { day: 7, month: 7, year: 2021, initiator: "Grocerie Land", purpose: "VISA 23 GROCERIE LAND TES71234123423134", value: 109.56 },
+                    { day: 11, month: 8, year: 2021, initiator: "Grocerie Land", purpose: "VISA 11 GROCERIE LAND TES71234123423134", value: 88.86 },
+                    { day: 7, month: 7, year: 2021, initiator: "Grocerie Land", purpose: "VISA 23 GROCERIE LAND TES71234123423134", value: 109.56 },
+                ]
+
+                const filteredTransactions = filterTransactions(transactions, samples, new Date(2021, 10, 10).getTime());
+                expect(filteredTransactions).toHaveLength(expected.length);
+                expect(filteredTransactions).toStrictEqual(expected);
+            });
+
+            test("Filter transactions from specific to date to specific since date", () => {
+                const expected = [
+                    { day: 2, month: 8, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                    { day: 1, month: 7, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                    { day: 7, month: 7, year: 2021, initiator: "Grocerie Land", purpose: "VISA 23 GROCERIE LAND TES71234123423134", value: 109.56 },
+                    { day: 11, month: 8, year: 2021, initiator: "Grocerie Land", purpose: "VISA 11 GROCERIE LAND TES71234123423134", value: 88.86 },
+                    { day: 7, month: 7, year: 2021, initiator: "Grocerie Land", purpose: "VISA 23 GROCERIE LAND TES71234123423134", value: 109.56 },
+                ];
+
+                const filteredTransactions = filterTransactions(transactions, samples, new Date(2021, 10, 10).getTime(), new Date(2021, 7, 1).getTime());
+                expect(filteredTransactions).toHaveLength(expected.length);
+                expect(filteredTransactions).toStrictEqual(expected);
+            });
+
+            test("Filter transactions without date limitation", () => {
+                const expected = [
+                    { day: 19, month: 10, year: 2021, initiator: "Beef Burger Palace", purpose: "We hope that you had a beefy good time!", value: 49.55 },
+                    { day: 1, month: 6, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                    { day: 2, month: 8, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                    { day: 1, month: 7, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                    { day: 7, month: 7, year: 2021, initiator: "Grocerie Land", purpose: "VISA 23 GROCERIE LAND TES71234123423134", value: 109.56 },
+                    { day: 11, month: 8, year: 2021, initiator: "Grocerie Land", purpose: "VISA 11 GROCERIE LAND TES71234123423134", value: 88.86 },
+                    { day: 7, month: 7, year: 2021, initiator: "Grocerie Land", purpose: "VISA 23 GROCERIE LAND TES71234123423134", value: 109.56 },
+                ];
+
+                const filteredTransactions = filterTransactions(transactions, samples);
+                expect(filteredTransactions).toHaveLength(expected.length);
+                expect(filteredTransactions).toStrictEqual(expected);
+            });
         });
 
     });
