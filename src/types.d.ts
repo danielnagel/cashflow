@@ -27,6 +27,18 @@ type DataKeys = {
 };
 
 /**
+ * Options on which a list of transactions can be filtered.
+ * Samples must be a list of transaction initiators.
+ * The list can be filtered to only return transactions after a specific timestamp.
+ * The list can be filtered to only return transactions before a specific timestamp.
+ */
+type TransactionFilterOptions = {
+    samples: string[],
+    after?: number,
+    before?: number, 
+};
+
+/**
  * A fix cost is paid every month.
  * It has probably the same value every month,
  * can be paid in a specific month,

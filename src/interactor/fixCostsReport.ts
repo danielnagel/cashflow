@@ -1,20 +1,20 @@
 import { filterTransactions } from "src/utils/filters";
 import { sortTransactionsByDate } from "src/utils/sorters";
 
-export const generateFixCost = (transactions: Transaction[], samples: string[], toDate: number, sinceDate?: number): FixCost | null => {
-    if (transactions.length === 0 || samples.length === 0 || typeof sinceDate !== "undefined" && sinceDate > toDate) return null;
+export const generateFixCost = (transactions: Transaction[], filterOptions: TransactionFilterOptions): FixCost | null => {
+    if (transactions.length === 0) return null;
 
-    const matchedTransactions = filterTransactions(transactions, samples, toDate, sinceDate);
+    const matchedTransactions = filterTransactions(transactions, filterOptions);
     if (matchedTransactions.length === 0) return null;
 
     sortTransactionsByDate(matchedTransactions);
 
+    const mostRecentTransaction = matchedTransactions[matchedTransactions.length - 1];
     const result: FixCost = { value: 0, isPaidThisMonth: false, lastBookingDays: [], averageBookingDay: 0, transactions: [] };
-    result.value = matchedTransactions[matchedTransactions.length - 1].value;
+    result.value = mostRecentTransaction.value;
 
-    let month = new Date(toDate).getMonth();
-    // december is 0
-    if (month === 0) month = 12;
+    let month = mostRecentTransaction.month;
+    if(filterOptions.before) month = new Date(filterOptions.before).getMonth() + 1;
 
     for (const matchedTransaction of matchedTransactions) {
         result.lastBookingDays.push(matchedTransaction.day);

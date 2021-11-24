@@ -33,7 +33,7 @@ describe("Test interactor", () => {
 
             describe("Test falsy parameters", () => {
                 test("Return null, if transactions array is empty", () => {
-                    const fixCost = generateFixCost([], ["test"], new Date(2021, 11, 15).getTime());
+                    const fixCost = generateFixCost([], { samples: ["test"], before: new Date(2021, 11, 15).getTime() });
 
                     expect(fixCost).toBeNull();
                 });
@@ -43,25 +43,25 @@ describe("Test interactor", () => {
                 ];
 
                 test("Return null, if samples array is empty", () => {
-                    const fixCost = generateFixCost(transactions, [], new Date(2021, 11, 15).getTime());
+                    const fixCost = generateFixCost(transactions, { samples: [], before: new Date(2021, 11, 15).getTime() });
 
                     expect(fixCost).toBeNull();
                 });
 
                 test("Return null, if there aren't any transactions that match toDate", () => {
-                    const fixCost = generateFixCost(transactions, ["Rent for my crib"], new Date(1999, 11, 15).getTime());
+                    const fixCost = generateFixCost(transactions, { samples: ["Rent for my crib"], before: new Date(1999, 11, 15).getTime() });
 
                     expect(fixCost).toBeNull();
                 });
 
                 test("Return null, if sinceDate is after toDate", () => {
-                    const fixCost = generateFixCost(transactions, ["Rent for my crib"], new Date(1999, 11, 15).getTime(), new Date(2002, 6, 12).getTime());
+                    const fixCost = generateFixCost(transactions, { samples: ["Rent for my crib"], before: new Date(1999, 11, 15).getTime(), after: new Date(2002, 6, 12).getTime() });
 
                     expect(fixCost).toBeNull();
                 });
 
                 test("Return null, if no transaction is matching", () => {
-                    const fixCost = generateFixCost(transactions, ["Rent for my crib?"], new Date(2021, 11, 30).getTime());
+                    const fixCost = generateFixCost(transactions, { samples: ["Rent for my crib?"], before: new Date(2021, 11, 30).getTime() });
 
                     expect(fixCost).toBeNull();
                 });
@@ -83,7 +83,7 @@ describe("Test interactor", () => {
                         ]
                     };
 
-                    const fixCost = generateFixCost(transactions, samples, new Date(2021, 11, 30).getTime());
+                    const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 10, 30).getTime() });
 
                     expect(fixCost).toStrictEqual(expected);
                 });
@@ -100,21 +100,20 @@ describe("Test interactor", () => {
                         ]
                     };
 
-                    const fixCost = generateFixCost(transactions, samples, new Date(2021, 10, 15).getTime());
+                    const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 9, 15).getTime() });
 
                     expect(fixCost).toStrictEqual(expected);
                 });
 
                 test("Generate fix cost as expected, with since Date", () => {
                     const expected: FixCost = {
-                        value: 650, isPaidThisMonth: true, lastBookingDays: [1, 1, 1], averageBookingDay: 1, transactions: [
-                            { day: 1, month: 9, year: 2021, initiator: "Rent for my crib", purpose: "Thanks landlord", value: 650 },
+                        value: 650, isPaidThisMonth: true, lastBookingDays: [1, 1], averageBookingDay: 1, transactions: [
                             { day: 1, month: 10, year: 2021, initiator: "Rent for my crib", purpose: "Thanks landlord", value: 650 },
                             { day: 1, month: 11, year: 2021, initiator: "Rent for my crib", purpose: "Thanks landlord", value: 650 },
                         ]
                     };
 
-                    const fixCost = generateFixCost(transactions, samples, new Date(2021, 11, 15).getTime(), new Date(2021, 9, 1).getTime());
+                    const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 8, 1).getTime() });
 
                     expect(fixCost).toStrictEqual(expected);
                 });
@@ -137,7 +136,7 @@ describe("Test interactor", () => {
                         ]
                     };
 
-                    const fixCost = generateFixCost(transactions, samples, new Date(2021, 12, 30).getTime());
+                    const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 11, 30).getTime() });
 
                     expect(fixCost).toStrictEqual(expected);
                 });
@@ -152,7 +151,7 @@ describe("Test interactor", () => {
                         ]
                     };
 
-                    const fixCost = generateFixCost(transactions, samples, new Date(2021, 9, 1).getTime());
+                    const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 8, 1).getTime() });
 
                     expect(fixCost).toStrictEqual(expected);
                 });
@@ -166,7 +165,7 @@ describe("Test interactor", () => {
                         ]
                     };
 
-                    const fixCost = generateFixCost(transactions, samples, new Date(2021, 11, 15).getTime(), new Date(2021, 9, 1).getTime());
+                    const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 8, 1).getTime() });
 
                     expect(fixCost).toStrictEqual(expected);
                 });
