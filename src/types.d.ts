@@ -1,75 +1,42 @@
-interface Connector {
-    loadTransactions(path: string): Transaction[];
-    // loadReport(): Report;
-    saveTransactions(transactions: Transaction[]): boolean
-    // saveReport(report: Report): boolean;
-}
+/**
+ * A transaction is the base object upon every report is generated.
+ */
+type Transaction = {
+    initiator: string,
+    purpose: string,
+    value: number,
+    day: number,
+    month: number,
+    year: number
+};
 
-interface Interactor {
-    generateCategorizedTransactions(transactions: Transaction[]): CategorizedTransactions[];
-    categorizeTransactions(transactions: Transaction[], category: string, samples: string[]): CategorizedTransactions;
-    generateFixCostsReport(transactions: Transaction[], sinceDate?: number): FixCostsReport;
-    generateFixCost(transactions: Transaction[], samples: string[], toDate: number, sinceDate?: number): FixCost | null;
-    findTransactionsThatMatchSamples(samples: string[], sinceDate?: number): Transaction[];
-    generateTrendReport(sinceDate?: number): TrendReport;
-    generateTrend(type: TransactionType, sinceDate?: number): Trend;
-}
+/**
+ * An unkown object, with unkown keys.
+ * The values are either from type string or undefined.
+ */
+type UnknownRecord = { [key: string]: string | undefined };
 
-interface DataKeys {
-    initiator: string;
-    purpose: string;
-    value: string;
-    date: string;
-}
+/**
+ * DataKeys are used to map the keys in an unknown object to the keys in an transaction object.
+ */
+type DataKeys = {
+    initiator: string,
+    purpose: string,
+    value: string,
+    date: string
+};
 
-interface Transaction {
-    initiator: string;
-    purpose: string;
-    value: number;
-    day: number;
-    month: number;
-    year: number;
-}
-
-interface TransactionPeriod {
-    month: number;
-    year: number;
-    sum: number;
-    transactions: Transaction[];
-}
-
-interface CategorizedTransactions extends TypedTransactionPeriod {
-    name: string;
-    sum: number;
-}
-
-declare enum TransactionType {
-    Income, Fixed, Variable, Special
-}
-
-interface FixCost {
-    value: number;
-    isPaidThisMonth: boolean;
-    averageBookingDay: number;
-    lastBookingDays: number[];
-    transactions: Transaction[];
-}
-
-interface CategorizedFixCost {
-    name: string;
-    fixCost: FixCost;
-}
-
-interface FixCostsReport {
-    date: number;
-    fixCosts: CategorizedFixCost[];
-    sum: number;
-    sumWithoutPaid: number;
-}
-
-interface TypedTransactionPeriod {
-    type: TransactionType;
-    periods: TransactionPeriod[];
-}
-
-type UnknownRecord = {[key:string]: string | undefined};
+/**
+ * A fix cost is paid every month.
+ * It has probably the same value every month,
+ * can be paid in a specific month,
+ * should be paid around the same time every month
+ * and has transactions associated with it.
+ */
+type FixCost = {
+    value: number,
+    isPaidThisMonth: boolean,
+    averageBookingDay: number,
+    lastBookingDays: number[],
+    transactions: Transaction[]
+};
