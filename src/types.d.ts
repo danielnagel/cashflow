@@ -35,7 +35,7 @@ type DataKeys = {
 type TransactionFilterOptions = {
     samples: string[],
     after?: number,
-    before?: number, 
+    before?: number
 };
 
 /**
@@ -51,4 +51,39 @@ type FixCost = {
     averageBookingDay: number,
     lastBookingDays: number[],
     transactions: Transaction[]
+};
+
+/**
+ * A Category has a name, like a key, and one or multiple samlpes, like a value.
+ */
+type Category = {
+    name: string;
+    samples: string[];
+}
+
+/**
+ * Options on which multiple FixCost objects are ordered by categories.
+ */
+type CategorizeOptions = {
+    categories: Category[]
+    before?: number,
+    after?: number
+}
+
+/**
+ * A FixCost object, paired with its name from the Category of the CategorizeOptions.
+ */
+type NamedFixCost = {
+    name: string;
+    fixCost: FixCost;
+}
+
+/**
+ * Multiple fix cost, categorized through the CategorizeOptions.
+ */
+type CategorizedFixCosts = {
+    date: number,
+    sum: number,
+    unpaidSum: number,
+    fixCosts: NamedFixCost[]
 };
