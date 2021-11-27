@@ -64,11 +64,11 @@ describe("Test CSVConnector", () => {
 
     describe("Loading transaction data", () => {
         test("Stop loading data, when file does not exist", async () => {
-            const transactionData = await loadTransactionData(__dirname + "/samples/sample1_.csv", { date: "", initiator: "", purpose: "", value: "" }, []);
+            const transactionData = await loadTransactionData({ path: __dirname + "/samples/sample1_.csv", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [] });
             expect(transactionData).toHaveLength(0);
         });
         test("Load data from existing sample file and generate transaction array", async () => {
-            const transactionData = await loadTransactionData(__dirname + "/samples/sample1.csv", { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"]);
+            const transactionData = await loadTransactionData({ path: __dirname + "/samples/sample1.csv", dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"] });
             expect(transactionData).toHaveLength(3);
             expect(transactionData[0]).toStrictEqual({ initiator: "FOOD SHOP 1", purpose: "Thanks for paying the food", value: -23, day: 1, month: 11, year: 2021 })
             expect(transactionData[1]).toStrictEqual({ initiator: "ONLINE SHOP 3", purpose: "Good choice mate 2345452", value: -57.21, day: 2, month: 11, year: 2021 })

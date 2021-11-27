@@ -27,6 +27,13 @@ type DataKeys = {
 };
 
 /**
+ * Options that are used for the csv connector implementation.
+ */
+ type CsvConnectorOptions = {
+    path: string, dataKeys: DataKeys, columns: string[]
+}
+
+/**
  * Options on which a list of transactions can be filtered.
  * Samples must be a list of transaction initiators.
  * The list can be filtered to only return transactions after a specific timestamp.

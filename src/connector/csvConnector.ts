@@ -31,15 +31,15 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
     return { initiator, purpose, value: parsedValue, day, month, year };
 }
 
-export const loadTransactionData = async (path: string, dataKeys: DataKeys, columns: string[]): Promise<Transaction[]> => {
+export const loadTransactionData = async (options: CsvConnectorOptions): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
 
-    if (!fileExists(path)) return transactions;
+    if (!fileExists(options.path)) return transactions;
 
-    const parser = createReadStream(path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns, relaxColumnCount: true, skipEmptyLines: true }));
+    const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: options.columns, relaxColumnCount: true, skipEmptyLines: true }));
 
     for await (const record of parser) {
-        const transaction = parseRecordToTransaction(record, dataKeys);
+        const transaction = parseRecordToTransaction(record, options.dataKeys);
         if (!transaction) continue;
         transactions.push(transaction);
     }
