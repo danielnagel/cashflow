@@ -29,7 +29,7 @@ type DataKeys = {
 /**
  * Options that are used for the csv connector implementation.
  */
- type CsvConnectorOptions = {
+ type CsvOptions = {
     path: string, dataKeys: DataKeys, columns: string[]
 }
 
@@ -94,3 +94,38 @@ type CategorizedFixCosts = {
     unpaidSum: number,
     fixCosts: NamedFixCost[]
 };
+
+type FixCostsReportOptions = {
+    type: "fixcosts", options: CategorizeOptions
+}
+
+/**
+ * Report options for interactor, to interact with the correct report implementation.
+ */
+type ReportOptions = FixCostsReportOptions
+
+type CsvConnectorOptions = {
+    type: "csv", options: CsvOptions
+}
+
+type ApiConnectorOptions = {
+    type: "api", options: UnknownRecord
+}
+
+/**
+ * Connector options for interactor, to interact with the correct connector implementation.
+ */
+type ConnectorOptions = CsvConnectorOptions | ApiConnectorOptions
+
+/**
+ * Options for the interactor, to use the correct connector and report implementation.
+ * Should load data from connector and generate a report on that given data.
+ */
+type InteractorOptions = {
+    connector: ConnectorOptions, report: ReportOptions
+}
+
+/**
+ * Possible reports, that the interactor could generate.
+ */
+type Report = CategorizedFixCosts | null;

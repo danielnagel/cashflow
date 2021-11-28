@@ -31,7 +31,7 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
     return { initiator, purpose, value: parsedValue, day, month, year };
 }
 
-export const loadTransactionData = async (options: CsvConnectorOptions): Promise<Transaction[]> => {
+export const loadTransactionData = async (options: CsvOptions): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
 
     if (!fileExists(options.path)) return transactions;
