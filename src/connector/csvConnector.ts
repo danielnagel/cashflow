@@ -1,6 +1,6 @@
 import { existsSync, createReadStream } from "fs"
 import parse from "csv-parse/lib/index";
-import { germanDecimalNumberToFloat } from "src/utils/numbers";
+import { decimalNumberToFloat, germanDecimalNumberToFloat } from "src/utils/numbers";
 
 export const fileExists = (path: string): boolean => {
     return existsSync(path);
@@ -25,8 +25,13 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
     const day = parseInt(splitDate[0]);
     const month = parseInt(splitDate[1]);
     const year = parseInt(splitDate[2]);
-    const parsedValue = germanDecimalNumberToFloat(value);
-    if (isNaN(day) || isNaN(month) || isNaN(year) || isNaN(parsedValue)) return null;
+    if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+
+    let parsedValue = germanDecimalNumberToFloat(value);
+    if (isNaN(parsedValue)) {
+        parsedValue = decimalNumberToFloat(value);
+        if (isNaN(parsedValue)) return null;
+    }
 
     return { initiator, purpose, value: parsedValue, day, month, year };
 }

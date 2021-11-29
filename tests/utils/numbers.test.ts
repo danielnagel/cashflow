@@ -1,4 +1,4 @@
-import { germanDecimalNumberToFloat } from "../../src/utils/numbers";
+import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../../src/utils/numbers";
 
 describe("Test utils/numbers", () => {
 
@@ -17,6 +17,25 @@ describe("Test utils/numbers", () => {
 
         test("Parse '1.O1' to be NaN", () => {
             expect(germanDecimalNumberToFloat("1.O1")).toBe(NaN);
+        });
+
+    });
+
+    describe("Test function decimalNumberToFloat", () => {
+        test("Parse '1,23' to NaN", () => {
+            expect(decimalNumberToFloat("1,23")).toBe(NaN);
+        });
+
+        test("Parse '1.234,56' to NaN", () => {
+            expect(decimalNumberToFloat("1.234,56")).toBe(NaN);
+        });
+
+        test("Parse '1.23' to 1.23", () => {
+            expect(decimalNumberToFloat("1.23")).toBe(1.23);
+        });
+
+        test("Parse '1.O1' to be NaN", () => {
+            expect(decimalNumberToFloat("1.O1")).toBe(NaN);
         });
 
     });
