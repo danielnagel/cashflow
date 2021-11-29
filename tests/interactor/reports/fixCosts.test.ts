@@ -1,4 +1,4 @@
-import { generateFixCost, generateCategorizedFixCosts } from "../../src/interactor/fixCostsReport";
+import { generateFixCost, generateCategorizedFixCosts } from "../../../src/interactor/reports/fixCosts";
 
 describe("Test fixCostReport", () => {
     const transactions: Transaction[] = [
