@@ -1,10 +1,7 @@
-import { existsSync, createReadStream } from "fs"
+import { createReadStream } from "fs"
+import { fileExists } from "src/utils/files";
 import parse from "csv-parse/lib/index";
 import { decimalNumberToFloat, germanDecimalNumberToFloat } from "src/utils/numbers";
-
-export const fileExists = (path: string): boolean => {
-    return existsSync(path);
-}
 
 export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys): Transaction | null => {
     const date = record[dataKeys.date];

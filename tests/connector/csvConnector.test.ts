@@ -1,19 +1,7 @@
-import { fileExists, loadTransactionData, parseRecordToTransaction } from "../../src/connector/csvConnector"
+import { loadTransactionData, parseRecordToTransaction } from "../../src/connector/csvConnector"
 
 describe("Test CSVConnector", () => {
-
-    describe("Check if files exist", () => {
-        test("True if files exist", () => {
-            expect(fileExists(__dirname + "/samples/sample1.csv")).toBeTruthy();
-        });
-        test("False if files do not exist", () => {
-            expect(fileExists(__dirname + "/samples/sample1_.csv")).toBeFalsy();
-        });
-        test("False if path string empty", () => {
-            expect(fileExists("")).toBeFalsy();
-        });
-    });
-
+    
     describe("Parse record to transaction", () => {
         const dataKeys = { date: "booking", initiator: "initiator", purpose: "use", value: "amount" };
         const record = { booking: "01.11.2021", initiator: "FOOD SHOP 1", use: "Thanks for paying the food", amount: "-23,00", randominformation: "blub" };
