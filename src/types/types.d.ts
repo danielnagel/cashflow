@@ -150,4 +150,7 @@ type Report = FixCostsReport | null;
 /**
  * Possible configurations, that a user could create.
  */
-type Configuration = InteractorOptions;
+type Configuration = {
+    currency: string;
+    options: InteractorOptions;
+}

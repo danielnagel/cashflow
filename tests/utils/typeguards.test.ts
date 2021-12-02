@@ -1,4 +1,4 @@
-import { isInteractorOptions, isConnectorOptions, isReportOptions, isCsvOptions, isCategorizeOptions, isDataKeys, isCategory } from "../../src/utils/typeguards";
+import { isInteractorOptions, isConnectorOptions, isReportOptions, isCsvOptions, isCategorizeOptions, isDataKeys, isCategory, isConfiguration } from "../../src/utils/typeguards";
 
 describe("Test utils/typeguards", () => {
 
@@ -26,7 +26,7 @@ describe("Test utils/typeguards", () => {
         test("InteractorOptions is an InteractorOptions without deep equality", () => {
             const interactorOptions = { connector: {}, report: {} };
             expect(isInteractorOptions(interactorOptions)).toBeFalsy();
-        })
+        });
 
         test("InteractorOptions is an InteractorOptions", () => {
             const interactorOptions = {
@@ -46,7 +46,7 @@ describe("Test utils/typeguards", () => {
                 }
             };
             expect(isInteractorOptions(interactorOptions)).toBeTruthy();
-        })
+        });
     });
 
     describe("Check if object is ConnectorOptions", () => {
@@ -70,15 +70,15 @@ describe("Test utils/typeguards", () => {
             expect(isConnectorOptions(123)).toBeFalsy();
         });
 
-        test("InteractorOptions is an InteractorOptions without deep equality", () => {
+        test("ConnectorOptions is an ConnectorOptions without deep equality", () => {
             const connectorOptions = { type: "", options: {} };
-            expect(isInteractorOptions(connectorOptions)).toBeFalsy();
-        })
+            expect(isConnectorOptions(connectorOptions)).toBeFalsy();
+        });
 
         test("ConnectorOptions is a ConnectorOptions", () => {
             const connectorOptions = { type: "", options: { path: "", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [] } };
             expect(isConnectorOptions(connectorOptions)).toBeTruthy();
-        })
+        });
     });
 
     describe("Check if object is ReportOptions", () => {
@@ -102,15 +102,15 @@ describe("Test utils/typeguards", () => {
             expect(isReportOptions(123)).toBeFalsy();
         });
 
-        test("InteractorOptions is an InteractorOptions without deep equality", () => {
+        test("ReportOptions is an ReportOptions without deep equality", () => {
             const ReportOptions = { type: "", options: {} };
-            expect(isInteractorOptions(ReportOptions)).toBeFalsy();
-        })
+            expect(isReportOptions(ReportOptions)).toBeFalsy();
+        });
 
         test("ReportOptions is a ReportOptions", () => {
             const reportOptions = { type: "", options: { categories: [] } };
             expect(isReportOptions(reportOptions)).toBeTruthy();
-        })
+        });
     });
 
     describe("Check if object is CsvConnectorOptions", () => {
@@ -137,12 +137,12 @@ describe("Test utils/typeguards", () => {
         test("CsvConnectorOptions is not a CsvConnectorOptions without deep equality", () => {
             const csvConnectorOptions = { path: "", dataKeys: {}, columns: [] };
             expect(isCsvOptions(csvConnectorOptions)).toBeFalsy();
-        })
+        });
 
         test("CsvConnectorOptions is a CsvConnectorOptions", () => {
             const csvConnectorOptions = { path: "", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [] };
             expect(isCsvOptions(csvConnectorOptions)).toBeTruthy();
-        })
+        });
     });
 
     describe("Check if object is DataKeys", () => {
@@ -169,7 +169,7 @@ describe("Test utils/typeguards", () => {
         test("DataKeys is DataKeys", () => {
             const DataKeys = { date: "", initiator: "", purpose: "", value: "" };
             expect(isDataKeys(DataKeys)).toBeTruthy();
-        })
+        });
     });
 
     describe("Check if object is CategorizeOptions", () => {
@@ -196,7 +196,7 @@ describe("Test utils/typeguards", () => {
         test("CategorizeOptions is a CategorizeOptions", () => {
             const categorizeOptions = { categories: [] };
             expect(isCategorizeOptions(categorizeOptions)).toBeTruthy();
-        })
+        });
     });
 
     describe("Check if object is Category", () => {
@@ -223,7 +223,55 @@ describe("Test utils/typeguards", () => {
         test("Category is a Category", () => {
             const category = { name: "", samples: [] };
             expect(isCategory(category)).toBeTruthy();
-        })
+        });
     });
 
+    describe("Check if object is Configuration", () => {
+        test("Null is not an Configuration", () => {
+            expect(isConfiguration(null)).toBeFalsy();
+        });
+
+        test("undefined is not an Configuration", () => {
+            expect(isConfiguration(undefined)).toBeFalsy();
+        });
+
+        test("Empty object is not an Configuration", () => {
+            expect(isConfiguration({})).toBeFalsy();
+        });
+
+        test("string is not an Configuration", () => {
+            expect(isConfiguration("hello")).toBeFalsy();
+        });
+
+        test("number is not an Configuration", () => {
+            expect(isConfiguration(123)).toBeFalsy();
+        });
+
+        test("Configuration is an Configuration without deep equality", () => {
+            const configuration = { currency: "", options: {} };
+            expect(isConfiguration(configuration)).toBeFalsy();
+        });
+
+        test("Configuration is an Configuration", () => {
+            const configuration = {
+                currency: "", options: {
+                    connector: {
+                        type: "",
+                        options: {
+                            path: "",
+                            dataKeys: { date: "", initiator: "", purpose: "", value: "" },
+                            columns: []
+                        }
+                    },
+                    report: {
+                        type: "",
+                        options: {
+                            categories: []
+                        }
+                    }
+                }
+            };
+            expect(isConfiguration(configuration)).toBeTruthy();
+        });
+    });
 });

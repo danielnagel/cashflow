@@ -18,19 +18,22 @@ describe("Test configurator/loader", () => {
 
         test("File is a configuration file, if it's content is a InteractorOptions object.", () => {
             const expected = {
-                connector: {
-                    type: "",
-                    options: {
-                        path: "",
-                        dataKeys: { date: "", initiator: "", purpose: "", value: "" },
-                        columns: []
-                    }
-                },
-                report: {
-                    type: "",
-                    options: {
-                        before: "", after: "",
-                        categories: []
+                currency: "",
+                options: {
+                    connector: {
+                        type: "",
+                        options: {
+                            path: "",
+                            dataKeys: { date: "", initiator: "", purpose: "", value: "" },
+                            columns: []
+                        }
+                    },
+                    report: {
+                        type: "",
+                        options: {
+                            before: "", after: "",
+                            categories: []
+                        }
                     }
                 }
             };

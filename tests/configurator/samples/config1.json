@@ -1,4 +1,7 @@
 {
-    "connector": {},
-    "report": {}
+    "currency": "",
+    "options": {
+        "connector": {},
+        "report": {}
+    }
 }

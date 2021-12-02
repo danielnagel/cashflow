@@ -1,5 +1,5 @@
 import { loadFile } from "../utils/files";
-import { isInteractorOptions } from "../utils/typeguards";
+import { isConfiguration } from "../utils/typeguards";
 
 export const loadConfigurationFile = (path: string): Configuration | null => {
     const fileContent = loadFile(path);
@@ -7,7 +7,7 @@ export const loadConfigurationFile = (path: string): Configuration | null => {
 
     try {
         const javascriptObject = JSON.parse(fileContent);
-        if (isInteractorOptions(javascriptObject)) {
+        if (isConfiguration(javascriptObject)) {
             return javascriptObject;
         }
     } catch (e) {
