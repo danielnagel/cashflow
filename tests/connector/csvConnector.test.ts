@@ -53,8 +53,9 @@ describe("Test CSVConnector", () => {
     describe("Loading transaction data", () => {
 
         test("Stop loading data, when file does not exist", async () => {
-            const transactionData = await loadTransactionData({ path: __dirname + "/samples/sample1_.csv", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [] });
-            expect(transactionData).toHaveLength(0);
+            await expect(loadTransactionData({ path: __dirname + "/samples/sample1_.csv", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [] }))
+            .rejects
+            .toThrowError(`CSV file with transaction data not found. Path: "${__dirname + "/samples/sample1_.csv"}".`);
         });
 
         test("Load data from existing sample file and generate transaction array", async () => {

@@ -36,7 +36,7 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
 export const loadTransactionData = async (options: CsvOptions): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
 
-    if (!fileExists(options.path)) return transactions;
+    if (!fileExists(options.path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
 
     const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: options.columns, relaxColumnCount: true, skipEmptyLines: true }));
 
