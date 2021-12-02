@@ -1,4 +1,4 @@
-import { getTimeStampFromTransaction } from "src/utils/dates";
+import { getTimeStampFromTransaction } from "./dates";
 
 const compareTransactionsByDate = (transactionA: Transaction, transactionB: Transaction) => {
     const timeStampA = getTimeStampFromTransaction(transactionA);

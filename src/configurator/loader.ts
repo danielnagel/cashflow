@@ -1,5 +1,5 @@
-import { loadFile } from "src/utils/files";
-import { isInteractorOptions } from "src/utils/typeguards";
+import { loadFile } from "../utils/files";
+import { isInteractorOptions } from "../utils/typeguards";
 
 export const loadConfigurationFile = (path: string): Configuration | null => {
     const fileContent = loadFile(path);

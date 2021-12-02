@@ -1,4 +1,4 @@
-import { generateReport } from "src/interactor/interactor";
+import { generateReport } from "../../src/interactor/interactor";
 
 describe("Test Interactor", () => {
 

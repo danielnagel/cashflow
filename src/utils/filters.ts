@@ -1,4 +1,4 @@
-import { getTimeStampFromTransaction } from "src/utils/dates";
+import { getTimeStampFromTransaction } from "./dates";
 
 const transactionsAfterTimeStamp = (transactions: Transaction[], after: number | undefined): Transaction[] => {
     if (transactions.length === 0 || typeof after === "undefined") return transactions;

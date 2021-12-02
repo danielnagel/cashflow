@@ -1,7 +1,7 @@
 import { createReadStream } from "fs"
-import { fileExists } from "src/utils/files";
 import parse from "csv-parse/lib/index";
-import { decimalNumberToFloat, germanDecimalNumberToFloat } from "src/utils/numbers";
+import { fileExists } from "../utils/files";
+import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../utils/numbers";
 
 export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys): Transaction | null => {
     const date = record[dataKeys.date];

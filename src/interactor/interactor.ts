@@ -1,5 +1,5 @@
-import { loadTransactionData } from "src/connector/csvConnector";
-import { generateCategorizedFixCosts } from "src/interactor/reports/fixCosts";
+import { loadTransactionData } from "../connector/csvConnector";
+import { generateCategorizedFixCosts } from "./reports/fixCosts";
 
 const enum ConnectorType {
     CSV = "csv",

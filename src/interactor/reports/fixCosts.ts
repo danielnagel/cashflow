@@ -1,5 +1,5 @@
-import { filterTransactions } from "src/utils/filters";
-import { sortTransactionsByDate } from "src/utils/sorters";
+import { filterTransactions } from "../../utils/filters";
+import { sortTransactionsByDate } from "../../utils/sorters";
 
 export const generateFixCost = (transactions: Transaction[], filterOptions: TransactionFilterOptions): FixCost | null => {
     if (transactions.length === 0) return null;
