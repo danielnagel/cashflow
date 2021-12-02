@@ -1,4 +1,5 @@
 import { getTimeStampFromTransaction } from "../utils/dates";
+import { round } from "../utils/numbers";
 
 export const printReportAsTable = (configuration: Configuration, report: Report): void => {
     if(!report) {
@@ -21,8 +22,8 @@ export const printReportAsTable = (configuration: Configuration, report: Report)
 
 const printFixCostsReportAsTable = (configuration: Configuration, report: CategorizedFixCosts) => {
     console.log(`Report Date: ${new Date(report.date).toLocaleDateString(configuration.locale)}`);
-    console.log(`Sum of all fix costs: ${-report.sum} ${configuration.currency}`);
-    console.log(`Still to pay this month: ${report.unpaidSum} ${configuration.currency}`);
+    console.log(`Sum of all fix costs: ${round(-report.sum)} ${configuration.currency}`);
+    console.log(`Still to pay this month: ${round(report.unpaidSum)} ${configuration.currency}`);
     console.log("\n\nCategories:\n\n");
 
     const tabularData = [];

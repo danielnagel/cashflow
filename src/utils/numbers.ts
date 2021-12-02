@@ -24,3 +24,14 @@ export const decimalNumberToFloat = (value: string): number => {
     if(!decimalRegex.test(value)) return NaN;
     return parseFloat(value);
 }
+
+/**
+ * Rounds a decimal number to two digits.
+ * 
+ * @param value to be rounded.
+ * @param delimiter default is "."
+ * @returns Given value as rounded string.
+ */
+export const round = (value: number, delimiter = "."): string => {
+    return (Math.round(value * 100)/100).toFixed(2).replace(".", delimiter);
+}

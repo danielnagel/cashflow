@@ -1,4 +1,4 @@
-import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../../src/utils/numbers";
+import { decimalNumberToFloat, germanDecimalNumberToFloat, round } from "../../src/utils/numbers";
 
 describe("Test utils/numbers", () => {
 
@@ -36,6 +36,22 @@ describe("Test utils/numbers", () => {
 
         test("Parse '1.O1' to be NaN", () => {
             expect(decimalNumberToFloat("1.O1")).toBe(NaN);
+        });
+
+    });
+
+    describe("Test function round", () => {
+
+        test("Round 1234 to '1234.00'", () => {
+            expect(round(1234)).toBe('1234.00');
+        });
+
+        test("Round 1234.56789 to '1234.57'", () => {
+            expect(round(1234.56789)).toBe('1234.57');
+        });
+
+        test("Round 1234.56789 to '1234,57' with delimiter ','", () => {
+            expect(round(1234.56789, ",")).toBe('1234,57');
         });
 
     });
