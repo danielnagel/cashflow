@@ -25,7 +25,7 @@ export const generateReport = async (options: InteractorOptions): Promise<Report
     let result: Report = null;
     switch (options.report.type) {
         case ReportType.FixCosts:
-            result = generateCategorizedFixCosts(transactions, options.report.options);
+            result = { type: "fixcost", report: generateCategorizedFixCosts(transactions, options.report.options) };
             break;
         default:
             return null;
