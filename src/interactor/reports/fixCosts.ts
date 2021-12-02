@@ -9,17 +9,20 @@ export const generateFixCost = (transactions: Transaction[], filterOptions: Tran
 
     sortTransactionsByDate(matchedTransactions);
 
-    const mostRecentTransaction = matchedTransactions[matchedTransactions.length - 1];
     const result: FixCost = { value: 0, isPaidThisMonth: false, lastBookingDays: [], averageBookingDay: 0, transactions: [] };
-    result.value = mostRecentTransaction.value;
+    result.value = matchedTransactions[matchedTransactions.length - 1].value;
 
-    let month = mostRecentTransaction.month;
-    if (filterOptions.before) month = new Date(filterOptions.before).getMonth() + 1;
+    let month = new Date().getMonth() + 1;
+    let year = new Date().getFullYear();
+    if (filterOptions.before) {
+        month = new Date(filterOptions.before).getMonth() + 1;
+        year = new Date(filterOptions.before).getFullYear();
+    }
 
     for (const matchedTransaction of matchedTransactions) {
         result.lastBookingDays.push(matchedTransaction.day);
         result.averageBookingDay += matchedTransaction.day;
-        if (matchedTransaction.month === month) result.isPaidThisMonth = true;
+        if (matchedTransaction.month === month && matchedTransaction.year === year) result.isPaidThisMonth = true;
     }
 
     result.averageBookingDay = Math.floor(result.averageBookingDay / matchedTransactions.length);

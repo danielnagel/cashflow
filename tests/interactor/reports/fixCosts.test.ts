@@ -25,7 +25,6 @@ describe("Test fixCostReport", () => {
         { day: 1, month: 7, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
         { day: 10, month: 11, year: 2021, initiator: "Tasty Deli and Grocerie Store", purpose: "Thanks for buying the freshest food", value: 65.49 },
         { day: 1, month: 12, year: 2021, initiator: "Rent for my crib", purpose: "Thanks landlord", value: 650 },
-        { day: 3, month: 12, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
         { day: 19, month: 10, year: 2021, initiator: "my-online-shop.com", purpose: "my-online-shop.com; 19.10; TES710928476309298", value: 23.65 },
         { day: 15, month: 9, year: 2021, initiator: "Grocerie Land", purpose: "VISA 11 GROCERIE LAND TES71234123423134", value: 99.99 },
         { day: 22, month: 11, year: 2021, initiator: "Mobilio Ltd.", purpose: "your mobile phone provider", value: 39.99 },
@@ -128,14 +127,13 @@ describe("Test fixCostReport", () => {
 
             test("Generate fix cost as expected", () => {
                 const expected: FixCost = {
-                    value: 14.99, isPaidThisMonth: true, lastBookingDays: [1, 1, 2, 3, 1, 2, 3], averageBookingDay: 1, transactions: [
+                    value: 14.99, isPaidThisMonth: false, lastBookingDays: [1, 1, 2, 3, 1, 2], averageBookingDay: 1, transactions: [
                         { day: 1, month: 6, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
                         { day: 1, month: 7, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
                         { day: 2, month: 8, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
                         { day: 3, month: 9, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
                         { day: 1, month: 10, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
                         { day: 2, month: 11, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
-                        { day: 3, month: 12, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
                     ]
                 };
 
@@ -169,6 +167,23 @@ describe("Test fixCostReport", () => {
                 };
 
                 const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 8, 1).getTime() });
+
+                expect(fixCost).toStrictEqual(expected);
+            });
+
+            test("Generate fix cost as expected, without specified Date", () => {
+                const expected: FixCost = {
+                    value: 14.99, isPaidThisMonth: false, lastBookingDays: [1, 1, 2, 3, 1, 2], averageBookingDay: 1, transactions: [
+                        { day: 1, month: 6, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                        { day: 1, month: 7, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                        { day: 2, month: 8, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
+                        { day: 3, month: 9, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
+                        { day: 1, month: 10, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
+                        { day: 2, month: 11, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
+                    ]
+                };
+
+                const fixCost = generateFixCost(transactions, { samples });
 
                 expect(fixCost).toStrictEqual(expected);
             });
