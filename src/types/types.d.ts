@@ -29,7 +29,7 @@ type DataKeys = {
 /**
  * Options that are used for the csv connector implementation.
  */
- type CsvOptions = {
+type CsvOptions = {
     path: string, dataKeys: DataKeys, columns: string[]
 }
 
@@ -95,6 +95,9 @@ type CategorizedFixCosts = {
     fixCosts: NamedFixCost[]
 };
 
+/**
+ * Discriminating union to determine if the given options are from type CategorizeOptions.
+ */
 type FixCostsReportOptions = {
     type: "fixcosts", options: CategorizeOptions
 }
@@ -104,10 +107,16 @@ type FixCostsReportOptions = {
  */
 type ReportOptions = FixCostsReportOptions
 
+/**
+ * Discriminating union to determine if the given options are from type CsvOptions.
+ */
 type CsvConnectorOptions = {
     type: "csv", options: CsvOptions
 }
 
+/**
+ * Discriminating union to determine if the given options are from type api.
+ */
 type ApiConnectorOptions = {
     type: "api", options: UnknownRecord
 }
@@ -126,6 +135,19 @@ type InteractorOptions = {
 }
 
 /**
+ * Discriminating union to determine if the given report is from type CategorizedFixCosts.
+ */
+type FixCostsReport = {
+    type: "fixcost",
+    report: CategorizedFixCosts | null
+};
+
+/**
  * Possible reports, that the interactor could generate.
  */
-type Report = CategorizedFixCosts | null;
+type Report = FixCostsReport | null;
+
+/**
+ * Possible configurations, that a user could create.
+ */
+type Configuration = InteractorOptions;
