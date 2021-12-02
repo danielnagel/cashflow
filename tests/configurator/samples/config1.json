@@ -1,5 +1,6 @@
 {
     "currency": "",
+    "locale": "",
     "options": {
         "connector": {},
         "report": {}

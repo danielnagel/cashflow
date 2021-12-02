@@ -19,6 +19,7 @@ describe("Test configurator/loader", () => {
         test("File is a configuration file, if it's content is a InteractorOptions object.", () => {
             const expected = {
                 currency: "",
+                locale: "",
                 options: {
                     connector: {
                         type: "",

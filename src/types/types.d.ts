@@ -149,8 +149,11 @@ type Report = FixCostsReport | null;
 
 /**
  * Possible configurations, that a user could create.
+ * Currency is the symbol, that should be displayed behind values.
+ * Locale is used to format dates in that locale, see https://datatracker.ietf.org/doc/html/rfc5646
  */
 type Configuration = {
     currency: string;
+    locale: string;
     options: InteractorOptions;
 }
