@@ -30,7 +30,7 @@ type DataKeys = {
  * Options that are used for the csv connector implementation.
  */
 type CsvOptions = {
-    path: string, dataKeys: DataKeys, columns: string[]
+    path: string | string[], dataKeys: DataKeys, columns: string[]
 }
 
 /**

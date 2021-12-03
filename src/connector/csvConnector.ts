@@ -34,17 +34,57 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
 }
 
 export const loadTransactionData = async (options: CsvOptions): Promise<Transaction[]> => {
+    const mergedTransactions: Transaction[] = [];
+
+    if(typeof options.path === "string") {
+        mergedTransactions.push(... await loadTransactionDataFromSingleFile(options.path, options.columns, options.dataKeys));
+    } else if (Array.isArray(options.path) && options.path.length > 0) {
+        for(const path of options.path) {
+            const transactions = await loadTransactionDataFromSingleFile(path, options.columns, options.dataKeys)
+            mergedTransactions.push(... filterDoubleTransactions(mergedTransactions, transactions));
+        }
+    }
+
+    return mergedTransactions;
+}
+
+const loadTransactionDataFromSingleFile = async (path: string, columns: string[], dataKeys: DataKeys): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
 
-    if (!fileExists(options.path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
+    if (!fileExists(path)) throw new Error(`CSV file with transaction data not found. Path: "${path}".`);
 
-    const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: options.columns, relaxColumnCount: true, skipEmptyLines: true }));
+    const parser = createReadStream(path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: columns, relaxColumnCount: true, skipEmptyLines: true }));
 
     for await (const record of parser) {
-        const transaction = parseRecordToTransaction(record, options.dataKeys);
+        const transaction = parseRecordToTransaction(record, dataKeys);
         if (!transaction) continue;
         transactions.push(transaction);
     }
 
     return transactions;
+}
+
+const filterDoubleTransactions = (transactions: Transaction[], newTransactions: Transaction[]): Transaction[] => {
+    const filteredNewTransactions: Transaction[] = [];
+    for(const newTransaction of newTransactions) {
+        let isNewTransactionUnknown = true;
+        for(const transaction of transactions) {
+            if(isSameTransaction(newTransaction, transaction)) {
+                isNewTransactionUnknown = false;
+            }
+        }
+        if(isNewTransactionUnknown) {
+            filteredNewTransactions.push(newTransaction);
+        }
+    }
+    return filteredNewTransactions;
+}
+
+const isSameTransaction = (transactionA: Transaction, transactionB: Transaction) => {
+    return transactionA.day === transactionB.day &&
+    transactionA.month === transactionB.month &&
+    transactionA.year === transactionB.year &&
+    transactionA.initiator === transactionB.initiator &&
+    transactionA.purpose === transactionB.purpose &&
+    transactionA.value === transactionB.value;
 }
