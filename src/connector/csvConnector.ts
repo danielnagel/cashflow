@@ -1,6 +1,6 @@
 import { createReadStream } from "fs"
 import parse from "csv-parse/lib/index";
-import { fileExists } from "../utils/files";
+import { fileExists, isFile, loadFileNamesFromDirectory } from "../utils/files";
 import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../utils/numbers";
 
 export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys): Transaction | null => {
@@ -36,12 +36,24 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
 export const loadTransactionData = async (options: CsvOptions): Promise<Transaction[]> => {
     const mergedTransactions: Transaction[] = [];
 
-    if(typeof options.path === "string") {
-        mergedTransactions.push(... await loadTransactionDataFromSingleFile(options.path, options.columns, options.dataKeys));
+
+    if (typeof options.path === "string") {
+        if (!fileExists(options.path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
+        if (isFile(options.path)) {
+            mergedTransactions.push(... await loadTransactionDataFromSingleFile(options.path, options.columns, options.dataKeys));
+        } else {
+            const filesInDirectory = loadFileNamesFromDirectory(options.path, "csv");
+            for (const fileName of filesInDirectory) {
+                if (options.path.endsWith("/")) options.path = options.path.slice(0, options.path.length - 1);
+                const transactions = await loadTransactionDataFromSingleFile(`${options.path}/${fileName}`, options.columns, options.dataKeys);
+                mergedTransactions.push(...filterDoubleTransactions(mergedTransactions, transactions));
+            }
+        }
     } else if (Array.isArray(options.path) && options.path.length > 0) {
-        for(const path of options.path) {
+        for (const path of options.path) {
+            if (!fileExists(path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
             const transactions = await loadTransactionDataFromSingleFile(path, options.columns, options.dataKeys)
-            mergedTransactions.push(... filterDoubleTransactions(mergedTransactions, transactions));
+            mergedTransactions.push(...filterDoubleTransactions(mergedTransactions, transactions));
         }
     }
 
@@ -50,8 +62,6 @@ export const loadTransactionData = async (options: CsvOptions): Promise<Transact
 
 const loadTransactionDataFromSingleFile = async (path: string, columns: string[], dataKeys: DataKeys): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
-
-    if (!fileExists(path)) throw new Error(`CSV file with transaction data not found. Path: "${path}".`);
 
     const parser = createReadStream(path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: columns, relaxColumnCount: true, skipEmptyLines: true }));
 
@@ -66,14 +76,14 @@ const loadTransactionDataFromSingleFile = async (path: string, columns: string[]
 
 const filterDoubleTransactions = (transactions: Transaction[], newTransactions: Transaction[]): Transaction[] => {
     const filteredNewTransactions: Transaction[] = [];
-    for(const newTransaction of newTransactions) {
+    for (const newTransaction of newTransactions) {
         let isNewTransactionUnknown = true;
-        for(const transaction of transactions) {
-            if(isSameTransaction(newTransaction, transaction)) {
+        for (const transaction of transactions) {
+            if (isSameTransaction(newTransaction, transaction)) {
                 isNewTransactionUnknown = false;
             }
         }
-        if(isNewTransactionUnknown) {
+        if (isNewTransactionUnknown) {
             filteredNewTransactions.push(newTransaction);
         }
     }
@@ -82,9 +92,9 @@ const filterDoubleTransactions = (transactions: Transaction[], newTransactions: 
 
 const isSameTransaction = (transactionA: Transaction, transactionB: Transaction) => {
     return transactionA.day === transactionB.day &&
-    transactionA.month === transactionB.month &&
-    transactionA.year === transactionB.year &&
-    transactionA.initiator === transactionB.initiator &&
-    transactionA.purpose === transactionB.purpose &&
-    transactionA.value === transactionB.value;
+        transactionA.month === transactionB.month &&
+        transactionA.year === transactionB.year &&
+        transactionA.initiator === transactionB.initiator &&
+        transactionA.purpose === transactionB.purpose &&
+        transactionA.value === transactionB.value;
 }
