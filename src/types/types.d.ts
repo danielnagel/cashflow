@@ -165,3 +165,11 @@ type Configuration = {
     locale: string;
     options: InteractorOptions;
 }
+
+type FixCostsReportTableRow = {
+    category: string,
+    paid: boolean | null,
+    bookingDay: number | null,
+    cost: string,
+    lastBookingDate: string | null
+}
