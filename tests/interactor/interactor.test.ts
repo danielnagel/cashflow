@@ -57,9 +57,9 @@ describe("Test Interactor", () => {
                         options: {
                             before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 8, 1).getTime(),
                             categories: [
-                                { name: "rent", samples: ["Rent for my crib"] },
-                                { name: "insurance", samples: ["Stay Healthy Corp."] },
-                                { name: "mobile", samples: ["Mobilio Ltd."] },
+                                { name: "rent", samples: [{ initiator: "Rent for my crib" }] },
+                                { name: "insurance", samples: [{ initiator: "Stay Healthy Corp." }] },
+                                { name: "mobile", samples: [{ initiator: "Mobilio Ltd." }] },
                             ]
                         }
                     }

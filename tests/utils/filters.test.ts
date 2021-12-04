@@ -30,11 +30,20 @@ describe("Test utils/filters", () => {
             { day: 10, month: 11, year: 2021, initiator: "Tasty Deli and Grocerie Store", purpose: "Thanks for buying the freshest food", value: 65.49 },
             { day: 1, month: 12, year: 2021, initiator: "Rent for my crib", purpose: "Thanks landlord", value: 650 },
             { day: 3, month: 12, year: 2021, initiator: "Stay Healthy Corp.", purpose: "Your health is our mission", value: 14.99 },
+            { day: 15, month: 7, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+            { day: 15, month: 8, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+            { day: 23, month: 8, year: 2021, initiator: "Online Payments Group", purpose: "Game Suprise Box Subscription", value: 19.99 },
+            { day: 15, month: 9, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+            { day: 23, month: 9, year: 2021, initiator: "Online Payments Group", purpose: "Game Suprise Box Subscription", value: 19.99 },
+            { day: 15, month: 10, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+            { day: 15, month: 11, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+            { day: 23, month: 10, year: 2021, initiator: "Online Payments Group", purpose: "Game Suprise Box Subscription", value: 19.99 },
+            { day: 23, month: 11, year: 2021, initiator: "Online Payments Group", purpose: "Game Suprise Box Subscription", value: 19.99 },
         ];
 
         describe("Test falsy parameters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
-                expect(filterTransactions([], { samples: ["test"], before: new Date(2021, 11, 15).getTime() })).toHaveLength(0);
+                expect(filterTransactions([], { samples: [{ initiator: "test" }], before: new Date(2021, 11, 15).getTime() })).toHaveLength(0);
             });
 
             test("Return an array of length 0, if samples option is empty", () => {
@@ -42,21 +51,21 @@ describe("Test utils/filters", () => {
             });
 
             test("Return an array of length 0, if there aren't any transactions that match 'before date' option", () => {
-                expect(filterTransactions(transactions, { samples: ["Rent for my crib"], before: new Date(1999, 11, 15).getTime() })).toHaveLength(0);
+                expect(filterTransactions(transactions, { samples: [{ initiator: "Rent for my crib" }], before: new Date(1999, 11, 15).getTime() })).toHaveLength(0);
             });
 
             test("Return an array of length 0, if 'before date' is after 'after date' option", () => {
-                expect(filterTransactions(transactions, { samples: ["Rent for my crib"], before: new Date(1999, 11, 15).getTime(), after: new Date(2002, 6, 12).getTime() })).toHaveLength(0);
+                expect(filterTransactions(transactions, { samples: [{ initiator: "Rent for my crib" }], before: new Date(1999, 11, 15).getTime(), after: new Date(2002, 6, 12).getTime() })).toHaveLength(0);
             });
 
             test("Return an array of length 0, if no transaction is matching", () => {
-                expect(filterTransactions(transactions, { samples: ["Wizard from Oz"], before: new Date(2021, 11, 15).getTime() })).toHaveLength(0);
+                expect(filterTransactions(transactions, { samples: [{ initiator: "Wizard from Oz" }], before: new Date(2021, 11, 15).getTime() })).toHaveLength(0);
             });
         });
 
         describe("Test filtering transactions by exactly one sample", () => {
 
-            const samples = ["Rent for my crib"];
+            const samples = [{ initiator: "Rent for my crib" }];
 
             test("Filter transactions until 'before date' ", () => {
                 const expected = [
@@ -103,7 +112,7 @@ describe("Test utils/filters", () => {
         });
 
         describe("Test filtering transactions by multiple samples", () => {
-            const samples = ["Beef Burger Palace", "Almost Healthy Inc.", "Grocerie Land"];
+            const samples = [{ initiator: "Beef Burger Palace" }, { initiator: "Almost Healthy Inc." }, { initiator: "Grocerie Land" }];
 
             test("Filter transactions until specific to date", () => {
                 const expected = [
@@ -148,6 +157,20 @@ describe("Test utils/filters", () => {
                 expect(filteredTransactions).toHaveLength(expected.length);
                 expect(filteredTransactions).toStrictEqual(expected);
             });
+
+            test("Match samples that only differ in purpose", () => {
+                const expected = [
+                    { day: 15, month: 7, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+                    { day: 15, month: 8, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+                    { day: 15, month: 9, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+                    { day: 15, month: 10, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+                    { day: 15, month: 11, year: 2021, initiator: "Online Payments Group", purpose: "Music Whale", value: 9.99 },
+                ];
+
+                const filteredTransactions = filterTransactions(transactions, { samples: [{ initiator: "Online Payments Group", purpose: "Music Whale" }] });
+                expect(filteredTransactions).toHaveLength(expected.length);
+                expect(filteredTransactions).toStrictEqual(expected);
+            })
         });
 
     });

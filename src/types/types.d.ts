@@ -40,10 +40,18 @@ type CsvOptions = {
  * The list can be filtered to only return transactions before a specific timestamp.
  */
 type TransactionFilterOptions = {
-    samples: string[],
+    samples: Sample[],
     after?: number,
     before?: number
 };
+
+/**
+ * A sample is used to match specifc transactions
+ */
+type Sample = {
+    initiator: string,
+    purpose?: string
+}
 
 /**
  * A fix cost is paid every month.
@@ -65,7 +73,7 @@ type FixCost = {
  */
 type Category = {
     name: string;
-    samples: string[];
+    samples: Sample[];
 }
 
 /**

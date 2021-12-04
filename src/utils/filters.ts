@@ -27,7 +27,13 @@ export const filterTransactions = (transactions: Transaction[], options: Transac
     let filteredTransactions: Transaction[] = [];
     for (const sample of options.samples) {
         for (const transaction of transactions) {
-            if (transaction.initiator === sample) {
+            if (transaction.initiator === sample.initiator) {
+                if(typeof sample.purpose === "string") {
+                    if(transaction.purpose.toLowerCase().includes(sample.purpose.toLowerCase())) {
+                        filteredTransactions.push(transaction);
+                    }
+                    continue;
+                }
                 filteredTransactions.push(transaction);
             }
         }
