@@ -16,7 +16,10 @@ export const isReportOptions = (object: unknown): object is ReportOptions => {
 
 export const isCsvOptions = (object: unknown): object is CsvOptions => {
     if (!object) return false;
-    return (object as CsvOptions).path !== undefined && ((object as CsvOptions).dataKeys !== undefined && isDataKeys((object as CsvOptions).dataKeys)) && (object as CsvOptions).columns !== undefined;
+    return (object as CsvOptions).path !== undefined
+    && ((object as CsvOptions).dataKeys !== undefined && isDataKeys((object as CsvOptions).dataKeys))
+    && (object as CsvOptions).columns !== undefined
+    && (object as CsvOptions).dateFormat !== undefined;
 }
 
 export const isDataKeys = (object: unknown): object is DataKeys => {

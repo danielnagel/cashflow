@@ -2,10 +2,11 @@ import { createReadStream } from "fs"
 import parse from "csv-parse/lib/index";
 import { fileExists, isFile, loadFileNamesFromDirectory } from "../utils/files";
 import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../utils/numbers";
+import { parseDateString } from "../utils/dates";
 
-export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys): Transaction | null => {
-    const date = record[dataKeys.date];
-    if (typeof date === "undefined") return null;
+export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys, dateFormat: string): Transaction | null => {
+    const dateString = record[dataKeys.date];
+    if (typeof dateString === "undefined") return null;
 
     const initiator = record[dataKeys.initiator];
     if (typeof initiator === "undefined") return null;
@@ -16,13 +17,8 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
     const value = record[dataKeys.value];
     if (typeof value === "undefined") return null;
 
-    const splitDate = date.split(".");
-    if (splitDate.length !== 3) return null;
-
-    const day = parseInt(splitDate[0]);
-    const month = parseInt(splitDate[1]);
-    const year = parseInt(splitDate[2]);
-    if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+    const date = parseDateString(dateString, dateFormat);
+    if (date === null) return null;
 
     let parsedValue = germanDecimalNumberToFloat(value);
     if (isNaN(parsedValue)) {
@@ -30,7 +26,7 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
         if (isNaN(parsedValue)) return null;
     }
 
-    return { initiator, purpose, value: parsedValue, day, month, year };
+    return { initiator, purpose, value: parsedValue, day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() };
 }
 
 export const loadTransactionData = async (options: CsvOptions): Promise<Transaction[]> => {
@@ -40,19 +36,23 @@ export const loadTransactionData = async (options: CsvOptions): Promise<Transact
     if (typeof options.path === "string") {
         if (!fileExists(options.path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
         if (isFile(options.path)) {
-            mergedTransactions.push(... await loadTransactionDataFromSingleFile(options.path, options.columns, options.dataKeys));
+            mergedTransactions.push(... await loadTransactionDataFromSingleFile(options));
         } else {
             const filesInDirectory = loadFileNamesFromDirectory(options.path, "csv");
             for (const fileName of filesInDirectory) {
                 if (options.path.endsWith("/")) options.path = options.path.slice(0, options.path.length - 1);
-                const transactions = await loadTransactionDataFromSingleFile(`${options.path}/${fileName}`, options.columns, options.dataKeys);
+                const optionsCopy = { ...options };
+                optionsCopy.path = `${options.path}/${fileName}`;
+                const transactions = await loadTransactionDataFromSingleFile(optionsCopy);
                 mergedTransactions.push(...filterDoubleTransactions(mergedTransactions, transactions));
             }
         }
     } else if (Array.isArray(options.path) && options.path.length > 0) {
         for (const path of options.path) {
             if (!fileExists(path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
-            const transactions = await loadTransactionDataFromSingleFile(path, options.columns, options.dataKeys)
+            const optionsCopy = { ...options };
+            optionsCopy.path = path;
+            const transactions = await loadTransactionDataFromSingleFile(optionsCopy);
             mergedTransactions.push(...filterDoubleTransactions(mergedTransactions, transactions));
         }
     }
@@ -60,13 +60,15 @@ export const loadTransactionData = async (options: CsvOptions): Promise<Transact
     return mergedTransactions;
 }
 
-const loadTransactionDataFromSingleFile = async (path: string, columns: string[], dataKeys: DataKeys): Promise<Transaction[]> => {
+const loadTransactionDataFromSingleFile = async (options: CsvOptions): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
+    
+    if(typeof options.path !== "string") return transactions;
 
-    const parser = createReadStream(path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: columns, relaxColumnCount: true, skipEmptyLines: true }));
+    const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: options.columns, relaxColumnCount: true, skipEmptyLines: true }));
 
     for await (const record of parser) {
-        const transaction = parseRecordToTransaction(record, dataKeys);
+        const transaction = parseRecordToTransaction(record, options.dataKeys, options.dateFormat);
         if (!transaction) continue;
         transactions.push(transaction);
     }

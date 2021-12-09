@@ -35,7 +35,8 @@ describe("Test utils/typeguards", () => {
                     options: {
                         path: "",
                         dataKeys: { date: "", initiator: "", purpose: "", value: "" },
-                        columns: []
+                        columns: [],
+                        dateFormat: ""
                     }
                 },
                 report: {
@@ -76,7 +77,7 @@ describe("Test utils/typeguards", () => {
         });
 
         test("ConnectorOptions is a ConnectorOptions", () => {
-            const connectorOptions = { type: "", options: { path: "", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [] } };
+            const connectorOptions = { type: "", options: { path: "", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [], dateFormat: "" } };
             expect(isConnectorOptions(connectorOptions)).toBeTruthy();
         });
     });
@@ -135,12 +136,12 @@ describe("Test utils/typeguards", () => {
         });
 
         test("CsvConnectorOptions is not a CsvConnectorOptions without deep equality", () => {
-            const csvConnectorOptions = { path: "", dataKeys: {}, columns: [] };
+            const csvConnectorOptions = { path: "", dataKeys: {}, columns: [], dateFormat: "" };
             expect(isCsvOptions(csvConnectorOptions)).toBeFalsy();
         });
 
         test("CsvConnectorOptions is a CsvConnectorOptions", () => {
-            const csvConnectorOptions = { path: "", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [] };
+            const csvConnectorOptions = { path: "", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [], dateFormat: "" };
             expect(isCsvOptions(csvConnectorOptions)).toBeTruthy();
         });
     });
@@ -260,7 +261,8 @@ describe("Test utils/typeguards", () => {
                         options: {
                             path: "",
                             dataKeys: { date: "", initiator: "", purpose: "", value: "" },
-                            columns: []
+                            columns: [],
+                            dateFormat: ""
                         }
                     },
                     report: {
