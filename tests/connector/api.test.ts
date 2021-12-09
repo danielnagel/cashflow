@@ -1,4 +1,4 @@
-describe("Test APIConnector", () => {
+describe("Test connector/api", () => {
 
     describe("Loading transaction data", () => {
 
