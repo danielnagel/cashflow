@@ -1,4 +1,4 @@
-import { loadTransactionData } from "../connector/csvConnector";
+import { loadTransactionData } from "../connector/csv";
 import { generateCategorizedFixCosts } from "./reports/fixCosts";
 
 const enum ConnectorType {

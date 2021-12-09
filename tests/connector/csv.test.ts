@@ -1,6 +1,6 @@
-import { loadTransactionData, parseRecordToTransaction } from "../../src/connector/csvConnector"
+import { loadTransactionData, parseRecordToTransaction } from "../../src/connector/csv"
 
-describe("Test CSVConnector", () => {
+describe("Test connector/csv", () => {
 
     describe("Parse record to transaction", () => {
         const dataKeys = { date: "booking", initiator: "initiator", purpose: "use", value: "amount" };
