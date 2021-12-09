@@ -1,4 +1,4 @@
-import { getTimeStampFromTransaction } from "../../src/utils/dates";
+import { getTimeStampFromTransaction, parseDateString } from "../../src/utils/dates";
 
 describe("Test utils/dates", () => {
 
@@ -30,6 +30,34 @@ describe("Test utils/dates", () => {
 
         test("Parse -1.-1.-2010 from transaction to expected timestamp", () => {
             expect(getTimeStampFromTransaction({ day: -1, month: -1, year: -2010, initiator: "", purpose: "", value: 0 })).toBe(new Date(-2010, -2, -1).getTime());
+        });
+
+    });
+
+    describe("Test function getTimeStampFromTransaction", () => {
+
+        beforeEach(() => {
+            jest.spyOn(console, 'error').mockImplementation(() => { });
+        });
+
+        test("Parse string '09.12.2021' to javascript date object", () => {
+            expect(parseDateString("09.12.2021", "dd.MM.yyyy")).toStrictEqual(new Date(2021, 11, 9));
+        });
+
+        test("Parse string '09-12-2021' to javascript date object", () => {
+            expect(parseDateString("09-12-2021", "dd-MM-yyyy")).toStrictEqual(new Date(2021, 11, 9));
+        });
+
+        test("Parse string '12/09/2021' to javascript date object", () => {
+            expect(parseDateString("12/09/2021", "MM/dd/yyyy")).toStrictEqual(new Date(2021, 11, 9));
+        });
+
+        test("Parse string '34/34/2021' to null", () => {
+            expect(parseDateString("34/34/2021", "MM/dd/yyyy")).toBeNull();
+        });
+
+        test("Return null on invalid date format", () => {
+            expect(parseDateString("12/09/2021", "laskjdhf")).toBeNull();
         });
 
     });
