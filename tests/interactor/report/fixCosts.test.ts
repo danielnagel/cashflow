@@ -1,4 +1,4 @@
-import { generateFixCost, generateCategorizedFixCosts } from "../../../src/interactor/reports/fixCosts";
+import { generateFixCost, generateCategorizedFixCosts } from "../../../src/interactor/report/fixCosts";
 
 describe("Test fixCostReport", () => {
 
