@@ -1,6 +1,10 @@
-import { getTimeStampFromTransaction, parseDateString } from "../../src/utils/dates";
+import { getTimeStampFromTransaction, parseDateString, formatDate } from "../../src/utils/dates";
 
 describe("Test utils/dates", () => {
+
+    beforeEach(() => {
+        jest.spyOn(console, 'error').mockImplementation(() => { });
+    });
 
     describe("Test function getTimeStampFromTransaction", () => {
 
@@ -34,11 +38,7 @@ describe("Test utils/dates", () => {
 
     });
 
-    describe("Test function getTimeStampFromTransaction", () => {
-
-        beforeEach(() => {
-            jest.spyOn(console, 'error').mockImplementation(() => { });
-        });
+    describe("Test function parseDateString", () => {
 
         test("Parse string '09.12.2021' to javascript date object", () => {
             expect(parseDateString("09.12.2021", "dd.MM.yyyy")).toStrictEqual(new Date(2021, 11, 9));
@@ -58,6 +58,42 @@ describe("Test utils/dates", () => {
 
         test("Return null on invalid date format", () => {
             expect(parseDateString("12/09/2021", "laskjdhf")).toBeNull();
+        });
+
+        test("Parse string '09.12.2021' to javascript date object, without dateFormat string", () => {
+            expect(parseDateString("09.12.2021")).toStrictEqual(new Date(2021, 11, 9));
+        });
+
+        test("Parse string '09.12.2021' to javascript date object, with undefined dateFormat", () => {
+            expect(parseDateString("09.12.2021", undefined)).toStrictEqual(new Date(2021, 11, 9));
+        });
+
+    });
+
+    describe("Test function formatDate", () => {
+
+        test("Parse javascript date object to string '09.12.2021'", () => {
+            expect(formatDate(new Date(2021, 11, 9), "dd.MM.yyyy")).toBe("09.12.2021");
+        });
+
+        test("Parse javascript date object to string '09-12-2021'", () => {
+            expect(formatDate(new Date(2021, 11, 9), "dd-MM-yyyy")).toBe("09-12-2021");
+        });
+
+        test("Parse javascript date object to string '12/09/2021'", () => {
+            expect(formatDate(new Date(2021, 11, 9), "MM/dd/yyyy")).toBe("12/09/2021");
+        });
+
+        test("Return null on invalid date format", () => {
+            expect(formatDate(new Date(2021, 11, 9), "laskjdhf")).toBeNull();
+        });
+
+        test("Parse javascript date object to string '09.12.2021', without dateFormat string", () => {
+            expect(formatDate(new Date(2021, 11, 9))).toBe("09.12.2021");
+        });
+
+        test("Parse javascript date object to string '09.12.2021', with undefined dateFormat", () => {
+            expect(formatDate(new Date(2021, 11, 9), undefined)).toBe("09.12.2021");
         });
 
     });
