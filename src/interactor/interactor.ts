@@ -13,10 +13,11 @@ const enum ReportType {
 
 export const generateReport = async (options: Configuration): Promise<Report | ApplicationError> => {
 
-    let transactions: Transaction[] = [];
+    let transactions: Transaction[] | ApplicationError = [];
     switch (options.interactor.connector.type) {
         case ConnectorType.CSV:
             transactions = await loadTransactionData(options.interactor.connector.options, options.logger);
+            if(isApplicationError(transactions)) return transactions;
             break;
         case ConnectorType.API:
         default:

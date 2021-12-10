@@ -39,12 +39,12 @@ const matchDataKeysWithRecord = (record: UnknownRecord, dataKeys: DataKeys): Mat
     return { date, initiator, purpose, value };
 }
 
-export const loadTransactionData = async (options: CsvOptions, loggerOptions?: LoggerOptions): Promise<Transaction[]> => {
+export const loadTransactionData = async (options: CsvOptions, loggerOptions?: LoggerOptions): Promise<Transaction[] | ApplicationError> => {
     const mergedTransactions: Transaction[] = [];
 
 
     if (typeof options.path === "string") {
-        if (!fileExists(options.path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
+        if (!fileExists(options.path)) return { source: "csv.ts", message: `CSV file with transaction data not found. Path: "${options.path}".` };
         if (isFile(options.path)) {
             mergedTransactions.push(... await loadTransactionDataFromSingleFile(options, loggerOptions));
         } else {
@@ -59,7 +59,7 @@ export const loadTransactionData = async (options: CsvOptions, loggerOptions?: L
         }
     } else if (Array.isArray(options.path) && options.path.length > 0) {
         for (const path of options.path) {
-            if (!fileExists(path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
+            if (!fileExists(path)) return { source: "csv.ts", message: `CSV file with transaction data not found. Path: "${options.path}".` };
             const optionsCopy = { ...options };
             optionsCopy.path = path;
             const transactions = await loadTransactionDataFromSingleFile(optionsCopy, loggerOptions);
