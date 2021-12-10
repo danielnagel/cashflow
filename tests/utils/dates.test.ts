@@ -96,6 +96,30 @@ describe("Test utils/dates", () => {
             expect(formatDate(new Date(2021, 11, 9), undefined)).toBe("09.12.2021");
         });
 
+        test("Parse javascript date time object to string '09.12.2021 13:16:27'", () => {
+            expect(formatDate(new Date(2021, 11, 9, 13, 16, 27), "dd.MM.yyyy HH:mm:ss")).toBe("09.12.2021 13:16:27");
+        });
+
+        test("Parse javascript date time object to string '09-12-2021 13:16:27'", () => {
+            expect(formatDate(new Date(2021, 11, 9, 13, 16, 27), "dd-MM-yyyy HH:mm:ss")).toBe("09-12-2021 13:16:27");
+        });
+
+        test("Parse javascript date time object to string '12/09/2021 01:16 PM'", () => {
+            expect(formatDate(new Date(2021, 11, 9, 13, 16, 27), "MM/dd/yyyy hh:mm a")).toBe("12/09/2021 01:16 PM");
+        });
+
+        test("Return null on invalid date format", () => {
+            expect(formatDate(new Date(2021, 11, 9, 13, 16, 27), "laskjdhf")).toBeNull();
+        });
+
+        test("Parse javascript date time object to string '09.12.2021', without dateFormat string", () => {
+            expect(formatDate(new Date(2021, 11, 9, 13, 16, 27))).toBe("09.12.2021");
+        });
+
+        test("Parse javascript date time object to string '09.12.2021', with undefined dateFormat", () => {
+            expect(formatDate(new Date(2021, 11, 9, 13, 16, 27), undefined)).toBe("09.12.2021");
+        });
+
     });
 
 });
