@@ -1,4 +1,4 @@
-import { getTimeStampFromTransaction } from "../utils/dates";
+import { getTimeStampFromTransaction, formatDate } from "../utils/dates";
 import { round } from "../utils/numbers";
 
 export const printReportAsTable = (configuration: Configuration, report: Report): void => {
@@ -23,7 +23,7 @@ export const printReportAsTable = (configuration: Configuration, report: Report)
 const fixCostsReportAsTable = (configuration: Configuration, report: CategorizedFixCosts): FixCostsReportTableRow[] => {
     const tabularData: FixCostsReportTableRow[] = [];
     for (const fixCost of report.fixCosts) {
-        const lastBookingDate = new Date(getTimeStampFromTransaction(fixCost.fixCost.transactions[fixCost.fixCost.transactions.length - 1])).toLocaleDateString(configuration.locale);
+        const lastBookingDate = formatDate(new Date(getTimeStampFromTransaction(fixCost.fixCost.transactions[fixCost.fixCost.transactions.length - 1])), configuration.dateFormat);
         tabularData.push({
             category: fixCost.name,
             paid: fixCost.fixCost.isPaidThisMonth,

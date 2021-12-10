@@ -255,7 +255,7 @@ describe("Test utils/typeguards", () => {
 
         test("Configuration is an Configuration", () => {
             const configuration = {
-                currency: "", locale: "", options: {
+                currency: "", options: {
                     connector: {
                         type: "",
                         options: {

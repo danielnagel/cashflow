@@ -40,6 +40,5 @@ export const isCategory = (object: unknown): object is Category => {
 export const isConfiguration = (object: unknown): object is Configuration => {
     if (!object) return false;
     return ((object as Configuration).options !== undefined && isInteractorOptions((object as Configuration).options))
-        && (object as Configuration).currency !== undefined
-        && (object as Configuration).locale !== undefined;
+        && (object as Configuration).currency !== undefined;
 }

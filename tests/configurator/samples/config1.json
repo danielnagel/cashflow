@@ -1,6 +1,6 @@
 {
     "currency": "",
-    "locale": "",
+    "dateFormat": "",
     "options": {
         "connector": {},
         "report": {}
