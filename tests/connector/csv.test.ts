@@ -120,7 +120,6 @@ describe("Test connector/csv", () => {
 });
 
 // --- CSV Connector ---
-// use date format function, instead of splitting the date
 // load parsed transactions from one file
 // load and merge parsed transactions from multiple files
 // save parsed transactions into a new file

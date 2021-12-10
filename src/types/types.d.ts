@@ -39,13 +39,14 @@ type CsvOptions = {
 /**
  * Options on which a list of transactions can be filtered.
  * Samples must be a list of transaction initiators.
- * The list can be filtered to only return transactions after a specific timestamp.
- * The list can be filtered to only return transactions before a specific timestamp.
+ * The list can be filtered to only return transactions after or before a specific date.
+ * The date is parsed by configuration, otherwise ISO date format is expected.
  */
 type TransactionFilterOptions = {
     samples: Sample[],
-    after?: number,
-    before?: number
+    after?: string,
+    before?: string,
+    dateFormat?: string
 };
 
 /**
@@ -84,8 +85,8 @@ type Category = {
  */
 type CategorizeOptions = {
     categories: Category[]
-    before?: number,
-    after?: number
+    before?: string,
+    after?: string
 }
 
 /**
@@ -100,7 +101,7 @@ type NamedFixCost = {
  * Multiple fix cost, categorized through the CategorizeOptions.
  */
 type CategorizedFixCosts = {
-    date: number,
+    date: string,
     sum: number,
     unpaidSum: number,
     fixCosts: NamedFixCost[]

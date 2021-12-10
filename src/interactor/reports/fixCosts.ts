@@ -1,3 +1,4 @@
+import { formatDate, parseDateString } from "../../utils/dates";
 import { filterTransactions } from "../../utils/filters";
 import { sortTransactionsByDate } from "../../utils/sorters";
 
@@ -15,8 +16,10 @@ export const generateFixCost = (transactions: Transaction[], filterOptions: Tran
     let month = new Date().getMonth() + 1;
     let year = new Date().getFullYear();
     if (filterOptions.before) {
-        month = new Date(filterOptions.before).getMonth() + 1;
-        year = new Date(filterOptions.before).getFullYear();
+        const beforeDate = parseDateString(filterOptions.before, filterOptions.dateFormat);
+        if(!beforeDate) throw new Error(`Before date filter options can't be parse! Before date is '${beforeDate}'`);
+        month = beforeDate.getMonth() + 1;
+        year = beforeDate.getFullYear();
     }
 
     for (const matchedTransaction of matchedTransactions) {
@@ -48,8 +51,10 @@ export const generateCategorizedFixCosts = (transactions: Transaction[], categor
 
     if (namedFixCost.length === 0) return null;
 
+    let date = categorizeOptions.before ? categorizeOptions.before : formatDate(new Date());
+    if (date === null) date = new Date().toLocaleDateString();
     const result: CategorizedFixCosts = {
-        date: categorizeOptions.before ? categorizeOptions.before : new Date().getTime(),
+        date,
         sum, unpaidSum, fixCosts: namedFixCost
     }
 

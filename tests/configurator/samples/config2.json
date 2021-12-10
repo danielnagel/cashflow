@@ -12,7 +12,8 @@
                     "purpose": "",
                     "value": ""
                 },
-                "columns": []
+                "columns": [],
+                "dateFormat": ""
             }
         },
         "report": {

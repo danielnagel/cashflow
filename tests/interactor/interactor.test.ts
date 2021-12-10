@@ -10,7 +10,7 @@ describe("Test Interactor", () => {
                 const expected: FixCostsReport = {
                     type: "fixcost",
                     report: {
-                        date: new Date(2021, 10, 15).getTime(),
+                        date: "15.11.2021",
                         sum: -704.98,
                         unpaidSum: -39.99,
                         fixCosts: [
@@ -49,13 +49,14 @@ describe("Test Interactor", () => {
                         options: {
                             path: __dirname + "/samples/sample1.csv",
                             dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" },
-                            columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"]
+                            columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"],
+                            dateFormat: "dd.MM.yyyy"
                         }
                     },
                     report: {
                         type: "fixcosts",
                         options: {
-                            before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 8, 1).getTime(),
+                            before: "15.11.2021", after: "01.09.2021",
                             categories: [
                                 { name: "rent", samples: [{ initiator: "Rent for my crib" }] },
                                 { name: "insurance", samples: [{ initiator: "Stay Healthy Corp." }] },

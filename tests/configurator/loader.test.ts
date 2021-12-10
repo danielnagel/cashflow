@@ -26,7 +26,8 @@ describe("Test configurator/loader", () => {
                         options: {
                             path: "",
                             dataKeys: { date: "", initiator: "", purpose: "", value: "" },
-                            columns: []
+                            columns: [],
+                            dateFormat: ""
                         }
                     },
                     report: {

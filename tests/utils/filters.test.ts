@@ -43,23 +43,23 @@ describe("Test utils/filters", () => {
 
         describe("Test falsy parameters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
-                expect(filterTransactions([], { samples: [{ initiator: "test" }], before: new Date(2021, 11, 15).getTime() })).toHaveLength(0);
+                expect(filterTransactions([], { samples: [{ initiator: "test" }], before: "15.12.2021" })).toHaveLength(0);
             });
 
             test("Return an array of length 0, if samples option is empty", () => {
-                expect(filterTransactions(transactions, { samples: [], before: new Date(2021, 11, 15).getTime() })).toHaveLength(0);
+                expect(filterTransactions(transactions, { samples: [], before: "15.12.2021" })).toHaveLength(0);
             });
 
             test("Return an array of length 0, if there aren't any transactions that match 'before date' option", () => {
-                expect(filterTransactions(transactions, { samples: [{ initiator: "Rent for my crib" }], before: new Date(1999, 11, 15).getTime() })).toHaveLength(0);
+                expect(filterTransactions(transactions, { samples: [{ initiator: "Rent for my crib" }], before: "15.12.1999" })).toHaveLength(0);
             });
 
             test("Return an array of length 0, if 'before date' is after 'after date' option", () => {
-                expect(filterTransactions(transactions, { samples: [{ initiator: "Rent for my crib" }], before: new Date(1999, 11, 15).getTime(), after: new Date(2002, 6, 12).getTime() })).toHaveLength(0);
+                expect(filterTransactions(transactions, { samples: [{ initiator: "Rent for my crib" }], before: "15.12.1999", after: "12.07.2002" })).toHaveLength(0);
             });
 
             test("Return an array of length 0, if no transaction is matching", () => {
-                expect(filterTransactions(transactions, { samples: [{ initiator: "Wizard from Oz" }], before: new Date(2021, 11, 15).getTime() })).toHaveLength(0);
+                expect(filterTransactions(transactions, { samples: [{ initiator: "Wizard from Oz" }], before: "15.12.2021" })).toHaveLength(0);
             });
         });
 
@@ -77,7 +77,7 @@ describe("Test utils/filters", () => {
                     { day: 1, month: 7, year: 2021, initiator: "Rent for my crib", purpose: "Thanks landlord", value: 650 },
                 ]
 
-                const filteredTransactions = filterTransactions(transactions, { samples, before: new Date(2021, 10, 30).getTime() });
+                const filteredTransactions = filterTransactions(transactions, { samples, before: "30.11.2021" });
                 expect(filteredTransactions).toHaveLength(expected.length);
                 expect(filteredTransactions).toStrictEqual(expected);
             });
@@ -89,7 +89,7 @@ describe("Test utils/filters", () => {
                     { day: 1, month: 11, year: 2021, initiator: "Rent for my crib", purpose: "Thanks landlord", value: 650 },
                 ];
 
-                const filteredTransactions = filterTransactions(transactions, { samples, before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 7, 31).getTime() });
+                const filteredTransactions = filterTransactions(transactions, { samples, before: "15.11.2021", after: "31.08.2021" });
                 expect(filteredTransactions).toHaveLength(expected.length);
                 expect(filteredTransactions).toStrictEqual(expected);
             });
@@ -124,7 +124,7 @@ describe("Test utils/filters", () => {
                     { day: 7, month: 7, year: 2021, initiator: "Grocerie Land", purpose: "VISA 23 GROCERIE LAND TES71234123423134", value: 109.56 },
                 ]
 
-                const filteredTransactions = filterTransactions(transactions, { samples, before: new Date(2021, 9, 1).getTime() });
+                const filteredTransactions = filterTransactions(transactions, { samples, before: "01.10.2021" });
                 expect(filteredTransactions).toHaveLength(expected.length);
                 expect(filteredTransactions).toStrictEqual(expected);
             });
@@ -137,7 +137,7 @@ describe("Test utils/filters", () => {
                     { day: 7, month: 7, year: 2021, initiator: "Grocerie Land", purpose: "VISA 23 GROCERIE LAND TES71234123423134", value: 109.56 },
                 ];
 
-                const filteredTransactions = filterTransactions(transactions, { samples, before: new Date(2021, 9, 1).getTime(), after: new Date(2021, 6, 5).getTime() });
+                const filteredTransactions = filterTransactions(transactions, { samples, before: "01.10.2021", after: "05.07.2021" });
                 expect(filteredTransactions).toHaveLength(expected.length);
                 expect(filteredTransactions).toStrictEqual(expected);
             });

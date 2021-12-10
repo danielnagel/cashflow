@@ -1,18 +1,22 @@
-import { getTimeStampFromTransaction } from "./dates";
+import { getTimeStampFromTransaction, parseDateString } from "./dates";
 
-const transactionsAfterTimeStamp = (transactions: Transaction[], after: number | undefined): Transaction[] => {
+const transactionsAfterTimeStamp = (transactions: Transaction[], after: string | undefined, dateFormat: string | undefined): Transaction[] => {
     if (transactions.length === 0 || typeof after === "undefined") return transactions;
+    const afterDate = parseDateString(after, dateFormat);
+    if(afterDate === null) return transactions;
 
     return transactions.filter((transaction) => {
-        return getTimeStampFromTransaction(transaction) > after;
+        return getTimeStampFromTransaction(transaction) > afterDate.getTime();
     })
 };
 
-const transactionsBeforeTimeStamp = (transactions: Transaction[], before: number | undefined): Transaction[] => {
+const transactionsBeforeTimeStamp = (transactions: Transaction[], before: string | undefined, dateFormat: string | undefined): Transaction[] => {
     if (transactions.length === 0 || typeof before === "undefined") return transactions;
+    const beforeDate = parseDateString(before, dateFormat);
+    if(beforeDate === null) return transactions;
 
     return transactions.filter((transaction) => {
-        return getTimeStampFromTransaction(transaction) < before;
+        return getTimeStampFromTransaction(transaction) < beforeDate.getTime();
     })
 };
 
@@ -39,8 +43,8 @@ export const filterTransactions = (transactions: Transaction[], options: Transac
         }
     }
 
-    filteredTransactions = transactionsBeforeTimeStamp(filteredTransactions, options.before);
-    filteredTransactions = transactionsAfterTimeStamp(filteredTransactions, options.after);
+    filteredTransactions = transactionsBeforeTimeStamp(filteredTransactions, options.before, options.dateFormat);
+    filteredTransactions = transactionsAfterTimeStamp(filteredTransactions, options.after, options.dateFormat);
 
     return filteredTransactions;
 }

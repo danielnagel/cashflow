@@ -44,7 +44,7 @@ describe("Test fixCostReport", () => {
 
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
-                const fixCost = generateFixCost([], { samples: [{ initiator: "test" }], before: new Date(2021, 11, 15).getTime() });
+                const fixCost = generateFixCost([], { samples: [{ initiator: "test" }], before: "15.12.2021" });
 
                 expect(fixCost).toBeNull();
             });
@@ -54,25 +54,25 @@ describe("Test fixCostReport", () => {
             ];
 
             test("Return null, if samples array is empty", () => {
-                const fixCost = generateFixCost(transactions, { samples: [], before: new Date(2021, 11, 15).getTime() });
+                const fixCost = generateFixCost(transactions, { samples: [], before: "15.12.2021" });
 
                 expect(fixCost).toBeNull();
             });
 
             test("Return null, if there aren't any transactions that match toDate", () => {
-                const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib" }], before: new Date(1999, 11, 15).getTime() });
+                const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib" }], before: "15.12.1999" });
 
                 expect(fixCost).toBeNull();
             });
 
             test("Return null, if sinceDate is after toDate", () => {
-                const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib" }], before: new Date(1999, 11, 15).getTime(), after: new Date(2002, 6, 12).getTime() });
+                const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib" }], before: "15.12.1999", after: "12.07.2002" });
 
                 expect(fixCost).toBeNull();
             });
 
             test("Return null, if no transaction is matching", () => {
-                const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib?" }], before: new Date(2021, 11, 30).getTime() });
+                const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib?" }], before: "30.12.2021" });
 
                 expect(fixCost).toBeNull();
             });
@@ -94,7 +94,7 @@ describe("Test fixCostReport", () => {
                     ]
                 };
 
-                const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 10, 30).getTime() });
+                const fixCost = generateFixCost(transactions, { samples, before: "30.11.2021" });
 
                 expect(fixCost).toStrictEqual(expected);
             });
@@ -111,7 +111,7 @@ describe("Test fixCostReport", () => {
                     ]
                 };
 
-                const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 9, 15).getTime() });
+                const fixCost = generateFixCost(transactions, { samples, before: "15.10.2021" });
 
                 expect(fixCost).toStrictEqual(expected);
             });
@@ -124,7 +124,7 @@ describe("Test fixCostReport", () => {
                     ]
                 };
 
-                const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 8, 1).getTime() });
+                const fixCost = generateFixCost(transactions, { samples, before: "15.11.2021", after: "01.09.2021" });
 
                 expect(fixCost).toStrictEqual(expected);
             });
@@ -146,7 +146,7 @@ describe("Test fixCostReport", () => {
                     ]
                 };
 
-                const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 11, 30).getTime() });
+                const fixCost = generateFixCost(transactions, { samples, before: "30.12.2021" });
 
                 expect(fixCost).toStrictEqual(expected);
             });
@@ -161,7 +161,7 @@ describe("Test fixCostReport", () => {
                     ]
                 };
 
-                const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 8, 1).getTime() });
+                const fixCost = generateFixCost(transactions, { samples, before: "01.09.2021" });
 
                 expect(fixCost).toStrictEqual(expected);
             });
@@ -175,7 +175,7 @@ describe("Test fixCostReport", () => {
                     ]
                 };
 
-                const fixCost = generateFixCost(transactions, { samples, before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 8, 1).getTime() });
+                const fixCost = generateFixCost(transactions, { samples, before: "15.11.2021", after: "01.09.2021" });
 
                 expect(fixCost).toStrictEqual(expected);
             });
@@ -244,7 +244,7 @@ describe("Test fixCostReport", () => {
             test("Generate categorized fix costs as expected", () => {
 
                 const expected: CategorizedFixCosts = {
-                    date: new Date(2021, 10, 15).getTime(),
+                    date: "15.11.2021",
                     sum: 704.98,
                     unpaidSum: 39.99,
                     fixCosts: [
@@ -277,7 +277,7 @@ describe("Test fixCostReport", () => {
                 };
 
                 const options: CategorizeOptions = {
-                    before: new Date(2021, 10, 15).getTime(), after: new Date(2021, 8, 1).getTime(),
+                    before: "15.11.2021", after: "01.09.2021",
                     categories: [
                         { name: "rent", samples: [{ initiator: "Rent for my crib" }] },
                         { name: "insurance", samples: [{ initiator: "Stay Healthy Corp." }] },
@@ -294,20 +294,7 @@ describe("Test fixCostReport", () => {
 });
 
 
-// 1 --- generate fix costs report --- fixCostReport.ts
+// --- generate fix costs report ---
 // generate a timestamp that is the last transaction date - 1 day
 // --- generate single fix costs for one category ---
 // special handling for non-monthly, e.g. quarter yearly, fix costs
-
-// 2 --- interactor.ts ---
-// generate fix costs report from sample csv data
-
-// 3 --- generate trend report ---
-
-// --- create categorized transaction ---
-// create a categorized transaction from a list of transactions
-// return empty list when there are no samples
-// return empty list when there is no transaction type specified
-// --- GENERATE CATEGORIZED TRANSACTIONS ---
-// generate all categorized transactions from transaction data
-// return empty list when there is no data
