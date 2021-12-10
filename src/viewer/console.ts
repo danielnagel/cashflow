@@ -1,22 +1,16 @@
 import { getTimeStampFromTransaction, formatDate } from "../utils/dates";
 import { round } from "../utils/numbers";
 
-export const printReportAsTable = (configuration: Configuration, report: Report): void => {
-    if (!report) {
-        console.error("Given object is not a report!");
-        return;
-    }
+export const generateReportAsTable = (configuration: Configuration, report: Report): FixCostsReportTableRow[] | ApplicationError => {
 
     switch (report.type) {
         case "fixcost":
             if (!report.report) {
-                console.error("Cannot print Fixcosts report! Report is null.");
-                return;
+                return { source: "viewer.ts", message: "Cannot print Fixcosts report! Report is null." }
             }
-            console.table(fixCostsReportAsTable(configuration, report.report));
-            break;
+            return fixCostsReportAsTable(configuration, report.report);
         default:
-            console.log(`Unkown report type: ${report.type}!`);
+            return { source: "viewer.ts", message: `Unkown report type: ${report.type}!` }
     }
 }
 

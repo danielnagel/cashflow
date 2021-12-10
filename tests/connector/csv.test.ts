@@ -2,52 +2,56 @@ import { loadTransactionData, parseRecordToTransaction } from "../../src/connect
 
 describe("Test connector/csv", () => {
 
+    beforeEach(() => {
+        jest.spyOn(console, 'debug').mockImplementation(() => { });
+    });
+
     describe("Parse record to transaction", () => {
         const dataKeys = { date: "booking", initiator: "initiator", purpose: "use", value: "amount" };
         const record = { booking: "01.11.2021", initiator: "FOOD SHOP 1", use: "Thanks for paying the food", amount: "-23,00", randominformation: "blub" };
         const dateFormat = "dd.MM.yyyy";
         const expected = { initiator: "FOOD SHOP 1", purpose: "Thanks for paying the food", value: -23, day: 1, month: 11, year: 2021 }
 
-        test("Return null, if record is invalid", async () => {
-            expect(parseRecordToTransaction({}, dataKeys, dateFormat)).toBeNull();
+        test("Return ApplicationError, if record is empty", async () => {
+            expect(parseRecordToTransaction({}, dataKeys, dateFormat)).toStrictEqual({ source: "csv.ts", message: "Record doesn't match given data keys." });
         });
 
-        test("Return null, if can't match data keys to record", async () => {
-            expect(parseRecordToTransaction({ example: "wow" }, dataKeys, dateFormat)).toBeNull();
+        test("Return ApplicationError, if can't match data keys to record", async () => {
+            expect(parseRecordToTransaction({ example: "wow" }, dataKeys, dateFormat)).toStrictEqual({ source: "csv.ts", message: "Record doesn't match given data keys." });
         });
 
         test("Return transaction, if data keys match record", async () => {
             expect(parseRecordToTransaction(record, dataKeys, dateFormat)).toStrictEqual(expected);
         });
 
-        test("Return null, if booking date has not the expected format", async () => {
+        test("Return ApplicationError, if booking date has not the expected format", async () => {
             const recordCopy = { ...record };
             recordCopy.booking = "01-11-2021";
-            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toBeNull();
+            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toStrictEqual({ source: "csv.ts", message: `Couldn't parse date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".` });
         });
 
-        test("Return null, if day of booking date can't be parsed", async () => {
+        test("Return ApplicationError, if day of booking date can't be parsed", async () => {
             const recordCopy = { ...record };
             recordCopy.booking = "o1.11.2021";
-            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toBeNull();
+            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toStrictEqual({ source: "csv.ts", message: `Couldn't parse date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".` });
         });
 
-        test("Return null, if month of booking date can't be parsed", async () => {
+        test("Return ApplicationError, if month of booking date can't be parsed", async () => {
             const recordCopy = { ...record };
             recordCopy.booking = "01.II.2021";
-            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toBeNull();
+            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toStrictEqual({ source: "csv.ts", message: `Couldn't parse date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".` });
         });
 
-        test("Return null, if year of booking date can't be parsed", async () => {
+        test("Return ApplicationError, if year of booking date can't be parsed", async () => {
             const recordCopy = { ...record };
             recordCopy.booking = "1.11.asdf";
-            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toBeNull();
+            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toStrictEqual({ source: "csv.ts", message: `Couldn't parse date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".` });
         });
 
-        test("Return null, if amount can't be parsed", async () => {
+        test("Return ApplicationError, if amount can't be parsed", async () => {
             const recordCopy = { ...record };
             recordCopy.amount = "1.O1";
-            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toBeNull();
+            expect(parseRecordToTransaction(recordCopy, dataKeys, dateFormat)).toStrictEqual({ source: "csv.ts", message: `Couldn't parse value. Value string is "${recordCopy.amount}".` });
         });
     });
 

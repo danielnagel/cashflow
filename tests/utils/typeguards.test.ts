@@ -1,4 +1,4 @@
-import { isInteractorOptions, isConnectorOptions, isReportOptions, isCsvOptions, isCategorizeOptions, isDataKeys, isCategory, isConfiguration } from "../../src/utils/typeguards";
+import { isInteractorOptions, isConnectorOptions, isReportOptions, isCsvOptions, isCategorizeOptions, isDataKeys, isCategory, isConfiguration, isApplicationError } from "../../src/utils/typeguards";
 
 describe("Test utils/typeguards", () => {
 
@@ -274,6 +274,33 @@ describe("Test utils/typeguards", () => {
                 }
             };
             expect(isConfiguration(configuration)).toBeTruthy();
+        });
+    });
+
+    describe("Check if object is ApplicationError", () => {
+        test("Null is not an ApplicationError", () => {
+            expect(isApplicationError(null)).toBeFalsy();
+        });
+
+        test("undefined is not an ApplicationError", () => {
+            expect(isApplicationError(undefined)).toBeFalsy();
+        });
+
+        test("Empty object is not an ApplicationError", () => {
+            expect(isApplicationError({})).toBeFalsy();
+        });
+
+        test("string is not an ApplicationError", () => {
+            expect(isApplicationError("hello")).toBeFalsy();
+        });
+
+        test("number is not an ApplicationError", () => {
+            expect(isApplicationError(123)).toBeFalsy();
+        });
+
+        test("ApplicationError is an ApplicationError", () => {
+            const applicationError = { source: "", message: "" };
+            expect(isApplicationError(applicationError)).toBeTruthy();
         });
     });
 });

@@ -9,24 +9,16 @@ export const parseDateString = (dateString: string, dateFormat = "dd.MM.yyyy"): 
     try {
         parsedDate = parse(dateString, dateFormat, new Date());
         if (isNaN(parsedDate.getTime())) parsedDate = null;
-    } catch (e) {
-        let errorMessage = `Invalid date format: '${dateFormat}'.`;
-        if (e instanceof Error)
-            errorMessage += ` Original message: ${e.message}`;
-        console.error(errorMessage);
+    } finally {
+        return parsedDate;
     }
-    return parsedDate
 }
 
 export const formatDate = (date: Date, dateFormat = "dd.MM.yyyy"): string | null => {
     let formattedDate: string | null = null;
     try {
         formattedDate = format(date, dateFormat);
-    } catch (e) {
-        let errorMessage = `Invalid date format: '${dateFormat}'.`;
-        if (e instanceof Error)
-            errorMessage += ` Original message: ${e.message}`;
-        console.error(errorMessage);
+    } finally {
+        return formattedDate;
     }
-    return formattedDate
 }

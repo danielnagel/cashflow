@@ -1,9 +1,9 @@
 import { loadFile } from "../utils/files";
 import { isConfiguration } from "../utils/typeguards";
 
-export const loadConfigurationFile = (path: string): Configuration | null => {
+export const loadConfigurationFile = (path: string): Configuration | ApplicationError => {
     const fileContent = loadFile(path);
-    if (!fileContent) return null;
+    if (!fileContent) return {source: "loader.ts", message: `Configuration file "${path}", was not found.`};
 
     try {
         const javascriptObject = JSON.parse(fileContent);
@@ -11,9 +11,8 @@ export const loadConfigurationFile = (path: string): Configuration | null => {
             return javascriptObject;
         }
     } catch (e) {
-        return null;
+        return {source: "loader.ts", message: `Configuration file "${path}", couldn't be parsed.`};
     }
 
-
-    return null;
+    return {source: "loader.ts", message: `Configuration file "${path}", has the wrong format.`};
 }

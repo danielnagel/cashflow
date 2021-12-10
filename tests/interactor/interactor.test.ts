@@ -2,6 +2,10 @@ import { generateReport } from "../../src/interactor/interactor";
 
 describe("Test Interactor", () => {
 
+    beforeEach(() => {
+        jest.spyOn(console, 'debug').mockImplementation(() => { });
+    });
+
     describe("Test generating reports with CSV connector", () => {
 
         describe("Generate categorized fix costs from samples", () => {

@@ -3,10 +3,28 @@ import parse from "csv-parse/lib/index";
 import { fileExists, isFile, loadFileNamesFromDirectory } from "../utils/files";
 import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../utils/numbers";
 import { parseDateString } from "../utils/dates";
+import { isApplicationError } from "../utils/typeguards";
 
-export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys, dateFormat: string): Transaction | null => {
-    const dateString = record[dataKeys.date];
-    if (typeof dateString === "undefined") return null;
+export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys, dateFormat: string): Transaction | ApplicationError => {
+    const matchedRecord = matchDataKeysWithRecord(record, dataKeys);
+    if (!matchedRecord) {
+        return { source: "csv.ts", message: "Record doesn't match given data keys." };
+    }
+    const date = parseDateString(matchedRecord.date, dateFormat);
+    if (date === null) return { source: "csv.ts", message: `Couldn't parse date. Date string is "${matchedRecord.date}", date format is "${dateFormat}".` };
+
+    let parsedValue = germanDecimalNumberToFloat(matchedRecord.value);
+    if (isNaN(parsedValue)) {
+        parsedValue = decimalNumberToFloat(matchedRecord.value);
+        if (isNaN(parsedValue)) return { source: "csv.ts", message: `Couldn't parse value. Value string is "${matchedRecord.value}".` };
+    }
+
+    return { initiator: matchedRecord.initiator, purpose: matchedRecord.purpose, value: parsedValue, day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() };
+}
+
+const matchDataKeysWithRecord = (record: UnknownRecord, dataKeys: DataKeys): MatchedRecord | null => {
+    const date = record[dataKeys.date];
+    if (typeof date === "undefined") return null;
 
     const initiator = record[dataKeys.initiator];
     if (typeof initiator === "undefined") return null;
@@ -17,16 +35,7 @@ export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKe
     const value = record[dataKeys.value];
     if (typeof value === "undefined") return null;
 
-    const date = parseDateString(dateString, dateFormat);
-    if (date === null) return null;
-
-    let parsedValue = germanDecimalNumberToFloat(value);
-    if (isNaN(parsedValue)) {
-        parsedValue = decimalNumberToFloat(value);
-        if (isNaN(parsedValue)) return null;
-    }
-
-    return { initiator, purpose, value: parsedValue, day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() };
+    return { date, initiator, purpose, value };
 }
 
 export const loadTransactionData = async (options: CsvOptions): Promise<Transaction[]> => {
@@ -62,14 +71,17 @@ export const loadTransactionData = async (options: CsvOptions): Promise<Transact
 
 const loadTransactionDataFromSingleFile = async (options: CsvOptions): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
-    
-    if(typeof options.path !== "string") return transactions;
+
+    if (typeof options.path !== "string") return transactions;
 
     const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: options.columns, relaxColumnCount: true, skipEmptyLines: true }));
 
     for await (const record of parser) {
         const transaction = parseRecordToTransaction(record, options.dataKeys, options.dateFormat);
-        if (!transaction) continue;
+        if (isApplicationError(transaction)) {
+            console.debug(`[${transaction.source}]: ${transaction.message}`);
+            continue;
+        }
         transactions.push(transaction);
     }
 

@@ -11,6 +11,16 @@ type Transaction = {
 };
 
 /**
+ * A matched record, which is used to create a transaction object.
+ */
+type MatchedRecord = {
+    initiator: string,
+    purpose: string,
+    value: string,
+    date: string,
+};
+
+/**
  * An unkown object, with unkown keys.
  * The values are either from type string or undefined.
  */
@@ -157,7 +167,7 @@ type FixCostsReport = {
 /**
  * Possible reports, that the interactor could generate.
  */
-type Report = FixCostsReport | null;
+type Report = FixCostsReport;
 
 /**
  * Possible configurations, that a user could create.
@@ -170,10 +180,22 @@ type Configuration = {
     options: InteractorOptions;
 }
 
+/**
+ * One row contains the information of one category from the categorized fix costs report.
+ */
 type FixCostsReportTableRow = {
     category: string,
     paid: boolean | null,
     bookingDay: number | null,
     cost: string,
     lastBookingDate: string | null
+}
+
+/**
+ * Has usefull information, about why something failed.
+ * Source is the file where the error occured from.
+ */
+type ApplicationError = {
+    source: string,
+    message: string
 }
