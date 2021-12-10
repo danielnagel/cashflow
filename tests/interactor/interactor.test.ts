@@ -2,10 +2,6 @@ import { generateReport } from "../../src/interactor/interactor";
 
 describe("Test Interactor", () => {
 
-    beforeEach(() => {
-        jest.spyOn(console, 'debug').mockImplementation(() => { });
-    });
-
     describe("Test generating reports with CSV connector", () => {
 
         describe("Generate categorized fix costs from samples", () => {
@@ -47,25 +43,28 @@ describe("Test Interactor", () => {
                     }
                 };
 
-                const options: InteractorOptions = {
-                    connector: {
-                        type: "csv",
-                        options: {
-                            path: __dirname + "/samples/sample1.csv",
-                            dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" },
-                            columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"],
-                            dateFormat: "dd.MM.yyyy"
-                        }
-                    },
-                    report: {
-                        type: "fixcosts",
-                        options: {
-                            before: "15.11.2021", after: "01.09.2021",
-                            categories: [
-                                { name: "rent", samples: [{ initiator: "Rent for my crib" }] },
-                                { name: "insurance", samples: [{ initiator: "Stay Healthy Corp." }] },
-                                { name: "mobile", samples: [{ initiator: "Mobilio Ltd." }] },
-                            ]
+                const options: Configuration = {
+                    logger: { allowedLogLevel: "none" },
+                    interactor: {
+                        connector: {
+                            type: "csv",
+                            options: {
+                                path: __dirname + "/samples/sample1.csv",
+                                dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" },
+                                columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"],
+                                dateFormat: "dd.MM.yyyy"
+                            }
+                        },
+                        report: {
+                            type: "fixcosts",
+                            options: {
+                                before: "15.11.2021", after: "01.09.2021",
+                                categories: [
+                                    { name: "rent", samples: [{ initiator: "Rent for my crib" }] },
+                                    { name: "insurance", samples: [{ initiator: "Stay Healthy Corp." }] },
+                                    { name: "mobile", samples: [{ initiator: "Mobilio Ltd." }] },
+                                ]
+                            }
                         }
                     }
                 };

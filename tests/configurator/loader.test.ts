@@ -2,10 +2,6 @@ import { loadConfigurationFile } from "../../src/configurator/loader";
 
 describe("Test configurator/loader", () => {
 
-    beforeEach(() => {
-        jest.spyOn(console, 'error').mockImplementation(() => { });
-    });
-
     describe("Load configuration file", () => {
 
         test("File isn't a configuration file, if it doesn't exist.", () => {
@@ -22,9 +18,7 @@ describe("Test configurator/loader", () => {
 
         test("File is a configuration file, if it's content is a InteractorOptions object.", () => {
             const expected = {
-                currency: "",
-                dateFormat: "",
-                options: {
+                interactor: {
                     connector: {
                         type: "",
                         options: {
@@ -41,6 +35,10 @@ describe("Test configurator/loader", () => {
                             categories: []
                         }
                     }
+                },
+                logger: {
+                    allowedLogLevel: "",
+                    dateTimeFormat: ""
                 }
             };
             expect(loadConfigurationFile(__dirname + "/samples/config2.json")).toStrictEqual(expected);

@@ -2,11 +2,6 @@ import { generateFixCost, generateCategorizedFixCosts } from "../../../src/inter
 
 describe("Test fixCostReport", () => {
 
-    beforeEach(() => {
-        jest.spyOn(console, 'debug').mockImplementation(() => { });
-        jest.spyOn(console, 'error').mockImplementation(() => { });
-    });
-
     const transactions: Transaction[] = [
         { day: 1, month: 6, year: 2021, initiator: "Rent for my crib", purpose: "Thanks landlord", value: 650 },
         { day: 1, month: 6, year: 2021, initiator: "Almost Healthy Inc.", purpose: "We bet that you're going to be sick", value: 12.99 },
@@ -52,7 +47,7 @@ describe("Test fixCostReport", () => {
             test("Return null, if transactions array is empty", () => {
                 const fixCost = generateFixCost([], { samples: [{ initiator: "test" }], before: "15.12.2021" });
 
-                expect(fixCost).toStrictEqual({source: "fixCosts.ts", message: "There are no transactions."});
+                expect(fixCost).toStrictEqual({ source: "fixCosts.ts", message: "There are no transactions." });
             });
 
             const transactions: Transaction[] = [
@@ -62,25 +57,25 @@ describe("Test fixCostReport", () => {
             test("Return null, if samples array is empty", () => {
                 const fixCost = generateFixCost(transactions, { samples: [], before: "15.12.2021" });
 
-                expect(fixCost).toStrictEqual({source: "fixCosts.ts", message: "No transactions matched by filter."});
+                expect(fixCost).toStrictEqual({ source: "fixCosts.ts", message: "No transactions matched by filter." });
             });
 
             test("Return null, if there aren't any transactions that match toDate", () => {
                 const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib" }], before: "15.12.1999" });
 
-                expect(fixCost).toStrictEqual({source: "fixCosts.ts", message: "No transactions matched by filter."});
+                expect(fixCost).toStrictEqual({ source: "fixCosts.ts", message: "No transactions matched by filter." });
             });
 
             test("Return null, if sinceDate is after toDate", () => {
                 const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib" }], before: "15.12.1999", after: "12.07.2002" });
 
-                expect(fixCost).toStrictEqual({source: "fixCosts.ts", message: "No transactions matched by filter."});
+                expect(fixCost).toStrictEqual({ source: "fixCosts.ts", message: "No transactions matched by filter." });
             });
 
             test("Return null, if no transaction is matching", () => {
                 const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Rent for my crib?" }], before: "30.12.2021" });
 
-                expect(fixCost).toStrictEqual({source: "fixCosts.ts", message: "No transactions matched by filter."});
+                expect(fixCost).toStrictEqual({ source: "fixCosts.ts", message: "No transactions matched by filter." });
             });
         });
 
@@ -214,7 +209,7 @@ describe("Test fixCostReport", () => {
                     ]
                 };
 
-                const fixCost = generateFixCost(transactions, { samples: [{initiator: "Online Payments Group", purpose: "Music Whale"}] });
+                const fixCost = generateFixCost(transactions, { samples: [{ initiator: "Online Payments Group", purpose: "Music Whale" }] });
 
                 expect(fixCost).toStrictEqual(expected);
             })
@@ -227,7 +222,7 @@ describe("Test fixCostReport", () => {
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
                 const options: CategorizeOptions = { categories: [{ name: "a", samples: [{ initiator: "b" }, { initiator: "c" }] }] };
-                expect(generateCategorizedFixCosts([], options)).toStrictEqual({source: "fixCosts.ts", message: "There are no transactions."});
+                expect(generateCategorizedFixCosts([], options, { allowedLogLevel: "none" })).toStrictEqual({ source: "fixCosts.ts", message: "There are no transactions." });
             });
 
             const transactions: Transaction[] = [
@@ -236,12 +231,12 @@ describe("Test fixCostReport", () => {
 
             test("Return null, if categories array is empty", () => {
                 const options: CategorizeOptions = { categories: [] };
-                expect(generateCategorizedFixCosts(transactions, options)).toStrictEqual({source: "fixCosts.ts", message: "There are no categories."});
+                expect(generateCategorizedFixCosts(transactions, options, { allowedLogLevel: "none" })).toStrictEqual({ source: "fixCosts.ts", message: "There are no categories." });
             });
 
             test("Return null, if no transaction can be categorized", () => {
                 const options: CategorizeOptions = { categories: [{ name: "a", samples: [{ initiator: "b" }, { initiator: "c" }] }] };
-                expect(generateCategorizedFixCosts(transactions, options)).toStrictEqual({source: "fixCosts.ts", message: "Couldn't match any categories."});
+                expect(generateCategorizedFixCosts(transactions, options, { allowedLogLevel: "none" })).toStrictEqual({ source: "fixCosts.ts", message: "Couldn't match any categories." });
             });
         });
 
@@ -291,7 +286,7 @@ describe("Test fixCostReport", () => {
                     ]
                 }
 
-                expect(generateCategorizedFixCosts(transactions, options)).toStrictEqual(expected);
+                expect(generateCategorizedFixCosts(transactions, options, { allowedLogLevel: "none" })).toStrictEqual(expected);
             });
         });
     });

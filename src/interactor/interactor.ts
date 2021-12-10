@@ -11,24 +11,24 @@ const enum ReportType {
     FixCosts = "fixcosts"
 }
 
-export const generateReport = async (options: InteractorOptions): Promise<Report | ApplicationError> => {
+export const generateReport = async (options: Configuration): Promise<Report | ApplicationError> => {
 
     let transactions: Transaction[] = [];
-    switch (options.connector.type) {
+    switch (options.interactor.connector.type) {
         case ConnectorType.CSV:
-            transactions = await loadTransactionData(options.connector.options);
+            transactions = await loadTransactionData(options.interactor.connector.options, options.logger);
             break;
         case ConnectorType.API:
         default:
-            return {source: "interactor.ts", message: `Unkown connector type "${options.connector.type}".`};
+            return {source: "interactor.ts", message: `Unkown connector type "${options.interactor.connector.type}".`};
     }
 
-    switch (options.report.type) {
+    switch (options.interactor.report.type) {
         case ReportType.FixCosts:
-            const report = generateCategorizedFixCosts(transactions, options.report.options)
+            const report = generateCategorizedFixCosts(transactions, options.interactor.report.options, options.logger)
             if(isApplicationError(report)) return report;
             return { type: "fixcost", report };
         default:
-            return {source: "interactor.ts", message: `Unkown report type "${options.report.type}".`};
+            return {source: "interactor.ts", message: `Unkown report type "${options.interactor.report.type}".`};
     }
 };

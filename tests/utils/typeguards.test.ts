@@ -1,4 +1,6 @@
-import { isInteractorOptions, isConnectorOptions, isReportOptions, isCsvOptions, isCategorizeOptions, isDataKeys, isCategory, isConfiguration, isApplicationError } from "../../src/utils/typeguards";
+import {
+    isInteractorOptions, isConnectorOptions, isReportOptions, isCsvOptions, isCategorizeOptions, isDataKeys, isCategory, isConfiguration, isApplicationError
+} from "../../src/utils/typeguards";
 
 describe("Test utils/typeguards", () => {
 
@@ -249,13 +251,13 @@ describe("Test utils/typeguards", () => {
         });
 
         test("Configuration is an Configuration without deep equality", () => {
-            const configuration = { currency: "", options: {} };
+            const configuration = { interactor: {}, logger: {} };
             expect(isConfiguration(configuration)).toBeFalsy();
         });
 
         test("Configuration is an Configuration", () => {
             const configuration = {
-                currency: "", options: {
+                interactor: {
                     connector: {
                         type: "",
                         options: {
@@ -271,6 +273,9 @@ describe("Test utils/typeguards", () => {
                             categories: []
                         }
                     }
+                },
+                logger: {
+
                 }
             };
             expect(isConfiguration(configuration)).toBeTruthy();

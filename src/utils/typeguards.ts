@@ -39,8 +39,7 @@ export const isCategory = (object: unknown): object is Category => {
 
 export const isConfiguration = (object: unknown): object is Configuration => {
     if (!object) return false;
-    return ((object as Configuration).options !== undefined && isInteractorOptions((object as Configuration).options))
-        && (object as Configuration).currency !== undefined;
+    return ((object as Configuration).interactor !== undefined && isInteractorOptions((object as Configuration).interactor));
 }
 
 export const isApplicationError = (object: unknown): object is ApplicationError => {

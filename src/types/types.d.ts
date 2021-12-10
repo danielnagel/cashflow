@@ -171,13 +171,11 @@ type Report = FixCostsReport;
 
 /**
  * Possible configurations, that a user could create.
- * Currency is the symbol, that should be displayed behind values.
- * DateFormat is used to format dates in the results, see https://date-fns.org/v1.30.1/docs/format on which formats are available
  */
 type Configuration = {
-    currency: string;
-    dateFormat?: string;
-    options: InteractorOptions;
+    interactor: InteractorOptions;
+    viewer?: ConsoleViewerOptions;
+    logger?: LoggerOptions;
 }
 
 /**
@@ -198,4 +196,34 @@ type FixCostsReportTableRow = {
 type ApplicationError = {
     source: string,
     message: string
+}
+
+/**
+ * Options for a log message.
+ */
+type LogOptions = {
+    message: string | ApplicationError,
+    level?: "debug" | "info" | "warn" | "error",
+    dateTimeFormat?: string,
+    allowedLogLevel?: "debug" | "info" | "warn" | "error" | "none",
+}
+
+/**
+ * Options for the logger utility.
+ * DateFormat is used to format dates in the results, see https://date-fns.org/v1.30.1/docs/format on which formats are available
+ * The allowed log level determines which logs should be logged, debug is all and the level can be shrinked to none
+ */
+ type LoggerOptions = {
+    dateTimeFormat?: string,
+    allowedLogLevel?: "debug" | "info" | "warn" | "error" | "none",
+}
+
+/**
+ * Options for the console viewer.
+ * Currency is the symbol, that should be displayed behind values.
+ * DateFormat is used to format dates in the results, see https://date-fns.org/v1.30.1/docs/format on which formats are available
+ */
+type ConsoleViewerOptions = {
+    currency?: string;
+    dateFormat?: string;
 }

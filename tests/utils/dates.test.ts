@@ -2,10 +2,6 @@ import { getTimeStampFromTransaction, parseDateString, formatDate } from "../../
 
 describe("Test utils/dates", () => {
 
-    beforeEach(() => {
-        jest.spyOn(console, 'error').mockImplementation(() => { });
-    });
-
     describe("Test function getTimeStampFromTransaction", () => {
 
         test("Parse 19.10.2021 from transaction to expected timestamp", () => {

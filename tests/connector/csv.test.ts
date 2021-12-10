@@ -1,11 +1,6 @@
 import { loadTransactionData, parseRecordToTransaction } from "../../src/connector/csv"
 
 describe("Test connector/csv", () => {
-
-    beforeEach(() => {
-        jest.spyOn(console, 'debug').mockImplementation(() => { });
-    });
-
     describe("Parse record to transaction", () => {
         const dataKeys = { date: "booking", initiator: "initiator", purpose: "use", value: "amount" };
         const record = { booking: "01.11.2021", initiator: "FOOD SHOP 1", use: "Thanks for paying the food", amount: "-23,00", randominformation: "blub" };
@@ -58,13 +53,13 @@ describe("Test connector/csv", () => {
     describe("Loading transaction data", () => {
 
         test("Stop loading data, when file does not exist", async () => {
-            await expect(loadTransactionData({ path: __dirname + "/samples/sample1_.csv", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [], dateFormat: "" }))
+            await expect(loadTransactionData({ path: __dirname + "/samples/sample1_.csv", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [], dateFormat: "" }, { allowedLogLevel: "none" }))
                 .rejects
                 .toThrowError(`CSV file with transaction data not found. Path: "${__dirname + "/samples/sample1_.csv"}".`);
         });
 
         test("Load data from existing sample file and generate transaction array", async () => {
-            const transactionData = await loadTransactionData({ path: __dirname + "/samples/sample1.csv", dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"], dateFormat: "dd.MM.yyyy" });
+            const transactionData = await loadTransactionData({ path: __dirname + "/samples/sample1.csv", dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"], dateFormat: "dd.MM.yyyy" }, { allowedLogLevel: "none" });
             expect(transactionData).toHaveLength(3);
             expect(transactionData[0]).toStrictEqual({ initiator: "FOOD SHOP 1", purpose: "Thanks for paying the food", value: -23, day: 1, month: 11, year: 2021 });
             expect(transactionData[1]).toStrictEqual({ initiator: "ONLINE SHOP 3", purpose: "Good choice mate 2345452", value: -57.21, day: 2, month: 11, year: 2021 });
@@ -72,7 +67,7 @@ describe("Test connector/csv", () => {
         });
 
         test("Load data from sample file, with german and american decimals, and generate transaction array", async () => {
-            const transactionData = await loadTransactionData({ path: __dirname + "/samples/sample2.csv", dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"], dateFormat: "dd.MM.yyyy" });
+            const transactionData = await loadTransactionData({ path: __dirname + "/samples/sample2.csv", dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"], dateFormat: "dd.MM.yyyy" }, { allowedLogLevel: "none" });
             expect(transactionData).toHaveLength(8);
             expect(transactionData[0]).toStrictEqual({ initiator: "ONLINE SHOP 3", purpose: "Good choice mate 2344534", value: -7.99, day: 3, month: 11, year: 2021 });
             expect(transactionData[1]).toStrictEqual({ initiator: "Rent for my crib", purpose: "Thanks landlord", value: -650, day: 1, month: 6, year: 2021 });
@@ -88,11 +83,11 @@ describe("Test connector/csv", () => {
     describe("Loading transaction data from multiple files", () => {
 
         test("Stop loading data, when path array is empty", async () => {
-            expect(await loadTransactionData({ path: [], dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [], dateFormat: "dd.MM.yyyy" })).toHaveLength(0)
+            expect(await loadTransactionData({ path: [], dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [], dateFormat: "dd.MM.yyyy" }, { allowedLogLevel: "none" })).toHaveLength(0)
         });
 
         test("Load data from multiple files and generate transaction array", async () => {
-            const transactionData = await loadTransactionData({ path: [__dirname + "/samples/sample1.csv", __dirname + "/samples/sample2.csv"], dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"], dateFormat: "dd.MM.yyyy" });
+            const transactionData = await loadTransactionData({ path: [__dirname + "/samples/sample1.csv", __dirname + "/samples/sample2.csv"], dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"], dateFormat: "dd.MM.yyyy" }, { allowedLogLevel: "none" });
             expect(transactionData).toHaveLength(10);
             expect(transactionData[0]).toStrictEqual({ initiator: "FOOD SHOP 1", purpose: "Thanks for paying the food", value: -23, day: 1, month: 11, year: 2021 });
             expect(transactionData[1]).toStrictEqual({ initiator: "ONLINE SHOP 3", purpose: "Good choice mate 2345452", value: -57.21, day: 2, month: 11, year: 2021 });
@@ -107,7 +102,7 @@ describe("Test connector/csv", () => {
         });
 
         test("Load data from all csv files in a directory and generate transaction array", async () => {
-            const transactionData = await loadTransactionData({ path: __dirname + "/samples", dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"], dateFormat: "dd.MM.yyyy" });
+            const transactionData = await loadTransactionData({ path: __dirname + "/samples", dataKeys: { date: "booking", initiator: "initiator", purpose: "use", value: "amount" }, columns: ["booking", "valuta", "initiator", "bookingtext", "randominformation", "use", "balance", "currency", "amount", "currency"], dateFormat: "dd.MM.yyyy" }, { allowedLogLevel: "none" });
             expect(transactionData).toHaveLength(10);
             expect(transactionData[0]).toStrictEqual({ initiator: "FOOD SHOP 1", purpose: "Thanks for paying the food", value: -23, day: 1, month: 11, year: 2021 });
             expect(transactionData[1]).toStrictEqual({ initiator: "ONLINE SHOP 3", purpose: "Good choice mate 2345452", value: -57.21, day: 2, month: 11, year: 2021 });

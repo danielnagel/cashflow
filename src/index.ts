@@ -1,24 +1,25 @@
 import { loadConfigurationFile } from "./configurator/loader";
 import { generateReport } from "./interactor/interactor";
+import { logToConsole } from "./utils/logger";
 import { isApplicationError } from "./utils/typeguards";
 import { generateReportAsTable } from "./viewer/console";
 
 const main = async () => {
     const options = loadConfigurationFile(`data/config.json`);
     if (isApplicationError(options)) {
-        console.error(`[${options.source}]: ${options.message}`);
+        logToConsole({ message: options, level: "error" });
         return;
     }
 
-    const report = await generateReport(options.options);
+    const report = await generateReport(options);
     if (isApplicationError(report)) {
-        console.error(`[${report.source}]: ${report.message}`);
+        logToConsole({ message: report, level: "error", allowedLogLevel: options.logger?.allowedLogLevel, dateTimeFormat: options.logger?.dateTimeFormat });
         return;
     }
 
     const result = generateReportAsTable(options, report);
-    if(isApplicationError(result)) {
-        console.error(`[${result.source}]: ${result.message}`);
+    if (isApplicationError(result)) {
+        logToConsole({ message: result, level: "error", allowedLogLevel: options.logger?.allowedLogLevel, dateTimeFormat: options.logger?.dateTimeFormat });
         return;
     }
 

@@ -4,6 +4,7 @@ import { fileExists, isFile, loadFileNamesFromDirectory } from "../utils/files";
 import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../utils/numbers";
 import { parseDateString } from "../utils/dates";
 import { isApplicationError } from "../utils/typeguards";
+import { logToConsole } from "../utils/logger";
 
 export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys, dateFormat: string): Transaction | ApplicationError => {
     const matchedRecord = matchDataKeysWithRecord(record, dataKeys);
@@ -38,21 +39,21 @@ const matchDataKeysWithRecord = (record: UnknownRecord, dataKeys: DataKeys): Mat
     return { date, initiator, purpose, value };
 }
 
-export const loadTransactionData = async (options: CsvOptions): Promise<Transaction[]> => {
+export const loadTransactionData = async (options: CsvOptions, loggerOptions?: LoggerOptions): Promise<Transaction[]> => {
     const mergedTransactions: Transaction[] = [];
 
 
     if (typeof options.path === "string") {
         if (!fileExists(options.path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
         if (isFile(options.path)) {
-            mergedTransactions.push(... await loadTransactionDataFromSingleFile(options));
+            mergedTransactions.push(... await loadTransactionDataFromSingleFile(options, loggerOptions));
         } else {
             const filesInDirectory = loadFileNamesFromDirectory(options.path, "csv");
             for (const fileName of filesInDirectory) {
                 if (options.path.endsWith("/")) options.path = options.path.slice(0, options.path.length - 1);
                 const optionsCopy = { ...options };
                 optionsCopy.path = `${options.path}/${fileName}`;
-                const transactions = await loadTransactionDataFromSingleFile(optionsCopy);
+                const transactions = await loadTransactionDataFromSingleFile(optionsCopy, loggerOptions);
                 mergedTransactions.push(...filterDoubleTransactions(mergedTransactions, transactions));
             }
         }
@@ -61,7 +62,7 @@ export const loadTransactionData = async (options: CsvOptions): Promise<Transact
             if (!fileExists(path)) throw new Error(`CSV file with transaction data not found. Path: "${options.path}".`);
             const optionsCopy = { ...options };
             optionsCopy.path = path;
-            const transactions = await loadTransactionDataFromSingleFile(optionsCopy);
+            const transactions = await loadTransactionDataFromSingleFile(optionsCopy, loggerOptions);
             mergedTransactions.push(...filterDoubleTransactions(mergedTransactions, transactions));
         }
     }
@@ -69,7 +70,7 @@ export const loadTransactionData = async (options: CsvOptions): Promise<Transact
     return mergedTransactions;
 }
 
-const loadTransactionDataFromSingleFile = async (options: CsvOptions): Promise<Transaction[]> => {
+const loadTransactionDataFromSingleFile = async (options: CsvOptions, loggerOptions?: LoggerOptions): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
 
     if (typeof options.path !== "string") return transactions;
@@ -79,7 +80,7 @@ const loadTransactionDataFromSingleFile = async (options: CsvOptions): Promise<T
     for await (const record of parser) {
         const transaction = parseRecordToTransaction(record, options.dataKeys, options.dateFormat);
         if (isApplicationError(transaction)) {
-            console.debug(`[${transaction.source}]: ${transaction.message}`);
+            logToConsole({ message: transaction, level: "debug", allowedLogLevel: loggerOptions?.allowedLogLevel, dateTimeFormat: loggerOptions?.dateTimeFormat });
             continue;
         }
         transactions.push(transaction);

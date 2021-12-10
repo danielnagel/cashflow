@@ -1,7 +1,5 @@
 {
-    "currency": "",
-    "dateFormat": "",
-    "options": {
+    "interactor": {
         "connector": {
             "type": "",
             "options": {
@@ -24,5 +22,9 @@
                 "categories": []
             }
         }
+    },
+    "logger": {
+        "dateTimeFormat": "",
+        "allowedLogLevel": ""
     }
 }
