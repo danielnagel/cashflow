@@ -1,6 +1,6 @@
 {
   "name": "financial-report-generator",
-  "version": "0.4.0",
+  "version": "0.8.3",
   "description": "",
   "scripts": {
     "clean": "rm -rf dist",

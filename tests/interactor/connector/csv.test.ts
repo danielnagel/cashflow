@@ -1,4 +1,4 @@
-import { loadTransactionData, parseRecordToTransaction } from "../../src/connector/csv"
+import { loadTransactionData, parseRecordToTransaction } from "../../../src/interactor/connector/csv"
 
 describe("Test connector/csv", () => {
     describe("Parse record to transaction", () => {

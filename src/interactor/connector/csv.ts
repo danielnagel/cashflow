@@ -1,10 +1,10 @@
 import { createReadStream } from "fs"
 import parse from "csv-parse/lib/index";
-import { fileExists, isFile, loadFileNamesFromDirectory } from "../utils/files";
-import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../utils/numbers";
-import { parseDateString } from "../utils/dates";
-import { isApplicationError } from "../utils/typeguards";
-import { logToConsole } from "../utils/logger";
+import { fileExists, isFile, loadFileNamesFromDirectory } from "../../utils/files";
+import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../../utils/numbers";
+import { parseDateString } from "../../utils/dates";
+import { isApplicationError } from "../../utils/typeguards";
+import { logToConsole } from "../../utils/logger";
 
 export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys, dateFormat: string): Transaction | ApplicationError => {
     const matchedRecord = matchDataKeysWithRecord(record, dataKeys);

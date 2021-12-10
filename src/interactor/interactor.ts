@@ -1,6 +1,6 @@
-import { loadTransactionData } from "../connector/csv";
+import { loadTransactionData } from "./connector/csv";
 import { isApplicationError } from "../utils/typeguards";
-import { generateCategorizedFixCosts } from "./reports/fixCosts";
+import { generateCategorizedFixCosts } from "./report/fixCosts";
 
 const enum ConnectorType {
     CSV = "csv",
