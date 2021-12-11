@@ -1,13 +1,9 @@
 describe("Test connector/api", () => {
-
     describe("Loading transaction data", () => {
-
         test("Stop loading data, when endpoint is not available", async () => {
             expect(null).toBeNull();
         });
-
     });
-
 });
 
 // --- API Connector ---

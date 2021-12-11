@@ -1,9 +1,16 @@
 import {
-    isInteractorOptions, isConnectorOptions, isReportOptions, isCsvOptions, isCategorizeOptions, isDataKeys, isCategory, isConfiguration, isApplicationError
+    isInteractorOptions,
+    isConnectorOptions,
+    isReportOptions,
+    isCsvOptions,
+    isCategorizeOptions,
+    isDataKeys,
+    isCategory,
+    isConfiguration,
+    isApplicationError,
 } from "../../src/utils/typeguards";
 
 describe("Test utils/typeguards", () => {
-
     describe("Check if object is InteractorOptions", () => {
         test("Null is not an InteractorOptions", () => {
             expect(isInteractorOptions(null)).toBeFalsy();
@@ -36,17 +43,22 @@ describe("Test utils/typeguards", () => {
                     type: "",
                     options: {
                         path: "",
-                        dataKeys: { date: "", initiator: "", purpose: "", value: "" },
+                        dataKeys: {
+                            date: "",
+                            initiator: "",
+                            purpose: "",
+                            value: "",
+                        },
                         columns: [],
-                        dateFormat: ""
-                    }
+                        dateFormat: "",
+                    },
                 },
                 report: {
                     type: "",
                     options: {
-                        categories: []
-                    }
-                }
+                        categories: [],
+                    },
+                },
             };
             expect(isInteractorOptions(interactorOptions)).toBeTruthy();
         });
@@ -79,7 +91,20 @@ describe("Test utils/typeguards", () => {
         });
 
         test("ConnectorOptions is a ConnectorOptions", () => {
-            const connectorOptions = { type: "", options: { path: "", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [], dateFormat: "" } };
+            const connectorOptions = {
+                type: "",
+                options: {
+                    path: "",
+                    dataKeys: {
+                        date: "",
+                        initiator: "",
+                        purpose: "",
+                        value: "",
+                    },
+                    columns: [],
+                    dateFormat: "",
+                },
+            };
             expect(isConnectorOptions(connectorOptions)).toBeTruthy();
         });
     });
@@ -138,12 +163,22 @@ describe("Test utils/typeguards", () => {
         });
 
         test("CsvConnectorOptions is not a CsvConnectorOptions without deep equality", () => {
-            const csvConnectorOptions = { path: "", dataKeys: {}, columns: [], dateFormat: "" };
+            const csvConnectorOptions = {
+                path: "",
+                dataKeys: {},
+                columns: [],
+                dateFormat: "",
+            };
             expect(isCsvOptions(csvConnectorOptions)).toBeFalsy();
         });
 
         test("CsvConnectorOptions is a CsvConnectorOptions", () => {
-            const csvConnectorOptions = { path: "", dataKeys: { date: "", initiator: "", purpose: "", value: "" }, columns: [], dateFormat: "" };
+            const csvConnectorOptions = {
+                path: "",
+                dataKeys: { date: "", initiator: "", purpose: "", value: "" },
+                columns: [],
+                dateFormat: "",
+            };
             expect(isCsvOptions(csvConnectorOptions)).toBeTruthy();
         });
     });
@@ -170,7 +205,12 @@ describe("Test utils/typeguards", () => {
         });
 
         test("DataKeys is DataKeys", () => {
-            const DataKeys = { date: "", initiator: "", purpose: "", value: "" };
+            const DataKeys = {
+                date: "",
+                initiator: "",
+                purpose: "",
+                value: "",
+            };
             expect(isDataKeys(DataKeys)).toBeTruthy();
         });
     });
@@ -262,21 +302,24 @@ describe("Test utils/typeguards", () => {
                         type: "",
                         options: {
                             path: "",
-                            dataKeys: { date: "", initiator: "", purpose: "", value: "" },
+                            dataKeys: {
+                                date: "",
+                                initiator: "",
+                                purpose: "",
+                                value: "",
+                            },
                             columns: [],
-                            dateFormat: ""
-                        }
+                            dateFormat: "",
+                        },
                     },
                     report: {
                         type: "",
                         options: {
-                            categories: []
-                        }
-                    }
+                            categories: [],
+                        },
+                    },
                 },
-                logger: {
-
-                }
+                logger: {},
             };
             expect(isConfiguration(configuration)).toBeTruthy();
         });

@@ -1,29 +1,61 @@
-import { createReadStream } from "fs"
+import { createReadStream } from "fs";
 import parse from "csv-parse/lib/index";
-import { fileExists, isFile, loadFileNamesFromDirectory } from "../../utils/files";
-import { decimalNumberToFloat, germanDecimalNumberToFloat } from "../../utils/numbers";
+import {
+    fileExists,
+    isFile,
+    loadFileNamesFromDirectory,
+} from "../../utils/files";
+import {
+    decimalNumberToFloat,
+    germanDecimalNumberToFloat,
+} from "../../utils/numbers";
 import { parseDateString } from "../../utils/dates";
 import { isApplicationError } from "../../utils/typeguards";
 import { logToConsole } from "../../utils/logger";
 
-export const parseRecordToTransaction = (record: UnknownRecord, dataKeys: DataKeys, dateFormat: string): Transaction | ApplicationError => {
+export const parseRecordToTransaction = (
+    record: UnknownRecord,
+    dataKeys: DataKeys,
+    dateFormat: string,
+): Transaction | ApplicationError => {
     const matchedRecord = matchDataKeysWithRecord(record, dataKeys);
     if (!matchedRecord) {
-        return { source: "csv.ts", message: "Record doesn't match given data keys." };
+        return {
+            source: "csv.ts",
+            message: "Record doesn't match given data keys.",
+        };
     }
     const date = parseDateString(matchedRecord.date, dateFormat);
-    if (date === null) return { source: "csv.ts", message: `Couldn't parse date. Date string is "${matchedRecord.date}", date format is "${dateFormat}".` };
+    if (date === null)
+        return {
+            source: "csv.ts",
+            message: `Couldn't parse date. Date string is "${matchedRecord.date}", date format is "${dateFormat}".`,
+        };
 
     let parsedValue = germanDecimalNumberToFloat(matchedRecord.value);
     if (isNaN(parsedValue)) {
         parsedValue = decimalNumberToFloat(matchedRecord.value);
-        if (isNaN(parsedValue)) return { source: "csv.ts", message: `Couldn't parse value. Value string is "${matchedRecord.value}".` };
+        if (isNaN(parsedValue))
+            return {
+                source: "csv.ts",
+                message: `Couldn't parse value. Value string is "${matchedRecord.value}".`,
+            };
     }
 
-    return { initiator: matchedRecord.initiator, purpose: matchedRecord.purpose, value: parsedValue, day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() };
-}
+    return {
+        initiator: matchedRecord.initiator,
+        purpose: matchedRecord.purpose,
+        value: parsedValue,
+        day: date.getDate(),
+        month: date.getMonth() + 1,
+        year: date.getFullYear(),
+    };
+};
 
-const matchDataKeysWithRecord = (record: UnknownRecord, dataKeys: DataKeys): MatchedRecord | null => {
+const matchDataKeysWithRecord = (
+    record: UnknownRecord,
+    dataKeys: DataKeys,
+): MatchedRecord | null => {
     const date = record[dataKeys.date];
     if (typeof date === "undefined") return null;
 
@@ -37,59 +69,116 @@ const matchDataKeysWithRecord = (record: UnknownRecord, dataKeys: DataKeys): Mat
     if (typeof value === "undefined") return null;
 
     return { date, initiator, purpose, value };
-}
+};
 
-export const loadTransactionData = async (options: CsvOptions, loggerOptions?: LoggerOptions): Promise<Transaction[] | ApplicationError> => {
+export const loadTransactionData = async (
+    options: CsvOptions,
+    loggerOptions?: LoggerOptions,
+): Promise<Transaction[] | ApplicationError> => {
     const mergedTransactions: Transaction[] = [];
 
-
     if (typeof options.path === "string") {
-        if (!fileExists(options.path)) return { source: "csv.ts", message: `CSV file with transaction data not found. Path: "${options.path}".` };
+        if (!fileExists(options.path))
+            return {
+                source: "csv.ts",
+                message: `CSV file with transaction data not found. Path: "${options.path}".`,
+            };
         if (isFile(options.path)) {
-            mergedTransactions.push(... await loadTransactionDataFromSingleFile(options, loggerOptions));
+            mergedTransactions.push(
+                ...(await loadTransactionDataFromSingleFile(
+                    options,
+                    loggerOptions,
+                )),
+            );
         } else {
-            const filesInDirectory = loadFileNamesFromDirectory(options.path, "csv");
+            const filesInDirectory = loadFileNamesFromDirectory(
+                options.path,
+                "csv",
+            );
             for (const fileName of filesInDirectory) {
-                if (options.path.endsWith("/")) options.path = options.path.slice(0, options.path.length - 1);
+                if (options.path.endsWith("/"))
+                    options.path = options.path.slice(
+                        0,
+                        options.path.length - 1,
+                    );
                 const optionsCopy = { ...options };
                 optionsCopy.path = `${options.path}/${fileName}`;
-                const transactions = await loadTransactionDataFromSingleFile(optionsCopy, loggerOptions);
-                mergedTransactions.push(...filterDoubleTransactions(mergedTransactions, transactions));
+                const transactions = await loadTransactionDataFromSingleFile(
+                    optionsCopy,
+                    loggerOptions,
+                );
+                mergedTransactions.push(
+                    ...filterDoubleTransactions(
+                        mergedTransactions,
+                        transactions,
+                    ),
+                );
             }
         }
     } else if (Array.isArray(options.path) && options.path.length > 0) {
         for (const path of options.path) {
-            if (!fileExists(path)) return { source: "csv.ts", message: `CSV file with transaction data not found. Path: "${options.path}".` };
+            if (!fileExists(path))
+                return {
+                    source: "csv.ts",
+                    message: `CSV file with transaction data not found. Path: "${options.path}".`,
+                };
             const optionsCopy = { ...options };
             optionsCopy.path = path;
-            const transactions = await loadTransactionDataFromSingleFile(optionsCopy, loggerOptions);
-            mergedTransactions.push(...filterDoubleTransactions(mergedTransactions, transactions));
+            const transactions = await loadTransactionDataFromSingleFile(
+                optionsCopy,
+                loggerOptions,
+            );
+            mergedTransactions.push(
+                ...filterDoubleTransactions(mergedTransactions, transactions),
+            );
         }
     }
 
     return mergedTransactions;
-}
+};
 
-const loadTransactionDataFromSingleFile = async (options: CsvOptions, loggerOptions?: LoggerOptions): Promise<Transaction[]> => {
+const loadTransactionDataFromSingleFile = async (
+    options: CsvOptions,
+    loggerOptions?: LoggerOptions,
+): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
 
     if (typeof options.path !== "string") return transactions;
 
-    const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(parse({ delimiter: ";", columns: options.columns, relaxColumnCount: true, skipEmptyLines: true }));
+    const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(
+        parse({
+            delimiter: ";",
+            columns: options.columns,
+            relaxColumnCount: true,
+            skipEmptyLines: true,
+        }),
+    );
 
     for await (const record of parser) {
-        const transaction = parseRecordToTransaction(record, options.dataKeys, options.dateFormat);
+        const transaction = parseRecordToTransaction(
+            record,
+            options.dataKeys,
+            options.dateFormat,
+        );
         if (isApplicationError(transaction)) {
-            logToConsole({ message: transaction, level: "debug", allowedLogLevel: loggerOptions?.allowedLogLevel, dateTimeFormat: loggerOptions?.dateTimeFormat });
+            logToConsole({
+                message: transaction,
+                level: "debug",
+                allowedLogLevel: loggerOptions?.allowedLogLevel,
+                dateTimeFormat: loggerOptions?.dateTimeFormat,
+            });
             continue;
         }
         transactions.push(transaction);
     }
 
     return transactions;
-}
+};
 
-const filterDoubleTransactions = (transactions: Transaction[], newTransactions: Transaction[]): Transaction[] => {
+const filterDoubleTransactions = (
+    transactions: Transaction[],
+    newTransactions: Transaction[],
+): Transaction[] => {
     const filteredNewTransactions: Transaction[] = [];
     for (const newTransaction of newTransactions) {
         let isNewTransactionUnknown = true;
@@ -103,13 +192,18 @@ const filterDoubleTransactions = (transactions: Transaction[], newTransactions: 
         }
     }
     return filteredNewTransactions;
-}
+};
 
-const isSameTransaction = (transactionA: Transaction, transactionB: Transaction) => {
-    return transactionA.day === transactionB.day &&
+const isSameTransaction = (
+    transactionA: Transaction,
+    transactionB: Transaction,
+) => {
+    return (
+        transactionA.day === transactionB.day &&
         transactionA.month === transactionB.month &&
         transactionA.year === transactionB.year &&
         transactionA.initiator === transactionB.initiator &&
         transactionA.purpose === transactionB.purpose &&
-        transactionA.value === transactionB.value;
-}
+        transactionA.value === transactionB.value
+    );
+};

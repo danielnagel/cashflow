@@ -4,14 +4,8 @@
         "moduleResolution": "node",
         "module": "commonjs",
         "strict": true,
-        "outDir": "dist",
+        "outDir": "dist"
     },
-    "exclude": [
-        "./node_modules",
-        "./**/*.js"
-    ],
-    "include": [
-        "./src/**/*.ts",
-        "./tests/**/*.ts"
-    ]
+    "exclude": ["./node_modules", "./**/*.js"],
+    "include": ["./src/**/*.ts", "./tests/**/*.ts"]
 }

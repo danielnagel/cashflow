@@ -13,17 +13,27 @@ const main = async () => {
 
     const report = await generateReport(options);
     if (isApplicationError(report)) {
-        logToConsole({ message: report, level: "error", allowedLogLevel: options.logger?.allowedLogLevel, dateTimeFormat: options.logger?.dateTimeFormat });
+        logToConsole({
+            message: report,
+            level: "error",
+            allowedLogLevel: options.logger?.allowedLogLevel,
+            dateTimeFormat: options.logger?.dateTimeFormat,
+        });
         return;
     }
 
     const result = generateReportAsTable(options, report);
     if (isApplicationError(result)) {
-        logToConsole({ message: result, level: "error", allowedLogLevel: options.logger?.allowedLogLevel, dateTimeFormat: options.logger?.dateTimeFormat });
+        logToConsole({
+            message: result,
+            level: "error",
+            allowedLogLevel: options.logger?.allowedLogLevel,
+            dateTimeFormat: options.logger?.dateTimeFormat,
+        });
         return;
     }
 
     console.table(result);
-}
+};
 
 main();
