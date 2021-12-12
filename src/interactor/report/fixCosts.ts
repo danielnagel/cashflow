@@ -2,7 +2,7 @@ import { formatDate, parseDateString } from "../../utils/dates";
 import { filterTransactions } from "../../utils/filters";
 import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError } from "../../utils/typeguards";
-import { logToConsole } from "../../utils/logger";
+import { log } from "../../utils/loggers";
 
 /**
  * Generates a FixCost object from a list of Transaction considering given TransactionFilterOptions.
@@ -139,7 +139,7 @@ export const generateCategorizedFixCosts = (
             after: categorizeOptions.after,
         });
         if (isApplicationError(fixCost)) {
-            logToConsole({
+            log({
                 message: fixCost,
                 level: "error",
                 allowedLogLevel: loggerOptions?.allowedLogLevel,

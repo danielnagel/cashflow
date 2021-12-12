@@ -12,7 +12,7 @@ import {
 } from "../../utils/numbers";
 import { parseDateString } from "../../utils/dates";
 import { isApplicationError } from "../../utils/typeguards";
-import { logToConsole } from "../../utils/logger";
+import { log } from "../../utils/loggers";
 
 /**
  * Generates a Transaction object from an unkown record.
@@ -180,7 +180,7 @@ const loadTransactionDataFromFile = async (
             options.dateFormat,
         );
         if (isApplicationError(transaction)) {
-            logToConsole({
+            log({
                 message: transaction,
                 level: "debug",
                 allowedLogLevel: loggerOptions?.allowedLogLevel,

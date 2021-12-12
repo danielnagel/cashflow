@@ -2,11 +2,22 @@ import { formatDate } from "./dates";
 import { isApplicationError } from "./typeguards";
 
 /**
+ * Logs a message by given options to a specific log handler
+ *
+ * @param options  that specify how to handle the log message
+ * and which logger type to use
+ */
+export const log = (options: LogOptions): void => {
+    // fallback
+    consoleHandler(options);
+};
+
+/**
  * Logs a message to console, by given options.
  *
  * @param options that specify how to handle the log message
  */
-export const logToConsole = (options: LogOptions): void => {
+const consoleHandler = (options: LogOptions): void => {
     if (isLogLevelAllowed(options.level, options.allowedLogLevel))
         console.log(
             formatLogMessage(

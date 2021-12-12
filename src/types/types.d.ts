@@ -211,6 +211,7 @@ type LogOptions = {
     level?: "debug" | "info" | "warn" | "error";
     dateTimeFormat?: string;
     allowedLogLevel?: "debug" | "info" | "warn" | "error" | "none";
+    type?: "console";
 };
 
 /**
