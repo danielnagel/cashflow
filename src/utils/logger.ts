@@ -1,10 +1,15 @@
 import { formatDate } from "./dates";
 import { isApplicationError } from "./typeguards";
 
+/**
+ * Logs a message to console, by given options.
+ *
+ * @param options that specify how to handle the log message
+ */
 export const logToConsole = (options: LogOptions): void => {
     if (isLogLevelAllowed(options.level, options.allowedLogLevel))
         console.log(
-            generateLogMessage(
+            formatLogMessage(
                 options.message,
                 options.level,
                 options.dateTimeFormat,
@@ -12,7 +17,17 @@ export const logToConsole = (options: LogOptions): void => {
         );
 };
 
-const generateLogMessage = (
+/**
+ * Creates a log message in a specific format.
+ *
+ * @param message that should be logged
+ * @param level log level, default is error
+ * @param dateTimeFormat format to be used as timestamp,
+ * default is "dd.MM.yyyy HH:mm:ss",
+ * see https://date-fns.org/v1.30.1/docs/format
+ * @returns a fomatted log message
+ */
+const formatLogMessage = (
     message: string | ApplicationError,
     level = "error",
     dateTimeFormat = "dd.MM.yyyy HH:mm:ss",
@@ -23,12 +38,27 @@ const generateLogMessage = (
     return `${generateTimeStamp(dateTimeFormat)} {${level}} ${message}`;
 };
 
+/**
+ * Generates a time stamp string
+ *
+ * @param dateTimeFormat format to be used as timestamp,
+ * default is "dd.MM.yyyy HH:mm:ss",
+ * see https://date-fns.org/v1.30.1/docs/format
+ * @returns a time stamp string
+ */
 const generateTimeStamp = (dateTimeFormat = "dd.MM.yyyy HH:mm:ss"): string => {
     let dateTime = formatDate(new Date(), dateTimeFormat);
     if (!dateTime) dateTime = new Date().toLocaleDateString();
     return dateTime;
 };
 
+/**
+ * Checks wheter a log level is allowed or not.
+ *
+ * @param level to checko
+ * @param allowedLogLevel configured allowed log level
+ * @returns true if level is allowed, false otherwise
+ */
 const isLogLevelAllowed = (
     level: string | undefined,
     allowedLogLevel: string | undefined,

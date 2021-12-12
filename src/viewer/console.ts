@@ -1,6 +1,14 @@
 import { getTimeStampFromTransaction, formatDate } from "../utils/dates";
 import { round } from "../utils/numbers";
 
+/**
+ * Generates a given report as table.
+ *
+ * @param configuration made by the user
+ * @param report which data should be generated as table data
+ * @returns a list of FixCostsReportTableRow objects
+ * or an ApplicationError when report is null or report type is unknown
+ */
 export const generateReportAsTable = (
     configuration: Configuration,
     report: Report,
@@ -22,6 +30,13 @@ export const generateReportAsTable = (
     }
 };
 
+/**
+ * Generates a fix costs report as table.
+ *
+ * @param configuration made by the user
+ * @param report FixCosts report which should be generated as table data
+ * @returns a list of FixCostsReportTableRow objects
+ */
 const fixCostsReportAsTable = (
     configuration: Configuration,
     report: CategorizedFixCosts,

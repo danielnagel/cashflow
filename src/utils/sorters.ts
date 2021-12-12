@@ -1,5 +1,13 @@
 import { getTimeStampFromTransaction } from "./dates";
 
+/**
+ * Compares two transactions by time stamp.
+ *
+ * @param transactionA
+ * @param transactionB
+ * @returns -1 when time stamp of transactionA is greater than from transactionB
+ * 0 when both time stamps are equal, 1 otherwise
+ */
 const compareTransactionsByDate = (
     transactionA: Transaction,
     transactionB: Transaction,

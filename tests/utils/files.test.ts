@@ -1,26 +1,27 @@
 import {
-    fileExists,
+    pathExists,
     loadFile,
     loadFileNamesFromDirectory,
     isFile,
+    isDirectory,
 } from "../../src/utils/files";
 
 describe("Test utils/files", () => {
     describe("Check if files exist", () => {
         test("file exists", () => {
-            expect(fileExists(__dirname + "/samples/sample1.txt")).toBeTruthy();
+            expect(pathExists(__dirname + "/samples/sample1.txt")).toBeTruthy();
         });
 
         test("file does not exist", () => {
-            expect(fileExists(__dirname + "/samples/sample1.csv")).toBeFalsy();
+            expect(pathExists(__dirname + "/samples/sample1.csv")).toBeFalsy();
         });
 
         test("path is empty", () => {
-            expect(fileExists("")).toBeFalsy();
+            expect(pathExists("")).toBeFalsy();
         });
 
         test("path is directory", () => {
-            expect(fileExists(__dirname + "/samples")).toBeTruthy();
+            expect(pathExists(__dirname + "/samples")).toBeTruthy();
         });
     });
 
@@ -35,6 +36,20 @@ describe("Test utils/files", () => {
 
         test("directory exists and is not file", () => {
             expect(isFile(__dirname + "/samples")).toBeFalsy();
+        });
+    });
+
+    describe("Check if is directory", () => {
+        test("directory exists and is directory", () => {
+            expect(isDirectory(__dirname + "/samples")).toBeTruthy();
+        });
+
+        test("directory does not exist", () => {
+            expect(isDirectory(__dirname + "/samplesdoesnotexist")).toBeFalsy();
+        });
+
+        test("files exists, but is not a directory", () => {
+            expect(isDirectory(__dirname + "/samples/sample1.txt")).toBeFalsy();
         });
     });
 

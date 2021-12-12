@@ -1,5 +1,13 @@
 import { getTimeStampFromTransaction, parseDateString } from "./dates";
 
+/**
+ * Matches transactions after a given date.
+ *
+ * @param transactions that should be filtered
+ * @param after date which is used to filter the list of transactions
+ * @param dateFormat which is used to parse the date string
+ * @returns matched transactions
+ */
 const transactionsAfterTimeStamp = (
     transactions: Transaction[],
     after: string | undefined,
@@ -15,6 +23,14 @@ const transactionsAfterTimeStamp = (
     });
 };
 
+/**
+ * Matches transactions before a given date.
+ *
+ * @param transactions that should be filtered
+ * @param before date which is used to filter the list of transactions
+ * @param dateFormat which is used to parse the date string
+ * @returns matched transactions
+ */
 const transactionsBeforeTimeStamp = (
     transactions: Transaction[],
     before: string | undefined,

@@ -1,7 +1,8 @@
 import { createReadStream } from "fs";
 import parse from "csv-parse/lib/index";
 import {
-    fileExists,
+    pathExists,
+    isDirectory,
     isFile,
     loadFileNamesFromDirectory,
 } from "../../utils/files";
@@ -13,6 +14,16 @@ import { parseDateString } from "../../utils/dates";
 import { isApplicationError } from "../../utils/typeguards";
 import { logToConsole } from "../../utils/logger";
 
+/**
+ * Generates a Transaction object from an unkown record.
+ *
+ * @param record UnknownRecord from a csv file
+ * @param dataKeys DataKeys to use to match the unkown record
+ * @param dateFormat which is used in the csv file
+ * @returns Transaction object on succes
+ * or an ApplicationError, when the record doesn't match given data keys,
+ * the date in the record couldn't be parsed or the value in the record couldn't be parse.
+ */
 export const parseRecordToTransaction = (
     record: UnknownRecord,
     dataKeys: DataKeys,
@@ -52,6 +63,15 @@ export const parseRecordToTransaction = (
     };
 };
 
+/**
+ * Matches given DataKeys with an unkown record
+ * and generates a MatchedRecord object on success.
+ * The MatchedRecord is used to generate a Transaction object.
+ *
+ * @param record UnkownRecord
+ * @param dataKeys DataKeys to use to match the unkown record
+ * @returns MatchedRecord on success or null
+ */
 const matchDataKeysWithRecord = (
     record: UnknownRecord,
     dataKeys: DataKeys,
@@ -71,60 +91,53 @@ const matchDataKeysWithRecord = (
     return { date, initiator, purpose, value };
 };
 
+/**
+ * Loads transaction data from a csv file or multiple csv files in a directory.
+ *
+ * @param options that specifies where to load the csv file from and how to handle its content.
+ * @param loggerOptions (optional) to control logging behaviour
+ * @returns a list of Transaction objects or an ApplcationError, when the given path doesn't exist.
+ */
 export const loadTransactionData = async (
     options: CsvOptions,
     loggerOptions?: LoggerOptions,
 ): Promise<Transaction[] | ApplicationError> => {
-    const mergedTransactions: Transaction[] = [];
+    if (!pathExists(options.path))
+        return {
+            source: "csv.ts",
+            message: `CSV file with transaction data not found. Path: "${options.path}".`,
+        };
 
-    if (typeof options.path === "string") {
-        if (!fileExists(options.path))
-            return {
-                source: "csv.ts",
-                message: `CSV file with transaction data not found. Path: "${options.path}".`,
-            };
-        if (isFile(options.path)) {
-            mergedTransactions.push(
-                ...(await loadTransactionDataFromSingleFile(
-                    options,
-                    loggerOptions,
-                )),
-            );
-        } else {
-            const filesInDirectory = loadFileNamesFromDirectory(
-                options.path,
-                "csv",
-            );
-            for (const fileName of filesInDirectory) {
-                if (options.path.endsWith("/"))
-                    options.path = options.path.slice(
-                        0,
-                        options.path.length - 1,
-                    );
-                const optionsCopy = { ...options };
-                optionsCopy.path = `${options.path}/${fileName}`;
-                const transactions = await loadTransactionDataFromSingleFile(
-                    optionsCopy,
-                    loggerOptions,
-                );
-                mergedTransactions.push(
-                    ...filterDoubleTransactions(
-                        mergedTransactions,
-                        transactions,
-                    ),
-                );
-            }
-        }
-    } else if (Array.isArray(options.path) && options.path.length > 0) {
-        for (const path of options.path) {
-            if (!fileExists(path))
-                return {
-                    source: "csv.ts",
-                    message: `CSV file with transaction data not found. Path: "${options.path}".`,
-                };
+    if (isFile(options.path)) {
+        return await loadTransactionDataFromFile(options, loggerOptions);
+    }
+
+    return loadTransactionDataFromDirectory(options, loggerOptions);
+};
+
+/**
+ * Loads the content of every csv file in a directory and merges it to a list of Transaction objects.
+ *
+ * @param options that specifies where to load the csv file from and how to handle its content.
+ * @param loggerOptions (optional) to control logging behaviour
+ * @returns a list of Transaction objects
+ */
+const loadTransactionDataFromDirectory = async (
+    options: CsvOptions,
+    loggerOptions?: LoggerOptions,
+): Promise<Transaction[]> => {
+    const mergedTransactions: Transaction[] = [];
+    if (isDirectory(options.path)) {
+        const filesInDirectory = loadFileNamesFromDirectory(
+            options.path,
+            "csv",
+        );
+        for (const fileName of filesInDirectory) {
+            if (options.path.endsWith("/"))
+                options.path = options.path.slice(0, options.path.length - 1);
             const optionsCopy = { ...options };
-            optionsCopy.path = path;
-            const transactions = await loadTransactionDataFromSingleFile(
+            optionsCopy.path = `${options.path}/${fileName}`;
+            const transactions = await loadTransactionDataFromFile(
                 optionsCopy,
                 loggerOptions,
             );
@@ -133,11 +146,17 @@ export const loadTransactionData = async (
             );
         }
     }
-
     return mergedTransactions;
 };
 
-const loadTransactionDataFromSingleFile = async (
+/**
+ * Loads the content of a csv file and merges it to a list of Transaction objects.
+ *
+ * @param options that specifies where to load the csv file from and how to handle its content.
+ * @param loggerOptions (optional) to control logging behaviour
+ * @returns a list of Transaction objects
+ */
+const loadTransactionDataFromFile = async (
     options: CsvOptions,
     loggerOptions?: LoggerOptions,
 ): Promise<Transaction[]> => {
@@ -175,6 +194,14 @@ const loadTransactionDataFromSingleFile = async (
     return transactions;
 };
 
+/**
+ * Merges to lists of Transaction objects into one,
+ * without double entries.
+ *
+ * @param transactions list of already loaded transactions
+ * @param newTransactions list of newely loaded transactions
+ * @returns list of transactions without double entries
+ */
 const filterDoubleTransactions = (
     transactions: Transaction[],
     newTransactions: Transaction[],
@@ -194,10 +221,16 @@ const filterDoubleTransactions = (
     return filteredNewTransactions;
 };
 
+/**
+ * Compares to Transcation objects.
+ * @param transactionA Transaction object
+ * @param transactionB Transaction object
+ * @returns true if every attribute is the same, false otherwise.
+ */
 const isSameTransaction = (
     transactionA: Transaction,
     transactionB: Transaction,
-) => {
+): boolean => {
     return (
         transactionA.day === transactionB.day &&
         transactionA.month === transactionB.month &&

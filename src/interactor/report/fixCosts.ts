@@ -4,6 +4,14 @@ import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError } from "../../utils/typeguards";
 import { logToConsole } from "../../utils/logger";
 
+/**
+ * Generates a FixCost object from a list of Transaction considering given TransactionFilterOptions.
+ *
+ * @param transactions which are used as a data basis
+ * @param filterOptions specify how to filter the transactions
+ * @returns FixCost object or an ApplicationError when there are no transactions,
+ * no transactions matched by filter or by malformed configuration.
+ */
 export const generateFixCost = (
     transactions: Transaction[],
     filterOptions: TransactionFilterOptions,
@@ -11,14 +19,11 @@ export const generateFixCost = (
     if (transactions.length === 0)
         return { source: "fixCosts.ts", message: "There are no transactions." };
 
-    const matchedTransactions = filterTransactions(transactions, filterOptions);
-    if (matchedTransactions.length === 0)
-        return {
-            source: "fixCosts.ts",
-            message: "No transactions matched by filter.",
-        };
-
-    sortTransactionsByDate(matchedTransactions);
+    const matchedTransactions = getSortedMatchedTransactions(
+        transactions,
+        filterOptions,
+    );
+    if (isApplicationError(matchedTransactions)) return matchedTransactions;
 
     const result: FixCost = {
         value: 0,
@@ -29,6 +34,59 @@ export const generateFixCost = (
     };
     result.value = matchedTransactions[matchedTransactions.length - 1].value;
 
+    const monthYear = getComparsionMonthYear(filterOptions);
+    if (isApplicationError(monthYear)) return monthYear;
+
+    for (const matchedTransaction of matchedTransactions) {
+        result.lastBookingDays.push(matchedTransaction.day);
+        result.averageBookingDay += matchedTransaction.day;
+        if (
+            matchedTransaction.month === monthYear.month &&
+            matchedTransaction.year === monthYear.year
+        )
+            result.isPaidThisMonth = true;
+    }
+
+    result.averageBookingDay = Math.floor(
+        result.averageBookingDay / matchedTransactions.length,
+    );
+    result.transactions = matchedTransactions;
+
+    return result;
+};
+
+/**
+ * Matches transactions by filtering options.
+ * Result is sorted by date.
+ *
+ * @param transactions which are used as a data basis
+ * @param filterOptions specify how to filter the transactions
+ * @returns sorted matched transactions
+ */
+const getSortedMatchedTransactions = (
+    transactions: Transaction[],
+    filterOptions: TransactionFilterOptions,
+): Transaction[] | ApplicationError => {
+    const matchedTransactions = filterTransactions(transactions, filterOptions);
+    if (matchedTransactions.length === 0)
+        return {
+            source: "fixCosts.ts",
+            message: "No transactions matched by filter.",
+        };
+
+    sortTransactionsByDate(matchedTransactions);
+    return matchedTransactions;
+};
+
+/**
+ * Determines which month of a year is used for comparsion.
+ *
+ * @param filterOptions specify how to filter the transactions
+ * @returns month of a year
+ */
+const getComparsionMonthYear = (
+    filterOptions: TransactionFilterOptions,
+): MonthYear | ApplicationError => {
     let month = new Date().getMonth() + 1;
     let year = new Date().getFullYear();
     if (filterOptions.before) {
@@ -44,25 +102,20 @@ export const generateFixCost = (
         month = beforeDate.getMonth() + 1;
         year = beforeDate.getFullYear();
     }
-
-    for (const matchedTransaction of matchedTransactions) {
-        result.lastBookingDays.push(matchedTransaction.day);
-        result.averageBookingDay += matchedTransaction.day;
-        if (
-            matchedTransaction.month === month &&
-            matchedTransaction.year === year
-        )
-            result.isPaidThisMonth = true;
-    }
-
-    result.averageBookingDay = Math.floor(
-        result.averageBookingDay / matchedTransactions.length,
-    );
-    result.transactions = matchedTransactions;
-
-    return result;
+    return { month, year };
 };
 
+/**
+ * Generates a categorized fix costs report.
+ * The samples of every category are used to match the correct transactions.
+ * Configuration made by the user affects the accuracy of this report.
+ *
+ * @param transactions which are used as a data basis
+ * @param categorizeOptions specifies how to categorize generated fix costs
+ * @param loggerOptions (optional) to control logging behaviour
+ * @returns CategorizedFixCosts object or ApplicationError when there are no transaction,
+ * no categories or no categories could be matched.
+ */
 export const generateCategorizedFixCosts = (
     transactions: Transaction[],
     categorizeOptions: CategorizeOptions,
@@ -106,16 +159,28 @@ export const generateCategorizedFixCosts = (
             message: "Couldn't match any categories.",
         };
 
-    let date = categorizeOptions.before
-        ? categorizeOptions.before
-        : formatDate(new Date());
-    if (date === null) date = new Date().toLocaleDateString();
-    const result: CategorizedFixCosts = {
-        date,
+    return {
+        date: generateReportDateString(categorizeOptions),
         sum,
         unpaidSum,
         fixCosts: namedFixCost,
     };
+};
 
-    return result;
+/**
+ * Generates a date string for the report.
+ * It can either be the before date from categorizing options
+ * or the current date.
+ *
+ * @param categorizeOptions specifies how to categorize generated fix costs
+ * @returns date string
+ */
+const generateReportDateString = (
+    categorizeOptions: CategorizeOptions,
+): string => {
+    let date = categorizeOptions.before
+        ? categorizeOptions.before
+        : formatDate(new Date());
+    if (date === null) date = new Date().toLocaleDateString();
+    return date;
 };

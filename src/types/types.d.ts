@@ -40,7 +40,7 @@ type DataKeys = {
  * Options that are used for the csv connector implementation.
  */
 type CsvOptions = {
-    path: string | string[];
+    path: string;
     dataKeys: DataKeys;
     columns: string[];
     dateFormat: string;
@@ -95,6 +95,7 @@ type Category = {
  */
 type CategorizeOptions = {
     categories: Category[];
+    dateFormat?: string;
     before?: string;
     after?: string;
 };
@@ -230,4 +231,13 @@ type LoggerOptions = {
 type ConsoleViewerOptions = {
     currency?: string;
     dateFormat?: string;
+};
+
+/**
+ * Represents a month in a year.
+ * Month january is 1, december is 12.
+ */
+type MonthYear = {
+    month: number;
+    year: number;
 };
