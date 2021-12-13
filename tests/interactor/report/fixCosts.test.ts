@@ -1011,7 +1011,6 @@ describe("Test fixCostReport", () => {
     describe("Test variable costs for one sample", () => {});
 });
 
-// --- generate fix costs report ---
-// generate a timestamp that is the last transaction date - 1 day
-// --- generate single fix costs for one category ---
-// special handling for non-monthly, e.g. quarter yearly, fix costs
+// -- test list
+// special handling for non-monthly, e.g. quarter yearly or yearly fix costs
+// merge multiple fixcost samples to one category, e.g. { name: "subscriptions", multiple: true, samples: [{name: "Audible", samples:[...]}, {name: "Netflix", samples:[...]}]}

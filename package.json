@@ -1,9 +1,16 @@
 {
     "name": "financial-report-generator",
-    "version": "0.9.3",
-    "description": "",
-    "keywords": [],
-    "author": "",
+    "version": "0.9.4",
+    "description": "Generates reports from financial data csv files.",
+    "keywords": [
+        "financial",
+        "csv",
+        "generator",
+        "report",
+        "typescript",
+        "jest"
+    ],
+    "author": "Daniel Nagel <danielnagel@mailbox.org>",
     "license": "ISC",
     "scripts": {
         "clean": "rimraf dist && rimraf coverage",

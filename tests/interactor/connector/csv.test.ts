@@ -396,10 +396,6 @@ describe("Test connector/csv", () => {
     });
 });
 
-// --- CSV Connector ---
-// load parsed transactions from one file
-// load and merge parsed transactions from multiple files
-// save parsed transactions into a new file
-// load report from one file
-// stop loading report when file does not exist
-// save report into a new file
+// -- test list
+// return error, when given path exists, but isn't directory or file
+// a single file must end with *.csv

@@ -6,7 +6,7 @@ describe("Test connector/api", () => {
     });
 });
 
-// --- API Connector ---
+// -- test list
 // load transactions from endpoint
 // handle unavailable endpoint
 // load only new transactions from endpoint, e.g. we have data until october saved locally and just want to do an update and load the new data from november

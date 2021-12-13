@@ -75,6 +75,6 @@ describe("Test configurator/loader", () => {
     });
 });
 
-// --- SAVER ---
-// persist command line options as configuration file
-// Generate example configuration file
+// -- test list
+// persist command line options as a configuration file
+// generate example configuration file
