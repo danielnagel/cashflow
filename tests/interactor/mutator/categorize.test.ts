@@ -279,24 +279,28 @@ describe("Test interactor/mutator/categorize", () => {
     describe("Test function categorizeTransactions", () => {
         describe("Test falsy parameters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
-                const options: SampledCategory[] = [
-                    {
-                        name: "a",
-                        type: "",
-                        samples: [{ initiator: "b" }, { initiator: "c" }],
-                    },
-                ];
+                const options: CategorizeOptions = {
+                    categories: [
+                        {
+                            name: "a",
+                            type: "",
+                            samples: [{ initiator: "b" }, { initiator: "c" }],
+                        },
+                    ],
+                };
                 expect(categorizeTransaction([], options)).toHaveLength(0);
             });
 
-            test("Return an array of length 0, if no transaction is matching", () => {
-                const options: SampledCategory[] = [
-                    {
-                        name: "a",
-                        type: "",
-                        samples: [{ initiator: "b" }, { initiator: "c" }],
-                    },
-                ];
+            test("Return an ApplicationError, if no transaction is matching", () => {
+                const options: CategorizeOptions = {
+                    categories: [
+                        {
+                            name: "a",
+                            type: "",
+                            samples: [{ initiator: "b" }, { initiator: "c" }],
+                        },
+                    ],
+                };
                 const categorizedTransactions = categorizeTransaction(
                     transactions,
                     options,
@@ -307,6 +311,25 @@ describe("Test interactor/mutator/categorize", () => {
                 };
                 expect(categorizedTransactions).toStrictEqual(expected);
             });
+        });
+
+        test("Return original array, if no transaction is matching and option skipErrors is true", () => {
+            const options: CategorizeOptions = {
+                skipErrors: true,
+                categories: [
+                    {
+                        name: "a",
+                        type: "",
+                        samples: [{ initiator: "b" }, { initiator: "c" }],
+                    },
+                ],
+            };
+            const categorizedTransactions = categorizeTransaction(
+                transactions,
+                options,
+            );
+
+            expect(categorizedTransactions).toStrictEqual(transactions);
         });
 
         describe("Test categorizing transactions", () => {
@@ -322,7 +345,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "food",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -335,7 +357,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "food",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -348,7 +369,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "presents",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -361,7 +381,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "rent",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -374,7 +394,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "insurance",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -387,7 +407,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "groceries",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -400,7 +419,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "rent",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -413,7 +432,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "insurance",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -426,7 +445,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "groceries",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -439,7 +457,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "rent",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -452,7 +470,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "insurance",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -466,7 +484,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "shopping",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -479,7 +496,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "groceries",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -493,7 +509,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "shopping",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -507,7 +522,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "shopping",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -520,7 +534,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "rent",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -533,7 +547,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "insurance",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -546,7 +560,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "groceries",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -559,7 +572,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "rent",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -572,7 +585,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "insurance",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -585,7 +598,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "rent",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -598,7 +611,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "insurance",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -611,7 +624,6 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "groceries",
                             type: "variable",
-                            period: undefined,
                         },
                     },
                     {
@@ -624,7 +636,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "rent",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -637,7 +649,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "insurance",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -650,7 +662,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "music subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -663,7 +675,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "music subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -676,7 +688,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "gaming subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -689,7 +701,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "music subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -702,7 +714,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "gaming subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -715,7 +727,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "music subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -728,7 +740,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "music subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -741,7 +753,7 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "gaming subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                     {
@@ -754,72 +766,74 @@ describe("Test interactor/mutator/categorize", () => {
                         category: {
                             name: "gaming subscription",
                             type: "fixed",
-                            period: undefined,
+                            period: "monthly",
                         },
                     },
                 ];
 
-                const options: SampledCategory[] = [
-                    {
-                        name: "food",
-                        type: "variable",
-                        samples: [
-                            { initiator: "Beef Burger Palace" },
-                            { initiator: "Melon the Man" },
-                        ],
-                    },
-                    {
-                        name: "presents",
-                        type: "variable",
-                        samples: [{ initiator: "Presentable Presents" }],
-                    },
-                    {
-                        name: "rent",
-                        type: "fixed",
-                        samples: [{ initiator: "Rent for my crib" }],
-                    },
-                    {
-                        name: "insurance",
-                        type: "fixed",
-                        samples: [
-                            { initiator: "Almost Healthy Inc." },
-                            { initiator: "Stay Healthy Corp." },
-                        ],
-                    },
-                    {
-                        name: "groceries",
-                        type: "variable",
-                        samples: [
-                            { initiator: "Grocerie Land" },
-                            { initiator: "Tasty Deli and Grocerie Store" },
-                        ],
-                    },
-                    {
-                        name: "shopping",
-                        type: "variable",
-                        samples: [{ initiator: "my-online-shop.com" }],
-                    },
-                    {
-                        name: "music subscription",
-                        type: "fixed",
-                        samples: [
-                            {
-                                initiator: "Online Payments Group",
-                                purpose: "Music Whale",
-                            },
-                        ],
-                    },
-                    {
-                        name: "gaming subscription",
-                        type: "fixed",
-                        samples: [
-                            {
-                                initiator: "Online Payments Group",
-                                purpose: "Game Suprise Box Subscription",
-                            },
-                        ],
-                    },
-                ];
+                const options: CategorizeOptions = {
+                    categories: [
+                        {
+                            name: "food",
+                            type: "variable",
+                            samples: [
+                                { initiator: "Beef Burger Palace" },
+                                { initiator: "Melon the Man" },
+                            ],
+                        },
+                        {
+                            name: "presents",
+                            type: "variable",
+                            samples: [{ initiator: "Presentable Presents" }],
+                        },
+                        {
+                            name: "rent",
+                            type: "fixed",
+                            samples: [{ initiator: "Rent for my crib" }],
+                        },
+                        {
+                            name: "insurance",
+                            type: "fixed",
+                            samples: [
+                                { initiator: "Almost Healthy Inc." },
+                                { initiator: "Stay Healthy Corp." },
+                            ],
+                        },
+                        {
+                            name: "groceries",
+                            type: "variable",
+                            samples: [
+                                { initiator: "Grocerie Land" },
+                                { initiator: "Tasty Deli and Grocerie Store" },
+                            ],
+                        },
+                        {
+                            name: "shopping",
+                            type: "variable",
+                            samples: [{ initiator: "my-online-shop.com" }],
+                        },
+                        {
+                            name: "music subscription",
+                            type: "fixed",
+                            samples: [
+                                {
+                                    initiator: "Online Payments Group",
+                                    purpose: "Music Whale",
+                                },
+                            ],
+                        },
+                        {
+                            name: "gaming subscription",
+                            type: "fixed",
+                            samples: [
+                                {
+                                    initiator: "Online Payments Group",
+                                    purpose: "Game Suprise Box Subscription",
+                                },
+                            ],
+                        },
+                    ],
+                };
 
                 const categorizedTransactions = categorizeTransaction(
                     transactions,
@@ -830,54 +844,56 @@ describe("Test interactor/mutator/categorize", () => {
             });
 
             test("Return ApplicationError if not all transactions could be categorized", () => {
-                const options: SampledCategory[] = [
-                    {
-                        name: "rent",
-                        type: "fixed",
-                        samples: [{ initiator: "Rent for my crib" }],
-                    },
-                    {
-                        name: "insurance",
-                        type: "fixed",
-                        samples: [
-                            { initiator: "Almost Healthy Inc." },
-                            { initiator: "Stay Healthy Corp." },
-                        ],
-                    },
-                    {
-                        name: "groceries",
-                        type: "variable",
-                        samples: [
-                            { initiator: "Grocerie Land" },
-                            { initiator: "Tasty Deli and Grocerie Store" },
-                        ],
-                    },
-                    {
-                        name: "shopping",
-                        type: "variable",
-                        samples: [{ initiator: "my-online-shop.com" }],
-                    },
-                    {
-                        name: "music subscription",
-                        type: "fixed",
-                        samples: [
-                            {
-                                initiator: "Online Payments Group",
-                                purpose: "Music Whale",
-                            },
-                        ],
-                    },
-                    {
-                        name: "gaming subscription",
-                        type: "fixed",
-                        samples: [
-                            {
-                                initiator: "Online Payments Group",
-                                purpose: "Game Suprise Box Subscription",
-                            },
-                        ],
-                    },
-                ];
+                const options: CategorizeOptions = {
+                    categories: [
+                        {
+                            name: "rent",
+                            type: "fixed",
+                            samples: [{ initiator: "Rent for my crib" }],
+                        },
+                        {
+                            name: "insurance",
+                            type: "fixed",
+                            samples: [
+                                { initiator: "Almost Healthy Inc." },
+                                { initiator: "Stay Healthy Corp." },
+                            ],
+                        },
+                        {
+                            name: "groceries",
+                            type: "variable",
+                            samples: [
+                                { initiator: "Grocerie Land" },
+                                { initiator: "Tasty Deli and Grocerie Store" },
+                            ],
+                        },
+                        {
+                            name: "shopping",
+                            type: "variable",
+                            samples: [{ initiator: "my-online-shop.com" }],
+                        },
+                        {
+                            name: "music subscription",
+                            type: "fixed",
+                            samples: [
+                                {
+                                    initiator: "Online Payments Group",
+                                    purpose: "Music Whale",
+                                },
+                            ],
+                        },
+                        {
+                            name: "gaming subscription",
+                            type: "fixed",
+                            samples: [
+                                {
+                                    initiator: "Online Payments Group",
+                                    purpose: "Game Suprise Box Subscription",
+                                },
+                            ],
+                        },
+                    ],
+                };
 
                 const categorizedTransactions = categorizeTransaction(
                     transactions,

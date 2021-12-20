@@ -2,6 +2,7 @@ import { loadTransactionData } from "./connector/csv";
 import { isApplicationError } from "../utils/typeguards";
 import { generateCategorizedFixCosts } from "./report/fixCosts";
 import { ConnectorType, ReportType } from "../types/enums";
+import { categorizeTransaction } from "./mutator/categorize";
 
 /**
  * Generates a report using a connector.
@@ -32,11 +33,18 @@ export const generateReport = async (
             };
     }
 
+    transactions = categorizeTransaction(
+        transactions,
+        configuration.interactor.mutator,
+    );
+    if (isApplicationError(transactions)) return transactions;
+
     switch (configuration.interactor.report.type) {
         case ReportType.FixCosts:
             const report = generateCategorizedFixCosts(
                 transactions,
                 configuration.interactor.report.options,
+                configuration.interactor.mutator,
                 configuration.logger,
             );
             if (isApplicationError(report)) return report;

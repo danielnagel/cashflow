@@ -1,11 +1,16 @@
 import { formatDate, parseDateString } from "../../utils/dates";
-import { filterTransactions } from "../../utils/filters";
+import {
+    filterTransactionsByCategoryName,
+    filterTransactionsByCategoryType,
+    filterTransactionsByDate,
+} from "../../utils/filters";
 import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
+import { CategoryType } from "../../types/enums";
 
 /**
- * Generates a FixCost object from a list of Transaction considering given TransactionFilterOptions.
+ * Generates a FixCost object from a list of Transaction considering given FilterTransactionsBySampleOptions.
  *
  * @param transactions which are used as a data basis
  * @param filterOptions specify how to filter the transactions
@@ -13,14 +18,14 @@ import { log } from "../../utils/loggers";
  * no transactions matched by filter or by malformed configuration.
  */
 export const generateFixCost = (
-    transactions: Transaction[],
-    filterOptions: TransactionFilterOptions,
+    fixedTransactions: Transaction[],
+    filterOptions: FilterTransactionsByCategoryOptions,
 ): FixCost | ApplicationError => {
-    if (transactions.length === 0)
+    if (fixedTransactions.length === 0)
         return { source: "fixCosts.ts", message: "There are no transactions." };
 
     const matchedTransactions = getSortedMatchedTransactions(
-        transactions,
+        fixedTransactions,
         filterOptions,
     );
     if (isApplicationError(matchedTransactions)) return matchedTransactions;
@@ -65,9 +70,16 @@ export const generateFixCost = (
  */
 const getSortedMatchedTransactions = (
     transactions: Transaction[],
-    filterOptions: TransactionFilterOptions,
+    filterOptions: FilterTransactionsByCategoryOptions,
 ): Transaction[] | ApplicationError => {
-    const matchedTransactions = filterTransactions(transactions, filterOptions);
+    let matchedTransactions = filterTransactionsByCategoryName(
+        transactions,
+        filterOptions.category.name,
+    );
+    matchedTransactions = filterTransactionsByDate(
+        matchedTransactions,
+        filterOptions,
+    );
     if (matchedTransactions.length === 0)
         return {
             source: "fixCosts.ts",
@@ -85,7 +97,7 @@ const getSortedMatchedTransactions = (
  * @returns month of a year
  */
 const getComparsionMonthYear = (
-    filterOptions: TransactionFilterOptions,
+    filterOptions: FilterTransactionsByCategoryOptions,
 ): MonthYear | ApplicationError => {
     let month = new Date().getMonth() + 1;
     let year = new Date().getFullYear();
@@ -118,6 +130,7 @@ const getComparsionMonthYear = (
  */
 export const generateCategorizedFixCosts = (
     transactions: Transaction[],
+    reportOptions: FixCostOptions,
     categorizeOptions: CategorizeOptions,
     loggerOptions?: LoggerOptions,
 ): CategorizedFixCosts | ApplicationError => {
@@ -125,18 +138,19 @@ export const generateCategorizedFixCosts = (
         return { source: "fixCosts.ts", message: "There are no transactions." };
     }
 
-    if (categorizeOptions.categories.length === 0) {
-        return { source: "fixCosts.ts", message: "There are no categories." };
-    }
+    const fixedTransactions: Transaction[] = filterTransactionsByCategoryType(
+        transactions,
+        CategoryType.Fixed,
+    );
 
     const namedFixCost: NamedFixCost[] = [];
     let sum = 0;
     let unpaidSum = 0;
     for (const category of categorizeOptions.categories) {
-        const fixCost = generateFixCost(transactions, {
-            samples: category.samples,
-            before: categorizeOptions.before,
-            after: categorizeOptions.after,
+        const fixCost = generateFixCost(fixedTransactions, {
+            category,
+            before: reportOptions.before,
+            after: reportOptions.after,
         });
         if (isApplicationError(fixCost)) {
             log({
@@ -160,7 +174,7 @@ export const generateCategorizedFixCosts = (
         };
 
     return {
-        date: generateReportDateString(categorizeOptions),
+        date: generateReportDateString(reportOptions),
         sum,
         unpaidSum,
         fixCosts: namedFixCost,
@@ -176,7 +190,7 @@ export const generateCategorizedFixCosts = (
  * @returns date string
  */
 const generateReportDateString = (
-    categorizeOptions: CategorizeOptions,
+    categorizeOptions: FixCostOptions,
 ): string => {
     let date = categorizeOptions.before
         ? categorizeOptions.before

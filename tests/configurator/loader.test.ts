@@ -54,12 +54,14 @@ describe("Test configurator/loader", () => {
                             dateFormat: "",
                         },
                     },
+                    mutator: {
+                        categories: [],
+                    },
                     report: {
                         type: "",
                         options: {
                             before: "",
                             after: "",
-                            categories: [],
                         },
                     },
                 },

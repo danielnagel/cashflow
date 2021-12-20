@@ -1,4 +1,5 @@
 import { getTimeStampFromTransaction, parseDateString } from "./dates";
+import { isCategory } from "./typeguards";
 
 /**
  * Matches transactions after a given date.
@@ -8,7 +9,7 @@ import { getTimeStampFromTransaction, parseDateString } from "./dates";
  * @param dateFormat which is used to parse the date string
  * @returns matched transactions
  */
-const transactionsAfterTimeStamp = (
+export const transactionsAfterTimeStamp = (
     transactions: Transaction[],
     after: string | undefined,
     dateFormat: string | undefined,
@@ -31,7 +32,7 @@ const transactionsAfterTimeStamp = (
  * @param dateFormat which is used to parse the date string
  * @returns matched transactions
  */
-const transactionsBeforeTimeStamp = (
+export const transactionsBeforeTimeStamp = (
     transactions: Transaction[],
     before: string | undefined,
     dateFormat: string | undefined,
@@ -53,31 +54,22 @@ const transactionsBeforeTimeStamp = (
  * @param options to filter the list of transactions by.
  * @returns by given options filtered transactions.
  */
-export const filterTransactions = (
+export const filterTransactionsByDate = (
     transactions: Transaction[],
-    options: TransactionFilterOptions,
+    options: FilterTransactionsByDateOptions,
 ): Transaction[] => {
-    let filteredTransactions: Transaction[] = [];
-    for (const sample of options.samples) {
-        for (const transaction of transactions) {
-            if (isTransactionMatchingSample(transaction, sample)) {
-                filteredTransactions.push(transaction);
-            }
-        }
-    }
-
-    filteredTransactions = transactionsBeforeTimeStamp(
-        filteredTransactions,
+    transactions = transactionsBeforeTimeStamp(
+        transactions,
         options.before,
         options.dateFormat,
     );
-    filteredTransactions = transactionsAfterTimeStamp(
-        filteredTransactions,
+    transactions = transactionsAfterTimeStamp(
+        transactions,
         options.after,
         options.dateFormat,
     );
 
-    return filteredTransactions;
+    return transactions;
 };
 
 /**
@@ -159,4 +151,50 @@ const isSameTransaction = (
         transactionA.purpose === transactionB.purpose &&
         transactionA.value === transactionB.value
     );
+};
+
+/**
+ * Filters a list of transactions by category type.
+ *
+ * @param transactions list of transactions that should be filtered.
+ * @param options to filter the list of transactions by.
+ * @returns by given options filtered transactions.
+ */
+export const filterTransactionsByCategoryType = (
+    transactions: Transaction[],
+    categoryType: string,
+): Transaction[] => {
+    const matchedTransactions: Transaction[] = [];
+    for (const transaction of transactions) {
+        if (
+            isCategory(transaction.category) &&
+            transaction.category.type === categoryType
+        ) {
+            matchedTransactions.push({ ...transaction });
+        }
+    }
+    return matchedTransactions;
+};
+
+/**
+ * Filters a list of transactions by category name.
+ *
+ * @param transactions list of transactions that should be filtered.
+ * @param options to filter the list of transactions by.
+ * @returns by given options filtered transactions.
+ */
+export const filterTransactionsByCategoryName = (
+    transactions: Transaction[],
+    categoryName: string,
+): Transaction[] => {
+    const matchedTransactions: Transaction[] = [];
+    for (const transaction of transactions) {
+        if (
+            isCategory(transaction.category) &&
+            transaction.category.name === categoryName
+        ) {
+            matchedTransactions.push({ ...transaction });
+        }
+    }
+    return matchedTransactions;
 };

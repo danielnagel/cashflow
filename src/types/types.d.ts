@@ -49,12 +49,17 @@ type CsvOptions = {
 
 /**
  * Options on which a list of transactions can be filtered.
- * Samples must be a list of transaction initiators.
  * The list can be filtered to only return transactions after or before a specific date.
  * The date is parsed by configuration, otherwise ISO date format is expected.
  */
-type TransactionFilterOptions = {
-    samples: Sample[];
+type FilterTransactionsByDateOptions = {
+    after?: string;
+    before?: string;
+    dateFormat?: string;
+};
+
+type FilterTransactionsByCategoryOptions = {
+    category: Category;
     after?: string;
     before?: string;
     dateFormat?: string;
@@ -97,10 +102,18 @@ interface SampledCategory extends Category {
 }
 
 /**
- * Options on which multiple FixCost objects are ordered by categories.
+ * Options used for the mutator categorize.
+ * SkipErrors can be used to ignore uncategorized transactions.
  */
 type CategorizeOptions = {
     categories: SampledCategory[];
+    skipErrors?: boolean;
+};
+
+/**
+ * Options used for a fix cost report.
+ */
+type FixCostOptions = {
     dateFormat?: string;
     before?: string;
     after?: string;
@@ -129,7 +142,7 @@ type CategorizedFixCosts = {
  */
 type FixCostsReportOptions = {
     type: "fixcosts";
-    options: CategorizeOptions;
+    options: FixCostOptions;
 };
 
 /**
@@ -164,6 +177,7 @@ type ConnectorOptions = CsvConnectorOptions | ApiConnectorOptions;
  */
 type InteractorOptions = {
     connector: ConnectorOptions;
+    mutator: CategorizeOptions;
     report: ReportOptions;
 };
 

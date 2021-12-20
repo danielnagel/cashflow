@@ -2,9 +2,46 @@ import {
     generateFixCost,
     generateCategorizedFixCosts,
 } from "../../../src/interactor/report/fixCosts";
+import { CategoryType } from "../../../src/types/enums";
 
 describe("Test fixCostReport", () => {
-    const transactions: Transaction[] = [
+    const categorizedTransactions: Transaction[] = [
+        {
+            day: 19,
+            month: 10,
+            year: 2021,
+            initiator: "Beef Burger Palace",
+            purpose: "We hope that you had a beefy good time!",
+            value: 49.55,
+            category: {
+                name: "food",
+                type: "variable",
+            },
+        },
+        {
+            day: 1,
+            month: 9,
+            year: 2021,
+            initiator: "Melon the Man",
+            purpose: "Juicy Melons",
+            value: 39.38,
+            category: {
+                name: "food",
+                type: "variable",
+            },
+        },
+        {
+            day: 11,
+            month: 11,
+            year: 2021,
+            initiator: "Presentable Presents",
+            purpose: "Good luck!",
+            value: 199.78,
+            category: {
+                name: "presents",
+                type: "variable",
+            },
+        },
         {
             day: 1,
             month: 6,
@@ -12,6 +49,11 @@ describe("Test fixCostReport", () => {
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
             value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 1,
@@ -20,6 +62,11 @@ describe("Test fixCostReport", () => {
             initiator: "Almost Healthy Inc.",
             purpose: "We bet that you're going to be sick",
             value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 7,
@@ -28,14 +75,10 @@ describe("Test fixCostReport", () => {
             initiator: "Grocerie Land",
             purpose: "VISA 23 GROCERIE LAND TES71234123423134",
             value: 109.56,
-        },
-        {
-            day: 15,
-            month: 7,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Music Whale",
-            value: 9.99,
+            category: {
+                name: "groceries",
+                type: "variable",
+            },
         },
         {
             day: 1,
@@ -44,6 +87,11 @@ describe("Test fixCostReport", () => {
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
             value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 3,
@@ -52,6 +100,11 @@ describe("Test fixCostReport", () => {
             initiator: "Stay Healthy Corp.",
             purpose: "Your health is our mission",
             value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 11,
@@ -60,6 +113,10 @@ describe("Test fixCostReport", () => {
             initiator: "Grocerie Land",
             purpose: "VISA 11 GROCERIE LAND TES71234123423134",
             value: 88.86,
+            category: {
+                name: "groceries",
+                type: "variable",
+            },
         },
         {
             day: 1,
@@ -68,6 +125,11 @@ describe("Test fixCostReport", () => {
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
             value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 2,
@@ -76,6 +138,11 @@ describe("Test fixCostReport", () => {
             initiator: "Almost Healthy Inc.",
             purpose: "We bet that you're going to be sick",
             value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 22,
@@ -84,14 +151,11 @@ describe("Test fixCostReport", () => {
             initiator: "Mobilio Ltd.",
             purpose: "your mobile phone provider",
             value: 39.99,
-        },
-        {
-            day: 15,
-            month: 8,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Music Whale",
-            value: 9.99,
+            category: {
+                name: "mobile",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 19,
@@ -100,14 +164,10 @@ describe("Test fixCostReport", () => {
             initiator: "my-online-shop.com",
             purpose: "my-online-shop.com; 19.10; TES710928476309298",
             value: 23.65,
-        },
-        {
-            day: 23,
-            month: 8,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Game Suprise Box Subscription",
-            value: 19.99,
+            category: {
+                name: "shopping",
+                type: "variable",
+            },
         },
         {
             day: 7,
@@ -116,6 +176,10 @@ describe("Test fixCostReport", () => {
             initiator: "Grocerie Land",
             purpose: "VISA 23 GROCERIE LAND TES71234123423134",
             value: 109.56,
+            category: {
+                name: "groceries",
+                type: "variable",
+            },
         },
         {
             day: 21,
@@ -124,6 +188,10 @@ describe("Test fixCostReport", () => {
             initiator: "my-online-shop.com",
             purpose: "my-online-shop.com; 21.09;  TES710928476309298",
             value: 44.86,
+            category: {
+                name: "shopping",
+                type: "variable",
+            },
         },
         {
             day: 22,
@@ -132,14 +200,11 @@ describe("Test fixCostReport", () => {
             initiator: "Mobilio Ltd.",
             purpose: "your mobile phone provider",
             value: 39.99,
-        },
-        {
-            day: 15,
-            month: 9,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Music Whale",
-            value: 9.99,
+            category: {
+                name: "mobile",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 22,
@@ -148,14 +213,10 @@ describe("Test fixCostReport", () => {
             initiator: "my-online-shop.com",
             purpose: "my-online-shop.com; 22.11;  TES710928476309298",
             value: 9.99,
-        },
-        {
-            day: 23,
-            month: 9,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Game Suprise Box Subscription",
-            value: 19.99,
+            category: {
+                name: "shopping",
+                type: "variable",
+            },
         },
         {
             day: 1,
@@ -164,6 +225,11 @@ describe("Test fixCostReport", () => {
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
             value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 1,
@@ -172,6 +238,11 @@ describe("Test fixCostReport", () => {
             initiator: "Stay Healthy Corp.",
             purpose: "Your health is our mission",
             value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 10,
@@ -180,6 +251,10 @@ describe("Test fixCostReport", () => {
             initiator: "Tasty Deli and Grocerie Store",
             purpose: "Thanks for buying the freshest food",
             value: 65.49,
+            category: {
+                name: "groceries",
+                type: "variable",
+            },
         },
         {
             day: 1,
@@ -188,22 +263,11 @@ describe("Test fixCostReport", () => {
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
             value: 650,
-        },
-        {
-            day: 15,
-            month: 10,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Music Whale",
-            value: 9.99,
-        },
-        {
-            day: 15,
-            month: 11,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Music Whale",
-            value: 9.99,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 2,
@@ -212,6 +276,11 @@ describe("Test fixCostReport", () => {
             initiator: "Stay Healthy Corp.",
             purpose: "Your health is our mission",
             value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 1,
@@ -220,22 +289,11 @@ describe("Test fixCostReport", () => {
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
             value: 650,
-        },
-        {
-            day: 23,
-            month: 10,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Game Suprise Box Subscription",
-            value: 19.99,
-        },
-        {
-            day: 23,
-            month: 11,
-            year: 2021,
-            initiator: "Online Payments Group",
-            purpose: "Game Suprise Box Subscription",
-            value: 19.99,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 1,
@@ -244,6 +302,11 @@ describe("Test fixCostReport", () => {
             initiator: "Almost Healthy Inc.",
             purpose: "We bet that you're going to be sick",
             value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 10,
@@ -252,6 +315,10 @@ describe("Test fixCostReport", () => {
             initiator: "Tasty Deli and Grocerie Store",
             purpose: "Thanks for buying the freshest food",
             value: 65.49,
+            category: {
+                name: "groceries",
+                type: "variable",
+            },
         },
         {
             day: 1,
@@ -260,22 +327,141 @@ describe("Test fixCostReport", () => {
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
             value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
-            day: 19,
-            month: 10,
+            day: 3,
+            month: 12,
             year: 2021,
-            initiator: "my-online-shop.com",
-            purpose: "my-online-shop.com; 19.10; TES710928476309298",
-            value: 23.65,
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            day: 15,
+            month: 7,
+            year: 2021,
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            day: 15,
+            month: 8,
+            year: 2021,
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            day: 23,
+            month: 8,
+            year: 2021,
+            initiator: "Online Payments Group",
+            purpose: "Game Suprise Box Subscription",
+            value: 19.99,
+            category: {
+                name: "gaming subscription",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 15,
             month: 9,
             year: 2021,
-            initiator: "Grocerie Land",
-            purpose: "VISA 11 GROCERIE LAND TES71234123423134",
-            value: 99.99,
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            day: 23,
+            month: 9,
+            year: 2021,
+            initiator: "Online Payments Group",
+            purpose: "Game Suprise Box Subscription",
+            value: 19.99,
+            category: {
+                name: "gaming subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            day: 15,
+            month: 10,
+            year: 2021,
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            day: 15,
+            month: 11,
+            year: 2021,
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            day: 23,
+            month: 10,
+            year: 2021,
+            initiator: "Online Payments Group",
+            purpose: "Game Suprise Box Subscription",
+            value: 19.99,
+            category: {
+                name: "gaming subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            day: 23,
+            month: 11,
+            year: 2021,
+            initiator: "Online Payments Group",
+            purpose: "Game Suprise Box Subscription",
+            value: 19.99,
+            category: {
+                name: "gaming subscription",
+                type: "fixed",
+                period: "monthly",
+            },
         },
         {
             day: 22,
@@ -284,14 +470,11 @@ describe("Test fixCostReport", () => {
             initiator: "Mobilio Ltd.",
             purpose: "your mobile phone provider",
             value: 39.99,
-        },
-        {
-            day: 20,
-            month: 8,
-            year: 2021,
-            initiator: "cool-gadgets.com",
-            purpose: "cool-gadgets.com.com; 20.08;  TES710919287369187",
-            value: 18.45,
+            category: {
+                name: "mobile",
+                type: "fixed",
+                period: "monthly",
+            },
         },
     ];
 
@@ -299,7 +482,10 @@ describe("Test fixCostReport", () => {
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
                 const fixCost = generateFixCost([], {
-                    samples: [{ initiator: "test" }],
+                    category: {
+                        name: "test",
+                        type: CategoryType.Fixed,
+                    },
                     before: "15.12.2021",
                 });
 
@@ -320,9 +506,12 @@ describe("Test fixCostReport", () => {
                 },
             ];
 
-            test("Return null, if samples array is empty", () => {
+            test("Return null, category doesn't match", () => {
                 const fixCost = generateFixCost(transactions, {
-                    samples: [],
+                    category: {
+                        name: "test",
+                        type: CategoryType.Fixed,
+                    },
                     before: "15.12.2021",
                 });
 
@@ -334,7 +523,10 @@ describe("Test fixCostReport", () => {
 
             test("Return null, if there aren't any transactions that match toDate", () => {
                 const fixCost = generateFixCost(transactions, {
-                    samples: [{ initiator: "Rent for my crib" }],
+                    category: {
+                        name: "rent",
+                        type: CategoryType.Fixed,
+                    },
                     before: "15.12.1999",
                 });
 
@@ -346,21 +538,12 @@ describe("Test fixCostReport", () => {
 
             test("Return null, if sinceDate is after toDate", () => {
                 const fixCost = generateFixCost(transactions, {
-                    samples: [{ initiator: "Rent for my crib" }],
+                    category: {
+                        name: "rent",
+                        type: CategoryType.Fixed,
+                    },
                     before: "15.12.1999",
                     after: "12.07.2002",
-                });
-
-                expect(fixCost).toStrictEqual({
-                    source: "fixCosts.ts",
-                    message: "No transactions matched by filter.",
-                });
-            });
-
-            test("Return null, if no transaction is matching", () => {
-                const fixCost = generateFixCost(transactions, {
-                    samples: [{ initiator: "Rent for my crib?" }],
-                    before: "30.12.2021",
                 });
 
                 expect(fixCost).toStrictEqual({
@@ -371,8 +554,6 @@ describe("Test fixCostReport", () => {
         });
 
         describe("Test fix costs to match exactly one interactor (sample), same booking day, unsorted transactions", () => {
-            const samples = [{ initiator: "Rent for my crib" }];
-
             test("Generate fix cost as expected", () => {
                 const expected: FixCost = {
                     value: 650,
@@ -387,6 +568,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -395,6 +581,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -403,6 +594,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -411,6 +607,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -419,6 +620,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -427,12 +633,20 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                     ],
                 };
 
-                const fixCost = generateFixCost(transactions, {
-                    samples,
+                const fixCost = generateFixCost(categorizedTransactions, {
+                    category: {
+                        name: "rent",
+                        type: CategoryType.Fixed,
+                    },
                     before: "30.11.2021",
                 });
 
@@ -453,6 +667,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -461,6 +680,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -469,6 +693,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -477,6 +706,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -485,12 +719,20 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                     ],
                 };
 
-                const fixCost = generateFixCost(transactions, {
-                    samples,
+                const fixCost = generateFixCost(categorizedTransactions, {
+                    category: {
+                        name: "rent",
+                        type: CategoryType.Fixed,
+                    },
                     before: "15.10.2021",
                 });
 
@@ -511,6 +753,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -519,12 +766,20 @@ describe("Test fixCostReport", () => {
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
+                            category: {
+                                name: "rent",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                     ],
                 };
 
-                const fixCost = generateFixCost(transactions, {
-                    samples,
+                const fixCost = generateFixCost(categorizedTransactions, {
+                    category: {
+                        name: "rent",
+                        type: CategoryType.Fixed,
+                    },
                     before: "15.11.2021",
                     after: "01.09.2021",
                 });
@@ -534,16 +789,11 @@ describe("Test fixCostReport", () => {
         });
 
         describe("Test fix costs to match multiple interactors (samples), which are the same fix cost, but the interactor name changes; different booking days", () => {
-            const samples = [
-                { initiator: "Stay Healthy Corp." },
-                { initiator: "Almost Healthy Inc." },
-            ];
-
             test("Generate fix cost as expected", () => {
                 const expected: FixCost = {
                     value: 14.99,
-                    isPaidThisMonth: false,
-                    lastBookingDays: [1, 1, 2, 3, 1, 2],
+                    isPaidThisMonth: true,
+                    lastBookingDays: [1, 1, 2, 3, 1, 2, 3],
                     averageBookingDay: 1,
                     transactions: [
                         {
@@ -553,6 +803,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -561,6 +816,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 2,
@@ -569,6 +829,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 3,
@@ -577,6 +842,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -585,6 +855,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 2,
@@ -593,12 +868,33 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
+                        },
+                        {
+                            day: 3,
+                            month: 12,
+                            year: 2021,
+                            initiator: "Stay Healthy Corp.",
+                            purpose: "Your health is our mission",
+                            value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                     ],
                 };
 
-                const fixCost = generateFixCost(transactions, {
-                    samples,
+                const fixCost = generateFixCost(categorizedTransactions, {
+                    category: {
+                        name: "insurance",
+                        type: CategoryType.Fixed,
+                    },
                     before: "30.12.2021",
                 });
 
@@ -619,6 +915,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -627,6 +928,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 2,
@@ -635,12 +941,20 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                     ],
                 };
 
-                const fixCost = generateFixCost(transactions, {
-                    samples,
+                const fixCost = generateFixCost(categorizedTransactions, {
+                    category: {
+                        name: "insurance",
+                        type: CategoryType.Fixed,
+                    },
                     before: "01.09.2021",
                 });
 
@@ -661,6 +975,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -669,6 +988,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 2,
@@ -677,12 +1001,20 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                     ],
                 };
 
-                const fixCost = generateFixCost(transactions, {
-                    samples,
+                const fixCost = generateFixCost(categorizedTransactions, {
+                    category: {
+                        name: "insurance",
+                        type: CategoryType.Fixed,
+                    },
                     before: "15.11.2021",
                     after: "01.09.2021",
                 });
@@ -693,8 +1025,8 @@ describe("Test fixCostReport", () => {
             test("Generate fix cost as expected, without specified Date", () => {
                 const expected: FixCost = {
                     value: 14.99,
-                    isPaidThisMonth: false,
-                    lastBookingDays: [1, 1, 2, 3, 1, 2],
+                    isPaidThisMonth: true,
+                    lastBookingDays: [1, 1, 2, 3, 1, 2, 3],
                     averageBookingDay: 1,
                     transactions: [
                         {
@@ -704,6 +1036,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -712,6 +1049,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 2,
@@ -720,6 +1062,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 3,
@@ -728,6 +1075,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 1,
@@ -736,6 +1088,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 2,
@@ -744,11 +1101,34 @@ describe("Test fixCostReport", () => {
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
+                        },
+                        {
+                            day: 3,
+                            month: 12,
+                            year: 2021,
+                            initiator: "Stay Healthy Corp.",
+                            purpose: "Your health is our mission",
+                            value: 14.99,
+                            category: {
+                                name: "insurance",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                     ],
                 };
 
-                const fixCost = generateFixCost(transactions, { samples });
+                const fixCost = generateFixCost(categorizedTransactions, {
+                    category: {
+                        name: "insurance",
+                        type: CategoryType.Fixed,
+                    },
+                });
 
                 expect(fixCost).toStrictEqual(expected);
             });
@@ -767,6 +1147,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
+                            category: {
+                                name: "music subscription",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 15,
@@ -775,6 +1160,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
+                            category: {
+                                name: "music subscription",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 15,
@@ -783,6 +1173,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
+                            category: {
+                                name: "music subscription",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 15,
@@ -791,6 +1186,11 @@ describe("Test fixCostReport", () => {
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
+                            category: {
+                                name: "music subscription",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                         {
                             day: 15,
@@ -799,17 +1199,20 @@ describe("Test fixCostReport", () => {
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
+                            category: {
+                                name: "music subscription",
+                                type: "fixed",
+                                period: "monthly",
+                            },
                         },
                     ],
                 };
 
-                const fixCost = generateFixCost(transactions, {
-                    samples: [
-                        {
-                            initiator: "Online Payments Group",
-                            purpose: "Music Whale",
-                        },
-                    ],
+                const fixCost = generateFixCost(categorizedTransactions, {
+                    category: {
+                        name: "music subscription",
+                        type: CategoryType.Fixed,
+                    },
                 });
 
                 expect(fixCost).toStrictEqual(expected);
@@ -820,7 +1223,8 @@ describe("Test fixCostReport", () => {
     describe("Test categorized fix costs", () => {
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
-                const options: CategorizeOptions = {
+                const fixCostOptions = {};
+                const categorizeOptions = {
                     categories: [
                         {
                             name: "a",
@@ -830,40 +1234,44 @@ describe("Test fixCostReport", () => {
                     ],
                 };
                 expect(
-                    generateCategorizedFixCosts([], options, {
-                        allowedLogLevel: "none",
-                    }),
+                    generateCategorizedFixCosts(
+                        [],
+                        fixCostOptions,
+                        categorizeOptions,
+                        {
+                            allowedLogLevel: "none",
+                        },
+                    ),
                 ).toStrictEqual({
                     source: "fixCosts.ts",
                     message: "There are no transactions.",
                 });
             });
 
-            const transactions: Transaction[] = [
-                {
-                    day: 19,
-                    month: 10,
-                    year: 2021,
-                    initiator: "Rent for my crib",
-                    purpose: "Thanks landlord",
-                    value: 23.65,
-                },
-            ];
-
             test("Return null, if categories array is empty", () => {
+                const fixCostOptions = {};
+                const categorizeOptions = {
+                    categories: [],
+                };
                 const options: CategorizeOptions = { categories: [] };
                 expect(
-                    generateCategorizedFixCosts(transactions, options, {
-                        allowedLogLevel: "none",
-                    }),
+                    generateCategorizedFixCosts(
+                        categorizedTransactions,
+                        fixCostOptions,
+                        categorizeOptions,
+                        {
+                            allowedLogLevel: "none",
+                        },
+                    ),
                 ).toStrictEqual({
                     source: "fixCosts.ts",
-                    message: "There are no categories.",
+                    message: "Couldn't match any categories.",
                 });
             });
 
             test("Return null, if no transaction can be categorized", () => {
-                const options: CategorizeOptions = {
+                const fixCostOptions = {};
+                const categorizeOptions = {
                     categories: [
                         {
                             name: "a",
@@ -873,9 +1281,14 @@ describe("Test fixCostReport", () => {
                     ],
                 };
                 expect(
-                    generateCategorizedFixCosts(transactions, options, {
-                        allowedLogLevel: "none",
-                    }),
+                    generateCategorizedFixCosts(
+                        categorizedTransactions,
+                        fixCostOptions,
+                        categorizeOptions,
+                        {
+                            allowedLogLevel: "none",
+                        },
+                    ),
                 ).toStrictEqual({
                     source: "fixCosts.ts",
                     message: "Couldn't match any categories.",
@@ -905,6 +1318,11 @@ describe("Test fixCostReport", () => {
                                         initiator: "Rent for my crib",
                                         purpose: "Thanks landlord",
                                         value: 650,
+                                        category: {
+                                            name: "rent",
+                                            type: "fixed",
+                                            period: "monthly",
+                                        },
                                     },
                                     {
                                         day: 1,
@@ -913,6 +1331,11 @@ describe("Test fixCostReport", () => {
                                         initiator: "Rent for my crib",
                                         purpose: "Thanks landlord",
                                         value: 650,
+                                        category: {
+                                            name: "rent",
+                                            type: "fixed",
+                                            period: "monthly",
+                                        },
                                     },
                                 ],
                             },
@@ -932,6 +1355,11 @@ describe("Test fixCostReport", () => {
                                         initiator: "Stay Healthy Corp.",
                                         purpose: "Your health is our mission",
                                         value: 14.99,
+                                        category: {
+                                            name: "insurance",
+                                            type: "fixed",
+                                            period: "monthly",
+                                        },
                                     },
                                     {
                                         day: 1,
@@ -940,6 +1368,11 @@ describe("Test fixCostReport", () => {
                                         initiator: "Stay Healthy Corp.",
                                         purpose: "Your health is our mission",
                                         value: 14.99,
+                                        category: {
+                                            name: "insurance",
+                                            type: "fixed",
+                                            period: "monthly",
+                                        },
                                     },
                                     {
                                         day: 2,
@@ -948,6 +1381,11 @@ describe("Test fixCostReport", () => {
                                         initiator: "Stay Healthy Corp.",
                                         purpose: "Your health is our mission",
                                         value: 14.99,
+                                        category: {
+                                            name: "insurance",
+                                            type: "fixed",
+                                            period: "monthly",
+                                        },
                                     },
                                 ],
                             },
@@ -967,6 +1405,11 @@ describe("Test fixCostReport", () => {
                                         initiator: "Mobilio Ltd.",
                                         purpose: "your mobile phone provider",
                                         value: 39.99,
+                                        category: {
+                                            name: "mobile",
+                                            type: "fixed",
+                                            period: "monthly",
+                                        },
                                     },
                                     {
                                         day: 22,
@@ -975,6 +1418,11 @@ describe("Test fixCostReport", () => {
                                         initiator: "Mobilio Ltd.",
                                         purpose: "your mobile phone provider",
                                         value: 39.99,
+                                        category: {
+                                            name: "mobile",
+                                            type: "fixed",
+                                            period: "monthly",
+                                        },
                                     },
                                 ],
                             },
@@ -982,38 +1430,43 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const options: CategorizeOptions = {
+                const fixCostOptions = {
                     before: "15.11.2021",
                     after: "01.09.2021",
+                };
+                const categorizeOptions = {
                     categories: [
                         {
                             name: "rent",
-                            type: "",
+                            type: CategoryType.Fixed,
                             samples: [{ initiator: "Rent for my crib" }],
                         },
                         {
                             name: "insurance",
-                            type: "",
+                            type: CategoryType.Fixed,
                             samples: [{ initiator: "Stay Healthy Corp." }],
                         },
                         {
                             name: "mobile",
-                            type: "",
+                            type: CategoryType.Fixed,
                             samples: [{ initiator: "Mobilio Ltd." }],
                         },
                     ],
                 };
 
                 expect(
-                    generateCategorizedFixCosts(transactions, options, {
-                        allowedLogLevel: "none",
-                    }),
+                    generateCategorizedFixCosts(
+                        categorizedTransactions,
+                        fixCostOptions,
+                        categorizeOptions,
+                        {
+                            allowedLogLevel: "none",
+                        },
+                    ),
                 ).toStrictEqual(expected);
             });
         });
     });
-
-    describe("Test variable costs for one sample", () => {});
 });
 
 // -- test list

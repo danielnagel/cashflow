@@ -34,7 +34,11 @@ describe("Test utils/typeguards", () => {
         });
 
         test("InteractorOptions is an InteractorOptions without deep equality", () => {
-            const interactorOptions = { connector: {}, report: {} };
+            const interactorOptions = {
+                connector: {},
+                report: {},
+                mutator: {},
+            };
             expect(isInteractorOptions(interactorOptions)).toBeFalsy();
         });
 
@@ -59,6 +63,9 @@ describe("Test utils/typeguards", () => {
                     options: {
                         categories: [],
                     },
+                },
+                mutator: {
+                    categories: [],
                 },
             };
             expect(isInteractorOptions(interactorOptions)).toBeTruthy();
@@ -131,13 +138,8 @@ describe("Test utils/typeguards", () => {
             expect(isReportOptions(123)).toBeFalsy();
         });
 
-        test("ReportOptions is an ReportOptions without deep equality", () => {
-            const ReportOptions = { type: "", options: {} };
-            expect(isReportOptions(ReportOptions)).toBeFalsy();
-        });
-
         test("ReportOptions is a ReportOptions", () => {
-            const reportOptions = { type: "", options: { categories: [] } };
+            const reportOptions = { type: "", options: {} };
             expect(isReportOptions(reportOptions)).toBeTruthy();
         });
     });
@@ -339,6 +341,9 @@ describe("Test utils/typeguards", () => {
                             columns: [],
                             dateFormat: "",
                         },
+                    },
+                    mutator: {
+                        categories: [],
                     },
                     report: {
                         type: "",

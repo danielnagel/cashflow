@@ -6,7 +6,9 @@ export const isInteractorOptions = (
         (object as InteractorOptions).connector !== undefined &&
         isConnectorOptions((object as InteractorOptions).connector) &&
         (object as InteractorOptions).report !== undefined &&
-        isReportOptions((object as InteractorOptions).report)
+        isReportOptions((object as InteractorOptions).report) &&
+        (object as InteractorOptions).mutator !== undefined &&
+        isCategorizeOptions((object as InteractorOptions).mutator)
     );
 };
 
@@ -25,8 +27,7 @@ export const isReportOptions = (object: unknown): object is ReportOptions => {
     if (!object) return false;
     return (
         (object as ReportOptions).type !== undefined &&
-        (object as ConnectorOptions).options !== undefined &&
-        isCategorizeOptions((object as ConnectorOptions).options)
+        (object as ConnectorOptions).options !== undefined
     );
 };
 

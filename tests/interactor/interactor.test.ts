@@ -1,4 +1,5 @@
 import { generateReport } from "../../src/interactor/interactor";
+import { CategoryType } from "../../src/types/enums";
 
 describe("Test Interactor", () => {
     describe("Test generating reports with CSV connector", () => {
@@ -26,6 +27,11 @@ describe("Test Interactor", () => {
                                             initiator: "Rent for my crib",
                                             purpose: "Thanks landlord",
                                             value: -650,
+                                            category: {
+                                                name: "rent",
+                                                type: "fixed",
+                                                period: "monthly",
+                                            },
                                         },
                                         {
                                             day: 1,
@@ -34,6 +40,11 @@ describe("Test Interactor", () => {
                                             initiator: "Rent for my crib",
                                             purpose: "Thanks landlord",
                                             value: -650,
+                                            category: {
+                                                name: "rent",
+                                                type: "fixed",
+                                                period: "monthly",
+                                            },
                                         },
                                     ],
                                 },
@@ -54,6 +65,11 @@ describe("Test Interactor", () => {
                                             purpose:
                                                 "Your health is our mission",
                                             value: -14.99,
+                                            category: {
+                                                name: "insurance",
+                                                type: "fixed",
+                                                period: "monthly",
+                                            },
                                         },
                                         {
                                             day: 1,
@@ -63,6 +79,11 @@ describe("Test Interactor", () => {
                                             purpose:
                                                 "Your health is our mission",
                                             value: -14.99,
+                                            category: {
+                                                name: "insurance",
+                                                type: "fixed",
+                                                period: "monthly",
+                                            },
                                         },
                                         {
                                             day: 2,
@@ -72,6 +93,11 @@ describe("Test Interactor", () => {
                                             purpose:
                                                 "Your health is our mission",
                                             value: -14.99,
+                                            category: {
+                                                name: "insurance",
+                                                type: "fixed",
+                                                period: "monthly",
+                                            },
                                         },
                                     ],
                                 },
@@ -92,6 +118,11 @@ describe("Test Interactor", () => {
                                             purpose:
                                                 "your mobile phone provider",
                                             value: -39.99,
+                                            category: {
+                                                name: "mobile",
+                                                type: "fixed",
+                                                period: "monthly",
+                                            },
                                         },
                                         {
                                             day: 22,
@@ -101,6 +132,11 @@ describe("Test Interactor", () => {
                                             purpose:
                                                 "your mobile phone provider",
                                             value: -39.99,
+                                            category: {
+                                                name: "mobile",
+                                                type: "fixed",
+                                                period: "monthly",
+                                            },
                                         },
                                     ],
                                 },
@@ -137,34 +173,35 @@ describe("Test Interactor", () => {
                                 dateFormat: "dd.MM.yyyy",
                             },
                         },
+                        mutator: {
+                            skipErrors: true,
+                            categories: [
+                                {
+                                    name: "rent",
+                                    type: CategoryType.Fixed,
+                                    samples: [
+                                        { initiator: "Rent for my crib" },
+                                    ],
+                                },
+                                {
+                                    name: "insurance",
+                                    type: CategoryType.Fixed,
+                                    samples: [
+                                        { initiator: "Stay Healthy Corp." },
+                                    ],
+                                },
+                                {
+                                    name: "mobile",
+                                    type: CategoryType.Fixed,
+                                    samples: [{ initiator: "Mobilio Ltd." }],
+                                },
+                            ],
+                        },
                         report: {
                             type: "fixcosts",
                             options: {
                                 before: "15.11.2021",
                                 after: "01.09.2021",
-                                categories: [
-                                    {
-                                        name: "rent",
-                                        type: "",
-                                        samples: [
-                                            { initiator: "Rent for my crib" },
-                                        ],
-                                    },
-                                    {
-                                        name: "insurance",
-                                        type: "",
-                                        samples: [
-                                            { initiator: "Stay Healthy Corp." },
-                                        ],
-                                    },
-                                    {
-                                        name: "mobile",
-                                        type: "",
-                                        samples: [
-                                            { initiator: "Mobilio Ltd." },
-                                        ],
-                                    },
-                                ],
                             },
                         },
                     },

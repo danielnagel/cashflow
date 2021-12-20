@@ -14,12 +14,14 @@
                 "dateFormat": ""
             }
         },
+        "mutator": {
+            "categories": []
+        },
         "report": {
             "type": "",
             "options": {
                 "before": "",
-                "after": "",
-                "categories": []
+                "after": ""
             }
         }
     },

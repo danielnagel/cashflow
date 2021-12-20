@@ -1,3 +1,4 @@
+import { CategoryPeriods, CategoryType } from "../../types/enums";
 import { isTransactionMatchingSample } from "../../utils/filters";
 import { isApplicationError } from "../../utils/typeguards";
 
@@ -6,34 +7,44 @@ import { isApplicationError } from "../../utils/typeguards";
  * Adds a category object to a transaction object.
  *
  * @param transactions
- * @param categories that match transactions
+ * @param options
  * @returns A list of transactions with added category objects or
  * an ApplicationError, when not all transactions matched.
  */
 export const categorizeTransaction = (
     transactions: Transaction[],
-    categories: SampledCategory[],
+    options: CategorizeOptions,
 ): Transaction[] | ApplicationError => {
     if (transactions.length === 0) return [];
 
     const copyOfTransactions = copy(transactions);
-    for (const category of categories) {
+    for (const category of options.categories) {
         for (const sample of category.samples) {
             for (const transaction of copyOfTransactions) {
                 if (isTransactionMatchingSample(transaction, sample)) {
                     transaction.category = {
                         name: category.name,
                         type: category.type,
-                        period: category.period,
                     };
+                    if (
+                        category.type === CategoryType.Fixed ||
+                        category.type === CategoryType.Income
+                    ) {
+                        transaction.category.period = CategoryPeriods.Monthly;
+                        if (typeof category.period !== "undefined") {
+                            transaction.category.period = category.period;
+                        }
+                    }
                 }
             }
         }
     }
 
-    const error = generateError(copyOfTransactions);
-    if (isApplicationError(error)) {
-        return error;
+    if (!options.skipErrors) {
+        const error = generateError(copyOfTransactions);
+        if (isApplicationError(error)) {
+            return error;
+        }
     }
 
     return copyOfTransactions;
