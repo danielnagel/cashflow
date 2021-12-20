@@ -12,3 +12,22 @@ export const enum ConnectorType {
 export const enum ReportType {
     FixCosts = "fixcosts",
 }
+
+/**
+ * Specifies which category types exist.
+ */
+export const enum CategoryType {
+    Fixed = "fixed",
+    Variable = "variable",
+    Income = "income",
+    Special = "special",
+}
+
+/**
+ * Specifies which category periods exist.
+ */
+export const enum CategoryPeriods {
+    Monthly = "monthly",
+    Quarter = "quarter",
+    Yearly = "yearly",
+}

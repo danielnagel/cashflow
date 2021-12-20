@@ -62,7 +62,18 @@ export const isCategory = (object: unknown): object is Category => {
     if (!object) return false;
     return (
         (object as Category).name !== undefined &&
-        (object as Category).samples !== undefined
+        (object as Category).type !== undefined
+    );
+};
+
+export const isSampledCategory = (
+    object: unknown,
+): object is SampledCategory => {
+    if (!object) return false;
+    return (
+        (object as SampledCategory).name !== undefined &&
+        (object as SampledCategory).type !== undefined &&
+        (object as SampledCategory).samples !== undefined
     );
 };
 

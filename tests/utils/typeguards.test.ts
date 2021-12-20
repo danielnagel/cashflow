@@ -6,6 +6,7 @@ import {
     isCategorizeOptions,
     isDataKeys,
     isCategory,
+    isSampledCategory,
     isConfiguration,
     isApplicationError,
 } from "../../src/utils/typeguards";
@@ -264,8 +265,35 @@ describe("Test utils/typeguards", () => {
         });
 
         test("Category is a Category", () => {
-            const category = { name: "", samples: [] };
+            const category = { name: "", type: "" };
             expect(isCategory(category)).toBeTruthy();
+        });
+    });
+
+    describe("Check if object is SampledCategory", () => {
+        test("Null is not a SampledCategory", () => {
+            expect(isSampledCategory(null)).toBeFalsy();
+        });
+
+        test("undefined is not a SampledCategory", () => {
+            expect(isSampledCategory(undefined)).toBeFalsy();
+        });
+
+        test("Empty object is not a SampledCategory", () => {
+            expect(isSampledCategory({})).toBeFalsy();
+        });
+
+        test("string is not a SampledCategory", () => {
+            expect(isSampledCategory("hello")).toBeFalsy();
+        });
+
+        test("number is not a SampledCategory", () => {
+            expect(isSampledCategory(123)).toBeFalsy();
+        });
+
+        test("SampledCategory is a SampledCategory", () => {
+            const category = { name: "", type: "", samples: [] };
+            expect(isSampledCategory(category)).toBeTruthy();
         });
     });
 

@@ -8,6 +8,7 @@ type Transaction = {
     day: number;
     month: number;
     year: number;
+    category?: Category;
 };
 
 /**
@@ -87,14 +88,19 @@ type FixCost = {
  */
 type Category = {
     name: string;
-    samples: Sample[];
+    type: string;
+    period?: string;
 };
+
+interface SampledCategory extends Category {
+    samples: Sample[];
+}
 
 /**
  * Options on which multiple FixCost objects are ordered by categories.
  */
 type CategorizeOptions = {
-    categories: Category[];
+    categories: SampledCategory[];
     dateFormat?: string;
     before?: string;
     after?: string;

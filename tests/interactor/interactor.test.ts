@@ -145,18 +145,21 @@ describe("Test Interactor", () => {
                                 categories: [
                                     {
                                         name: "rent",
+                                        type: "",
                                         samples: [
                                             { initiator: "Rent for my crib" },
                                         ],
                                     },
                                     {
                                         name: "insurance",
+                                        type: "",
                                         samples: [
                                             { initiator: "Stay Healthy Corp." },
                                         ],
                                     },
                                     {
                                         name: "mobile",
+                                        type: "",
                                         samples: [
                                             { initiator: "Mobilio Ltd." },
                                         ],

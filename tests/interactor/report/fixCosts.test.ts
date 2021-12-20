@@ -824,6 +824,7 @@ describe("Test fixCostReport", () => {
                     categories: [
                         {
                             name: "a",
+                            type: "",
                             samples: [{ initiator: "b" }, { initiator: "c" }],
                         },
                     ],
@@ -866,6 +867,7 @@ describe("Test fixCostReport", () => {
                     categories: [
                         {
                             name: "a",
+                            type: "",
                             samples: [{ initiator: "b" }, { initiator: "c" }],
                         },
                     ],
@@ -986,14 +988,17 @@ describe("Test fixCostReport", () => {
                     categories: [
                         {
                             name: "rent",
+                            type: "",
                             samples: [{ initiator: "Rent for my crib" }],
                         },
                         {
                             name: "insurance",
+                            type: "",
                             samples: [{ initiator: "Stay Healthy Corp." }],
                         },
                         {
                             name: "mobile",
+                            type: "",
                             samples: [{ initiator: "Mobilio Ltd." }],
                         },
                     ],
