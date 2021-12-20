@@ -60,17 +60,7 @@ export const filterTransactions = (
     let filteredTransactions: Transaction[] = [];
     for (const sample of options.samples) {
         for (const transaction of transactions) {
-            if (transaction.initiator === sample.initiator) {
-                if (typeof sample.purpose === "string") {
-                    if (
-                        transaction.purpose
-                            .toLowerCase()
-                            .includes(sample.purpose.toLowerCase())
-                    ) {
-                        filteredTransactions.push(transaction);
-                    }
-                    continue;
-                }
+            if (isTransactionMatchingSample(transaction, sample)) {
                 filteredTransactions.push(transaction);
             }
         }
@@ -88,4 +78,85 @@ export const filterTransactions = (
     );
 
     return filteredTransactions;
+};
+
+/**
+ * Matches a transaction to a given sample.
+ *
+ * @param transaction
+ * @param sample
+ * @returns true if an initiator or also when defined a purpose was matching,
+ * false otherwise
+ */
+export const isTransactionMatchingSample = (
+    transaction: Transaction,
+    sample: Sample,
+): boolean => {
+    if (transaction.initiator === sample.initiator) {
+        if (typeof sample.purpose === "string") {
+            if (
+                transaction.purpose
+                    .toLowerCase()
+                    .includes(sample.purpose.toLowerCase())
+            ) {
+                // initiators and purpose matching
+                return true;
+            }
+            // initiator matches, purpose exists, but doesn't match
+            return false;
+        }
+        // initiators matching
+        return true;
+    }
+    // nothing matches
+    return false;
+};
+
+/**
+ * Merges to lists of Transaction objects into one,
+ * without double entries.
+ *
+ * @param transactionsA list of already loaded transactions
+ * @param transactionsB list of newely loaded transactions
+ * @returns list of transactions without double entries
+ */
+export const filterDoubleTransactions = (
+    transactionsA: Transaction[],
+    transactionsB: Transaction[],
+): Transaction[] => {
+    const transactions: Transaction[] = [...transactionsA];
+    for (const transactionB of transactionsB) {
+        let isTransactionUnknown = true;
+        // TODO: fix filters
+        for (const transactionA of transactionsA) {
+            if (isSameTransaction(transactionA, transactionB)) {
+                isTransactionUnknown = false;
+                break;
+            }
+        }
+        if (isTransactionUnknown) {
+            transactions.push(transactionB);
+        }
+    }
+    return transactions;
+};
+
+/**
+ * Compares to Transcation objects.
+ * @param transactionA Transaction object
+ * @param transactionB Transaction object
+ * @returns true if every attribute is the same, false otherwise.
+ */
+const isSameTransaction = (
+    transactionA: Transaction,
+    transactionB: Transaction,
+): boolean => {
+    return (
+        transactionA.day === transactionB.day &&
+        transactionA.month === transactionB.month &&
+        transactionA.year === transactionB.year &&
+        transactionA.initiator === transactionB.initiator &&
+        transactionA.purpose === transactionB.purpose &&
+        transactionA.value === transactionB.value
+    );
 };

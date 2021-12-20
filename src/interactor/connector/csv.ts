@@ -13,6 +13,7 @@ import {
 import { parseDateString } from "../../utils/dates";
 import { isApplicationError } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
+import { filterDoubleTransactions } from "../../utils/filters";
 
 /**
  * Generates a Transaction object from an unkown record.
@@ -126,7 +127,7 @@ const loadTransactionDataFromDirectory = async (
     options: CsvOptions,
     loggerOptions?: LoggerOptions,
 ): Promise<Transaction[]> => {
-    const mergedTransactions: Transaction[] = [];
+    let mergedTransactions: Transaction[] = [];
     if (isDirectory(options.path)) {
         const filesInDirectory = loadFileNamesFromDirectory(
             options.path,
@@ -141,8 +142,9 @@ const loadTransactionDataFromDirectory = async (
                 optionsCopy,
                 loggerOptions,
             );
-            mergedTransactions.push(
-                ...filterDoubleTransactions(mergedTransactions, transactions),
+            mergedTransactions = filterDoubleTransactions(
+                mergedTransactions,
+                transactions,
             );
         }
     }
@@ -192,51 +194,4 @@ const loadTransactionDataFromFile = async (
     }
 
     return transactions;
-};
-
-/**
- * Merges to lists of Transaction objects into one,
- * without double entries.
- *
- * @param transactions list of already loaded transactions
- * @param newTransactions list of newely loaded transactions
- * @returns list of transactions without double entries
- */
-const filterDoubleTransactions = (
-    transactions: Transaction[],
-    newTransactions: Transaction[],
-): Transaction[] => {
-    const filteredNewTransactions: Transaction[] = [];
-    for (const newTransaction of newTransactions) {
-        let isNewTransactionUnknown = true;
-        for (const transaction of transactions) {
-            if (isSameTransaction(newTransaction, transaction)) {
-                isNewTransactionUnknown = false;
-            }
-        }
-        if (isNewTransactionUnknown) {
-            filteredNewTransactions.push(newTransaction);
-        }
-    }
-    return filteredNewTransactions;
-};
-
-/**
- * Compares to Transcation objects.
- * @param transactionA Transaction object
- * @param transactionB Transaction object
- * @returns true if every attribute is the same, false otherwise.
- */
-const isSameTransaction = (
-    transactionA: Transaction,
-    transactionB: Transaction,
-): boolean => {
-    return (
-        transactionA.day === transactionB.day &&
-        transactionA.month === transactionB.month &&
-        transactionA.year === transactionB.year &&
-        transactionA.initiator === transactionB.initiator &&
-        transactionA.purpose === transactionB.purpose &&
-        transactionA.value === transactionB.value
-    );
 };
