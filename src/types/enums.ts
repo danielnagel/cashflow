@@ -10,7 +10,7 @@ export const enum ConnectorType {
  * Specifies which ReportTypes exist.
  */
 export const enum ReportType {
-    FixCosts = "fixcosts",
+    FixedPayDay = "fixedpayday",
 }
 
 /**

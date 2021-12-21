@@ -39,7 +39,7 @@ export const generateReportAsTable = (
  */
 const fixCostsReportAsTable = (
     configuration: Configuration,
-    report: CategorizedFixCosts,
+    report: CategorizedFixedPayDays,
 ): FixCostsReportTableRow[] => {
     const tabularData: FixCostsReportTableRow[] = [];
     const dateFormat = configuration.viewer?.dateFormat
@@ -48,22 +48,22 @@ const fixCostsReportAsTable = (
     const currency = configuration.viewer?.currency
         ? configuration.viewer.currency
         : "€$";
-    for (const fixCost of report.fixCosts) {
+    for (const fixedPayDay of report.namedFixedPayDays) {
         const lastBookingDate = formatDate(
             new Date(
                 getTimeStampFromTransaction(
-                    fixCost.fixCost.transactions[
-                        fixCost.fixCost.transactions.length - 1
+                    fixedPayDay.fixedPayDay.transactions[
+                        fixedPayDay.fixedPayDay.transactions.length - 1
                     ],
                 ),
             ),
             dateFormat,
         );
         tabularData.push({
-            category: fixCost.name,
-            paid: fixCost.fixCost.isPaidThisMonth,
-            bookingDay: fixCost.fixCost.averageBookingDay,
-            cost: `${round(fixCost.fixCost.value)} ${currency}`,
+            category: fixedPayDay.name,
+            paid: fixedPayDay.fixedPayDay.isPaidThisMonth,
+            bookingDay: fixedPayDay.fixedPayDay.averageBookingDay,
+            cost: `${round(fixedPayDay.fixedPayDay.value)} ${currency}`,
             lastBookingDate,
         });
     }

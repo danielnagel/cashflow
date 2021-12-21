@@ -10,19 +10,22 @@ import { log } from "../../utils/loggers";
 import { CategoryType } from "../../types/enums";
 
 /**
- * Generates a FixCost object from a list of Transaction considering given FilterTransactionsBySampleOptions.
+ * Generates a FixedPayDay object from a list of Transaction considering given FilterTransactionsBySampleOptions.
  *
  * @param transactions which are used as a data basis
  * @param filterOptions specify how to filter the transactions
- * @returns FixCost object or an ApplicationError when there are no transactions,
+ * @returns FixedPayDay object or an ApplicationError when there are no transactions,
  * no transactions matched by filter or by malformed configuration.
  */
-export const generateFixCost = (
+export const generateFixedPayDay = (
     fixedTransactions: Transaction[],
     filterOptions: FilterTransactionsByCategoryOptions,
-): FixCost | ApplicationError => {
+): FixedPayDay | ApplicationError => {
     if (fixedTransactions.length === 0)
-        return { source: "fixCosts.ts", message: "There are no transactions." };
+        return {
+            source: "fixedPayDay.ts",
+            message: "There are no transactions.",
+        };
 
     const matchedTransactions = getSortedMatchedTransactions(
         fixedTransactions,
@@ -30,7 +33,7 @@ export const generateFixCost = (
     );
     if (isApplicationError(matchedTransactions)) return matchedTransactions;
 
-    const result: FixCost = {
+    const result: FixedPayDay = {
         value: 0,
         isPaidThisMonth: false,
         lastBookingDays: [],
@@ -82,7 +85,7 @@ const getSortedMatchedTransactions = (
     );
     if (matchedTransactions.length === 0)
         return {
-            source: "fixCosts.ts",
+            source: "fixedPayDay.ts",
             message: "No transactions matched by filter.",
         };
 
@@ -108,7 +111,7 @@ const getComparsionMonthYear = (
         );
         if (!beforeDate)
             return {
-                source: "fixCosts.ts",
+                source: "fixedPayDay.ts",
                 message: `Before date filter options can't be parse! Before date is '${beforeDate}'`,
             };
         month = beforeDate.getMonth() + 1;
@@ -118,24 +121,27 @@ const getComparsionMonthYear = (
 };
 
 /**
- * Generates a categorized fix costs report.
+ * Generates a fixed pay day report.
  * The samples of every category are used to match the correct transactions.
  * Configuration made by the user affects the accuracy of this report.
  *
  * @param transactions which are used as a data basis
  * @param categorizeOptions specifies how to categorize generated fix costs
  * @param loggerOptions (optional) to control logging behaviour
- * @returns CategorizedFixCosts object or ApplicationError when there are no transaction,
+ * @returns FixedPayDay object or ApplicationError when there are no transaction,
  * no categories or no categories could be matched.
  */
-export const generateCategorizedFixCosts = (
+export const generateFixedPayDayReport = (
     transactions: Transaction[],
-    reportOptions: FixCostOptions,
+    reportOptions: FixedPayDayOptions,
     categorizeOptions: CategorizeOptions,
     loggerOptions?: LoggerOptions,
-): CategorizedFixCosts | ApplicationError => {
+): CategorizedFixedPayDays | ApplicationError => {
     if (transactions.length == 0) {
-        return { source: "fixCosts.ts", message: "There are no transactions." };
+        return {
+            source: "fixedPayDay.ts",
+            message: "There are no transactions.",
+        };
     }
 
     const fixedTransactions: Transaction[] = filterTransactionsByCategoryType(
@@ -143,18 +149,18 @@ export const generateCategorizedFixCosts = (
         CategoryType.Fixed,
     );
 
-    const namedFixCost: NamedFixCost[] = [];
+    const namedFixedPayDay: NamedFixedPayDay[] = [];
     let sum = 0;
     let unpaidSum = 0;
     for (const category of categorizeOptions.categories) {
-        const fixCost = generateFixCost(fixedTransactions, {
+        const fixedPayDay = generateFixedPayDay(fixedTransactions, {
             category,
             before: reportOptions.before,
             after: reportOptions.after,
         });
-        if (isApplicationError(fixCost)) {
+        if (isApplicationError(fixedPayDay)) {
             log({
-                message: fixCost,
+                message: fixedPayDay,
                 level: "error",
                 allowedLogLevel: loggerOptions?.allowedLogLevel,
                 dateTimeFormat: loggerOptions?.dateTimeFormat,
@@ -162,14 +168,14 @@ export const generateCategorizedFixCosts = (
             continue;
         }
 
-        namedFixCost.push({ name: category.name, fixCost });
-        sum += fixCost.value;
-        if (!fixCost.isPaidThisMonth) unpaidSum += fixCost.value;
+        namedFixedPayDay.push({ name: category.name, fixedPayDay });
+        sum += fixedPayDay.value;
+        if (!fixedPayDay.isPaidThisMonth) unpaidSum += fixedPayDay.value;
     }
 
-    if (namedFixCost.length === 0)
+    if (namedFixedPayDay.length === 0)
         return {
-            source: "fixCosts.ts",
+            source: "fixedPayDay.ts",
             message: "Couldn't match any categories.",
         };
 
@@ -177,7 +183,7 @@ export const generateCategorizedFixCosts = (
         date: generateReportDateString(reportOptions),
         sum,
         unpaidSum,
-        fixCosts: namedFixCost,
+        namedFixedPayDays: namedFixedPayDay,
     };
 };
 
@@ -190,7 +196,7 @@ export const generateCategorizedFixCosts = (
  * @returns date string
  */
 const generateReportDateString = (
-    categorizeOptions: FixCostOptions,
+    categorizeOptions: FixedPayDayOptions,
 ): string => {
     let date = categorizeOptions.before
         ? categorizeOptions.before

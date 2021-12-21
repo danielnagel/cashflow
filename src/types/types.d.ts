@@ -74,13 +74,13 @@ type Sample = {
 };
 
 /**
- * A fix cost is paid every month.
+ * A fixed pay day occurs on a regular bases.
  * It has probably the same value every month,
  * can be paid in a specific month,
  * should be paid around the same time every month
  * and has transactions associated with it.
  */
-type FixCost = {
+type FixedPayDay = {
     value: number;
     isPaidThisMonth: boolean;
     averageBookingDay: number;
@@ -113,42 +113,42 @@ type CategorizeOptions = {
 /**
  * Options used for a fix cost report.
  */
-type FixCostOptions = {
+type FixedPayDayOptions = {
     dateFormat?: string;
     before?: string;
     after?: string;
 };
 
 /**
- * A FixCost object, paired with its name from the Category of the CategorizeOptions.
+ * A FixedPayDay object, paired with its category name.
  */
-type NamedFixCost = {
+type NamedFixedPayDay = {
     name: string;
-    fixCost: FixCost;
+    fixedPayDay: FixedPayDay;
 };
 
 /**
  * Multiple fix cost, categorized through the CategorizeOptions.
  */
-type CategorizedFixCosts = {
+type CategorizedFixedPayDays = {
     date: string;
     sum: number;
     unpaidSum: number;
-    fixCosts: NamedFixCost[];
+    namedFixedPayDays: NamedFixedPayDay[];
 };
 
 /**
  * Discriminating union to determine if the given options are from type CategorizeOptions.
  */
-type FixCostsReportOptions = {
-    type: "fixcosts";
-    options: FixCostOptions;
+type FixedPayDayReportOptions = {
+    type: "fixedpayday";
+    options: FixedPayDayOptions;
 };
 
 /**
  * Report options for interactor, to interact with the correct report implementation.
  */
-type ReportOptions = FixCostsReportOptions;
+type ReportOptions = FixedPayDayReportOptions;
 
 /**
  * Discriminating union to determine if the given options are from type CsvOptions.
@@ -182,17 +182,17 @@ type InteractorOptions = {
 };
 
 /**
- * Discriminating union to determine if the given report is from type CategorizedFixCosts.
+ * Discriminating union to determine if the given report is from type CategorizedFixedPayDays.
  */
-type FixCostsReport = {
+type FixedPayDayReport = {
     type: "fixcost";
-    report: CategorizedFixCosts | null;
+    report: CategorizedFixedPayDays | null;
 };
 
 /**
  * Possible reports, that the interactor could generate.
  */
-type Report = FixCostsReport;
+type Report = FixedPayDayReport;
 
 /**
  * Possible configurations, that a user could create.

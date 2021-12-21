@@ -5,16 +5,16 @@ describe("Test Interactor", () => {
     describe("Test generating reports with CSV connector", () => {
         describe("Generate categorized fix costs from samples", () => {
             test("Generate categorized fix costs as expected", async () => {
-                const expected: FixCostsReport = {
+                const expected: FixedPayDayReport = {
                     type: "fixcost",
                     report: {
                         date: "15.11.2021",
                         sum: -704.98,
                         unpaidSum: -39.99,
-                        fixCosts: [
+                        namedFixedPayDays: [
                             {
                                 name: "rent",
-                                fixCost: {
+                                fixedPayDay: {
                                     value: -650,
                                     isPaidThisMonth: true,
                                     lastBookingDays: [1, 1],
@@ -51,7 +51,7 @@ describe("Test Interactor", () => {
                             },
                             {
                                 name: "insurance",
-                                fixCost: {
+                                fixedPayDay: {
                                     value: -14.99,
                                     isPaidThisMonth: true,
                                     lastBookingDays: [3, 1, 2],
@@ -104,7 +104,7 @@ describe("Test Interactor", () => {
                             },
                             {
                                 name: "mobile",
-                                fixCost: {
+                                fixedPayDay: {
                                     value: -39.99,
                                     isPaidThisMonth: false,
                                     lastBookingDays: [22, 22],
@@ -198,7 +198,7 @@ describe("Test Interactor", () => {
                             ],
                         },
                         report: {
-                            type: "fixcosts",
+                            type: "fixedpayday",
                             options: {
                                 before: "15.11.2021",
                                 after: "01.09.2021",

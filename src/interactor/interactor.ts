@@ -1,6 +1,6 @@
 import { loadTransactionData } from "./connector/csv";
 import { isApplicationError } from "../utils/typeguards";
-import { generateCategorizedFixCosts } from "./report/fixCosts";
+import { generateFixedPayDayReport } from "./report/fixedPaxDay";
 import { ConnectorType, ReportType } from "../types/enums";
 import { categorizeTransaction } from "./mutator/categorize";
 
@@ -40,8 +40,8 @@ export const generateReport = async (
     if (isApplicationError(transactions)) return transactions;
 
     switch (configuration.interactor.report.type) {
-        case ReportType.FixCosts:
-            const report = generateCategorizedFixCosts(
+        case ReportType.FixedPayDay:
+            const report = generateFixedPayDayReport(
                 transactions,
                 configuration.interactor.report.options,
                 configuration.interactor.mutator,

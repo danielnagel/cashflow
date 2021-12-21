@@ -1,7 +1,7 @@
 import {
-    generateFixCost,
-    generateCategorizedFixCosts,
-} from "../../../src/interactor/report/fixCosts";
+    generateFixedPayDay,
+    generateFixedPayDayReport,
+} from "../../../src/interactor/report/fixedPaxDay";
 import { CategoryType } from "../../../src/types/enums";
 
 describe("Test fixCostReport", () => {
@@ -478,10 +478,10 @@ describe("Test fixCostReport", () => {
         },
     ];
 
-    describe("Test function generateFixCost", () => {
+    describe("Test function generateFixedPayDay", () => {
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
-                const fixCost = generateFixCost([], {
+                const fixedPayDay = generateFixedPayDay([], {
                     category: {
                         name: "test",
                         type: CategoryType.Fixed,
@@ -489,8 +489,8 @@ describe("Test fixCostReport", () => {
                     before: "15.12.2021",
                 });
 
-                expect(fixCost).toStrictEqual({
-                    source: "fixCosts.ts",
+                expect(fixedPayDay).toStrictEqual({
+                    source: "fixedPayDay.ts",
                     message: "There are no transactions.",
                 });
             });
@@ -507,7 +507,7 @@ describe("Test fixCostReport", () => {
             ];
 
             test("Return null, category doesn't match", () => {
-                const fixCost = generateFixCost(transactions, {
+                const fixedPayDay = generateFixedPayDay(transactions, {
                     category: {
                         name: "test",
                         type: CategoryType.Fixed,
@@ -515,14 +515,14 @@ describe("Test fixCostReport", () => {
                     before: "15.12.2021",
                 });
 
-                expect(fixCost).toStrictEqual({
-                    source: "fixCosts.ts",
+                expect(fixedPayDay).toStrictEqual({
+                    source: "fixedPayDay.ts",
                     message: "No transactions matched by filter.",
                 });
             });
 
             test("Return null, if there aren't any transactions that match toDate", () => {
-                const fixCost = generateFixCost(transactions, {
+                const fixedPayDay = generateFixedPayDay(transactions, {
                     category: {
                         name: "rent",
                         type: CategoryType.Fixed,
@@ -530,14 +530,14 @@ describe("Test fixCostReport", () => {
                     before: "15.12.1999",
                 });
 
-                expect(fixCost).toStrictEqual({
-                    source: "fixCosts.ts",
+                expect(fixedPayDay).toStrictEqual({
+                    source: "fixedPayDay.ts",
                     message: "No transactions matched by filter.",
                 });
             });
 
             test("Return null, if sinceDate is after toDate", () => {
-                const fixCost = generateFixCost(transactions, {
+                const fixedPayDay = generateFixedPayDay(transactions, {
                     category: {
                         name: "rent",
                         type: CategoryType.Fixed,
@@ -546,8 +546,8 @@ describe("Test fixCostReport", () => {
                     after: "12.07.2002",
                 });
 
-                expect(fixCost).toStrictEqual({
-                    source: "fixCosts.ts",
+                expect(fixedPayDay).toStrictEqual({
+                    source: "fixedPayDay.ts",
                     message: "No transactions matched by filter.",
                 });
             });
@@ -555,7 +555,7 @@ describe("Test fixCostReport", () => {
 
         describe("Test fix costs to match exactly one interactor (sample), same booking day, unsorted transactions", () => {
             test("Generate fix cost as expected", () => {
-                const expected: FixCost = {
+                const expected: FixedPayDay = {
                     value: 650,
                     isPaidThisMonth: true,
                     lastBookingDays: [1, 1, 1, 1, 1, 1],
@@ -642,19 +642,22 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCost = generateFixCost(categorizedTransactions, {
-                    category: {
-                        name: "rent",
-                        type: CategoryType.Fixed,
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "rent",
+                            type: CategoryType.Fixed,
+                        },
+                        before: "30.11.2021",
                     },
-                    before: "30.11.2021",
-                });
+                );
 
-                expect(fixCost).toStrictEqual(expected);
+                expect(fixedPayDay).toStrictEqual(expected);
             });
 
             test("Generate fix cost as expected, toDate before latest transaction that matches sample", () => {
-                const expected: FixCost = {
+                const expected: FixedPayDay = {
                     value: 650,
                     isPaidThisMonth: true,
                     lastBookingDays: [1, 1, 1, 1, 1],
@@ -728,19 +731,22 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCost = generateFixCost(categorizedTransactions, {
-                    category: {
-                        name: "rent",
-                        type: CategoryType.Fixed,
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "rent",
+                            type: CategoryType.Fixed,
+                        },
+                        before: "15.10.2021",
                     },
-                    before: "15.10.2021",
-                });
+                );
 
-                expect(fixCost).toStrictEqual(expected);
+                expect(fixedPayDay).toStrictEqual(expected);
             });
 
             test("Generate fix cost as expected, with since Date", () => {
-                const expected: FixCost = {
+                const expected: FixedPayDay = {
                     value: 650,
                     isPaidThisMonth: true,
                     lastBookingDays: [1, 1],
@@ -775,22 +781,25 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCost = generateFixCost(categorizedTransactions, {
-                    category: {
-                        name: "rent",
-                        type: CategoryType.Fixed,
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "rent",
+                            type: CategoryType.Fixed,
+                        },
+                        before: "15.11.2021",
+                        after: "01.09.2021",
                     },
-                    before: "15.11.2021",
-                    after: "01.09.2021",
-                });
+                );
 
-                expect(fixCost).toStrictEqual(expected);
+                expect(fixedPayDay).toStrictEqual(expected);
             });
         });
 
         describe("Test fix costs to match multiple interactors (samples), which are the same fix cost, but the interactor name changes; different booking days", () => {
             test("Generate fix cost as expected", () => {
-                const expected: FixCost = {
+                const expected: FixedPayDay = {
                     value: 14.99,
                     isPaidThisMonth: true,
                     lastBookingDays: [1, 1, 2, 3, 1, 2, 3],
@@ -890,19 +899,22 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCost = generateFixCost(categorizedTransactions, {
-                    category: {
-                        name: "insurance",
-                        type: CategoryType.Fixed,
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "insurance",
+                            type: CategoryType.Fixed,
+                        },
+                        before: "30.12.2021",
                     },
-                    before: "30.12.2021",
-                });
+                );
 
-                expect(fixCost).toStrictEqual(expected);
+                expect(fixedPayDay).toStrictEqual(expected);
             });
 
             test("Generate fix cost as expected, toDate before latest transaction that matches sample", () => {
-                const expected: FixCost = {
+                const expected: FixedPayDay = {
                     value: 12.99,
                     isPaidThisMonth: false,
                     lastBookingDays: [1, 1, 2],
@@ -950,19 +962,22 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCost = generateFixCost(categorizedTransactions, {
-                    category: {
-                        name: "insurance",
-                        type: CategoryType.Fixed,
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "insurance",
+                            type: CategoryType.Fixed,
+                        },
+                        before: "01.09.2021",
                     },
-                    before: "01.09.2021",
-                });
+                );
 
-                expect(fixCost).toStrictEqual(expected);
+                expect(fixedPayDay).toStrictEqual(expected);
             });
 
             test("Generate fix cost as expected, with since Date", () => {
-                const expected: FixCost = {
+                const expected: FixedPayDay = {
                     value: 14.99,
                     isPaidThisMonth: true,
                     lastBookingDays: [3, 1, 2],
@@ -1010,20 +1025,23 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCost = generateFixCost(categorizedTransactions, {
-                    category: {
-                        name: "insurance",
-                        type: CategoryType.Fixed,
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "insurance",
+                            type: CategoryType.Fixed,
+                        },
+                        before: "15.11.2021",
+                        after: "01.09.2021",
                     },
-                    before: "15.11.2021",
-                    after: "01.09.2021",
-                });
+                );
 
-                expect(fixCost).toStrictEqual(expected);
+                expect(fixedPayDay).toStrictEqual(expected);
             });
 
             test("Generate fix cost as expected, without specified Date", () => {
-                const expected: FixCost = {
+                const expected: FixedPayDay = {
                     value: 14.99,
                     isPaidThisMonth: true,
                     lastBookingDays: [1, 1, 2, 3, 1, 2, 3],
@@ -1123,18 +1141,21 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCost = generateFixCost(categorizedTransactions, {
-                    category: {
-                        name: "insurance",
-                        type: CategoryType.Fixed,
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "insurance",
+                            type: CategoryType.Fixed,
+                        },
                     },
-                });
+                );
 
-                expect(fixCost).toStrictEqual(expected);
+                expect(fixedPayDay).toStrictEqual(expected);
             });
 
             test("Match samples that only differ in purpose", () => {
-                const expected: FixCost = {
+                const expected: FixedPayDay = {
                     value: 9.99,
                     isPaidThisMonth: false,
                     lastBookingDays: [15, 15, 15, 15, 15],
@@ -1208,14 +1229,17 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCost = generateFixCost(categorizedTransactions, {
-                    category: {
-                        name: "music subscription",
-                        type: CategoryType.Fixed,
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "music subscription",
+                            type: CategoryType.Fixed,
+                        },
                     },
-                });
+                );
 
-                expect(fixCost).toStrictEqual(expected);
+                expect(fixedPayDay).toStrictEqual(expected);
             });
         });
     });
@@ -1234,7 +1258,7 @@ describe("Test fixCostReport", () => {
                     ],
                 };
                 expect(
-                    generateCategorizedFixCosts(
+                    generateFixedPayDayReport(
                         [],
                         fixCostOptions,
                         categorizeOptions,
@@ -1243,7 +1267,7 @@ describe("Test fixCostReport", () => {
                         },
                     ),
                 ).toStrictEqual({
-                    source: "fixCosts.ts",
+                    source: "fixedPayDay.ts",
                     message: "There are no transactions.",
                 });
             });
@@ -1255,7 +1279,7 @@ describe("Test fixCostReport", () => {
                 };
                 const options: CategorizeOptions = { categories: [] };
                 expect(
-                    generateCategorizedFixCosts(
+                    generateFixedPayDayReport(
                         categorizedTransactions,
                         fixCostOptions,
                         categorizeOptions,
@@ -1264,7 +1288,7 @@ describe("Test fixCostReport", () => {
                         },
                     ),
                 ).toStrictEqual({
-                    source: "fixCosts.ts",
+                    source: "fixedPayDay.ts",
                     message: "Couldn't match any categories.",
                 });
             });
@@ -1281,7 +1305,7 @@ describe("Test fixCostReport", () => {
                     ],
                 };
                 expect(
-                    generateCategorizedFixCosts(
+                    generateFixedPayDayReport(
                         categorizedTransactions,
                         fixCostOptions,
                         categorizeOptions,
@@ -1290,7 +1314,7 @@ describe("Test fixCostReport", () => {
                         },
                     ),
                 ).toStrictEqual({
-                    source: "fixCosts.ts",
+                    source: "fixedPayDay.ts",
                     message: "Couldn't match any categories.",
                 });
             });
@@ -1298,14 +1322,14 @@ describe("Test fixCostReport", () => {
 
         describe("Test categorized fix costs to match multiple categories to a specific date", () => {
             test("Generate categorized fix costs as expected", () => {
-                const expected: CategorizedFixCosts = {
+                const expected: CategorizedFixedPayDays = {
                     date: "15.11.2021",
                     sum: 704.98,
                     unpaidSum: 39.99,
-                    fixCosts: [
+                    namedFixedPayDays: [
                         {
                             name: "rent",
-                            fixCost: {
+                            fixedPayDay: {
                                 value: 650,
                                 isPaidThisMonth: true,
                                 lastBookingDays: [1, 1],
@@ -1342,7 +1366,7 @@ describe("Test fixCostReport", () => {
                         },
                         {
                             name: "insurance",
-                            fixCost: {
+                            fixedPayDay: {
                                 value: 14.99,
                                 isPaidThisMonth: true,
                                 lastBookingDays: [3, 1, 2],
@@ -1392,7 +1416,7 @@ describe("Test fixCostReport", () => {
                         },
                         {
                             name: "mobile",
-                            fixCost: {
+                            fixedPayDay: {
                                 value: 39.99,
                                 isPaidThisMonth: false,
                                 lastBookingDays: [22, 22],
@@ -1455,7 +1479,7 @@ describe("Test fixCostReport", () => {
                 };
 
                 expect(
-                    generateCategorizedFixCosts(
+                    generateFixedPayDayReport(
                         categorizedTransactions,
                         fixCostOptions,
                         categorizeOptions,
@@ -1471,4 +1495,3 @@ describe("Test fixCostReport", () => {
 
 // -- test list
 // special handling for non-monthly, e.g. quarter yearly or yearly fix costs
-// merge multiple fixcost samples to one category, e.g. { name: "subscriptions", multiple: true, samples: [{name: "Audible", samples:[...]}, {name: "Netflix", samples:[...]}]}
