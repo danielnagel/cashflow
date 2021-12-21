@@ -5,9 +5,9 @@ import {
     filterTransactionsByDate,
 } from "../../utils/filters";
 import { sortTransactionsByDate } from "../../utils/sorters";
-import { isApplicationError } from "../../utils/typeguards";
+import { isApplicationError, isCategory } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
-import { CategoryType } from "../../types/enums";
+import { CategoryPeriods, CategoryType } from "../../types/enums";
 
 /**
  * Generates a FixedPayDay object from a list of Transaction considering given FilterTransactionsBySampleOptions.
@@ -33,26 +33,30 @@ export const generateFixedPayDay = (
     );
     if (isApplicationError(matchedTransactions)) return matchedTransactions;
 
+    const lastTransaction = matchedTransactions[matchedTransactions.length - 1];
+    const period = getPeriodFromTransactions(matchedTransactions);
+    const isPaid = isPaidThisPeriod(lastTransaction, period, filterOptions);
+    if (isApplicationError(isPaid)) return isPaid;
+
     const result: FixedPayDay = {
         value: 0,
-        isPaidThisMonth: false,
+        isPaid,
         lastBookingDays: [],
         averageBookingDay: 0,
         transactions: [],
     };
-    result.value = matchedTransactions[matchedTransactions.length - 1].value;
 
-    const monthYear = getComparsionMonthYear(filterOptions);
-    if (isApplicationError(monthYear)) return monthYear;
+    result.value = lastTransaction.value;
+    if (period === CategoryPeriods.Quarter) {
+        result.value = result.value / 3;
+    }
+    if (period === CategoryPeriods.Yearly) {
+        result.value = result.value / 12;
+    }
 
     for (const matchedTransaction of matchedTransactions) {
         result.lastBookingDays.push(matchedTransaction.day);
         result.averageBookingDay += matchedTransaction.day;
-        if (
-            matchedTransaction.month === monthYear.month &&
-            matchedTransaction.year === monthYear.year
-        )
-            result.isPaidThisMonth = true;
     }
 
     result.averageBookingDay = Math.floor(
@@ -61,6 +65,70 @@ export const generateFixedPayDay = (
     result.transactions = matchedTransactions;
 
     return result;
+};
+
+/**
+ * Returns a given period from a transaction if its defined.
+ *
+ * @param transactions
+ * @returns The period of a transaction, if its defined in a transaction object
+ * and available in CategoryPeriods enumeration.
+ * Otherwise period "monthly" is always returned.
+ */
+const getPeriodFromTransactions = (transactions: Transaction[]): string => {
+    let period = CategoryPeriods.Monthly;
+
+    if (transactions.length === 0) return period;
+    const firstTransaction = transactions[0];
+    if (
+        isCategory(firstTransaction.category) &&
+        typeof firstTransaction.category.period === "string"
+    ) {
+        for (const categoryPeriod of Object.values(CategoryPeriods)) {
+            if (firstTransaction.category.period === categoryPeriod)
+                return firstTransaction.category.period;
+        }
+    }
+
+    return period;
+};
+
+/**
+ * Determines if a transaction is paid in its period.
+ *
+ * @param transaction
+ * @param period monthly, yearly, quarter or undefined
+ * @param filterOptions
+ * @returns true, when the transaction was paid in the given period,
+ * false otherwise
+ */
+const isPaidThisPeriod = (
+    transaction: Transaction,
+    period: string | undefined,
+    filterOptions: FilterTransactionsByCategoryOptions,
+): boolean | ApplicationError => {
+    const monthYear = getComparsionMonthYear(filterOptions);
+    if (isApplicationError(monthYear)) return monthYear;
+
+    if (typeof period === "undefined" || period === CategoryPeriods.Monthly) {
+        return (
+            transaction.month === monthYear.month &&
+            transaction.year === monthYear.year
+        );
+    }
+
+    if (period === CategoryPeriods.Yearly) {
+        return transaction.year === monthYear.year;
+    }
+
+    if (period === CategoryPeriods.Quarter) {
+        return (
+            transaction.year === monthYear.year &&
+            monthYear.month - transaction.month < 3
+        );
+    }
+
+    return false;
 };
 
 /**
@@ -170,7 +238,7 @@ export const generateFixedPayDayReport = (
 
         namedFixedPayDay.push({ name: category.name, fixedPayDay });
         sum += fixedPayDay.value;
-        if (!fixedPayDay.isPaidThisMonth) unpaidSum += fixedPayDay.value;
+        if (!fixedPayDay.isPaid) unpaidSum += fixedPayDay.value;
     }
 
     if (namedFixedPayDay.length === 0)

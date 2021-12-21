@@ -1,7 +1,7 @@
 /**
  * Specifies which ConnectorTypes exist.
  */
-export const enum ConnectorType {
+export enum ConnectorType {
     CSV = "csv",
     API = "api",
 }
@@ -9,14 +9,14 @@ export const enum ConnectorType {
 /**
  * Specifies which ReportTypes exist.
  */
-export const enum ReportType {
+export enum ReportType {
     FixedPayDay = "fixedpayday",
 }
 
 /**
  * Specifies which category types exist.
  */
-export const enum CategoryType {
+export enum CategoryType {
     Fixed = "fixed",
     Variable = "variable",
     Income = "income",
@@ -26,7 +26,7 @@ export const enum CategoryType {
 /**
  * Specifies which category periods exist.
  */
-export const enum CategoryPeriods {
+export enum CategoryPeriods {
     Monthly = "monthly",
     Quarter = "quarter",
     Yearly = "yearly",

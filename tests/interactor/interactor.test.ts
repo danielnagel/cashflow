@@ -16,7 +16,7 @@ describe("Test Interactor", () => {
                                 name: "rent",
                                 fixedPayDay: {
                                     value: -650,
-                                    isPaidThisMonth: true,
+                                    isPaid: true,
                                     lastBookingDays: [1, 1],
                                     averageBookingDay: 1,
                                     transactions: [
@@ -53,7 +53,7 @@ describe("Test Interactor", () => {
                                 name: "insurance",
                                 fixedPayDay: {
                                     value: -14.99,
-                                    isPaidThisMonth: true,
+                                    isPaid: true,
                                     lastBookingDays: [3, 1, 2],
                                     averageBookingDay: 2,
                                     transactions: [
@@ -106,7 +106,7 @@ describe("Test Interactor", () => {
                                 name: "mobile",
                                 fixedPayDay: {
                                     value: -39.99,
-                                    isPaidThisMonth: false,
+                                    isPaid: false,
                                     lastBookingDays: [22, 22],
                                     averageBookingDay: 22,
                                     transactions: [

@@ -82,7 +82,7 @@ type Sample = {
  */
 type FixedPayDay = {
     value: number;
-    isPaidThisMonth: boolean;
+    isPaid: boolean;
     averageBookingDay: number;
     lastBookingDays: number[];
     transactions: Transaction[];

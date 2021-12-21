@@ -31,6 +31,32 @@ describe("Test fixCostReport", () => {
             },
         },
         {
+            day: 13,
+            month: 1,
+            year: 2021,
+            initiator: "Car Insurance Corp.",
+            purpose: "Safety first!",
+            value: 999.99,
+            category: {
+                name: "car insurance",
+                type: "fixed",
+                period: "yearly",
+            },
+        },
+        {
+            day: 1,
+            month: 1,
+            year: 2021,
+            initiator: "Luxurious Subscriptions",
+            purpose: "At least, it's not cheap.",
+            value: 56.4,
+            category: {
+                name: "luxury",
+                type: "fixed",
+                period: "quarter",
+            },
+        },
+        {
             day: 11,
             month: 11,
             year: 2021,
@@ -53,6 +79,19 @@ describe("Test fixCostReport", () => {
                 name: "rent",
                 type: "fixed",
                 period: "monthly",
+            },
+        },
+        {
+            day: 1,
+            month: 4,
+            year: 2021,
+            initiator: "Luxurious Subscriptions",
+            purpose: "At least, it's not cheap.",
+            value: 56.4,
+            category: {
+                name: "luxury",
+                type: "fixed",
+                period: "quarter",
             },
         },
         {
@@ -91,6 +130,19 @@ describe("Test fixCostReport", () => {
                 name: "rent",
                 type: "fixed",
                 period: "monthly",
+            },
+        },
+        {
+            day: 1,
+            month: 7,
+            year: 2021,
+            initiator: "Luxurious Subscriptions",
+            purpose: "At least, it's not cheap.",
+            value: 56.4,
+            category: {
+                name: "luxury",
+                type: "fixed",
+                period: "quarter",
             },
         },
         {
@@ -170,6 +222,19 @@ describe("Test fixCostReport", () => {
             },
         },
         {
+            day: 1,
+            month: 10,
+            year: 2021,
+            initiator: "Luxurious Subscriptions",
+            purpose: "At least, it's not cheap.",
+            value: 56.4,
+            category: {
+                name: "luxury",
+                type: "fixed",
+                period: "quarter",
+            },
+        },
+        {
             day: 7,
             month: 7,
             year: 2021,
@@ -179,6 +244,19 @@ describe("Test fixCostReport", () => {
             category: {
                 name: "groceries",
                 type: "variable",
+            },
+        },
+        {
+            day: 8,
+            month: 1,
+            year: 2020,
+            initiator: "Car Insurance Corp.",
+            purpose: "Safety first!",
+            value: 999.99,
+            category: {
+                name: "car insurance",
+                type: "fixed",
+                period: "yearly",
             },
         },
         {
@@ -553,11 +631,11 @@ describe("Test fixCostReport", () => {
             });
         });
 
-        describe("Test fix costs to match exactly one interactor (sample), same booking day, unsorted transactions", () => {
+        describe("Test fixed pay days to match exactly one interactor (sample), same booking day, unsorted transactions", () => {
             test("Generate fix cost as expected", () => {
                 const expected: FixedPayDay = {
                     value: 650,
-                    isPaidThisMonth: true,
+                    isPaid: true,
                     lastBookingDays: [1, 1, 1, 1, 1, 1],
                     averageBookingDay: 1,
                     transactions: [
@@ -659,7 +737,7 @@ describe("Test fixCostReport", () => {
             test("Generate fix cost as expected, toDate before latest transaction that matches sample", () => {
                 const expected: FixedPayDay = {
                     value: 650,
-                    isPaidThisMonth: true,
+                    isPaid: true,
                     lastBookingDays: [1, 1, 1, 1, 1],
                     averageBookingDay: 1,
                     transactions: [
@@ -748,7 +826,7 @@ describe("Test fixCostReport", () => {
             test("Generate fix cost as expected, with since Date", () => {
                 const expected: FixedPayDay = {
                     value: 650,
-                    isPaidThisMonth: true,
+                    isPaid: true,
                     lastBookingDays: [1, 1],
                     averageBookingDay: 1,
                     transactions: [
@@ -797,11 +875,11 @@ describe("Test fixCostReport", () => {
             });
         });
 
-        describe("Test fix costs to match multiple interactors (samples), which are the same fix cost, but the interactor name changes; different booking days", () => {
+        describe("Test fixed pay days to match multiple interactors (samples), which are the same fix cost, but the interactor name changes; different booking days", () => {
             test("Generate fix cost as expected", () => {
                 const expected: FixedPayDay = {
                     value: 14.99,
-                    isPaidThisMonth: true,
+                    isPaid: true,
                     lastBookingDays: [1, 1, 2, 3, 1, 2, 3],
                     averageBookingDay: 1,
                     transactions: [
@@ -916,7 +994,7 @@ describe("Test fixCostReport", () => {
             test("Generate fix cost as expected, toDate before latest transaction that matches sample", () => {
                 const expected: FixedPayDay = {
                     value: 12.99,
-                    isPaidThisMonth: false,
+                    isPaid: false,
                     lastBookingDays: [1, 1, 2],
                     averageBookingDay: 1,
                     transactions: [
@@ -979,7 +1057,7 @@ describe("Test fixCostReport", () => {
             test("Generate fix cost as expected, with since Date", () => {
                 const expected: FixedPayDay = {
                     value: 14.99,
-                    isPaidThisMonth: true,
+                    isPaid: true,
                     lastBookingDays: [3, 1, 2],
                     averageBookingDay: 2,
                     transactions: [
@@ -1043,7 +1121,7 @@ describe("Test fixCostReport", () => {
             test("Generate fix cost as expected, without specified Date", () => {
                 const expected: FixedPayDay = {
                     value: 14.99,
-                    isPaidThisMonth: true,
+                    isPaid: true,
                     lastBookingDays: [1, 1, 2, 3, 1, 2, 3],
                     averageBookingDay: 1,
                     transactions: [
@@ -1157,7 +1235,7 @@ describe("Test fixCostReport", () => {
             test("Match samples that only differ in purpose", () => {
                 const expected: FixedPayDay = {
                     value: 9.99,
-                    isPaidThisMonth: false,
+                    isPaid: false,
                     lastBookingDays: [15, 15, 15, 15, 15],
                     averageBookingDay: 15,
                     transactions: [
@@ -1242,9 +1320,135 @@ describe("Test fixCostReport", () => {
                 expect(fixedPayDay).toStrictEqual(expected);
             });
         });
+
+        describe("Test fixed pay day generation with non-monthly periods", () => {
+            test("Fixed pay day generation for yearly periods", () => {
+                const expected: FixedPayDay = {
+                    value: 83.3325,
+                    isPaid: true,
+                    lastBookingDays: [8, 13],
+                    averageBookingDay: 10,
+                    transactions: [
+                        {
+                            day: 8,
+                            month: 1,
+                            year: 2020,
+                            initiator: "Car Insurance Corp.",
+                            purpose: "Safety first!",
+                            value: 999.99,
+                            category: {
+                                name: "car insurance",
+                                type: "fixed",
+                                period: "yearly",
+                            },
+                        },
+                        {
+                            day: 13,
+                            month: 1,
+                            year: 2021,
+                            initiator: "Car Insurance Corp.",
+                            purpose: "Safety first!",
+                            value: 999.99,
+                            category: {
+                                name: "car insurance",
+                                type: "fixed",
+                                period: "yearly",
+                            },
+                        },
+                    ],
+                };
+
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "car insurance",
+                            type: CategoryType.Fixed,
+                        },
+                    },
+                );
+
+                expect(fixedPayDay).toStrictEqual(expected);
+            });
+
+            test("Fixed pay day generation for quarter-yearly periods", () => {
+                const expected: FixedPayDay = {
+                    value: 18.8,
+                    isPaid: true,
+                    lastBookingDays: [1, 1, 1, 1],
+                    averageBookingDay: 1,
+                    transactions: [
+                        {
+                            day: 1,
+                            month: 1,
+                            year: 2021,
+                            initiator: "Luxurious Subscriptions",
+                            purpose: "At least, it's not cheap.",
+                            value: 56.4,
+                            category: {
+                                name: "luxury",
+                                type: "fixed",
+                                period: "quarter",
+                            },
+                        },
+                        {
+                            day: 1,
+                            month: 4,
+                            year: 2021,
+                            initiator: "Luxurious Subscriptions",
+                            purpose: "At least, it's not cheap.",
+                            value: 56.4,
+                            category: {
+                                name: "luxury",
+                                type: "fixed",
+                                period: "quarter",
+                            },
+                        },
+                        {
+                            day: 1,
+                            month: 7,
+                            year: 2021,
+                            initiator: "Luxurious Subscriptions",
+                            purpose: "At least, it's not cheap.",
+                            value: 56.4,
+                            category: {
+                                name: "luxury",
+                                type: "fixed",
+                                period: "quarter",
+                            },
+                        },
+                        {
+                            day: 1,
+                            month: 10,
+                            year: 2021,
+                            initiator: "Luxurious Subscriptions",
+                            purpose: "At least, it's not cheap.",
+                            value: 56.4,
+                            category: {
+                                name: "luxury",
+                                type: "fixed",
+                                period: "quarter",
+                            },
+                        },
+                    ],
+                };
+
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    {
+                        category: {
+                            name: "luxury",
+                            type: CategoryType.Fixed,
+                        },
+                    },
+                );
+
+                expect(fixedPayDay).toStrictEqual(expected);
+            });
+        });
     });
 
-    describe("Test categorized fix costs", () => {
+    describe("Test categorized fixed pay days", () => {
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
                 const fixCostOptions = {};
@@ -1320,8 +1524,8 @@ describe("Test fixCostReport", () => {
             });
         });
 
-        describe("Test categorized fix costs to match multiple categories to a specific date", () => {
-            test("Generate categorized fix costs as expected", () => {
+        describe("Test categorized fixed pay days to match multiple categories to a specific date", () => {
+            test("Generate categorized fixed pay days as expected", () => {
                 const expected: CategorizedFixedPayDays = {
                     date: "15.11.2021",
                     sum: 704.98,
@@ -1331,7 +1535,7 @@ describe("Test fixCostReport", () => {
                             name: "rent",
                             fixedPayDay: {
                                 value: 650,
-                                isPaidThisMonth: true,
+                                isPaid: true,
                                 lastBookingDays: [1, 1],
                                 averageBookingDay: 1,
                                 transactions: [
@@ -1368,7 +1572,7 @@ describe("Test fixCostReport", () => {
                             name: "insurance",
                             fixedPayDay: {
                                 value: 14.99,
-                                isPaidThisMonth: true,
+                                isPaid: true,
                                 lastBookingDays: [3, 1, 2],
                                 averageBookingDay: 2,
                                 transactions: [
@@ -1418,7 +1622,7 @@ describe("Test fixCostReport", () => {
                             name: "mobile",
                             fixedPayDay: {
                                 value: 39.99,
-                                isPaidThisMonth: false,
+                                isPaid: false,
                                 lastBookingDays: [22, 22],
                                 averageBookingDay: 22,
                                 transactions: [
@@ -1492,6 +1696,3 @@ describe("Test fixCostReport", () => {
         });
     });
 });
-
-// -- test list
-// special handling for non-monthly, e.g. quarter yearly or yearly fix costs

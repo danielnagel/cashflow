@@ -1,6 +1,6 @@
 {
-    "name": "financial-report-generator",
-    "version": "0.10.1",
+    "name": "cashflow",
+    "version": "0.10.2",
     "description": "Generates reports from financial data csv files.",
     "keywords": [
         "financial",

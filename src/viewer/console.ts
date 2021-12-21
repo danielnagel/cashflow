@@ -61,7 +61,7 @@ const fixCostsReportAsTable = (
         );
         tabularData.push({
             category: fixedPayDay.name,
-            paid: fixedPayDay.fixedPayDay.isPaidThisMonth,
+            paid: fixedPayDay.fixedPayDay.isPaid,
             bookingDay: fixedPayDay.fixedPayDay.averageBookingDay,
             cost: `${round(fixedPayDay.fixedPayDay.value)} ${currency}`,
             lastBookingDate,
