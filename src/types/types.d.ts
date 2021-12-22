@@ -52,18 +52,19 @@ type CsvOptions = {
  * The list can be filtered to only return transactions after or before a specific date.
  * The date is parsed by configuration, otherwise ISO date format is expected.
  */
-type FilterTransactionsByDateOptions = {
+type FilterTransactionsByDateStringOptions = {
     after?: string;
     before?: string;
     dateFormat?: string;
 };
 
-type FilterTransactionsByCategoryOptions = {
+/**
+ * Extends FilterTransactionsByDateStringOptions with a category object.
+ */
+interface FilterTransactionsByCategoryOptions
+    extends FilterTransactionsByDateStringOptions {
     category: Category;
-    after?: string;
-    before?: string;
-    dateFormat?: string;
-};
+}
 
 /**
  * A sample is used to match specifc transactions
@@ -97,6 +98,10 @@ type Category = {
     period?: string;
 };
 
+/**
+ * Extends a category by samples.
+ * Samples will be used to match transactions.
+ */
 interface SampledCategory extends Category {
     samples: Sample[];
 }
@@ -261,4 +266,59 @@ type ConsoleViewerOptions = {
 type MonthYear = {
     month: number;
     year: number;
+};
+
+/**
+ * Options for a single trend.
+ */
+type TrendOptions = {
+    type: string; // fixed or variable/special/income
+    category?: string[];
+    period?: string; // monthly is default
+    after?: string;
+};
+
+/**
+ * Options for a single category trend.
+ */
+type CategoryTrendOptions = {
+    type: string; // fixed or variable/special/income
+    category: string;
+    period?: string; // monthly is default
+    after?: string;
+};
+
+type CategoryTrendPeriodOptions = {
+    type: string; // fixed or variable/special/income
+    category: string;
+    period: string; // 2021.01/2021
+};
+
+type CategoryTrend = {
+    name: string;
+    periods: Array<FixedCategoryTrendPeriod | VariableCategoryTrendPeriod>;
+};
+
+type CategoryTrendPeriod = {
+    period: string;
+    transactions: Transaction[];
+};
+
+interface FixedCategoryTrendPeriod extends CategoryTrendPeriod {
+    value: number;
+    bookingDate: string; // "03.01.2021"
+}
+
+interface VariableCategoryTrendPeriod extends CategoryTrendPeriod {
+    sum: number;
+}
+
+type Trend = {
+    sum: number;
+    period: string; // "2021.01"/"2021"
+    trends: CategoryTrend[];
+};
+
+type TrendReport = {
+    trends: Array<Trend>;
 };

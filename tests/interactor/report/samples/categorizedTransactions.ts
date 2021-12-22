@@ -12,6 +12,18 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        day: 28,
+        month: 1,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
         day: 1,
         month: 9,
         year: 2021,
@@ -34,6 +46,30 @@ export const categorizedTransactions: Transaction[] = [
             name: "car insurance",
             type: "fixed",
             period: "yearly",
+        },
+    },
+    {
+        day: 26,
+        month: 2,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
+        day: 7,
+        month: 9,
+        year: 2021,
+        initiator: "Grocerie Land",
+        purpose: "VISA 34 GROCERIE LAND TES7123123",
+        value: 111.96,
+        category: {
+            name: "groceries",
+            type: "variable",
         },
     },
     {
@@ -75,6 +111,18 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        day: 29,
+        month: 3,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
         day: 1,
         month: 4,
         year: 2021,
@@ -113,6 +161,18 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        day: 28,
+        month: 4,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
         day: 1,
         month: 9,
         year: 2021,
@@ -139,6 +199,18 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        day: 27,
+        month: 5,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
         day: 3,
         month: 9,
         year: 2021,
@@ -161,6 +233,18 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "groceries",
             type: "variable",
+        },
+    },
+    {
+        day: 28,
+        month: 6,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
         },
     },
     {
@@ -190,6 +274,18 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        day: 29,
+        month: 7,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
         day: 22,
         month: 10,
         year: 2021,
@@ -215,6 +311,30 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        day: 27,
+        month: 8,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
+        day: 25,
+        month: 10,
+        year: 2021,
+        initiator: "Kitchen Shop 24/7",
+        purpose: "VISA Kitchen Shop Store 24/7; 25.10;  TES71234326654734",
+        value: 2899.98,
+        category: {
+            name: "home",
+            type: "special",
+        },
+    },
+    {
         day: 1,
         month: 10,
         year: 2021,
@@ -234,6 +354,30 @@ export const categorizedTransactions: Transaction[] = [
         initiator: "Grocerie Land",
         purpose: "VISA 23 GROCERIE LAND TES71234123423134",
         value: 109.56,
+        category: {
+            name: "groceries",
+            type: "variable",
+        },
+    },
+    {
+        day: 28,
+        month: 9,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
+        day: 16,
+        month: 9,
+        year: 2021,
+        initiator: "Grocerie Land",
+        purpose: "VISA 34 GROCERIE LAND TES7123123",
+        value: 88.77,
         category: {
             name: "groceries",
             type: "variable",
@@ -265,6 +409,18 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        day: 28,
+        month: 10,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
         day: 22,
         month: 9,
         year: 2021,
@@ -287,6 +443,18 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "shopping",
             type: "variable",
+        },
+    },
+    {
+        day: 29,
+        month: 11,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
         },
     },
     {
@@ -380,12 +548,36 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        day: 28,
+        month: 12,
+        year: 2021,
+        initiator: "Owl Logistic Corp.",
+        purpose: "Have fun",
+        value: 1667.99,
+        category: {
+            name: "salary",
+            type: "income",
+        },
+    },
+    {
         day: 10,
         month: 11,
         year: 2021,
         initiator: "Tasty Deli and Grocerie Store",
         purpose: "Thanks for buying the freshest food",
         value: 65.49,
+        category: {
+            name: "groceries",
+            type: "variable",
+        },
+    },
+    {
+        day: 24,
+        month: 9,
+        year: 2021,
+        initiator: "Grocerie Land",
+        purpose: "VISA 34 GROCERIE LAND TES7123123",
+        value: 119.86,
         category: {
             name: "groceries",
             type: "variable",
