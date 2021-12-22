@@ -1,14 +1,14 @@
 import {
-    getTimeStampFromTransaction,
+    getDateFromTransaction,
     parseDateString,
     formatDate,
 } from "../../src/utils/dates";
 
 describe("Test utils/dates", () => {
-    describe("Test function getTimeStampFromTransaction", () => {
+    describe("Test function getDateFromTransaction", () => {
         test("Parse 19.10.2021 from transaction to expected timestamp", () => {
             expect(
-                getTimeStampFromTransaction({
+                getDateFromTransaction({
                     day: 19,
                     month: 10,
                     year: 2021,
@@ -16,12 +16,12 @@ describe("Test utils/dates", () => {
                     purpose: "",
                     value: 0,
                 }),
-            ).toBe(new Date(2021, 9, 19).getTime());
+            ).toStrictEqual(new Date(2021, 9, 19));
         });
 
         test("Parse 1.6.2021 from transaction to expected timestamp", () => {
             expect(
-                getTimeStampFromTransaction({
+                getDateFromTransaction({
                     day: 1,
                     month: 6,
                     year: 2021,
@@ -29,12 +29,12 @@ describe("Test utils/dates", () => {
                     purpose: "",
                     value: 0,
                 }),
-            ).toBe(new Date(2021, 5, 1).getTime());
+            ).toStrictEqual(new Date(2021, 5, 1));
         });
 
         test("Parse 31.12.2021 from transaction to expected timestamp", () => {
             expect(
-                getTimeStampFromTransaction({
+                getDateFromTransaction({
                     day: 31,
                     month: 12,
                     year: 2021,
@@ -42,12 +42,12 @@ describe("Test utils/dates", () => {
                     purpose: "",
                     value: 0,
                 }),
-            ).toBe(new Date(2021, 11, 31).getTime());
+            ).toStrictEqual(new Date(2021, 11, 31));
         });
 
         test("Parse 10.10.2023 from transaction to expected timestamp", () => {
             expect(
-                getTimeStampFromTransaction({
+                getDateFromTransaction({
                     day: 10,
                     month: 10,
                     year: 2023,
@@ -55,12 +55,12 @@ describe("Test utils/dates", () => {
                     purpose: "",
                     value: 0,
                 }),
-            ).toBe(new Date(2023, 9, 10).getTime());
+            ).toStrictEqual(new Date(2023, 9, 10));
         });
 
         test("Parse 1.1.2010 from transaction to expected timestamp", () => {
             expect(
-                getTimeStampFromTransaction({
+                getDateFromTransaction({
                     day: 1,
                     month: 1,
                     year: 2010,
@@ -68,12 +68,12 @@ describe("Test utils/dates", () => {
                     purpose: "",
                     value: 0,
                 }),
-            ).toBe(new Date(2010, 0, 1).getTime());
+            ).toStrictEqual(new Date(2010, 0, 1));
         });
 
         test("Parse 0.0.0 from transaction to expected timestamp", () => {
             expect(
-                getTimeStampFromTransaction({
+                getDateFromTransaction({
                     day: 0,
                     month: 0,
                     year: 0,
@@ -81,12 +81,12 @@ describe("Test utils/dates", () => {
                     purpose: "",
                     value: 0,
                 }),
-            ).toBe(new Date(0, -1, 0).getTime());
+            ).toStrictEqual(new Date(0, -1, 0));
         });
 
         test("Parse -1.-1.-2010 from transaction to expected timestamp", () => {
             expect(
-                getTimeStampFromTransaction({
+                getDateFromTransaction({
                     day: -1,
                     month: -1,
                     year: -2010,
@@ -94,7 +94,7 @@ describe("Test utils/dates", () => {
                     purpose: "",
                     value: 0,
                 }),
-            ).toBe(new Date(-2010, -2, -1).getTime());
+            ).toStrictEqual(new Date(-2010, -2, -1));
         });
     });
 

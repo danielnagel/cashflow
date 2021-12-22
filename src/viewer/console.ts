@@ -1,4 +1,4 @@
-import { getTimeStampFromTransaction, formatDate } from "../utils/dates";
+import { getDateFromTransaction, formatDate } from "../utils/dates";
 import { round } from "../utils/numbers";
 
 /**
@@ -50,12 +50,10 @@ const fixCostsReportAsTable = (
         : "€$";
     for (const fixedPayDay of report.namedFixedPayDays) {
         const lastBookingDate = formatDate(
-            new Date(
-                getTimeStampFromTransaction(
-                    fixedPayDay.fixedPayDay.transactions[
-                        fixedPayDay.fixedPayDay.transactions.length - 1
-                    ],
-                ),
+            getDateFromTransaction(
+                fixedPayDay.fixedPayDay.transactions[
+                    fixedPayDay.fixedPayDay.transactions.length - 1
+                ],
             ),
             dateFormat,
         );

@@ -1,19 +1,13 @@
 import { parse, format } from "date-fns";
 
 /**
- * Creates a timestamp from a Transaction object.
+ * Creates a javascript Date object from a Transaction object.
  *
- * @param transaction to create the timestamp from
- * @returns timestamp from a Transaction object
+ * @param transaction to create the date from
+ * @returns javascript Date object from a Transaction object
  */
-export const getTimeStampFromTransaction = (
-    transaction: Transaction,
-): number => {
-    return new Date(
-        transaction.year,
-        transaction.month - 1,
-        transaction.day,
-    ).getTime();
+export const getDateFromTransaction = (transaction: Transaction): Date => {
+    return new Date(transaction.year, transaction.month - 1, transaction.day);
 };
 
 /**

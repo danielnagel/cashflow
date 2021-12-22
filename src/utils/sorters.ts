@@ -1,4 +1,4 @@
-import { getTimeStampFromTransaction } from "./dates";
+import { getDateFromTransaction } from "./dates";
 
 /**
  * Compares two transactions by time stamp.
@@ -12,8 +12,8 @@ const compareTransactionsByDate = (
     transactionA: Transaction,
     transactionB: Transaction,
 ) => {
-    const timeStampA = getTimeStampFromTransaction(transactionA);
-    const timeStampB = getTimeStampFromTransaction(transactionB);
+    const timeStampA = getDateFromTransaction(transactionA).getTime();
+    const timeStampB = getDateFromTransaction(transactionB).getTime();
     if (timeStampA < timeStampB) return -1;
     if (timeStampA === timeStampB) return 0;
     return 1;
