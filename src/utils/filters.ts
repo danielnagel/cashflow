@@ -1,4 +1,5 @@
-import { getTimeStampFromTransaction, parseDateString } from "./dates";
+import { addMonths, subDays } from "date-fns";
+import { getDateFromTransaction, parseDateString } from "./dates";
 import { isCategory } from "./typeguards";
 
 /**
@@ -6,21 +7,14 @@ import { isCategory } from "./typeguards";
  *
  * @param transactions that should be filtered
  * @param after date which is used to filter the list of transactions
- * @param dateFormat which is used to parse the date string
  * @returns matched transactions
  */
-export const transactionsAfterTimeStamp = (
+export const transactionsAfterDate = (
     transactions: Transaction[],
-    after: string | undefined,
-    dateFormat: string | undefined,
+    after: Date,
 ): Transaction[] => {
-    if (transactions.length === 0 || typeof after === "undefined")
-        return transactions;
-    const afterDate = parseDateString(after, dateFormat);
-    if (afterDate === null) return transactions;
-
     return transactions.filter((transaction) => {
-        return getTimeStampFromTransaction(transaction) > afterDate.getTime();
+        return getDateFromTransaction(transaction).getTime() > after.getTime();
     });
 };
 
@@ -29,21 +23,14 @@ export const transactionsAfterTimeStamp = (
  *
  * @param transactions that should be filtered
  * @param before date which is used to filter the list of transactions
- * @param dateFormat which is used to parse the date string
  * @returns matched transactions
  */
-export const transactionsBeforeTimeStamp = (
+export const transactionsBeforeDate = (
     transactions: Transaction[],
-    before: string | undefined,
-    dateFormat: string | undefined,
+    before: Date,
 ): Transaction[] => {
-    if (transactions.length === 0 || typeof before === "undefined")
-        return transactions;
-    const beforeDate = parseDateString(before, dateFormat);
-    if (beforeDate === null) return transactions;
-
     return transactions.filter((transaction) => {
-        return getTimeStampFromTransaction(transaction) < beforeDate.getTime();
+        return getDateFromTransaction(transaction).getTime() < before.getTime();
     });
 };
 
@@ -54,20 +41,23 @@ export const transactionsBeforeTimeStamp = (
  * @param options to filter the list of transactions by.
  * @returns by given options filtered transactions.
  */
-export const filterTransactionsByDate = (
+export const filterTransactionsByDateString = (
     transactions: Transaction[],
-    options: FilterTransactionsByDateOptions,
+    options: FilterTransactionsByDateStringOptions,
 ): Transaction[] => {
-    transactions = transactionsBeforeTimeStamp(
-        transactions,
-        options.before,
-        options.dateFormat,
-    );
-    transactions = transactionsAfterTimeStamp(
-        transactions,
-        options.after,
-        options.dateFormat,
-    );
+    if (transactions.length === 0) return transactions;
+
+    if (typeof options.before !== "undefined") {
+        const beforeDate = parseDateString(options.before, options.dateFormat);
+        if (beforeDate === null) return transactions;
+        transactions = transactionsBeforeDate(transactions, beforeDate);
+    }
+
+    if (typeof options.after !== "undefined") {
+        const afterDate = parseDateString(options.after, options.dateFormat);
+        if (afterDate === null) return transactions;
+        transactions = transactionsAfterDate(transactions, afterDate);
+    }
 
     return transactions;
 };
@@ -197,4 +187,29 @@ export const filterTransactionsByCategoryName = (
         }
     }
     return matchedTransactions;
+};
+
+/**
+ * Filters a list of transactions with given options.
+ *
+ * @param transactions list of transactions that should be filtered.
+ * @param period to filter the list of transactions by.
+ * @param dateFormat that is used in the period string, default is yyyy.MM
+ * @returns by given options filtered transactions.
+ */
+export const filterTransactionsByPeriod = (
+    transactions: Transaction[],
+    period: string,
+    dateFormat = "yyyy.MM",
+): Transaction[] => {
+    let periodStart = parseDateString(period, dateFormat);
+    if (periodStart === null) return [];
+
+    const periodEnd = addMonths(periodStart, 1);
+    periodStart = subDays(periodStart, 1);
+
+    transactions = transactionsAfterDate(transactions, periodStart);
+    transactions = transactionsBeforeDate(transactions, periodEnd);
+
+    return transactions;
 };

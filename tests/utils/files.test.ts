@@ -82,9 +82,10 @@ describe("Test utils/files", () => {
             const fileNames = loadFileNamesFromDirectory(
                 __dirname + "/samples",
             );
-            expect(fileNames).toHaveLength(2);
+            expect(fileNames).toHaveLength(3);
             expect(fileNames[0]).toBe("sample1.txt");
             expect(fileNames[1]).toBe("sample2.csv");
+            expect(fileNames[2]).toBe("transactions.ts");
         });
 
         test("Load file names with specific file extension from directory", () => {

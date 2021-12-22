@@ -2,7 +2,7 @@ import { formatDate, parseDateString } from "../../utils/dates";
 import {
     filterTransactionsByCategoryName,
     filterTransactionsByCategoryType,
-    filterTransactionsByDate,
+    filterTransactionsByDateString,
 } from "../../utils/filters";
 import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError, isCategory } from "../../utils/typeguards";
@@ -147,7 +147,7 @@ const getSortedMatchedTransactions = (
         transactions,
         filterOptions.category.name,
     );
-    matchedTransactions = filterTransactionsByDate(
+    matchedTransactions = filterTransactionsByDateString(
         matchedTransactions,
         filterOptions,
     );
