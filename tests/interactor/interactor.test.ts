@@ -1,5 +1,5 @@
 import { generateReport } from "../../src/interactor/interactor";
-import { CategoryType } from "../../src/types/enums";
+import { TransactionType } from "../../src/types/enums";
 
 describe("Test Interactor", () => {
     describe("Test generating reports with CSV connector", () => {
@@ -178,21 +178,21 @@ describe("Test Interactor", () => {
                             categories: [
                                 {
                                     name: "rent",
-                                    type: CategoryType.Fixed,
+                                    type: TransactionType.Fixed,
                                     samples: [
                                         { initiator: "Rent for my crib" },
                                     ],
                                 },
                                 {
                                     name: "insurance",
-                                    type: CategoryType.Fixed,
+                                    type: TransactionType.Fixed,
                                     samples: [
                                         { initiator: "Stay Healthy Corp." },
                                     ],
                                 },
                                 {
                                     name: "mobile",
-                                    type: CategoryType.Fixed,
+                                    type: TransactionType.Fixed,
                                     samples: [{ initiator: "Mobilio Ltd." }],
                                 },
                             ],

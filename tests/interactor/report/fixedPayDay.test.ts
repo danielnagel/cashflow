@@ -2,7 +2,7 @@ import {
     generateFixedPayDay,
     generateFixedPayDayReport,
 } from "../../../src/interactor/report/fixedPaxDay";
-import { CategoryType } from "../../../src/types/enums";
+import { TransactionType } from "../../../src/types/enums";
 import { categorizedTransactions } from "./samples/categorizedTransactions";
 
 describe("Test fixCostReport", () => {
@@ -12,7 +12,7 @@ describe("Test fixCostReport", () => {
                 const fixedPayDay = generateFixedPayDay([], {
                     category: {
                         name: "test",
-                        type: CategoryType.Fixed,
+                        type: TransactionType.Fixed,
                     },
                     before: "15.12.2021",
                 });
@@ -38,7 +38,7 @@ describe("Test fixCostReport", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, {
                     category: {
                         name: "test",
-                        type: CategoryType.Fixed,
+                        type: TransactionType.Fixed,
                     },
                     before: "15.12.2021",
                 });
@@ -53,7 +53,7 @@ describe("Test fixCostReport", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, {
                     category: {
                         name: "rent",
-                        type: CategoryType.Fixed,
+                        type: TransactionType.Fixed,
                     },
                     before: "15.12.1999",
                 });
@@ -68,7 +68,7 @@ describe("Test fixCostReport", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, {
                     category: {
                         name: "rent",
-                        type: CategoryType.Fixed,
+                        type: TransactionType.Fixed,
                     },
                     before: "15.12.1999",
                     after: "12.07.2002",
@@ -175,7 +175,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "rent",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                         before: "30.11.2021",
                     },
@@ -264,7 +264,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "rent",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                         before: "15.10.2021",
                     },
@@ -314,7 +314,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "rent",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                         before: "15.11.2021",
                         after: "01.09.2021",
@@ -432,7 +432,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "insurance",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                         before: "30.12.2021",
                     },
@@ -495,7 +495,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "insurance",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                         before: "01.09.2021",
                     },
@@ -558,7 +558,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "insurance",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                         before: "15.11.2021",
                         after: "01.09.2021",
@@ -674,7 +674,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "insurance",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                     },
                 );
@@ -762,7 +762,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "music subscription",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                     },
                 );
@@ -813,7 +813,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "car insurance",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                     },
                 );
@@ -888,7 +888,7 @@ describe("Test fixCostReport", () => {
                     {
                         category: {
                             name: "luxury",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                         },
                     },
                 );
@@ -1116,17 +1116,17 @@ describe("Test fixCostReport", () => {
                     categories: [
                         {
                             name: "rent",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                             samples: [{ initiator: "Rent for my crib" }],
                         },
                         {
                             name: "insurance",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                             samples: [{ initiator: "Stay Healthy Corp." }],
                         },
                         {
                             name: "mobile",
-                            type: CategoryType.Fixed,
+                            type: TransactionType.Fixed,
                             samples: [{ initiator: "Mobilio Ltd." }],
                         },
                     ],

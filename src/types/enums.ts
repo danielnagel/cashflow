@@ -16,7 +16,7 @@ export enum ReportType {
 /**
  * Specifies which category types exist.
  */
-export enum CategoryType {
+export enum TransactionType {
     Fixed = "fixed",
     Variable = "variable",
     Income = "income",
@@ -24,9 +24,9 @@ export enum CategoryType {
 }
 
 /**
- * Specifies which category periods exist.
+ * Specifies which periods exist.
  */
-export enum CategoryPeriods {
+export enum Periods {
     Monthly = "monthly",
     Quarter = "quarter",
     Yearly = "yearly",

@@ -1,4 +1,4 @@
-import { CategoryPeriods, CategoryType } from "../../types/enums";
+import { Periods, TransactionType } from "../../types/enums";
 import { isTransactionMatchingSample } from "../../utils/filters";
 import { isApplicationError } from "../../utils/typeguards";
 
@@ -27,10 +27,10 @@ export const categorizeTransaction = (
                         type: category.type,
                     };
                     if (
-                        category.type === CategoryType.Fixed ||
-                        category.type === CategoryType.Income
+                        category.type === TransactionType.Fixed ||
+                        category.type === TransactionType.Income
                     ) {
-                        transaction.category.period = CategoryPeriods.Monthly;
+                        transaction.category.period = Periods.Monthly;
                         if (typeof category.period !== "undefined") {
                             transaction.category.period = category.period;
                         }

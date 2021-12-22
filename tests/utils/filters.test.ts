@@ -1,4 +1,4 @@
-import { CategoryType } from "../../src/types/enums";
+import { TransactionType } from "../../src/types/enums";
 import {
     filterDoubleTransactions,
     filterTransactionsByDate,
@@ -734,7 +734,7 @@ describe("Test utils/filters", () => {
                     const filteredTransactions =
                         filterTransactionsByCategoryType(
                             transactions,
-                            CategoryType.Fixed,
+                            TransactionType.Fixed,
                         );
                     expect(filteredTransactions).toHaveLength(0);
                 });
@@ -874,7 +874,7 @@ describe("Test utils/filters", () => {
                     const filteredTransactions =
                         filterTransactionsByCategoryType(
                             categorizedTransactions,
-                            CategoryType.Fixed,
+                            TransactionType.Fixed,
                         );
                     const expected: Transaction[] = [
                         {
@@ -938,7 +938,7 @@ describe("Test utils/filters", () => {
                     const filteredTransactions =
                         filterTransactionsByCategoryType(
                             categorizedTransactions,
-                            CategoryType.Variable,
+                            TransactionType.Variable,
                         );
                     const expected: Transaction[] = [
                         {

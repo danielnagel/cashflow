@@ -7,7 +7,7 @@ import {
 import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError, isCategory } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
-import { CategoryPeriods, CategoryType } from "../../types/enums";
+import { Periods, TransactionType } from "../../types/enums";
 
 /**
  * Generates a FixedPayDay object from a list of Transaction considering given FilterTransactionsBySampleOptions.
@@ -47,10 +47,10 @@ export const generateFixedPayDay = (
     };
 
     result.value = lastTransaction.value;
-    if (period === CategoryPeriods.Quarter) {
+    if (period === Periods.Quarter) {
         result.value = result.value / 3;
     }
-    if (period === CategoryPeriods.Yearly) {
+    if (period === Periods.Yearly) {
         result.value = result.value / 12;
     }
 
@@ -72,11 +72,11 @@ export const generateFixedPayDay = (
  *
  * @param transactions
  * @returns The period of a transaction, if its defined in a transaction object
- * and available in CategoryPeriods enumeration.
+ * and available in Periods enumeration.
  * Otherwise period "monthly" is always returned.
  */
 const getPeriodFromTransactions = (transactions: Transaction[]): string => {
-    let period = CategoryPeriods.Monthly;
+    let period = Periods.Monthly;
 
     if (transactions.length === 0) return period;
     const firstTransaction = transactions[0];
@@ -84,7 +84,7 @@ const getPeriodFromTransactions = (transactions: Transaction[]): string => {
         isCategory(firstTransaction.category) &&
         typeof firstTransaction.category.period === "string"
     ) {
-        for (const categoryPeriod of Object.values(CategoryPeriods)) {
+        for (const categoryPeriod of Object.values(Periods)) {
             if (firstTransaction.category.period === categoryPeriod)
                 return firstTransaction.category.period;
         }
@@ -110,18 +110,18 @@ const isPaidThisPeriod = (
     const monthYear = getComparsionMonthYear(filterOptions);
     if (isApplicationError(monthYear)) return monthYear;
 
-    if (typeof period === "undefined" || period === CategoryPeriods.Monthly) {
+    if (typeof period === "undefined" || period === Periods.Monthly) {
         return (
             transaction.month === monthYear.month &&
             transaction.year === monthYear.year
         );
     }
 
-    if (period === CategoryPeriods.Yearly) {
+    if (period === Periods.Yearly) {
         return transaction.year === monthYear.year;
     }
 
-    if (period === CategoryPeriods.Quarter) {
+    if (period === Periods.Quarter) {
         return (
             transaction.year === monthYear.year &&
             monthYear.month - transaction.month < 3
@@ -214,7 +214,7 @@ export const generateFixedPayDayReport = (
 
     const fixedTransactions: Transaction[] = filterTransactionsByCategoryType(
         transactions,
-        CategoryType.Fixed,
+        TransactionType.Fixed,
     );
 
     const namedFixedPayDay: NamedFixedPayDay[] = [];
