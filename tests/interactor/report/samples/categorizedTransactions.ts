@@ -353,7 +353,7 @@ export const categorizedTransactions: Transaction[] = [
         year: 2021,
         initiator: "Grocerie Land",
         purpose: "VISA 23 GROCERIE LAND TES71234123423134",
-        value: 109.56,
+        value: 11.99,
         category: {
             name: "groceries",
             type: "variable",
@@ -451,7 +451,7 @@ export const categorizedTransactions: Transaction[] = [
         year: 2021,
         initiator: "Owl Logistic Corp.",
         purpose: "Have fun",
-        value: 1667.99,
+        value: 1822.37,
         category: {
             name: "salary",
             type: "income",
@@ -553,7 +553,7 @@ export const categorizedTransactions: Transaction[] = [
         year: 2021,
         initiator: "Owl Logistic Corp.",
         purpose: "Have fun",
-        value: 1667.99,
+        value: 1822.37,
         category: {
             name: "salary",
             type: "income",
@@ -565,7 +565,7 @@ export const categorizedTransactions: Transaction[] = [
         year: 2021,
         initiator: "Tasty Deli and Grocerie Store",
         purpose: "Thanks for buying the freshest food",
-        value: 65.49,
+        value: 20.44,
         category: {
             name: "groceries",
             type: "variable",
@@ -732,7 +732,7 @@ export const categorizedTransactions: Transaction[] = [
         year: 2021,
         initiator: "Mobilio Ltd.",
         purpose: "your mobile phone provider",
-        value: 39.99,
+        value: 49.99,
         category: {
             name: "mobile",
             type: "fixed",

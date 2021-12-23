@@ -1,3 +1,4 @@
+import { addMonths, isBefore } from "date-fns";
 import { TransactionType } from "../../types/enums";
 import {
     formatDate,
@@ -9,6 +10,20 @@ import {
     filterTransactionsByCategoryType,
     filterTransactionsByPeriod,
 } from "../../utils/filters";
+import { log } from "../../utils/loggers";
+import { round } from "../../utils/numbers";
+import { isApplicationError } from "../../utils/typeguards";
+
+/**
+ * Generates a trend report for every transaction type.
+ * @param options
+ */
+export const generateTrendReport = (
+    options: TrendOptions,
+    transactions: Transaction[],
+): TrendReport | null => {
+    return null;
+};
 
 /**
  * Generates a trend object for a specific transaction type.
@@ -22,21 +37,91 @@ export const generateTrend = (
 };
 
 /**
- * Generates a category trend object for a specific transaction type and category.
+ * Generates a category trend object
+ * for a specific transaction type and category.
+ * The category trend object is used for a category row of a trend.
+ *
  * @param options
+ * @param transactions that are used as data bases
+ * @param logOptions used for the logger
+ * @returns CategoryTrend or an ApplicationError
  */
 export const generateCategoryTrend = (
     options: CategoryTrendOptions,
     transactions: Transaction[],
-): CategoryTrend | null => {
-    return null;
+    logOptions?: LoggerOptions,
+): CategoryTrend | ApplicationError => {
+    if (transactions.length === 0)
+        return { source: "trend.ts", message: "There where no transactions." };
+
+    if (!isValidTransactionType(options))
+        return {
+            source: "trend.ts",
+            message: `The transaction type '${options.type}' is unknown.`,
+        };
+
+    const oldestTransactionDate = getOldestTransactionDate(transactions);
+    const stringPeriods = generatePeriods(oldestTransactionDate);
+    const periods: Array<
+        FixedCategoryTrendPeriod | VariableCategoryTrendPeriod
+    > = [];
+    for (const period of stringPeriods) {
+        const trendPeriod = generateCategoryTrendPeriod(
+            { type: options.type, category: options.category, period },
+            transactions,
+        );
+        if (isApplicationError(trendPeriod)) {
+            log({
+                message: trendPeriod,
+                allowedLogLevel: logOptions?.allowedLogLevel,
+            });
+            continue;
+        }
+        periods.push(trendPeriod);
+    }
+    if (periods.length === 0)
+        return { source: "trend.ts", message: "No transactions matched." };
+    return { name: options.category, periods };
+};
+
+/**
+ * Searches the oldest transactions date in a list of transactions.
+ *
+ * @param transactions to search through
+ * @returns a javascript Date object of the oldest transaction
+ * or the current date.
+ */
+const getOldestTransactionDate = (transactions: Transaction[]): Date => {
+    let oldestDate = new Date();
+    for (const transaction of transactions) {
+        const transactionDate = getDateFromTransaction(transaction);
+        if (isBefore(transactionDate, oldestDate)) oldestDate = transactionDate;
+    }
+    return oldestDate;
+};
+
+/**
+ * Generates a list of monthly periods,
+ * from a given date until today.
+ * @param from date to start from
+ * @returns a list of periods,
+ * that looks like this ["2020.09", ..., "2021.12"]
+ */
+const generatePeriods = (from: Date): string[] => {
+    const periods: string[] = [];
+    const until = new Date();
+    do {
+        periods.push(`${formatDate(from, "yyyy.MM")}`);
+        from = addMonths(from, 1);
+    } while (isBefore(from, until));
+    return periods;
 };
 
 /**
  * Generates a category trend period object for a specific transaction type,
  * category and period.
- * The category trend period object is used for a single cell in a category row,
- * period column of a trend report.
+ * The category trend period object is used to generate a single cell,
+ * in a period column, for a category row of a category trend.
  *
  * @param options
  * @param transactions that are used as data bases
@@ -161,6 +246,7 @@ const createVariableCategoryTrendPeriod = (
     for (const transaction of transactions) {
         sum += transaction.value;
     }
+    sum = round(sum);
 
     return {
         sum,

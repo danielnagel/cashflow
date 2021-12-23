@@ -284,7 +284,6 @@ type TrendOptions = {
 type CategoryTrendOptions = {
     type: string; // fixed or variable/special/income
     category: string;
-    period?: string; // monthly is default
     after?: string;
 };
 
