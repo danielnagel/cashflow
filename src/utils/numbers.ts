@@ -26,12 +26,22 @@ export const decimalNumberToFloat = (value: string): number => {
 };
 
 /**
- * Rounds a decimal number to two digits.
+ * Rounds a decimal number to a two digits long string.
  *
  * @param value to be rounded.
  * @param delimiter default is "."
  * @returns Given value as rounded string.
  */
-export const round = (value: number, delimiter = "."): string => {
-    return (Math.round(value * 100) / 100).toFixed(2).replace(".", delimiter);
+export const roundToString = (value: number, delimiter = "."): string => {
+    return round(value).toFixed(2).replace(".", delimiter);
+};
+
+/**
+ * Rounds a decimal number to two digits.
+ *
+ * @param value to be rounded.
+ * @returns Given value as rounded to two digits.
+ */
+export const round = (value: number): number => {
+    return parseFloat((Math.round(value * 100) / 100).toFixed(2));
 };

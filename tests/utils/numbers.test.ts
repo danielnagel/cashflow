@@ -1,6 +1,7 @@
 import {
     decimalNumberToFloat,
     germanDecimalNumberToFloat,
+    roundToString,
     round,
 } from "../../src/utils/numbers";
 
@@ -42,16 +43,30 @@ describe("Test utils/numbers", () => {
     });
 
     describe("Test function round", () => {
+        test("Round 1234 to 1234.00", () => {
+            expect(round(1234)).toBe(1234.0);
+        });
+
+        test("Round 1234.56789 to 1234.57", () => {
+            expect(round(1234.56789)).toBe(1234.57);
+        });
+
+        test("Round 12.99999 to 13.00 with delimiter ','", () => {
+            expect(round(12.9999)).toBe(13.0);
+        });
+    });
+
+    describe("Test function roundToString", () => {
         test("Round 1234 to '1234.00'", () => {
-            expect(round(1234)).toBe("1234.00");
+            expect(roundToString(1234)).toBe("1234.00");
         });
 
         test("Round 1234.56789 to '1234.57'", () => {
-            expect(round(1234.56789)).toBe("1234.57");
+            expect(roundToString(1234.56789)).toBe("1234.57");
         });
 
         test("Round 1234.56789 to '1234,57' with delimiter ','", () => {
-            expect(round(1234.56789, ",")).toBe("1234,57");
+            expect(roundToString(1234.56789, ",")).toBe("1234,57");
         });
     });
 });

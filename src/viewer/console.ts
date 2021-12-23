@@ -1,5 +1,5 @@
 import { getDateFromTransaction, formatDate } from "../utils/dates";
-import { round } from "../utils/numbers";
+import { roundToString } from "../utils/numbers";
 
 /**
  * Generates a given report as table.
@@ -61,7 +61,7 @@ const fixCostsReportAsTable = (
             category: fixedPayDay.name,
             paid: fixedPayDay.fixedPayDay.isPaid,
             bookingDay: fixedPayDay.fixedPayDay.averageBookingDay,
-            cost: `${round(fixedPayDay.fixedPayDay.value)} ${currency}`,
+            cost: `${roundToString(fixedPayDay.fixedPayDay.value)} ${currency}`,
             lastBookingDate,
         });
     }
@@ -69,14 +69,14 @@ const fixCostsReportAsTable = (
         category: "Sum",
         paid: null,
         bookingDay: null,
-        cost: `${round(-report.sum)} ${currency}`,
+        cost: `${roundToString(-report.sum)} ${currency}`,
         lastBookingDate: null,
     });
     tabularData.push({
         category: "Unpaid",
         paid: null,
         bookingDay: null,
-        cost: `${round(-report.unpaidSum)} ${currency}`,
+        cost: `${roundToString(-report.unpaidSum)} ${currency}`,
         lastBookingDate: null,
     });
     return tabularData;
