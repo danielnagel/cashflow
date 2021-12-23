@@ -67,7 +67,7 @@ export const generateTrendReport = (
             transactions,
             logOptions,
         );
-        if (isApplicationError(trend)) return trend;
+        if (isApplicationError(trend)) continue;
         trendReport.trends.push(trend);
     }
 
@@ -111,7 +111,7 @@ export const generateTrend = (
             message: `The transaction type '${options.type}' is unknown.`,
         };
 
-    const trend: Trend = { type: options.type, trends: [] };
+    const trend: Trend = { type: options.type, categories: [] };
     for (const category of options.categories) {
         const categoryTrend = generateCategoryTrend(
             { type: options.type, category },
@@ -119,9 +119,9 @@ export const generateTrend = (
             logOptions,
         );
         if (isApplicationError(categoryTrend)) continue;
-        trend.trends.push(categoryTrend);
+        trend.categories.push(categoryTrend);
     }
-    if (trend.trends.length === 0)
+    if (trend.categories.length === 0)
         return { source: "trend.ts", message: "No transactions matched." };
 
     return trend;

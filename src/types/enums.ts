@@ -11,6 +11,7 @@ export enum ConnectorType {
  */
 export enum ReportType {
     FixedPayDay = "fixedpayday",
+    Trend = "trend",
 }
 
 /**

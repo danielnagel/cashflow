@@ -554,27 +554,27 @@ export const specialSingleCategoryTrend: CategoryTrend = {
 
 export const trendForFixedSingleCategory: Trend = {
     type: "fixed",
-    trends: [fixedSingleCategoryTrend],
+    categories: [fixedSingleCategoryTrend],
 };
 
 export const trendForVariableSingleCategory: Trend = {
     type: "variable",
-    trends: [variableSingleCategoryTrend],
+    categories: [variableSingleCategoryTrend],
 };
 
 export const trendForIncomeSingleCategory: Trend = {
     type: "income",
-    trends: [incomeSingleCategoryTrend],
+    categories: [incomeSingleCategoryTrend],
 };
 
 export const trendForSpecialSingleCategory: Trend = {
     type: "special",
-    trends: [specialSingleCategoryTrend],
+    categories: [specialSingleCategoryTrend],
 };
 
 export const trendForFixed: Trend = {
     type: "fixed",
-    trends: [
+    categories: [
         {
             name: "car insurance",
             periods: [
@@ -1171,7 +1171,7 @@ export const trendForFixed: Trend = {
 
 export const trendForVariable: Trend = {
     type: "variable",
-    trends: [
+    categories: [
         {
             name: "food",
             periods: [

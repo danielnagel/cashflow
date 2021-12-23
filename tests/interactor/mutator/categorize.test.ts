@@ -1,4 +1,7 @@
-import { categorizeTransaction } from "../../../src/interactor/mutator/categorize";
+import {
+    categorizeTransaction,
+    getCategoryNamesFromCategorizeOptions,
+} from "../../../src/interactor/mutator/categorize";
 import { transactions } from "./samples/transactions";
 import { categorizedTransactions } from "./samples/categorizedTransactions";
 
@@ -183,6 +186,99 @@ describe("Test interactor/mutator/categorize", () => {
                 };
                 expect(result).toStrictEqual(expected);
             });
+        });
+    });
+
+    describe("Test function getCategoryNamesFromCategorizeOptions", () => {
+        describe("Test falsy parameters", () => {
+            test("Return ApplicationError, when there where no categories", () => {
+                expect(
+                    getCategoryNamesFromCategorizeOptions({ categories: [] }),
+                ).toStrictEqual({
+                    source: "categorize.ts",
+                    message: "There where no categories.",
+                });
+            });
+        });
+        describe("Test category names generation", () => {
+            const options: CategorizeOptions = {
+                categories: [
+                    {
+                        name: "food",
+                        type: "variable",
+                        samples: [
+                            { initiator: "Beef Burger Palace" },
+                            { initiator: "Melon the Man" },
+                        ],
+                    },
+                    {
+                        name: "presents",
+                        type: "variable",
+                        samples: [{ initiator: "Presentable Presents" }],
+                    },
+                    {
+                        name: "rent",
+                        type: "fixed",
+                        samples: [{ initiator: "Rent for my crib" }],
+                    },
+                    {
+                        name: "insurance",
+                        type: "fixed",
+                        samples: [
+                            { initiator: "Almost Healthy Inc." },
+                            { initiator: "Stay Healthy Corp." },
+                        ],
+                    },
+                    {
+                        name: "groceries",
+                        type: "variable",
+                        samples: [
+                            { initiator: "Grocerie Land" },
+                            { initiator: "Tasty Deli and Grocerie Store" },
+                        ],
+                    },
+                    {
+                        name: "shopping",
+                        type: "variable",
+                        samples: [{ initiator: "my-online-shop.com" }],
+                    },
+                    {
+                        name: "music subscription",
+                        type: "fixed",
+                        samples: [
+                            {
+                                initiator: "Online Payments Group",
+                                purpose: "Music Whale",
+                            },
+                        ],
+                    },
+                    {
+                        name: "gaming subscription",
+                        type: "fixed",
+                        samples: [
+                            {
+                                initiator: "Online Payments Group",
+                                purpose: "Game Suprise Box Subscription",
+                            },
+                        ],
+                    },
+                ],
+            };
+
+            const expected = [
+                "food",
+                "presents",
+                "rent",
+                "insurance",
+                "groceries",
+                "shopping",
+                "music subscription",
+                "gaming subscription",
+            ];
+
+            expect(
+                getCategoryNamesFromCategorizeOptions(options),
+            ).toStrictEqual(expected);
         });
     });
 });

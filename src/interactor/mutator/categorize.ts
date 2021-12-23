@@ -87,3 +87,20 @@ const generateError = (
 
     return { source: "categorize.ts", message };
 };
+
+export const getCategoryNamesFromCategorizeOptions = (
+    options: CategorizeOptions,
+): string[] | ApplicationError => {
+    if (options.categories.length === 0)
+        return {
+            source: "categorize.ts",
+            message: "There where no categories.",
+        };
+    const categoryNames: string[] = [];
+
+    for (const category of options.categories) {
+        categoryNames.push(category.name);
+    }
+
+    return categoryNames;
+};

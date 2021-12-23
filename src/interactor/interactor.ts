@@ -2,7 +2,11 @@ import { loadTransactionData } from "./connector/csv";
 import { isApplicationError } from "../utils/typeguards";
 import { generateFixedPayDayReport } from "./report/fixedPaxDay";
 import { ConnectorType, ReportType } from "../types/enums";
-import { categorizeTransaction } from "./mutator/categorize";
+import {
+    categorizeTransaction,
+    getCategoryNamesFromCategorizeOptions,
+} from "./mutator/categorize";
+import { generateTrendReport } from "./report/trend";
 
 /**
  * Generates a report using a connector.
@@ -41,14 +45,27 @@ export const generateReport = async (
 
     switch (configuration.interactor.report.type) {
         case ReportType.FixedPayDay:
-            const report = generateFixedPayDayReport(
+            const fixedPayDayReport = generateFixedPayDayReport(
                 transactions,
                 configuration.interactor.report.options,
                 configuration.interactor.mutator,
                 configuration.logger,
             );
-            if (isApplicationError(report)) return report;
-            return { type: "fixcost", report };
+            if (isApplicationError(fixedPayDayReport)) return fixedPayDayReport;
+            return { type: "fixedpayday", report: fixedPayDayReport };
+        case ReportType.Trend:
+            const categories = getCategoryNamesFromCategorizeOptions(
+                configuration.interactor.mutator,
+            );
+            if (isApplicationError(categories)) return categories;
+            const trendReport = generateTrendReport(
+                categories,
+                transactions,
+                configuration.interactor.report.options,
+                configuration.logger,
+            );
+            if (isApplicationError(trendReport)) return trendReport;
+            return { type: "trend", report: trendReport };
         default:
             return {
                 source: "interactor.ts",

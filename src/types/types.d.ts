@@ -145,15 +145,23 @@ type CategorizedFixedPayDays = {
 /**
  * Discriminating union to determine if the given options are from type CategorizeOptions.
  */
-type FixedPayDayReportOptions = {
+type ReportOptionFixedPayDay = {
     type: "fixedpayday";
     options: FixedPayDayOptions;
 };
 
 /**
+ * Discriminating union to determine if the given options are from type CategorizeOptions.
+ */
+type ReportOptionTrend = {
+    type: "trend";
+    options?: TrendReportOptions;
+};
+
+/**
  * Report options for interactor, to interact with the correct report implementation.
  */
-type ReportOptions = FixedPayDayReportOptions;
+type ReportOptions = ReportOptionFixedPayDay | ReportOptionTrend;
 
 /**
  * Discriminating union to determine if the given options are from type CsvOptions.
@@ -189,15 +197,23 @@ type InteractorOptions = {
 /**
  * Discriminating union to determine if the given report is from type CategorizedFixedPayDays.
  */
-type FixedPayDayReport = {
-    type: "fixcost";
+type ReportFixedPayDay = {
+    type: "fixedpayday";
     report: CategorizedFixedPayDays | null;
+};
+
+/**
+ * Discriminating union to determine if the given report is from type TrendReport.
+ */
+type ReportTrend = {
+    type: "trend";
+    report: TrendReport | null;
 };
 
 /**
  * Possible reports, that the interactor could generate.
  */
-type Report = FixedPayDayReport;
+type Report = ReportFixedPayDay | ReportTrend;
 
 /**
  * Possible configurations, that a user could create.
@@ -321,7 +337,7 @@ interface VariableCategoryTrendPeriod extends CategoryTrendPeriod {
 
 type Trend = {
     type: string;
-    trends: CategoryTrend[];
+    categories: CategoryTrend[];
 };
 
 type TrendReport = {
