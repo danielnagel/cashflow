@@ -384,19 +384,6 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
-        day: 8,
-        month: 1,
-        year: 2020,
-        initiator: "Car Insurance Corp.",
-        purpose: "Safety first!",
-        value: 999.99,
-        category: {
-            name: "car insurance",
-            type: "fixed",
-            period: "yearly",
-        },
-    },
-    {
         day: 21,
         month: 9,
         year: 2021,

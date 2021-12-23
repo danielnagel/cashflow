@@ -269,12 +269,20 @@ type MonthYear = {
 };
 
 /**
+ * Options for a trend report.
+ */
+type TrendReportOptions = {
+    categories: string[];
+    types?: string[]; // fixed/variable/special/income, default is all
+    after?: string;
+};
+
+/**
  * Options for a single trend.
  */
 type TrendOptions = {
     type: string; // fixed or variable/special/income
-    category?: string[];
-    period?: string; // monthly is default
+    categories: string[];
     after?: string;
 };
 
@@ -313,8 +321,7 @@ interface VariableCategoryTrendPeriod extends CategoryTrendPeriod {
 }
 
 type Trend = {
-    sum: number;
-    period: string; // "2021.01"/"2021"
+    type: string;
     trends: CategoryTrend[];
 };
 

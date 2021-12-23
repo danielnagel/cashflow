@@ -21,6 +21,7 @@ import { isApplicationError } from "../../utils/typeguards";
 export const generateTrendReport = (
     options: TrendOptions,
     transactions: Transaction[],
+    logOptions?: LoggerOptions,
 ): TrendReport | null => {
     return null;
 };
@@ -32,8 +33,40 @@ export const generateTrendReport = (
 export const generateTrend = (
     options: TrendOptions,
     transactions: Transaction[],
-): Trend | null => {
-    return null;
+    logOptions?: LoggerOptions,
+): Trend | ApplicationError => {
+    if (transactions.length === 0)
+        return {
+            source: "trend.ts",
+            message: "There where no transactions.",
+        };
+
+    if (options.categories.length === 0)
+        return {
+            source: "trend.ts",
+            message: "No categories avaialable.",
+        };
+
+    if (!isValidTransactionType(options.type))
+        return {
+            source: "trend.ts",
+            message: `The transaction type '${options.type}' is unknown.`,
+        };
+
+    const trend: Trend = { type: options.type, trends: [] };
+    for (const category of options.categories) {
+        const categoryTrend = generateCategoryTrend(
+            { type: options.type, category },
+            transactions,
+            logOptions,
+        );
+        if (isApplicationError(categoryTrend)) continue;
+        trend.trends.push(categoryTrend);
+    }
+    if (trend.trends.length === 0)
+        return { source: "trend.ts", message: "No transactions matched." };
+
+    return trend;
 };
 
 /**
@@ -54,7 +87,7 @@ export const generateCategoryTrend = (
     if (transactions.length === 0)
         return { source: "trend.ts", message: "There where no transactions." };
 
-    if (!isValidTransactionType(options))
+    if (!isValidTransactionType(options.type))
         return {
             source: "trend.ts",
             message: `The transaction type '${options.type}' is unknown.`,
@@ -62,9 +95,10 @@ export const generateCategoryTrend = (
 
     const oldestTransactionDate = getOldestTransactionDate(transactions);
     const stringPeriods = generatePeriods(oldestTransactionDate);
-    const periods: Array<
-        FixedCategoryTrendPeriod | VariableCategoryTrendPeriod
-    > = [];
+    const categoryTrend: CategoryTrend = {
+        name: options.category,
+        periods: [],
+    };
     for (const period of stringPeriods) {
         const trendPeriod = generateCategoryTrendPeriod(
             { type: options.type, category: options.category, period },
@@ -77,11 +111,11 @@ export const generateCategoryTrend = (
             });
             continue;
         }
-        periods.push(trendPeriod);
+        categoryTrend.periods.push(trendPeriod);
     }
-    if (periods.length === 0)
+    if (categoryTrend.periods.length === 0)
         return { source: "trend.ts", message: "No transactions matched." };
-    return { name: options.category, periods };
+    return categoryTrend;
 };
 
 /**
@@ -140,7 +174,7 @@ export const generateCategoryTrendPeriod = (
             message: "There where no transactions.",
         };
 
-    if (!isValidTransactionType(options))
+    if (!isValidTransactionType(options.type))
         return {
             source: "trend.ts",
             message: `The transaction type '${options.type}' is unknown.`,
@@ -176,14 +210,15 @@ export const generateCategoryTrendPeriod = (
 };
 
 /**
- * Checks if a transaction type is valid.
- * @param options category trend options
+ * Checks if a string is a valid transaction type.
+ *
+ * @param transactionType
  * @returns true when transactio type is fixed, variable, income or special,
  * false otherwise
  */
-const isValidTransactionType = (options: CategoryTrendOptions): boolean => {
+const isValidTransactionType = (transactionType: string): boolean => {
     for (const type of Object.values(TransactionType)) {
-        if (type === options.type) return true;
+        if (type === transactionType) return true;
     }
     return false;
 };

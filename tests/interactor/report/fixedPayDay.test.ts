@@ -776,22 +776,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 83.3325,
                     isPaid: true,
-                    lastBookingDays: [8, 13],
-                    averageBookingDay: 10,
+                    lastBookingDays: [13],
+                    averageBookingDay: 13,
                     transactions: [
-                        {
-                            day: 8,
-                            month: 1,
-                            year: 2020,
-                            initiator: "Car Insurance Corp.",
-                            purpose: "Safety first!",
-                            value: 999.99,
-                            category: {
-                                name: "car insurance",
-                                type: "fixed",
-                                period: "yearly",
-                            },
-                        },
                         {
                             day: 13,
                             month: 1,
