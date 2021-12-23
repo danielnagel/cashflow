@@ -272,8 +272,7 @@ type MonthYear = {
  * Options for a trend report.
  */
 type TrendReportOptions = {
-    categories: string[];
-    types?: string[]; // fixed/variable/special/income, default is all
+    type?: string; // fixed/variable/special/income
     after?: string;
 };
 
@@ -326,5 +325,6 @@ type Trend = {
 };
 
 type TrendReport = {
+    type?: string;
     trends: Array<Trend>;
 };

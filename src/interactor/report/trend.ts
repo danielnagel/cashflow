@@ -15,20 +15,78 @@ import { round } from "../../utils/numbers";
 import { isApplicationError } from "../../utils/typeguards";
 
 /**
- * Generates a trend report for every transaction type.
- * @param options
+ * Generates a trend report object
+ * for every or a specific transaction type.
+ * The result is either generating a summary of all transaction types
+ * or a trend report showing every category of one transaction type.
+ *
+ * @param categories which can be found
+ * @param transactions that are used as data bases
+ * @param options allows to only generate a detailed report for one category
+ * @param logOptions used for the logger
+ * @returns TrendReport or an ApplicationError
  */
 export const generateTrendReport = (
-    options: TrendOptions,
+    categories: string[],
     transactions: Transaction[],
+    options?: TrendReportOptions,
     logOptions?: LoggerOptions,
-): TrendReport | null => {
-    return null;
+): TrendReport | ApplicationError => {
+    if (transactions.length === 0)
+        return {
+            source: "trend.ts",
+            message: "There where no transactions.",
+        };
+
+    if (categories.length === 0)
+        return {
+            source: "trend.ts",
+            message: "No categories avaialable.",
+        };
+
+    if (typeof options !== "undefined" && typeof options.type !== "undefined") {
+        if (!isValidTransactionType(options.type)) {
+            return {
+                source: "trend.ts",
+                message: `The transaction type '${options.type}' is unknown.`,
+            };
+        }
+        const trend = generateTrend(
+            { type: options.type, categories },
+            transactions,
+            logOptions,
+        );
+        if (isApplicationError(trend)) return trend;
+        return { type: options.type, trends: [trend] };
+    }
+
+    const trendReport: TrendReport = { trends: [] };
+    for (const type of Object.values(TransactionType)) {
+        const trend = generateTrend(
+            { type, categories },
+            transactions,
+            logOptions,
+        );
+        if (isApplicationError(trend)) return trend;
+        trendReport.trends.push(trend);
+    }
+
+    if (trendReport.trends.length === 0)
+        return { source: "trend.ts", message: "No transactions matched." };
+
+    return trendReport;
 };
 
 /**
- * Generates a trend object for a specific transaction type.
+ * Generates a trend object
+ * for a specific transaction type.
+ * The trend object is used for a transaction type row of a trend report
+ * or a trend report showing every category of one transaction type.
+ *
  * @param options
+ * @param transactions that are used as data bases
+ * @param logOptions used for the logger
+ * @returns Trend or an ApplicationError
  */
 export const generateTrend = (
     options: TrendOptions,

@@ -1301,3 +1301,32 @@ export const trendForVariable: Trend = {
         },
     ],
 };
+
+export const fixedTrendReport: TrendReport = {
+    type: "fixed",
+    trends: [trendForFixed],
+};
+
+export const variableTrendReport: TrendReport = {
+    type: "variable",
+    trends: [trendForVariable],
+};
+
+export const incomeTrendReport: TrendReport = {
+    type: "income",
+    trends: [trendForIncomeSingleCategory],
+};
+
+export const specialTrendReport: TrendReport = {
+    type: "special",
+    trends: [trendForSpecialSingleCategory],
+};
+
+export const trendReport: TrendReport = {
+    trends: [
+        trendForFixed,
+        trendForVariable,
+        trendForIncomeSingleCategory,
+        trendForSpecialSingleCategory,
+    ],
+};

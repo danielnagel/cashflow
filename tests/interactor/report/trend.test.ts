@@ -2,6 +2,7 @@ import {
     generateCategoryTrendPeriod,
     generateCategoryTrend,
     generateTrend,
+    generateTrendReport,
 } from "../../../src/interactor/report/trend";
 import { categorizedTransactions } from "./samples/categorizedTransactions";
 import {
@@ -19,6 +20,11 @@ import {
     trendForSpecialSingleCategory,
     trendForFixed,
     trendForVariable,
+    fixedTrendReport,
+    variableTrendReport,
+    incomeTrendReport,
+    specialTrendReport,
+    trendReport,
 } from "./samples/expected";
 
 describe("Test report/trend", () => {
@@ -382,9 +388,205 @@ describe("Test report/trend", () => {
             expect(result).toStrictEqual(trendForVariable);
         });
     });
+
+    describe("Test function generateTrendReport", () => {
+        test("Return ApplicationError, when there are no transactions", () => {
+            const result = generateTrendReport(
+                ["water"],
+                [],
+                {},
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+            expect(result).toStrictEqual({
+                source: "trend.ts",
+                message: "There where no transactions.",
+            });
+        });
+
+        test("Return ApplicationError, when type is unknown", () => {
+            const result = generateTrendReport(
+                ["water"],
+                categorizedTransactions,
+                { type: "random" },
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+            expect(result).toStrictEqual({
+                source: "trend.ts",
+                message: "The transaction type 'random' is unknown.",
+            });
+        });
+
+        test("Return ApplicationError, when no transactions matched", () => {
+            const result = generateTrendReport(
+                ["water"],
+                categorizedTransactions,
+                {},
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+            expect(result).toStrictEqual({
+                source: "trend.ts",
+                message: "No transactions matched.",
+            });
+        });
+
+        test("Return ApplicationError, when categories array is empty", () => {
+            const result = generateTrendReport(
+                [],
+                categorizedTransactions,
+                {},
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+            expect(result).toStrictEqual({
+                source: "trend.ts",
+                message: "No categories avaialable.",
+            });
+        });
+
+        test("Generate a trend report, all categories, fixed transaction type", () => {
+            const result = generateTrendReport(
+                [
+                    "car insurance",
+                    "luxury",
+                    "rent",
+                    "insurance",
+                    "mobile",
+                    "music subscription",
+                    "gaming subscription",
+                    "salary",
+                    "home",
+                    "food",
+                    "groceries",
+                    "presents",
+                    "shopping",
+                ],
+                categorizedTransactions,
+                { type: "fixed" },
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+
+            expect(result).toStrictEqual(fixedTrendReport);
+        });
+
+        test("Generate a trend report, all categories, variable transaction type", () => {
+            const result = generateTrendReport(
+                [
+                    "car insurance",
+                    "luxury",
+                    "rent",
+                    "insurance",
+                    "mobile",
+                    "music subscription",
+                    "gaming subscription",
+                    "salary",
+                    "home",
+                    "food",
+                    "groceries",
+                    "presents",
+                    "shopping",
+                ],
+                categorizedTransactions,
+                { type: "variable" },
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+
+            expect(result).toStrictEqual(variableTrendReport);
+        });
+
+        test("Generate a trend report, all categories, income transaction type", () => {
+            const result = generateTrendReport(
+                [
+                    "car insurance",
+                    "luxury",
+                    "rent",
+                    "insurance",
+                    "mobile",
+                    "music subscription",
+                    "gaming subscription",
+                    "salary",
+                    "home",
+                    "food",
+                    "groceries",
+                    "presents",
+                    "shopping",
+                ],
+                categorizedTransactions,
+                { type: "income" },
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+
+            expect(result).toStrictEqual(incomeTrendReport);
+        });
+
+        test("Generate a trend report, all categories, special transaction type", () => {
+            const result = generateTrendReport(
+                [
+                    "car insurance",
+                    "luxury",
+                    "rent",
+                    "insurance",
+                    "mobile",
+                    "music subscription",
+                    "gaming subscription",
+                    "salary",
+                    "home",
+                    "food",
+                    "groceries",
+                    "presents",
+                    "shopping",
+                ],
+                categorizedTransactions,
+                { type: "special" },
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+
+            expect(result).toStrictEqual(specialTrendReport);
+        });
+
+        test("Generate a trend report, all categories, all transaction types", () => {
+            const result = generateTrendReport(
+                [
+                    "car insurance",
+                    "luxury",
+                    "rent",
+                    "insurance",
+                    "mobile",
+                    "music subscription",
+                    "gaming subscription",
+                    "salary",
+                    "home",
+                    "food",
+                    "groceries",
+                    "presents",
+                    "shopping",
+                ],
+                categorizedTransactions,
+                {},
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+
+            expect(result).toStrictEqual(trendReport);
+        });
+    });
 });
 
 // -- test list
-// generarte a trend report for every transaction type
 // weekly reports
 // yearly reports
