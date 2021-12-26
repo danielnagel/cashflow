@@ -9,6 +9,8 @@ import {
     isSampledCategory,
     isConfiguration,
     isApplicationError,
+    isFixedCategoryTrendPeriod,
+    isVariableCategoryTrendPeriod,
 } from "../../src/utils/typeguards";
 
 describe("Test utils/typeguards", () => {
@@ -382,6 +384,90 @@ describe("Test utils/typeguards", () => {
         test("ApplicationError is an ApplicationError", () => {
             const applicationError = { source: "", message: "" };
             expect(isApplicationError(applicationError)).toBeTruthy();
+        });
+    });
+
+    describe("Check if object is FixedCategoryTrendPeriod", () => {
+        test("Null is not an FixedCategoryTrendPeriod", () => {
+            expect(isFixedCategoryTrendPeriod(null)).toBeFalsy();
+        });
+
+        test("undefined is not an FixedCategoryTrendPeriod", () => {
+            expect(isFixedCategoryTrendPeriod(undefined)).toBeFalsy();
+        });
+
+        test("Empty object is not an FixedCategoryTrendPeriod", () => {
+            expect(isFixedCategoryTrendPeriod({})).toBeFalsy();
+        });
+
+        test("string is not an FixedCategoryTrendPeriod", () => {
+            expect(isFixedCategoryTrendPeriod("hello")).toBeFalsy();
+        });
+
+        test("number is not an FixedCategoryTrendPeriod", () => {
+            expect(isFixedCategoryTrendPeriod(123)).toBeFalsy();
+        });
+
+        test("FixedCategoryTrendPeriod is not an CategoryTrendPeriod", () => {
+            const fixedCategoryTrendPeriod = { period: "", transactions: [] };
+            expect(
+                isFixedCategoryTrendPeriod(fixedCategoryTrendPeriod),
+            ).toBeFalsy();
+        });
+
+        test("FixedCategoryTrendPeriod is an FixedCategoryTrendPeriod", () => {
+            const fixedCategoryTrendPeriod = {
+                period: "",
+                transactions: [],
+                value: "",
+                bookingDate: "",
+            };
+            expect(
+                isFixedCategoryTrendPeriod(fixedCategoryTrendPeriod),
+            ).toBeTruthy();
+        });
+    });
+
+    describe("Check if object is VariableCategoryTrendPeriod", () => {
+        test("Null is not an VariableCategoryTrendPeriod", () => {
+            expect(isVariableCategoryTrendPeriod(null)).toBeFalsy();
+        });
+
+        test("undefined is not an VariableCategoryTrendPeriod", () => {
+            expect(isVariableCategoryTrendPeriod(undefined)).toBeFalsy();
+        });
+
+        test("Empty object is not an VariableCategoryTrendPeriod", () => {
+            expect(isVariableCategoryTrendPeriod({})).toBeFalsy();
+        });
+
+        test("string is not an VariableCategoryTrendPeriod", () => {
+            expect(isVariableCategoryTrendPeriod("hello")).toBeFalsy();
+        });
+
+        test("number is not an VariableCategoryTrendPeriod", () => {
+            expect(isVariableCategoryTrendPeriod(123)).toBeFalsy();
+        });
+
+        test("VariableCategoryTrendPeriod is not an CategoryTrendPeriod", () => {
+            const variableCategoryTrendPeriod = {
+                period: "",
+                transactions: [],
+            };
+            expect(
+                isVariableCategoryTrendPeriod(variableCategoryTrendPeriod),
+            ).toBeFalsy();
+        });
+
+        test("VariableCategoryTrendPeriod is an VariableCategoryTrendPeriod", () => {
+            const variableCategoryTrendPeriod = {
+                period: "",
+                transactions: [],
+                sum: "",
+            };
+            expect(
+                isVariableCategoryTrendPeriod(variableCategoryTrendPeriod),
+            ).toBeTruthy();
         });
     });
 });

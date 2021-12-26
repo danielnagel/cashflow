@@ -95,3 +95,26 @@ export const isApplicationError = (
         (object as ApplicationError).message !== undefined
     );
 };
+
+export const isFixedCategoryTrendPeriod = (
+    object: unknown,
+): object is FixedCategoryTrendPeriod => {
+    if (!object) return false;
+    return (
+        (object as FixedCategoryTrendPeriod).period !== undefined &&
+        (object as FixedCategoryTrendPeriod).transactions !== undefined &&
+        (object as FixedCategoryTrendPeriod).value !== undefined &&
+        (object as FixedCategoryTrendPeriod).bookingDate !== undefined
+    );
+};
+
+export const isVariableCategoryTrendPeriod = (
+    object: unknown,
+): object is VariableCategoryTrendPeriod => {
+    if (!object) return false;
+    return (
+        (object as VariableCategoryTrendPeriod).period !== undefined &&
+        (object as VariableCategoryTrendPeriod).transactions !== undefined &&
+        (object as VariableCategoryTrendPeriod).sum !== undefined
+    );
+};
