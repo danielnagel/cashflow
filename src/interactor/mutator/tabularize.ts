@@ -1,5 +1,6 @@
-import { getDateFromTransaction, formatDate } from "../utils/dates";
-import { roundToString } from "../utils/numbers";
+import { ReportType } from "../../types/enums";
+import { getDateFromTransaction, formatDate } from "../../utils/dates";
+import { roundToString } from "../../utils/numbers";
 
 /**
  * Generates a given report as table.
@@ -10,21 +11,29 @@ import { roundToString } from "../utils/numbers";
  * or an ApplicationError when report is null or report type is unknown
  */
 export const generateReportAsTable = (
-    configuration: Configuration,
     report: Report,
+    options?: ConsoleViewerOptions,
 ): FixCostsReportTableRow[] | ApplicationError => {
     switch (report.type) {
-        case "fixcost":
+        case ReportType.FixedPayDay:
             if (!report.report) {
                 return {
-                    source: "viewer.ts",
-                    message: "Cannot print Fixcosts report! Report is null.",
+                    source: "tabularize.ts",
+                    message: `Cannot print ${report.type} report! Report is null.`,
                 };
             }
-            return fixCostsReportAsTable(configuration, report.report);
+            return fixedPayDayReportAsTable(report.report, options);
+        case ReportType.Trend:
+            if (!report.report) {
+                return {
+                    source: "tabularize.ts",
+                    message: `Cannot print ${report.type} report! Report is null.`,
+                };
+            }
+            return trendReportAsTable(report.report, options);
         default:
             return {
-                source: "viewer.ts",
+                source: "tabularize.ts",
                 message: `Unkown report type: ${report.type}!`,
             };
     }
@@ -37,17 +46,13 @@ export const generateReportAsTable = (
  * @param report FixCosts report which should be generated as table data
  * @returns a list of FixCostsReportTableRow objects
  */
-const fixCostsReportAsTable = (
-    configuration: Configuration,
+const fixedPayDayReportAsTable = (
     report: CategorizedFixedPayDays,
+    options?: ConsoleViewerOptions,
 ): FixCostsReportTableRow[] => {
     const tabularData: FixCostsReportTableRow[] = [];
-    const dateFormat = configuration.viewer?.dateFormat
-        ? configuration.viewer.dateFormat
-        : "dd.MM.yyyy";
-    const currency = configuration.viewer?.currency
-        ? configuration.viewer.currency
-        : "€$";
+    const dateFormat = options?.dateFormat ? options.dateFormat : "dd.MM.yyyy";
+    const currency = options?.currency ? options.currency : "€$";
     for (const fixedPayDay of report.namedFixedPayDays) {
         const lastBookingDate = formatDate(
             getDateFromTransaction(
@@ -80,4 +85,14 @@ const fixCostsReportAsTable = (
         lastBookingDate: null,
     });
     return tabularData;
+};
+
+const trendReportAsTable = (
+    report: TrendReport,
+    configuration?: ConsoleViewerOptions,
+): ApplicationError => {
+    return {
+        source: "tabularize.ts",
+        message: "trendReportAsTable is unimplemented!",
+    };
 };

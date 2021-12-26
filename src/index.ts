@@ -2,7 +2,7 @@ import { loadConfigurationFile } from "./configurator/loader";
 import { generateReport } from "./interactor/interactor";
 import { log } from "./utils/loggers";
 import { isApplicationError } from "./utils/typeguards";
-import { generateReportAsTable } from "./viewer/console";
+import { generateReportAsTable } from "./interactor/mutator/tabularize";
 
 const main = async () => {
     const options = loadConfigurationFile(`data/config.json`);
@@ -22,7 +22,7 @@ const main = async () => {
         return;
     }
 
-    const result = generateReportAsTable(options, report);
+    const result = generateReportAsTable(report, options.viewer);
     if (isApplicationError(result)) {
         log({
             message: result,
