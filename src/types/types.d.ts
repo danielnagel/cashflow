@@ -227,12 +227,24 @@ type Configuration = {
 /**
  * One row contains the information of one category from the categorized fix costs report.
  */
-type FixCostsReportTableRow = {
+type FixedPayDayReportTableRow = {
     category: string;
     paid: boolean | null;
     bookingDay: number | null;
     cost: string;
     lastBookingDate: string | null;
+};
+
+/**
+ * One row contains the name of a category, and its period key/value pair.
+ * The period key has the following format "yyyy.MM"
+ * The period value is always the cost with the currency.
+ * When the trend report is only from type fixed or income,
+ * value contains the cost with the currency and the last booking date.
+ */
+type TrendReportTableRow = {
+    category: string;
+    [key: string]: string | null;
 };
 
 /**
@@ -273,6 +285,7 @@ type LoggerOptions = {
 type ConsoleViewerOptions = {
     currency?: string;
     dateFormat?: string;
+    before?: string;
 };
 
 /**

@@ -1,8 +1,16 @@
 import { generateReportAsTable } from "../../../src/interactor/mutator/tabularize";
-import { fixedPayDayReport, trendReport } from "./samples/reports";
+import {
+    trendReport,
+    fixedTrendReport,
+    variableTrendReport,
+} from "../report/samples/expected";
+import { fixedPayDayReport } from "./samples/reports";
 import {
     tabularizedFixedPayDayReport,
     tabularizedFixedPayDayReportWithOptions,
+    tabularizedTrendReportAll,
+    tabularizedTrendReportFixed,
+    tabularizedTrendReportVariable,
 } from "./samples/tabularizedReports";
 
 describe("Test interactor/mutator/tabularize", () => {
@@ -26,12 +34,40 @@ describe("Test interactor/mutator/tabularize", () => {
             });
         });
         describe("Test Trend Report", () => {
-            test("test stub", () => {
-                const tabularizedReport = generateReportAsTable(trendReport);
-                expect(tabularizedReport).toStrictEqual({
-                    source: "tabularize.ts",
-                    message: "trendReportAsTable is unimplemented!",
-                });
+            test("Generate trend report for more than one transaction type", () => {
+                const tabularizedReport = generateReportAsTable(
+                    { type: "trend", report: trendReport },
+                    {
+                        before: "13.12.2021",
+                    },
+                );
+                expect(tabularizedReport).toStrictEqual(
+                    tabularizedTrendReportAll,
+                );
+            });
+
+            test("Generate trend report for transaction type fixed", () => {
+                const tabularizedReport = generateReportAsTable(
+                    { type: "trend", report: fixedTrendReport },
+                    {
+                        before: "13.12.2021",
+                    },
+                );
+                expect(tabularizedReport).toStrictEqual(
+                    tabularizedTrendReportFixed,
+                );
+            });
+
+            test("Generate trend report for transaction type variable", () => {
+                const tabularizedReport = generateReportAsTable(
+                    { type: "trend", report: variableTrendReport },
+                    {
+                        before: "13.12.2021",
+                    },
+                );
+                expect(tabularizedReport).toStrictEqual(
+                    tabularizedTrendReportVariable,
+                );
             });
         });
     });
