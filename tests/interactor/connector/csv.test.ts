@@ -137,6 +137,30 @@ describe("Test connector/csv", () => {
             });
         });
 
+        test("Stop loading data, when file does not end with '.csv'", async () => {
+            expect(
+                await loadTransactionData(
+                    {
+                        path: __dirname + "/samples/sample3.txt",
+                        dataKeys: {
+                            date: "",
+                            initiator: "",
+                            purpose: "",
+                            value: "",
+                        },
+                        columns: [],
+                        dateFormat: "",
+                    },
+                    { allowedLogLevel: "none" },
+                ),
+            ).toStrictEqual({
+                source: "csv.ts",
+                message: `Path needs to end with ".csv", path is "${
+                    __dirname + "/samples/sample3.txt"
+                }"`,
+            });
+        });
+
         test("Load data from existing sample file and generate transaction array", async () => {
             const transactionData = <Transaction[]>await loadTransactionData(
                 {
@@ -395,7 +419,3 @@ describe("Test connector/csv", () => {
         });
     });
 });
-
-// -- test list
-// return error, when given path exists, but isn't directory or file
-// a single file must end with *.csv

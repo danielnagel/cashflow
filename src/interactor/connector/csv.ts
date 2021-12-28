@@ -110,6 +110,12 @@ export const loadTransactionData = async (
         };
 
     if (isFile(options.path)) {
+        if (!options.path.endsWith(".csv")) {
+            return {
+                source: "csv.ts",
+                message: `Path needs to end with ".csv", path is "${options.path}"`,
+            };
+        }
         return await loadTransactionDataFromFile(options, loggerOptions);
     }
 
@@ -163,8 +169,6 @@ const loadTransactionDataFromFile = async (
     loggerOptions?: LoggerOptions,
 ): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
-
-    if (typeof options.path !== "string") return transactions;
 
     const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(
         parse({

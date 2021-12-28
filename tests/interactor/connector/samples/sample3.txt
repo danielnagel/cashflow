@@ -1,0 +1,18 @@
+RANDOMSTRING
+
+SOME INFOS; ABOUT SOMETHING
+SOME INFOS; ABOUT SOMETHING
+SOME INFOS; ABOUT SOMETHING
+
+Some random text to tell you something about somewhat
+And some more text and so on bla bla
+
+booking;valuta;initiator;bookingtext;randominformation;use;balance;currency;amount;currency
+03.11.2021;03.11.2021;ONLINE SHOP 3;debit;;Good choice mate 2344534;1.575,10;EUR;-7,99;EUR
+01.06.2021;01.06.2021;Rent for my crib;debit;;Thanks landlord;1.494,89;EUR;-650;EUR
+01.06.2021;01.06.2021;Almost Healthy Inc.;debit;;We bet that you're going to be sick;1.494,89;EUR;-12.99;EUR
+07.07.2021;07.07.2021;Grocerie Land;debit;;VISA 23 GROCERIE LAND TES71234123423134;1.494,89;EUR;-109.56;EUR
+01.09.2021;01.09.2021;Rent for my crib;debit;;Thanks landlord;1.494,89;EUR;-650;EUR
+03.09.2021;03.09.2021;Stay Healthy Corp.;debit;;Your health is our mission;1.494,89;EUR;-14.99;EUR
+11.08.2021;11.08.2021;Grocerie Land;debit;;VISA 11 GROCERIE LAND TES71234123423134;1.494,89;EUR;-88.86;EUR
+01.08.2021;01.08.2021;Rent for my crib;debit;;Thanks landlord;1.494,89;EUR;-650;EUR
