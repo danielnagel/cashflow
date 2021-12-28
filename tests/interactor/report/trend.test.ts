@@ -25,6 +25,7 @@ import {
     incomeTrendReport,
     specialTrendReport,
     trendReport,
+    trendReportAfter,
 } from "./samples/expected";
 
 describe("Test report/trend", () => {
@@ -152,6 +153,7 @@ describe("Test report/trend", () => {
             const options: CategoryTrendOptions = {
                 category: "mobile",
                 type: "fixed",
+                end: "20.12.2021",
             };
             const result = generateCategoryTrend(options, [], {
                 allowedLogLevel: "none",
@@ -166,6 +168,7 @@ describe("Test report/trend", () => {
             const options: CategoryTrendOptions = {
                 category: "hello",
                 type: "random",
+                end: "20.12.2021",
             };
             const result = generateCategoryTrend(
                 options,
@@ -182,6 +185,7 @@ describe("Test report/trend", () => {
             const options: CategoryTrendOptions = {
                 category: "water",
                 type: "fixed",
+                end: "20.12.2021",
             };
             const result = generateCategoryTrend(
                 options,
@@ -198,6 +202,7 @@ describe("Test report/trend", () => {
             const options: CategoryTrendOptions = {
                 category: "mobile",
                 type: "fixed",
+                end: "20.12.2021",
             };
             const result = generateCategoryTrend(
                 options,
@@ -212,6 +217,7 @@ describe("Test report/trend", () => {
             const options: CategoryTrendOptions = {
                 category: "groceries",
                 type: "variable",
+                end: "20.12.2021",
             };
             const result = generateCategoryTrend(
                 options,
@@ -226,6 +232,7 @@ describe("Test report/trend", () => {
             const options: CategoryTrendOptions = {
                 category: "salary",
                 type: "income",
+                end: "20.12.2021",
             };
             const result = generateCategoryTrend(
                 options,
@@ -240,6 +247,7 @@ describe("Test report/trend", () => {
             const options: CategoryTrendOptions = {
                 category: "home",
                 type: "special",
+                end: "20.12.2021",
             };
             const result = generateCategoryTrend(
                 options,
@@ -256,6 +264,7 @@ describe("Test report/trend", () => {
             const options: TrendOptions = {
                 categories: ["mobile"],
                 type: "fixed",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, [], {
                 allowedLogLevel: "none",
@@ -270,6 +279,7 @@ describe("Test report/trend", () => {
             const options: TrendOptions = {
                 categories: ["hello"],
                 type: "random",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, categorizedTransactions, {
                 allowedLogLevel: "none",
@@ -284,6 +294,7 @@ describe("Test report/trend", () => {
             const options: TrendOptions = {
                 categories: ["water"],
                 type: "fixed",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, categorizedTransactions, {
                 allowedLogLevel: "none",
@@ -298,6 +309,7 @@ describe("Test report/trend", () => {
             const options: TrendOptions = {
                 categories: [],
                 type: "fixed",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, categorizedTransactions, {
                 allowedLogLevel: "none",
@@ -312,6 +324,7 @@ describe("Test report/trend", () => {
             const options: TrendOptions = {
                 categories: ["mobile"],
                 type: "fixed",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, categorizedTransactions, {
                 allowedLogLevel: "none",
@@ -324,6 +337,7 @@ describe("Test report/trend", () => {
             const options: TrendOptions = {
                 categories: ["groceries"],
                 type: "variable",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, categorizedTransactions, {
                 allowedLogLevel: "none",
@@ -336,6 +350,7 @@ describe("Test report/trend", () => {
             const options: TrendOptions = {
                 categories: ["salary"],
                 type: "income",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, categorizedTransactions, {
                 allowedLogLevel: "none",
@@ -348,6 +363,7 @@ describe("Test report/trend", () => {
             const options: TrendOptions = {
                 categories: ["home"],
                 type: "special",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, categorizedTransactions, {
                 allowedLogLevel: "none",
@@ -368,6 +384,7 @@ describe("Test report/trend", () => {
                     "gaming subscription",
                 ],
                 type: "fixed",
+                end: "20.12.2021",
             };
             const result = generateTrend(options, categorizedTransactions, {
                 allowedLogLevel: "none",
@@ -394,7 +411,7 @@ describe("Test report/trend", () => {
             const result = generateTrendReport(
                 ["water"],
                 [],
-                {},
+                { end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
@@ -409,7 +426,7 @@ describe("Test report/trend", () => {
             const result = generateTrendReport(
                 ["water"],
                 categorizedTransactions,
-                { type: "random" },
+                { type: "random", end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
@@ -424,7 +441,7 @@ describe("Test report/trend", () => {
             const result = generateTrendReport(
                 ["water"],
                 categorizedTransactions,
-                {},
+                { end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
@@ -439,7 +456,7 @@ describe("Test report/trend", () => {
             const result = generateTrendReport(
                 [],
                 categorizedTransactions,
-                {},
+                { end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
@@ -468,7 +485,7 @@ describe("Test report/trend", () => {
                     "shopping",
                 ],
                 categorizedTransactions,
-                { type: "fixed" },
+                { type: "fixed", end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
@@ -495,7 +512,7 @@ describe("Test report/trend", () => {
                     "shopping",
                 ],
                 categorizedTransactions,
-                { type: "variable" },
+                { type: "variable", end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
@@ -522,7 +539,7 @@ describe("Test report/trend", () => {
                     "shopping",
                 ],
                 categorizedTransactions,
-                { type: "income" },
+                { type: "income", end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
@@ -549,7 +566,7 @@ describe("Test report/trend", () => {
                     "shopping",
                 ],
                 categorizedTransactions,
-                { type: "special" },
+                { type: "special", end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
@@ -576,13 +593,44 @@ describe("Test report/trend", () => {
                     "shopping",
                 ],
                 categorizedTransactions,
-                {},
+                { end: "20.12.2021" },
                 {
                     allowedLogLevel: "none",
                 },
             );
 
             expect(result).toStrictEqual(trendReport);
+        });
+
+        test("Generate a trend report, all categories, all transaction types, with after option that produces a report from period 2021.09", () => {
+            const result = generateTrendReport(
+                [
+                    "car insurance",
+                    "luxury",
+                    "rent",
+                    "insurance",
+                    "mobile",
+                    "music subscription",
+                    "gaming subscription",
+                    "salary",
+                    "home",
+                    "food",
+                    "groceries",
+                    "presents",
+                    "shopping",
+                ],
+                categorizedTransactions,
+                {
+                    start: "09/15/2021",
+                    dateFormat: "MM/dd/yyyy",
+                    end: "12/20/2021",
+                },
+                {
+                    allowedLogLevel: "none",
+                },
+            );
+
+            expect(result).toStrictEqual(trendReportAfter);
         });
     });
 });

@@ -52,7 +52,12 @@ export const generateTrendReport = (
             };
         }
         const trend = generateTrend(
-            { type: options.type, categories },
+            {
+                type: options.type,
+                categories,
+                start: options?.start,
+                dateFormat: options?.dateFormat,
+            },
             transactions,
             logOptions,
         );
@@ -63,7 +68,12 @@ export const generateTrendReport = (
     const trendReport: TrendReport = { trends: [] };
     for (const type of Object.values(TransactionType)) {
         const trend = generateTrend(
-            { type, categories },
+            {
+                type,
+                categories,
+                start: options?.start,
+                dateFormat: options?.dateFormat,
+            },
             transactions,
             logOptions,
         );
@@ -114,7 +124,12 @@ export const generateTrend = (
     const trend: Trend = { type: options.type, categories: [] };
     for (const category of options.categories) {
         const categoryTrend = generateCategoryTrend(
-            { type: options.type, category },
+            {
+                type: options.type,
+                category,
+                start: options.start,
+                dateFormat: options.dateFormat,
+            },
             transactions,
             logOptions,
         );
@@ -151,8 +166,7 @@ export const generateCategoryTrend = (
             message: `The transaction type '${options.type}' is unknown.`,
         };
 
-    const oldestTransactionDate = getOldestTransactionDate(transactions);
-    const stringPeriods = generatePeriods(oldestTransactionDate);
+    const stringPeriods = generatePeriods(transactions, options);
     const categoryTrend: CategoryTrend = {
         name: options.category,
         periods: [],
@@ -165,6 +179,7 @@ export const generateCategoryTrend = (
         if (isApplicationError(trendPeriod)) {
             log({
                 message: trendPeriod,
+                level: "warn",
                 allowedLogLevel: logOptions?.allowedLogLevel,
             });
             continue;
@@ -180,10 +195,18 @@ export const generateCategoryTrend = (
  * Searches the oldest transactions date in a list of transactions.
  *
  * @param transactions to search through
+ * @param options configuration made by the user, to get a custom start date
  * @returns a javascript Date object of the oldest transaction
  * or the current date.
  */
-const getOldestTransactionDate = (transactions: Transaction[]): Date => {
+const getOldestTransactionDate = (
+    transactions: Transaction[],
+    options: CategoryTrendOptions,
+): Date => {
+    if (typeof options.start !== "undefined") {
+        const startDate = parseDateString(options.start, options.dateFormat);
+        if (startDate !== null) return startDate;
+    }
     let oldestDate = new Date();
     for (const transaction of transactions) {
         const transactionDate = getDateFromTransaction(transaction);
@@ -194,18 +217,27 @@ const getOldestTransactionDate = (transactions: Transaction[]): Date => {
 
 /**
  * Generates a list of monthly periods,
- * from a given date until today.
- * @param from date to start from
+ * for a specific period.
+ * @param transactions to get the oldest period from
+ * @param options configuration made by the user, to shrink the available periods
  * @returns a list of periods,
  * that looks like this ["2020.09", ..., "2021.12"]
  */
-const generatePeriods = (from: Date): string[] => {
+const generatePeriods = (
+    transactions: Transaction[],
+    options: CategoryTrendOptions,
+): string[] => {
     const periods: string[] = [];
-    const until = new Date();
+    let startDate = getOldestTransactionDate(transactions, options);
+    let endDate = new Date();
+    if (typeof options.end !== "undefined") {
+        const parsedDate = parseDateString(options.end, options.dateFormat);
+        if (parsedDate !== null) endDate = parsedDate;
+    }
     do {
-        periods.push(`${formatDate(from, "yyyy.MM")}`);
-        from = addMonths(from, 1);
-    } while (isBefore(from, until));
+        periods.push(`${formatDate(startDate, "yyyy.MM")}`);
+        startDate = addMonths(startDate, 1);
+    } while (isBefore(startDate, endDate));
     return periods;
 };
 

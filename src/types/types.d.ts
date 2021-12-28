@@ -302,7 +302,9 @@ type MonthYear = {
  */
 type TrendReportOptions = {
     type?: string; // fixed/variable/special/income
-    after?: string;
+    start?: string;
+    end?: string;
+    dateFormat?: string;
 };
 
 /**
@@ -311,7 +313,9 @@ type TrendReportOptions = {
 type TrendOptions = {
     type: string; // fixed or variable/special/income
     categories: string[];
-    after?: string;
+    start?: string;
+    end?: string;
+    dateFormat?: string;
 };
 
 /**
@@ -320,7 +324,9 @@ type TrendOptions = {
 type CategoryTrendOptions = {
     type: string; // fixed or variable/special/income
     category: string;
-    after?: string;
+    start?: string;
+    end?: string;
+    dateFormat?: string;
 };
 
 type CategoryTrendPeriodOptions = {
