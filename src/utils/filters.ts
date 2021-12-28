@@ -74,24 +74,38 @@ export const isTransactionMatchingSample = (
     transaction: Transaction,
     sample: Sample,
 ): boolean => {
-    if (transaction.initiator === sample.initiator) {
-        if (typeof sample.purpose === "string") {
-            if (
-                transaction.purpose
-                    .toLowerCase()
-                    .includes(sample.purpose.toLowerCase())
-            ) {
-                // initiators and purpose matching
-                return true;
-            }
-            // initiator matches, purpose exists, but doesn't match
-            return false;
+    if (isTransactionInitiatorMatchingSample(transaction, sample.initiator)) {
+        if (typeof sample.purpose === "string" || sample.purpose === null) {
+            return isTransactionPurposeMatchingSample(
+                transaction,
+                sample.purpose,
+            );
         }
-        // initiators matching
         return true;
     }
     // nothing matches
     return false;
+};
+
+const isTransactionInitiatorMatchingSample = (
+    transaction: Transaction,
+    initiator: string,
+): boolean => {
+    return (
+        (initiator.startsWith("~") &&
+            transaction.initiator
+                .toLowerCase()
+                .includes(initiator.substring(1).toLowerCase())) ||
+        transaction.initiator === initiator
+    );
+};
+
+const isTransactionPurposeMatchingSample = (
+    transaction: Transaction,
+    purpose: string | null,
+): boolean => {
+    if (purpose === null) return transaction.purpose.length === 0;
+    return transaction.purpose.toLowerCase().includes(purpose.toLowerCase());
 };
 
 /**

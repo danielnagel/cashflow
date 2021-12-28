@@ -5,6 +5,7 @@ import {
     filterTransactionsByCategoryName,
     filterTransactionsByCategoryType,
     filterTransactionsByPeriod,
+    isTransactionMatchingSample,
 } from "../../src/utils/filters";
 import {
     transactions,
@@ -441,6 +442,132 @@ describe("Test utils/filters", () => {
                     expect(filteredTransactions).toStrictEqual(expected);
                 });
             });
+        });
+    });
+    describe("Test matching of samples", () => {
+        test("Match transaction with exact sample", () => {
+            const transaction: Transaction = {
+                day: 7,
+                month: 9,
+                year: 2021,
+                initiator: "Grocerie Land",
+                purpose: "VISA 34 GROCERIE LAND TES7123123",
+                value: 111.96,
+                category: {
+                    name: "groceries",
+                    type: "variable",
+                },
+            };
+            const sample: Sample = { initiator: "Grocerie Land" };
+            expect(
+                isTransactionMatchingSample(transaction, sample),
+            ).toBeTruthy();
+        });
+
+        test("Don't match transaction with false sample", () => {
+            const transaction: Transaction = {
+                day: 7,
+                month: 9,
+                year: 2021,
+                initiator: "Grocerie Land",
+                purpose: "VISA 34 GROCERIE LAND TES7123123",
+                value: 111.96,
+                category: {
+                    name: "groceries",
+                    type: "variable",
+                },
+            };
+            const sample: Sample = { initiator: "test" };
+            expect(
+                isTransactionMatchingSample(transaction, sample),
+            ).toBeFalsy();
+        });
+
+        test("Matching initiators with unique purposes", () => {
+            const transaction: Transaction = {
+                day: 7,
+                month: 9,
+                year: 2021,
+                initiator: "Grocerie Land",
+                purpose: "VISA 34 GROCERIE LAND TES7123123",
+                value: 111.96,
+                category: {
+                    name: "groceries",
+                    type: "variable",
+                },
+            };
+            const sample: Sample = {
+                initiator: "Grocerie Land",
+                purpose: "grocerie",
+            };
+            expect(
+                isTransactionMatchingSample(transaction, sample),
+            ).toBeTruthy();
+        });
+
+        test("Matching initiator with like match", () => {
+            const transaction: Transaction = {
+                day: 7,
+                month: 9,
+                year: 2021,
+                initiator: "Grocerie Land",
+                purpose: "VISA 34 GROCERIE LAND TES7123123",
+                value: 111.96,
+                category: {
+                    name: "groceries",
+                    type: "variable",
+                },
+            };
+            const sample: Sample = {
+                initiator: "~Land",
+            };
+            expect(
+                isTransactionMatchingSample(transaction, sample),
+            ).toBeTruthy();
+        });
+
+        test("Matching initiator explicitly without purpose", () => {
+            const transaction: Transaction = {
+                day: 7,
+                month: 9,
+                year: 2021,
+                initiator: "Grocerie Land",
+                purpose: "",
+                value: 111.96,
+                category: {
+                    name: "groceries",
+                    type: "variable",
+                },
+            };
+            const sample: Sample = {
+                initiator: "~Land",
+                purpose: null,
+            };
+            expect(
+                isTransactionMatchingSample(transaction, sample),
+            ).toBeTruthy();
+        });
+
+        test("Not matching initiator, which has a purpose, explicitly without purpose", () => {
+            const transaction: Transaction = {
+                day: 7,
+                month: 9,
+                year: 2021,
+                initiator: "Grocerie Land",
+                purpose: "VISA 34 GROCERIE LAND TES7123123",
+                value: 111.96,
+                category: {
+                    name: "groceries",
+                    type: "variable",
+                },
+            };
+            const sample: Sample = {
+                initiator: "~Land",
+                purpose: null,
+            };
+            expect(
+                isTransactionMatchingSample(transaction, sample),
+            ).toBeFalsy();
         });
     });
 });

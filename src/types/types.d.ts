@@ -71,7 +71,7 @@ interface FilterTransactionsByCategoryOptions
  */
 type Sample = {
     initiator: string;
-    purpose?: string;
+    purpose?: string | null;
 };
 
 /**

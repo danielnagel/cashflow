@@ -78,9 +78,9 @@ const generateError = (
         message = "Couldn't match all transactions. Unmatched Transactions:";
         for (let i = 0; i < unmatchedTransactions.length; i++) {
             if (i === unmatchedTransactions.length - 1) {
-                message += ` "${unmatchedTransactions[i].initiator}".`;
+                message += ` "${unmatchedTransactions[i].initiator};${unmatchedTransactions[i].purpose}".`;
             } else {
-                message += ` "${unmatchedTransactions[i].initiator}",`;
+                message += ` "${unmatchedTransactions[i].initiator};${unmatchedTransactions[i].purpose}",`;
             }
         }
     }

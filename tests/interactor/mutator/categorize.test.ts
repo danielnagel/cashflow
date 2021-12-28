@@ -119,6 +119,35 @@ describe("Test interactor/mutator/categorize", () => {
                                 },
                             ],
                         },
+                        {
+                            name: "furniture",
+                            type: "variable",
+                            samples: [
+                                {
+                                    initiator: "~Big Furniture Temple",
+                                },
+                            ],
+                        },
+                        {
+                            name: "etfs",
+                            type: "fixed",
+                            samples: [
+                                {
+                                    initiator: "Warren Buffet",
+                                    purpose: "For my ETFs",
+                                },
+                            ],
+                        },
+                        {
+                            name: "present for me",
+                            type: "fixed",
+                            samples: [
+                                {
+                                    initiator: "Warren Buffet",
+                                    purpose: null,
+                                },
+                            ],
+                        },
                     ],
                 };
 
@@ -176,13 +205,42 @@ describe("Test interactor/mutator/categorize", () => {
                                 },
                             ],
                         },
+                        {
+                            name: "furniture",
+                            type: "variable",
+                            samples: [
+                                {
+                                    initiator: "~Big Furniture Temple",
+                                },
+                            ],
+                        },
+                        {
+                            name: "etfs",
+                            type: "fixed",
+                            samples: [
+                                {
+                                    initiator: "Warren Buffet",
+                                    purpose: "For my ETFs",
+                                },
+                            ],
+                        },
+                        {
+                            name: "present for me",
+                            type: "fixed",
+                            samples: [
+                                {
+                                    initiator: "Warren Buffet",
+                                    purpose: null,
+                                },
+                            ],
+                        },
                     ],
                 };
 
                 const result = categorizeTransaction(transactions, options);
                 const expected: ApplicationError = {
                     source: "categorize.ts",
-                    message: `Couldn't match all transactions. Unmatched Transactions: "Beef Burger Palace", "Melon the Man", "Presentable Presents".`,
+                    message: `Couldn't match all transactions. Unmatched Transactions: "Beef Burger Palace;We hope that you had a beefy good time!", "Melon the Man;Juicy Melons", "Presentable Presents;Good luck!".`,
                 };
                 expect(result).toStrictEqual(expected);
             });
