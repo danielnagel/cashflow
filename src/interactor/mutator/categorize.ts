@@ -7,7 +7,10 @@ import { isApplicationError } from "../../utils/typeguards";
  * Adds a category object to a transaction object.
  *
  * @param transactions
- * @param options
+ * @param options contains a list of categories to be matched and
+ * the option skipErrors. When true,
+ * all unmatched transaction get the category "unmatched",
+ * otherwise an ApplicationError is produced.
  * @returns A list of transactions with added category objects or
  * an ApplicationError, when not all transactions matched.
  */
@@ -40,10 +43,22 @@ export const categorizeTransaction = (
         }
     }
 
+    const unmatchedTransactions = getUnmatchedTransactions(copyOfTransactions);
     if (!options.skipErrors) {
-        const error = generateError(copyOfTransactions);
+        const error = generateError(copyOfTransactions, unmatchedTransactions);
         if (isApplicationError(error)) {
             return error;
+        }
+    }
+
+    if (options.skipErrors && unmatchedTransactions.length > 0) {
+        for (const transaction of copyOfTransactions) {
+            if (typeof transaction.category === "undefined") {
+                transaction.category = {
+                    name: "unmatched",
+                    type: TransactionType.Variable,
+                };
+            }
         }
     }
 
@@ -62,18 +77,11 @@ const copy = (transactions: Transaction[]): Transaction[] => {
 
 const generateError = (
     transactions: Transaction[],
+    unmatchedTransactions: Transaction[],
 ): ApplicationError | null => {
     let message = "Couldn't match any transaction.";
 
-    const unmatchedTransactions: Transaction[] = [];
-    for (const transaction of transactions) {
-        if (typeof transaction.category === "undefined") {
-            unmatchedTransactions.push(transaction);
-        }
-    }
-
     if (unmatchedTransactions.length === 0) return null;
-
     if (unmatchedTransactions.length < transactions.length) {
         message = "Couldn't match all transactions. Unmatched Transactions:";
         for (let i = 0; i < unmatchedTransactions.length; i++) {
@@ -86,6 +94,18 @@ const generateError = (
     }
 
     return { source: "categorize.ts", message };
+};
+
+const getUnmatchedTransactions = (
+    transactions: Transaction[],
+): Transaction[] => {
+    const unmatchedTransactions: Transaction[] = [];
+    for (const transaction of transactions) {
+        if (typeof transaction.category === "undefined") {
+            unmatchedTransactions.push(transaction);
+        }
+    }
+    return unmatchedTransactions;
 };
 
 export const getCategoryNamesFromCategorizeOptions = (

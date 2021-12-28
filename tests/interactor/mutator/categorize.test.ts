@@ -3,7 +3,11 @@ import {
     getCategoryNamesFromCategorizeOptions,
 } from "../../../src/interactor/mutator/categorize";
 import { transactions } from "./samples/transactions";
-import { categorizedTransactions } from "./samples/categorizedTransactions";
+import {
+    categorizedTransactions,
+    categorizedTransactionsAllUnmatched,
+    categorizedTransactionsWithUnmatchedTransactionCategory,
+} from "./samples/categorizedTransactions";
 
 describe("Test interactor/mutator/categorize", () => {
     describe("Test function categorizeTransactions", () => {
@@ -40,7 +44,7 @@ describe("Test interactor/mutator/categorize", () => {
             });
         });
 
-        test("Return original array, if no transaction is matching and option skipErrors is true", () => {
+        test("Return all transactions with unmatched category, if no transaction is matching and option skipErrors is true", () => {
             const options: CategorizeOptions = {
                 skipErrors: true,
                 categories: [
@@ -53,7 +57,7 @@ describe("Test interactor/mutator/categorize", () => {
             };
             const result = categorizeTransaction(transactions, options);
 
-            expect(result).toStrictEqual(transactions);
+            expect(result).toStrictEqual(categorizedTransactionsAllUnmatched);
         });
 
         describe("Test categorizing transactions", () => {
@@ -244,6 +248,94 @@ describe("Test interactor/mutator/categorize", () => {
                 };
                 expect(result).toStrictEqual(expected);
             });
+        });
+
+        describe("Test categorizing unmatched transactions", () => {
+            const options: CategorizeOptions = {
+                skipErrors: true,
+                categories: [
+                    {
+                        name: "rent",
+                        type: "fixed",
+                        samples: [{ initiator: "Rent for my crib" }],
+                    },
+                    {
+                        name: "insurance",
+                        type: "fixed",
+                        samples: [
+                            { initiator: "Almost Healthy Inc." },
+                            { initiator: "Stay Healthy Corp." },
+                        ],
+                    },
+                    {
+                        name: "groceries",
+                        type: "variable",
+                        samples: [
+                            { initiator: "Grocerie Land" },
+                            { initiator: "Tasty Deli and Grocerie Store" },
+                        ],
+                    },
+                    {
+                        name: "shopping",
+                        type: "variable",
+                        samples: [{ initiator: "my-online-shop.com" }],
+                    },
+                    {
+                        name: "music subscription",
+                        type: "fixed",
+                        samples: [
+                            {
+                                initiator: "Online Payments Group",
+                                purpose: "Music Whale",
+                            },
+                        ],
+                    },
+                    {
+                        name: "gaming subscription",
+                        type: "fixed",
+                        samples: [
+                            {
+                                initiator: "Online Payments Group",
+                                purpose: "Game Suprise Box Subscription",
+                            },
+                        ],
+                    },
+                    {
+                        name: "furniture",
+                        type: "variable",
+                        samples: [
+                            {
+                                initiator: "~Big Furniture Temple",
+                            },
+                        ],
+                    },
+                    {
+                        name: "etfs",
+                        type: "fixed",
+                        samples: [
+                            {
+                                initiator: "Warren Buffet",
+                                purpose: "For my ETFs",
+                            },
+                        ],
+                    },
+                    {
+                        name: "present for me",
+                        type: "fixed",
+                        samples: [
+                            {
+                                initiator: "Warren Buffet",
+                                purpose: null,
+                            },
+                        ],
+                    },
+                ],
+            };
+
+            const result = categorizeTransaction(transactions, options);
+            expect(result).toStrictEqual(
+                categorizedTransactionsWithUnmatchedTransactionCategory,
+            );
         });
     });
 
