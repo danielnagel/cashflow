@@ -115,8 +115,9 @@ describe("Test connector/csv", () => {
     describe("Loading transaction data", () => {
         test("Stop loading data, when file does not exist", async () => {
             expect(
-                await loadTransactionData(
-                    {
+                await loadTransactionData({
+                    source: {
+                        type: "csv",
                         path: __dirname + "/samples/sample1_.csv",
                         dataKeys: {
                             date: "",
@@ -127,8 +128,10 @@ describe("Test connector/csv", () => {
                         columns: [],
                         dateFormat: "",
                     },
-                    { allowedLogLevel: "none" },
-                ),
+                    allowedLogLevel: "none",
+                    report: "",
+                    categories: [],
+                }),
             ).toStrictEqual({
                 source: "csv.ts",
                 message: `CSV file with transaction data not found. Path: "${
@@ -139,8 +142,9 @@ describe("Test connector/csv", () => {
 
         test("Stop loading data, when file does not end with '.csv'", async () => {
             expect(
-                await loadTransactionData(
-                    {
+                await loadTransactionData({
+                    source: {
+                        type: "csv",
                         path: __dirname + "/samples/sample3.txt",
                         dataKeys: {
                             date: "",
@@ -151,8 +155,10 @@ describe("Test connector/csv", () => {
                         columns: [],
                         dateFormat: "",
                     },
-                    { allowedLogLevel: "none" },
-                ),
+                    allowedLogLevel: "none",
+                    report: "",
+                    categories: [],
+                }),
             ).toStrictEqual({
                 source: "csv.ts",
                 message: `Path needs to end with ".csv", path is "${
@@ -162,8 +168,9 @@ describe("Test connector/csv", () => {
         });
 
         test("Load data from existing sample file and generate transaction array", async () => {
-            const transactionData = <Transaction[]>await loadTransactionData(
-                {
+            const transactionData = <Transaction[]>await loadTransactionData({
+                source: {
+                    type: "csv",
                     path: __dirname + "/samples/sample1.csv",
                     dataKeys: {
                         date: "booking",
@@ -185,8 +192,10 @@ describe("Test connector/csv", () => {
                     ],
                     dateFormat: "dd.MM.yyyy",
                 },
-                { allowedLogLevel: "none" },
-            );
+                allowedLogLevel: "none",
+                report: "",
+                categories: [],
+            });
             expect(transactionData).toHaveLength(3);
             expect(transactionData[0]).toStrictEqual({
                 initiator: "FOOD SHOP 1",
@@ -215,8 +224,9 @@ describe("Test connector/csv", () => {
         });
 
         test("Load data from sample file, with german and american decimals, and generate transaction array", async () => {
-            const transactionData = <Transaction[]>await loadTransactionData(
-                {
+            const transactionData = <Transaction[]>await loadTransactionData({
+                source: {
+                    type: "csv",
                     path: __dirname + "/samples/sample2.csv",
                     dataKeys: {
                         date: "booking",
@@ -238,8 +248,10 @@ describe("Test connector/csv", () => {
                     ],
                     dateFormat: "dd.MM.yyyy",
                 },
-                { allowedLogLevel: "none" },
-            );
+                allowedLogLevel: "none",
+                report: "",
+                categories: [],
+            });
             expect(transactionData).toHaveLength(8);
             expect(transactionData[0]).toStrictEqual({
                 initiator: "ONLINE SHOP 3",
@@ -310,8 +322,9 @@ describe("Test connector/csv", () => {
 
     describe("Loading transaction data from multiple files", () => {
         test("Load data from all csv files in a directory and generate transaction array", async () => {
-            const transactionData = <Transaction[]>await loadTransactionData(
-                {
+            const transactionData = <Transaction[]>await loadTransactionData({
+                source: {
+                    type: "csv",
                     path: __dirname + "/samples",
                     dataKeys: {
                         date: "booking",
@@ -333,8 +346,10 @@ describe("Test connector/csv", () => {
                     ],
                     dateFormat: "dd.MM.yyyy",
                 },
-                { allowedLogLevel: "none" },
-            );
+                allowedLogLevel: "none",
+                report: "",
+                categories: [],
+            });
             expect(transactionData).toHaveLength(10);
             expect(transactionData[0]).toStrictEqual({
                 initiator: "FOOD SHOP 1",

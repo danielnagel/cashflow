@@ -1,7 +1,4 @@
-import {
-    categorizeTransaction,
-    getCategoryNamesFromCategorizeOptions,
-} from "../../../src/interactor/mutator/categorize";
+import { categorizeTransaction } from "../../../src/interactor/mutator/categorize";
 import { transactions } from "./samples/transactions";
 import {
     categorizedTransactions,
@@ -13,7 +10,9 @@ describe("Test interactor/mutator/categorize", () => {
     describe("Test function categorizeTransactions", () => {
         describe("Test falsy parameters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
-                const options: CategorizeOptions = {
+                const options: Configuration = {
+                    report: "",
+                    source: { type: "api" },
                     categories: [
                         {
                             name: "a",
@@ -25,8 +24,11 @@ describe("Test interactor/mutator/categorize", () => {
                 expect(categorizeTransaction([], options)).toHaveLength(0);
             });
 
-            test("Return an ApplicationError, if no transaction is matching", () => {
-                const options: CategorizeOptions = {
+            test("Return an ApplicationError, if no transaction is matching and option strict is true", () => {
+                const options: Configuration = {
+                    report: "",
+                    source: { type: "api" },
+                    strict: true,
                     categories: [
                         {
                             name: "a",
@@ -44,9 +46,11 @@ describe("Test interactor/mutator/categorize", () => {
             });
         });
 
-        test("Return all transactions with unmatched category, if no transaction is matching and option skipErrors is true", () => {
-            const options: CategorizeOptions = {
-                skipErrors: true,
+        test("Return all transactions with unmatched category, if no transaction is matching and option strict is false", () => {
+            const options: Configuration = {
+                report: "",
+                source: { type: "api" },
+                strict: false,
                 categories: [
                     {
                         name: "a",
@@ -62,7 +66,10 @@ describe("Test interactor/mutator/categorize", () => {
 
         describe("Test categorizing transactions", () => {
             test("Categorize transactions", () => {
-                const options: CategorizeOptions = {
+                const options: Configuration = {
+                    report: "",
+                    source: { type: "api" },
+                    strict: false,
                     categories: [
                         {
                             name: "food",
@@ -160,8 +167,11 @@ describe("Test interactor/mutator/categorize", () => {
                 expect(result).toStrictEqual(categorizedTransactions);
             });
 
-            test("Return ApplicationError if not all transactions could be categorized", () => {
-                const options: CategorizeOptions = {
+            test("Return ApplicationError if not all transactions could be categorized, strict is true", () => {
+                const options: Configuration = {
+                    report: "",
+                    source: { type: "api" },
+                    strict: true,
                     categories: [
                         {
                             name: "rent",
@@ -251,8 +261,10 @@ describe("Test interactor/mutator/categorize", () => {
         });
 
         describe("Test categorizing unmatched transactions", () => {
-            const options: CategorizeOptions = {
-                skipErrors: true,
+            const options: Configuration = {
+                report: "",
+                source: { type: "api" },
+                strict: false,
                 categories: [
                     {
                         name: "rent",
@@ -336,99 +348,6 @@ describe("Test interactor/mutator/categorize", () => {
             expect(result).toStrictEqual(
                 categorizedTransactionsWithUnmatchedTransactionCategory,
             );
-        });
-    });
-
-    describe("Test function getCategoryNamesFromCategorizeOptions", () => {
-        describe("Test falsy parameters", () => {
-            test("Return ApplicationError, when there where no categories", () => {
-                expect(
-                    getCategoryNamesFromCategorizeOptions({ categories: [] }),
-                ).toStrictEqual({
-                    source: "categorize.ts",
-                    message: "There where no categories.",
-                });
-            });
-        });
-        describe("Test category names generation", () => {
-            const options: CategorizeOptions = {
-                categories: [
-                    {
-                        name: "food",
-                        type: "variable",
-                        samples: [
-                            { initiator: "Beef Burger Palace" },
-                            { initiator: "Melon the Man" },
-                        ],
-                    },
-                    {
-                        name: "presents",
-                        type: "variable",
-                        samples: [{ initiator: "Presentable Presents" }],
-                    },
-                    {
-                        name: "rent",
-                        type: "fixed",
-                        samples: [{ initiator: "Rent for my crib" }],
-                    },
-                    {
-                        name: "insurance",
-                        type: "fixed",
-                        samples: [
-                            { initiator: "Almost Healthy Inc." },
-                            { initiator: "Stay Healthy Corp." },
-                        ],
-                    },
-                    {
-                        name: "groceries",
-                        type: "variable",
-                        samples: [
-                            { initiator: "Grocerie Land" },
-                            { initiator: "Tasty Deli and Grocerie Store" },
-                        ],
-                    },
-                    {
-                        name: "shopping",
-                        type: "variable",
-                        samples: [{ initiator: "my-online-shop.com" }],
-                    },
-                    {
-                        name: "music subscription",
-                        type: "fixed",
-                        samples: [
-                            {
-                                initiator: "Online Payments Group",
-                                purpose: "Music Whale",
-                            },
-                        ],
-                    },
-                    {
-                        name: "gaming subscription",
-                        type: "fixed",
-                        samples: [
-                            {
-                                initiator: "Online Payments Group",
-                                purpose: "Game Suprise Box Subscription",
-                            },
-                        ],
-                    },
-                ],
-            };
-
-            const expected = [
-                "food",
-                "presents",
-                "rent",
-                "insurance",
-                "groceries",
-                "shopping",
-                "music subscription",
-                "gaming subscription",
-            ];
-
-            expect(
-                getCategoryNamesFromCategorizeOptions(options),
-            ).toStrictEqual(expected);
         });
     });
 });

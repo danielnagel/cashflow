@@ -37,37 +37,20 @@ describe("Test configurator/loader", () => {
             });
         });
 
-        test("File is a configuration file, if it's content is a InteractorOptions object.", () => {
+        test("File is a configuration file, if it's content is a minimal Configuration object.", () => {
             const expected = {
-                interactor: {
-                    connector: {
-                        type: "",
-                        options: {
-                            path: "",
-                            dataKeys: {
-                                date: "",
-                                initiator: "",
-                                purpose: "",
-                                value: "",
-                            },
-                            columns: [],
-                            dateFormat: "",
-                        },
+                report: "",
+                categories: [],
+                source: {
+                    type: "csv",
+                    columns: [],
+                    dataKeys: {
+                        purpose: "",
+                        date: "",
+                        initiator: "",
+                        value: "",
                     },
-                    mutator: {
-                        categories: [],
-                    },
-                    report: {
-                        type: "",
-                        options: {
-                            before: "",
-                            after: "",
-                        },
-                    },
-                },
-                logger: {
-                    allowedLogLevel: "",
-                    dateTimeFormat: "",
+                    path: "",
                 },
             };
             expect(

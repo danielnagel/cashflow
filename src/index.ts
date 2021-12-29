@@ -16,19 +16,21 @@ const main = async () => {
         log({
             message: report,
             level: "error",
-            allowedLogLevel: options.logger?.allowedLogLevel,
-            dateTimeFormat: options.logger?.dateTimeFormat,
+            allowedLogLevel: options.allowedLogLevel,
+            dateFormat: options.dateFormat,
+            timeFormat: options.timeFormat,
         });
         return;
     }
 
-    const result = generateReportAsTable(report, options.viewer);
+    const result = generateReportAsTable(report, options);
     if (isApplicationError(result)) {
         log({
             message: result,
             level: "error",
-            allowedLogLevel: options.logger?.allowedLogLevel,
-            dateTimeFormat: options.logger?.dateTimeFormat,
+            allowedLogLevel: options.allowedLogLevel,
+            dateFormat: options.dateFormat,
+            timeFormat: options.timeFormat,
         });
         return;
     }

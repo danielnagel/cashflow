@@ -21,7 +21,7 @@ import {
  */
 export const generateReportAsTable = (
     report: Report,
-    options?: ConsoleViewerOptions,
+    options?: Configuration,
 ): FixedPayDayReportTableRow[] | TrendReportTableRow[] | ApplicationError => {
     switch (report.type) {
         case ReportType.FixedPayDay:
@@ -57,7 +57,7 @@ export const generateReportAsTable = (
  */
 const fixedPayDayReportAsTable = (
     report: CategorizedFixedPayDays,
-    options?: ConsoleViewerOptions,
+    options?: Configuration,
 ): FixedPayDayReportTableRow[] => {
     const tabularData: FixedPayDayReportTableRow[] = [];
     const dateFormat = options?.dateFormat ? options.dateFormat : "dd.MM.yyyy";
@@ -105,7 +105,7 @@ const fixedPayDayReportAsTable = (
  */
 const trendReportAsTable = (
     report: TrendReport,
-    options?: ConsoleViewerOptions,
+    options?: Configuration,
 ): TrendReportTableRow[] => {
     const tabularData: TrendReportTableRow[] = [];
     const startPeriod = getStartPeriod(report, options);
@@ -145,10 +145,7 @@ const trendReportAsTable = (
  * @param options (optional) to format the output
  * @returns the first period as a javascript Date object
  */
-const getStartPeriod = (
-    report: TrendReport,
-    options?: ConsoleViewerOptions,
-): Date => {
+const getStartPeriod = (report: TrendReport, options?: Configuration): Date => {
     let startPeriod = getEndPeriod(options);
     for (const trend of report.trends) {
         for (const category of trend.categories) {
@@ -173,13 +170,13 @@ const getStartPeriod = (
  * @param options (optional) to format the output
  * @returns the end period as a javascript Date object
  */
-const getEndPeriod = (options?: ConsoleViewerOptions) => {
+const getEndPeriod = (options?: Configuration) => {
     let endPeriod = new Date();
-    if (options?.before) {
+    if (options?.endDate) {
         const dateFormat = options?.dateFormat
             ? options.dateFormat
             : "dd.MM.yyyy";
-        const before = parseDateString(options.before, dateFormat);
+        const before = parseDateString(options.endDate, dateFormat);
         if (before !== null) endPeriod = before;
     }
     return endPeriod;

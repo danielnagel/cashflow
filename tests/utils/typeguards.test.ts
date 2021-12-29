@@ -1,9 +1,5 @@
 import {
-    isInteractorOptions,
-    isConnectorOptions,
-    isReportOptions,
     isCsvOptions,
-    isCategorizeOptions,
     isDataKeys,
     isCategory,
     isSampledCategory,
@@ -14,138 +10,6 @@ import {
 } from "../../src/utils/typeguards";
 
 describe("Test utils/typeguards", () => {
-    describe("Check if object is InteractorOptions", () => {
-        test("Null is not an InteractorOptions", () => {
-            expect(isInteractorOptions(null)).toBeFalsy();
-        });
-
-        test("undefined is not an InteractorOptions", () => {
-            expect(isInteractorOptions(undefined)).toBeFalsy();
-        });
-
-        test("Empty object is not an InteractorOptions", () => {
-            expect(isInteractorOptions({})).toBeFalsy();
-        });
-
-        test("string is not an InteractorOptions", () => {
-            expect(isInteractorOptions("hello")).toBeFalsy();
-        });
-
-        test("number is not an InteractorOptions", () => {
-            expect(isInteractorOptions(123)).toBeFalsy();
-        });
-
-        test("InteractorOptions is an InteractorOptions without deep equality", () => {
-            const interactorOptions = {
-                connector: {},
-                report: {},
-                mutator: {},
-            };
-            expect(isInteractorOptions(interactorOptions)).toBeFalsy();
-        });
-
-        test("InteractorOptions is an InteractorOptions", () => {
-            const interactorOptions = {
-                connector: {
-                    type: "",
-                    options: {
-                        path: "",
-                        dataKeys: {
-                            date: "",
-                            initiator: "",
-                            purpose: "",
-                            value: "",
-                        },
-                        columns: [],
-                        dateFormat: "",
-                    },
-                },
-                report: {
-                    type: "",
-                    options: {
-                        categories: [],
-                    },
-                },
-                mutator: {
-                    categories: [],
-                },
-            };
-            expect(isInteractorOptions(interactorOptions)).toBeTruthy();
-        });
-    });
-
-    describe("Check if object is ConnectorOptions", () => {
-        test("Null is not a ConnectorOptions", () => {
-            expect(isConnectorOptions(null)).toBeFalsy();
-        });
-
-        test("undefined is not a ConnectorOptions", () => {
-            expect(isConnectorOptions(undefined)).toBeFalsy();
-        });
-
-        test("Empty object is not a ConnectorOptions", () => {
-            expect(isConnectorOptions({})).toBeFalsy();
-        });
-
-        test("string is not a ConnectorOptions", () => {
-            expect(isConnectorOptions("hello")).toBeFalsy();
-        });
-
-        test("number is not a ConnectorOptions", () => {
-            expect(isConnectorOptions(123)).toBeFalsy();
-        });
-
-        test("ConnectorOptions is an ConnectorOptions without deep equality", () => {
-            const connectorOptions = { type: "", options: {} };
-            expect(isConnectorOptions(connectorOptions)).toBeFalsy();
-        });
-
-        test("ConnectorOptions is a ConnectorOptions", () => {
-            const connectorOptions = {
-                type: "",
-                options: {
-                    path: "",
-                    dataKeys: {
-                        date: "",
-                        initiator: "",
-                        purpose: "",
-                        value: "",
-                    },
-                    columns: [],
-                    dateFormat: "",
-                },
-            };
-            expect(isConnectorOptions(connectorOptions)).toBeTruthy();
-        });
-    });
-
-    describe("Check if object is ReportOptions", () => {
-        test("Null is not a ReportOptions", () => {
-            expect(isReportOptions(null)).toBeFalsy();
-        });
-
-        test("undefined is not a ReportOptions", () => {
-            expect(isReportOptions(undefined)).toBeFalsy();
-        });
-
-        test("Empty object is not a ReportOptions", () => {
-            expect(isReportOptions({})).toBeFalsy();
-        });
-
-        test("string is not a ReportOptions", () => {
-            expect(isReportOptions("hello")).toBeFalsy();
-        });
-
-        test("number is not a ReportOptions", () => {
-            expect(isReportOptions(123)).toBeFalsy();
-        });
-
-        test("ReportOptions is a ReportOptions", () => {
-            const reportOptions = { type: "", options: {} };
-            expect(isReportOptions(reportOptions)).toBeTruthy();
-        });
-    });
-
     describe("Check if object is CsvConnectorOptions", () => {
         test("Null is not a CsvConnectorOptions", () => {
             expect(isCsvOptions(null)).toBeFalsy();
@@ -169,6 +33,7 @@ describe("Test utils/typeguards", () => {
 
         test("CsvConnectorOptions is not a CsvConnectorOptions without deep equality", () => {
             const csvConnectorOptions = {
+                type: "csv",
                 path: "",
                 dataKeys: {},
                 columns: [],
@@ -179,6 +44,7 @@ describe("Test utils/typeguards", () => {
 
         test("CsvConnectorOptions is a CsvConnectorOptions", () => {
             const csvConnectorOptions = {
+                type: "csv",
                 path: "",
                 dataKeys: { date: "", initiator: "", purpose: "", value: "" },
                 columns: [],
@@ -217,33 +83,6 @@ describe("Test utils/typeguards", () => {
                 value: "",
             };
             expect(isDataKeys(DataKeys)).toBeTruthy();
-        });
-    });
-
-    describe("Check if object is CategorizeOptions", () => {
-        test("Null is not a CategorizeOptions", () => {
-            expect(isCategorizeOptions(null)).toBeFalsy();
-        });
-
-        test("undefined is not a CategorizeOptions", () => {
-            expect(isCategorizeOptions(undefined)).toBeFalsy();
-        });
-
-        test("Empty object is not a CategorizeOptions", () => {
-            expect(isCategorizeOptions({})).toBeFalsy();
-        });
-
-        test("string is not a CategorizeOptions", () => {
-            expect(isCategorizeOptions("hello")).toBeFalsy();
-        });
-
-        test("number is not a CategorizeOptions", () => {
-            expect(isCategorizeOptions(123)).toBeFalsy();
-        });
-
-        test("CategorizeOptions is a CategorizeOptions", () => {
-            const categorizeOptions = { categories: [] };
-            expect(isCategorizeOptions(categorizeOptions)).toBeTruthy();
         });
     });
 
@@ -323,38 +162,25 @@ describe("Test utils/typeguards", () => {
         });
 
         test("Configuration is an Configuration without deep equality", () => {
-            const configuration = { interactor: {}, logger: {} };
+            const configuration = { report: "", categories: [], source: {} };
             expect(isConfiguration(configuration)).toBeFalsy();
         });
 
         test("Configuration is an Configuration", () => {
             const configuration = {
-                interactor: {
-                    connector: {
-                        type: "",
-                        options: {
-                            path: "",
-                            dataKeys: {
-                                date: "",
-                                initiator: "",
-                                purpose: "",
-                                value: "",
-                            },
-                            columns: [],
-                            dateFormat: "",
-                        },
+                report: "",
+                categories: [],
+                source: {
+                    type: "csv",
+                    columns: [],
+                    dataKeys: {
+                        purpose: "",
+                        date: "",
+                        initiator: "",
+                        value: "",
                     },
-                    mutator: {
-                        categories: [],
-                    },
-                    report: {
-                        type: "",
-                        options: {
-                            categories: [],
-                        },
-                    },
+                    path: "",
                 },
-                logger: {},
             };
             expect(isConfiguration(configuration)).toBeTruthy();
         });

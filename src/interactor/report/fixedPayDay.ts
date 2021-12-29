@@ -19,7 +19,8 @@ import { Periods, TransactionType } from "../../types/enums";
  */
 export const generateFixedPayDay = (
     fixedTransactions: Transaction[],
-    filterOptions: FilterTransactionsByCategoryOptions,
+    categoryName: string,
+    options: Configuration,
 ): FixedPayDay | ApplicationError => {
     if (fixedTransactions.length === 0)
         return {
@@ -29,13 +30,14 @@ export const generateFixedPayDay = (
 
     const matchedTransactions = getSortedMatchedTransactions(
         fixedTransactions,
-        filterOptions,
+        categoryName,
+        options,
     );
     if (isApplicationError(matchedTransactions)) return matchedTransactions;
 
     const lastTransaction = matchedTransactions[matchedTransactions.length - 1];
     const period = getPeriodFromTransactions(matchedTransactions);
-    const isPaid = isPaidThisPeriod(lastTransaction, period, filterOptions);
+    const isPaid = isPaidThisPeriod(lastTransaction, period, options);
     if (isApplicationError(isPaid)) return isPaid;
 
     const result: FixedPayDay = {
@@ -98,16 +100,16 @@ const getPeriodFromTransactions = (transactions: Transaction[]): string => {
  *
  * @param transaction
  * @param period monthly, yearly, quarter or undefined
- * @param filterOptions
+ * @param options
  * @returns true, when the transaction was paid in the given period,
  * false otherwise
  */
 const isPaidThisPeriod = (
     transaction: Transaction,
     period: string | undefined,
-    filterOptions: FilterTransactionsByCategoryOptions,
+    options: Configuration,
 ): boolean | ApplicationError => {
-    const monthYear = getComparsionMonthYear(filterOptions);
+    const monthYear = getComparsionMonthYear(options);
     if (isApplicationError(monthYear)) return monthYear;
 
     if (typeof period === "undefined" || period === Periods.Monthly) {
@@ -141,15 +143,16 @@ const isPaidThisPeriod = (
  */
 const getSortedMatchedTransactions = (
     transactions: Transaction[],
-    filterOptions: FilterTransactionsByCategoryOptions,
+    categoryName: string,
+    options: Configuration,
 ): Transaction[] | ApplicationError => {
     let matchedTransactions = filterTransactionsByCategoryName(
         transactions,
-        filterOptions.category.name,
+        categoryName,
     );
     matchedTransactions = filterTransactionsByDateString(
         matchedTransactions,
-        filterOptions,
+        options,
     );
     if (matchedTransactions.length === 0)
         return {
@@ -168,22 +171,19 @@ const getSortedMatchedTransactions = (
  * @returns month of a year
  */
 const getComparsionMonthYear = (
-    filterOptions: FilterTransactionsByCategoryOptions,
+    options: Configuration,
 ): MonthYear | ApplicationError => {
     let month = new Date().getMonth() + 1;
     let year = new Date().getFullYear();
-    if (filterOptions.before) {
-        const beforeDate = parseDateString(
-            filterOptions.before,
-            filterOptions.dateFormat,
-        );
-        if (!beforeDate)
+    if (options.endDate) {
+        const endDate = parseDateString(options.endDate, options.dateFormat);
+        if (!endDate)
             return {
                 source: "fixedPayDay.ts",
-                message: `Before date filter options can't be parse! Before date is '${beforeDate}'`,
+                message: `Before date filter options can't be parse! Before date is '${endDate}'`,
             };
-        month = beforeDate.getMonth() + 1;
-        year = beforeDate.getFullYear();
+        month = endDate.getMonth() + 1;
+        year = endDate.getFullYear();
     }
     return { month, year };
 };
@@ -201,9 +201,7 @@ const getComparsionMonthYear = (
  */
 export const generateFixedPayDayReport = (
     transactions: Transaction[],
-    reportOptions: FixedPayDayOptions,
-    categorizeOptions: CategorizeOptions,
-    loggerOptions?: LoggerOptions,
+    options: Configuration,
 ): CategorizedFixedPayDays | ApplicationError => {
     if (transactions.length == 0) {
         return {
@@ -220,18 +218,19 @@ export const generateFixedPayDayReport = (
     const namedFixedPayDay: NamedFixedPayDay[] = [];
     let sum = 0;
     let unpaidSum = 0;
-    for (const category of categorizeOptions.categories) {
-        const fixedPayDay = generateFixedPayDay(fixedTransactions, {
-            category,
-            before: reportOptions.before,
-            after: reportOptions.after,
-        });
+    for (const category of options.categories) {
+        const fixedPayDay = generateFixedPayDay(
+            fixedTransactions,
+            category.name,
+            options,
+        );
         if (isApplicationError(fixedPayDay)) {
             log({
                 message: fixedPayDay,
-                level: "error",
-                allowedLogLevel: loggerOptions?.allowedLogLevel,
-                dateTimeFormat: loggerOptions?.dateTimeFormat,
+                level: "warn",
+                allowedLogLevel: options?.allowedLogLevel,
+                dateFormat: options?.dateFormat,
+                timeFormat: options?.timeFormat,
             });
             continue;
         }
@@ -248,7 +247,7 @@ export const generateFixedPayDayReport = (
         };
 
     return {
-        date: generateReportDateString(reportOptions),
+        date: generateReportDateString(options),
         sum,
         unpaidSum,
         namedFixedPayDays: namedFixedPayDay,
@@ -260,15 +259,11 @@ export const generateFixedPayDayReport = (
  * It can either be the before date from categorizing options
  * or the current date.
  *
- * @param categorizeOptions specifies how to categorize generated fix costs
+ * @param options specifies how to categorize generated fix costs
  * @returns date string
  */
-const generateReportDateString = (
-    categorizeOptions: FixedPayDayOptions,
-): string => {
-    let date = categorizeOptions.before
-        ? categorizeOptions.before
-        : formatDate(new Date());
+const generateReportDateString = (options: Configuration): string => {
+    let date = options.endDate ? options.endDate : formatDate(new Date());
     if (date === null) date = new Date().toLocaleDateString();
     return date;
 };

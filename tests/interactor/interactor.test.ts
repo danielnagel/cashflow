@@ -140,61 +140,49 @@ describe("Test Interactor", () => {
             };
 
             const options: Configuration = {
-                logger: { allowedLogLevel: "none" },
-                interactor: {
-                    connector: {
-                        type: "csv",
-                        options: {
-                            path: __dirname + "/samples/sample1.csv",
-                            dataKeys: {
-                                date: "booking",
-                                initiator: "initiator",
-                                purpose: "use",
-                                value: "amount",
-                            },
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                            dateFormat: "dd.MM.yyyy",
-                        },
+                allowedLogLevel: "none",
+                source: {
+                    type: "csv",
+                    path: __dirname + "/samples/sample1.csv",
+                    dataKeys: {
+                        date: "booking",
+                        initiator: "initiator",
+                        purpose: "use",
+                        value: "amount",
                     },
-                    mutator: {
-                        skipErrors: true,
-                        categories: [
-                            {
-                                name: "rent",
-                                type: TransactionType.Fixed,
-                                samples: [{ initiator: "Rent for my crib" }],
-                            },
-                            {
-                                name: "insurance",
-                                type: TransactionType.Fixed,
-                                samples: [{ initiator: "Stay Healthy Corp." }],
-                            },
-                            {
-                                name: "mobile",
-                                type: TransactionType.Fixed,
-                                samples: [{ initiator: "Mobilio Ltd." }],
-                            },
-                        ],
-                    },
-                    report: {
-                        type: "fixedpayday",
-                        options: {
-                            before: "15.11.2021",
-                            after: "01.09.2021",
-                        },
-                    },
+                    columns: [
+                        "booking",
+                        "valuta",
+                        "initiator",
+                        "bookingtext",
+                        "randominformation",
+                        "use",
+                        "balance",
+                        "currency",
+                        "amount",
+                        "currency",
+                    ],
                 },
+                categories: [
+                    {
+                        name: "rent",
+                        type: TransactionType.Fixed,
+                        samples: [{ initiator: "Rent for my crib" }],
+                    },
+                    {
+                        name: "insurance",
+                        type: TransactionType.Fixed,
+                        samples: [{ initiator: "Stay Healthy Corp." }],
+                    },
+                    {
+                        name: "mobile",
+                        type: TransactionType.Fixed,
+                        samples: [{ initiator: "Mobilio Ltd." }],
+                    },
+                ],
+                report: "fixedpayday",
+                startDate: "01.09.2021",
+                endDate: "15.11.2021",
             };
 
             expect(await generateReport(options)).toStrictEqual(expected);
@@ -618,65 +606,55 @@ describe("Test Interactor", () => {
             };
 
             const options: Configuration = {
-                logger: { allowedLogLevel: "none" },
-                interactor: {
-                    connector: {
-                        type: "csv",
-                        options: {
-                            path: __dirname + "/samples/sample1.csv",
-                            dataKeys: {
-                                date: "booking",
-                                initiator: "initiator",
-                                purpose: "use",
-                                value: "amount",
-                            },
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                            dateFormat: "dd.MM.yyyy",
-                        },
+                allowedLogLevel: "none",
+                source: {
+                    type: "csv",
+                    path: __dirname + "/samples/sample1.csv",
+                    dataKeys: {
+                        date: "booking",
+                        initiator: "initiator",
+                        purpose: "use",
+                        value: "amount",
                     },
-                    mutator: {
-                        skipErrors: true,
-                        categories: [
-                            {
-                                name: "rent",
-                                type: TransactionType.Fixed,
-                                samples: [{ initiator: "Rent for my crib" }],
-                            },
-                            {
-                                name: "insurance",
-                                type: TransactionType.Fixed,
-                                samples: [{ initiator: "Stay Healthy Corp." }],
-                            },
-                            {
-                                name: "mobile",
-                                type: TransactionType.Fixed,
-                                samples: [{ initiator: "Mobilio Ltd." }],
-                            },
-                            {
-                                name: "shopping",
-                                type: TransactionType.Variable,
-                                samples: [
-                                    { initiator: "my-online-shop.com" },
-                                    { initiator: "cool-gadgets.com" },
-                                ],
-                            },
+                    columns: [
+                        "booking",
+                        "valuta",
+                        "initiator",
+                        "bookingtext",
+                        "randominformation",
+                        "use",
+                        "balance",
+                        "currency",
+                        "amount",
+                        "currency",
+                    ],
+                },
+                categories: [
+                    {
+                        name: "rent",
+                        type: TransactionType.Fixed,
+                        samples: [{ initiator: "Rent for my crib" }],
+                    },
+                    {
+                        name: "insurance",
+                        type: TransactionType.Fixed,
+                        samples: [{ initiator: "Stay Healthy Corp." }],
+                    },
+                    {
+                        name: "mobile",
+                        type: TransactionType.Fixed,
+                        samples: [{ initiator: "Mobilio Ltd." }],
+                    },
+                    {
+                        name: "shopping",
+                        type: TransactionType.Variable,
+                        samples: [
+                            { initiator: "my-online-shop.com" },
+                            { initiator: "cool-gadgets.com" },
                         ],
                     },
-                    report: {
-                        type: "trend",
-                    },
-                },
+                ],
+                report: "trend",
             };
 
             expect(await generateReport(options)).toStrictEqual(expected);

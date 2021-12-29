@@ -18,14 +18,60 @@ To start _cashflow_ just run the following npm script
 npm start
 ```
 
-Currently the configuration has to be located under `data/config.json`.
+⚠ Currently the configuration location under `data/config.json` can't be changed!
 
-It's planned to automatically generate the configuration on first start up.
-
-See Configuration object in `src/typings/types.d.ts` for more Information.
-
-The configuration object could change over time,
-until I implemented most of my needed reports and connectors.
+```jsonc
+{
+    // allowedLogLevel: determines which logs should be logged, "debug" allows all logs, default log level is "error"
+    "allowedLogLevel": "error",
+    // used in the reports, deffault is "€$"
+    "currency": "€",
+    // used to format dates for logs and in reports, see https://date-fns.org/v1.30.1/docs/format, default is "dd.MM.yyyy"
+    "dateFormat": "dd.MM.yyyy",
+    // used to format time for logs and in reports, see https://date-fns.org/v1.30.1/docs/format, default is "HH:mm:ss"
+    "timeFormat": "HH:mm:ss",
+    // default is false, uncategorized transaction are marked as "unmatched", when true every transaction needs to be matched or an error is printed
+    "strict": false,
+    // user configuration on when to start a report, otherwise "oldest" transaction is used
+    "startDate": "01.01.2021",
+    // user configuration on when to end a report, today is used as default
+    "endDate": "31.12.2021",
+    // has to be either "trend" or "fixedpayday", otherwise an error is printed
+    "report": "trend",
+    // only used in trend report, can be fixed, variable, special or income for a detailed categorized report on a specific transaction type,
+    // default is a trend report on all transaction types, without showing the details of every category.
+    "trendType": "fixed",
+    // options for a data source
+    "source": {
+        "type": "csv", // api will be supported some day
+        "path": "", // either a directory where all .csv files are loaded and merged or a path directly to one csv file
+        "dataKeys": {
+            // used to match the columns to generate transaction of every row in a csv file
+            "initiator": "",
+            "purpose": "",
+            "value": "",
+            "date": ""
+        },
+        "columns": [], // has to be filled apropriatly by the user
+        "dateFormat": "MM/dd/yyyy" // optional when date format in csv file and date format for logs and other output are different
+    },
+    // a list of categories to categorize every transaction from source, can be used in combination with strict: true
+    "categories": [
+        // has to be filled apropriatly by the user
+        {
+            "name": "example",
+            "type": "fixed", // or fixed, special, income
+            "period": "mothly", // default or yearly, quarter, half, only used in combination with fixed type
+            "samples": [
+                {
+                    "initiator": "", // exact initiator of a transaction to match, when started with ~ the following string has to be included
+                    "purpose": "" // optional, used in combination with the initiator sample, only as included search
+                }
+            ]
+        }
+    ]
+}
+```
 
 ## Tests
 
@@ -53,8 +99,6 @@ This software is still under heavy development and these are the next steps:
 
 -   Implementing ApiConnector, to get the freshest Data from a web server
     -   I reached out to my bank and waiting now, that my bank finishes its API for private use.
--   Implementing a report to see on which exact date income is paid out, just like fix costs report.
--   Implementing a report to see how categorized variable costs develop over time.
 -   Automatically generate configuration file on first start up, eventually user guided.
 -   Implementing a budget report,
     I think this is an extension of the _categorized variable costs develop over time_ report.

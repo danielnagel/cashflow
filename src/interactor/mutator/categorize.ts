@@ -16,7 +16,7 @@ import { isApplicationError } from "../../utils/typeguards";
  */
 export const categorizeTransaction = (
     transactions: Transaction[],
-    options: CategorizeOptions,
+    options: Configuration,
 ): Transaction[] | ApplicationError => {
     if (transactions.length === 0) return [];
 
@@ -44,14 +44,14 @@ export const categorizeTransaction = (
     }
 
     const unmatchedTransactions = getUnmatchedTransactions(copyOfTransactions);
-    if (!options.skipErrors) {
+    if (options.strict) {
         const error = generateError(copyOfTransactions, unmatchedTransactions);
         if (isApplicationError(error)) {
             return error;
         }
     }
 
-    if (options.skipErrors && unmatchedTransactions.length > 0) {
+    if (!options.strict && unmatchedTransactions.length > 0) {
         for (const transaction of copyOfTransactions) {
             if (typeof transaction.category === "undefined") {
                 transaction.category = {
@@ -106,21 +106,4 @@ const getUnmatchedTransactions = (
         }
     }
     return unmatchedTransactions;
-};
-
-export const getCategoryNamesFromCategorizeOptions = (
-    options: CategorizeOptions,
-): string[] | ApplicationError => {
-    if (options.categories.length === 0)
-        return {
-            source: "categorize.ts",
-            message: "There where no categories.",
-        };
-    const categoryNames: string[] = [];
-
-    for (const category of options.categories) {
-        categoryNames.push(category.name);
-    }
-
-    return categoryNames;
 };

@@ -7,8 +7,9 @@ describe("Test utils/loggers", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
-            const options: LogOptions = {
+            const options: Log = {
                 type: "console",
+                level: "error",
                 message: "TEST",
             };
             log(options);
@@ -26,8 +27,9 @@ describe("Test utils/loggers", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
-            const options: LogOptions = {
+            const options: Log = {
                 type: "console",
+                level: "error",
                 message: { message: "TEST", source: "test" },
             };
             log(options);
@@ -46,8 +48,9 @@ describe("Test utils/loggers", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
-            const options: LogOptions = {
+            const options: Log = {
                 type: "console",
+                level: "error",
                 message: "TEST",
                 allowedLogLevel: "none",
             };
@@ -61,7 +64,7 @@ describe("Test utils/loggers", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
-            const options: LogOptions = {
+            const options: Log = {
                 type: "console",
                 message: "TEST",
                 level: "debug",
@@ -77,7 +80,7 @@ describe("Test utils/loggers", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
-            const options: LogOptions = {
+            const options: Log = {
                 type: "console",
                 message: "TEST",
                 level: "info",
@@ -93,7 +96,7 @@ describe("Test utils/loggers", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
-            const options: LogOptions = {
+            const options: Log = {
                 type: "console",
                 message: "TEST",
                 level: "warn",
@@ -109,10 +112,12 @@ describe("Test utils/loggers", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
-            const options: LogOptions = {
+            const options: Log = {
                 type: "console",
                 message: "TEST",
-                dateTimeFormat: "HH:mm:ss",
+                level: "error",
+                dateFormat: "",
+                timeFormat: "HH:mm:ss",
             };
             log(options);
             expect(consoleLog).toBeCalledTimes(1);
@@ -129,10 +134,11 @@ describe("Test utils/loggers", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
-            const options: LogOptions = {
+            const options: Log = {
                 type: "console",
                 message: "TEST",
-                dateTimeFormat: "asdfasdf",
+                level: "error",
+                dateFormat: "asdfasdf",
             };
             log(options);
             expect(consoleLog).toBeCalledTimes(1);

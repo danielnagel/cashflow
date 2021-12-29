@@ -43,18 +43,21 @@ export const transactionsBeforeDate = (
  */
 export const filterTransactionsByDateString = (
     transactions: Transaction[],
-    options: FilterTransactionsByDateStringOptions,
+    options: Configuration,
 ): Transaction[] => {
     if (transactions.length === 0) return transactions;
 
-    if (typeof options.before !== "undefined") {
-        const beforeDate = parseDateString(options.before, options.dateFormat);
+    if (typeof options.endDate !== "undefined") {
+        const beforeDate = parseDateString(options.endDate, options.dateFormat);
         if (beforeDate === null) return transactions;
         transactions = transactionsBeforeDate(transactions, beforeDate);
     }
 
-    if (typeof options.after !== "undefined") {
-        const afterDate = parseDateString(options.after, options.dateFormat);
+    if (typeof options.startDate !== "undefined") {
+        const afterDate = parseDateString(
+            options.startDate,
+            options.dateFormat,
+        );
         if (afterDate === null) return transactions;
         transactions = transactionsAfterDate(transactions, afterDate);
     }

@@ -32,3 +32,15 @@ export enum Periods {
     Quarter = "quarter",
     Yearly = "yearly",
 }
+
+export enum LogLevel {
+    Debug = "debug",
+    Info = "info",
+    Warn = "warn",
+    Error = "error",
+    None = "none",
+}
+
+export enum LogType {
+    Console = "console",
+}

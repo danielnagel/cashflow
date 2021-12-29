@@ -1,32 +1,15 @@
 {
-    "interactor": {
-        "connector": {
-            "type": "",
-            "options": {
-                "path": "",
-                "dataKeys": {
-                    "date": "",
-                    "initiator": "",
-                    "purpose": "",
-                    "value": ""
-                },
-                "columns": [],
-                "dateFormat": ""
-            }
+    "report": "",
+    "categories": [],
+    "source": {
+        "type": "csv",
+        "columns": [],
+        "dataKeys": {
+            "purpose": "",
+            "date": "",
+            "initiator": "",
+            "value": ""
         },
-        "mutator": {
-            "categories": []
-        },
-        "report": {
-            "type": "",
-            "options": {
-                "before": "",
-                "after": ""
-            }
-        }
-    },
-    "logger": {
-        "dateTimeFormat": "",
-        "allowedLogLevel": ""
+        "path": ""
     }
 }

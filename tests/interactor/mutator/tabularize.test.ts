@@ -26,7 +26,13 @@ describe("Test interactor/mutator/tabularize", () => {
             test("Generate table data as expected, with options", () => {
                 const tabularizedReport = generateReportAsTable(
                     fixedPayDayReport,
-                    { currency: "$", dateFormat: "MM/dd/yyyy" },
+                    {
+                        report: "",
+                        source: { type: "api" },
+                        categories: [],
+                        currency: "$",
+                        dateFormat: "MM/dd/yyyy",
+                    },
                 );
                 expect(tabularizedReport).toStrictEqual(
                     tabularizedFixedPayDayReportWithOptions,
@@ -38,7 +44,10 @@ describe("Test interactor/mutator/tabularize", () => {
                 const tabularizedReport = generateReportAsTable(
                     { type: "trend", report: trendReport },
                     {
-                        before: "13.12.2021",
+                        report: "",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "13.12.2021",
                     },
                 );
                 expect(tabularizedReport).toStrictEqual(
@@ -50,7 +59,10 @@ describe("Test interactor/mutator/tabularize", () => {
                 const tabularizedReport = generateReportAsTable(
                     { type: "trend", report: fixedTrendReport },
                     {
-                        before: "13.12.2021",
+                        report: "",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "13.12.2021",
                     },
                 );
                 expect(tabularizedReport).toStrictEqual(
@@ -62,7 +74,10 @@ describe("Test interactor/mutator/tabularize", () => {
                 const tabularizedReport = generateReportAsTable(
                     { type: "trend", report: variableTrendReport },
                     {
-                        before: "13.12.2021",
+                        report: "",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "13.12.2021",
                     },
                 );
                 expect(tabularizedReport).toStrictEqual(

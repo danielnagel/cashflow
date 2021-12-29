@@ -1,44 +1,11 @@
-export const isInteractorOptions = (
-    object: unknown,
-): object is InteractorOptions => {
-    if (!object) return false;
-    return (
-        (object as InteractorOptions).connector !== undefined &&
-        isConnectorOptions((object as InteractorOptions).connector) &&
-        (object as InteractorOptions).report !== undefined &&
-        isReportOptions((object as InteractorOptions).report) &&
-        (object as InteractorOptions).mutator !== undefined &&
-        isCategorizeOptions((object as InteractorOptions).mutator)
-    );
-};
-
-export const isConnectorOptions = (
-    object: unknown,
-): object is ConnectorOptions => {
-    if (!object) return false;
-    return (
-        (object as ConnectorOptions).type !== undefined &&
-        (object as ConnectorOptions).options !== undefined &&
-        isCsvOptions((object as ConnectorOptions).options)
-    );
-};
-
-export const isReportOptions = (object: unknown): object is ReportOptions => {
-    if (!object) return false;
-    return (
-        (object as ReportOptions).type !== undefined &&
-        (object as ConnectorOptions).options !== undefined
-    );
-};
-
 export const isCsvOptions = (object: unknown): object is CsvOptions => {
     if (!object) return false;
     return (
+        (object as CsvOptions).type === "csv" &&
         (object as CsvOptions).path !== undefined &&
         (object as CsvOptions).dataKeys !== undefined &&
         isDataKeys((object as CsvOptions).dataKeys) &&
-        (object as CsvOptions).columns !== undefined &&
-        (object as CsvOptions).dateFormat !== undefined
+        (object as CsvOptions).columns !== undefined
     );
 };
 
@@ -50,13 +17,6 @@ export const isDataKeys = (object: unknown): object is DataKeys => {
         (object as DataKeys).purpose !== undefined &&
         (object as DataKeys).value !== undefined
     );
-};
-
-export const isCategorizeOptions = (
-    object: unknown,
-): object is CategorizeOptions => {
-    if (!object) return false;
-    return (object as CategorizeOptions).categories !== undefined;
 };
 
 export const isCategory = (object: unknown): object is Category => {
@@ -81,8 +41,10 @@ export const isSampledCategory = (
 export const isConfiguration = (object: unknown): object is Configuration => {
     if (!object) return false;
     return (
-        (object as Configuration).interactor !== undefined &&
-        isInteractorOptions((object as Configuration).interactor)
+        (object as Configuration).source !== undefined &&
+        isCsvOptions((object as Configuration).source) &&
+        (object as Configuration).report !== undefined &&
+        (object as Configuration).categories !== undefined
     );
 };
 

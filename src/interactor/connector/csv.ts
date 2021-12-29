@@ -14,6 +14,7 @@ import { parseDateString } from "../../utils/dates";
 import { isApplicationError } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
 import { filterDoubleTransactions } from "../../utils/filters";
+import { ConnectorType } from "../../types/enums";
 
 /**
  * Generates a Transaction object from an unkown record.
@@ -28,7 +29,7 @@ import { filterDoubleTransactions } from "../../utils/filters";
 export const parseRecordToTransaction = (
     record: UnknownRecord,
     dataKeys: DataKeys,
-    dateFormat: string,
+    dateFormat: string | undefined,
 ): Transaction | ApplicationError => {
     const matchedRecord = matchDataKeysWithRecord(record, dataKeys);
     if (!matchedRecord) {
@@ -100,26 +101,31 @@ const matchDataKeysWithRecord = (
  * @returns a list of Transaction objects or an ApplcationError, when the given path doesn't exist.
  */
 export const loadTransactionData = async (
-    options: CsvOptions,
-    loggerOptions?: LoggerOptions,
+    options: Configuration,
 ): Promise<Transaction[] | ApplicationError> => {
-    if (!pathExists(options.path))
+    if (options.source.type !== ConnectorType.CSV)
         return {
             source: "csv.ts",
-            message: `CSV file with transaction data not found. Path: "${options.path}".`,
+            message: `Unknown source configuration type "${options.source.type}".`,
         };
 
-    if (isFile(options.path)) {
-        if (!options.path.endsWith(".csv")) {
+    if (!pathExists(options.source.path))
+        return {
+            source: "csv.ts",
+            message: `CSV file with transaction data not found. Path: "${options.source.path}".`,
+        };
+
+    if (isFile(options.source.path)) {
+        if (!options.source.path.endsWith(".csv")) {
             return {
                 source: "csv.ts",
-                message: `Path needs to end with ".csv", path is "${options.path}"`,
+                message: `Path needs to end with ".csv", path is "${options.source.path}"`,
             };
         }
-        return await loadTransactionDataFromFile(options, loggerOptions);
+        return await loadTransactionDataFromFile(options);
     }
 
-    return loadTransactionDataFromDirectory(options, loggerOptions);
+    return loadTransactionDataFromDirectory(options);
 };
 
 /**
@@ -130,28 +136,32 @@ export const loadTransactionData = async (
  * @returns a list of Transaction objects
  */
 const loadTransactionDataFromDirectory = async (
-    options: CsvOptions,
-    loggerOptions?: LoggerOptions,
+    options: Configuration,
 ): Promise<Transaction[]> => {
     let mergedTransactions: Transaction[] = [];
-    if (isDirectory(options.path)) {
-        const filesInDirectory = loadFileNamesFromDirectory(
-            options.path,
-            "csv",
-        );
-        for (const fileName of filesInDirectory) {
-            if (options.path.endsWith("/"))
-                options.path = options.path.slice(0, options.path.length - 1);
-            const optionsCopy = { ...options };
-            optionsCopy.path = `${options.path}/${fileName}`;
-            const transactions = await loadTransactionDataFromFile(
-                optionsCopy,
-                loggerOptions,
+    if (options.source.type === ConnectorType.CSV) {
+        if (isDirectory(options.source.path)) {
+            const filesInDirectory = loadFileNamesFromDirectory(
+                options.source.path,
+                ConnectorType.CSV,
             );
-            mergedTransactions = filterDoubleTransactions(
-                mergedTransactions,
-                transactions,
-            );
+            for (const fileName of filesInDirectory) {
+                if (options.source.path.endsWith("/"))
+                    options.source.path = options.source.path.slice(
+                        0,
+                        options.source.path.length - 1,
+                    );
+                const optionsCopy = { ...options };
+                optionsCopy.source = { ...options.source };
+                optionsCopy.source.path = `${options.source.path}/${fileName}`;
+                const transactions = await loadTransactionDataFromFile(
+                    optionsCopy,
+                );
+                mergedTransactions = filterDoubleTransactions(
+                    mergedTransactions,
+                    transactions,
+                );
+            }
         }
     }
     return mergedTransactions;
@@ -161,41 +171,42 @@ const loadTransactionDataFromDirectory = async (
  * Loads the content of a csv file and merges it to a list of Transaction objects.
  *
  * @param options that specifies where to load the csv file from and how to handle its content.
- * @param loggerOptions (optional) to control logging behaviour
  * @returns a list of Transaction objects
  */
 const loadTransactionDataFromFile = async (
-    options: CsvOptions,
-    loggerOptions?: LoggerOptions,
+    options: Configuration,
 ): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
-
-    const parser = createReadStream(options.path, { encoding: "latin1" }).pipe(
-        parse({
-            delimiter: ";",
-            columns: options.columns,
-            relaxColumnCount: true,
-            skipEmptyLines: true,
-        }),
-    );
-
-    for await (const record of parser) {
-        const transaction = parseRecordToTransaction(
-            record,
-            options.dataKeys,
-            options.dateFormat,
+    if (options.source.type === ConnectorType.CSV) {
+        const parser = createReadStream(options.source.path, {
+            encoding: "latin1",
+        }).pipe(
+            parse({
+                delimiter: ";",
+                columns: options.source.columns,
+                relaxColumnCount: true,
+                skipEmptyLines: true,
+            }),
         );
-        if (isApplicationError(transaction)) {
-            log({
-                message: transaction,
-                level: "debug",
-                allowedLogLevel: loggerOptions?.allowedLogLevel,
-                dateTimeFormat: loggerOptions?.dateTimeFormat,
-            });
-            continue;
-        }
-        transactions.push(transaction);
-    }
 
+        for await (const record of parser) {
+            const transaction = parseRecordToTransaction(
+                record,
+                options.source.dataKeys,
+                options.dateFormat,
+            );
+            if (isApplicationError(transaction)) {
+                log({
+                    message: transaction,
+                    level: "debug",
+                    allowedLogLevel: options.allowedLogLevel,
+                    dateFormat: options.dateFormat,
+                    timeFormat: options.timeFormat,
+                });
+                continue;
+            }
+            transactions.push(transaction);
+        }
+    }
     return transactions;
 };

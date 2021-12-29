@@ -1,7 +1,7 @@
 import {
     generateFixedPayDay,
     generateFixedPayDayReport,
-} from "../../../src/interactor/report/fixedPaxDay";
+} from "../../../src/interactor/report/fixedPayDay";
 import { TransactionType } from "../../../src/types/enums";
 import { categorizedTransactions } from "./samples/categorizedTransactions";
 
@@ -9,12 +9,11 @@ describe("Test fixCostReport", () => {
     describe("Test function generateFixedPayDay", () => {
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
-                const fixedPayDay = generateFixedPayDay([], {
-                    category: {
-                        name: "test",
-                        type: TransactionType.Fixed,
-                    },
-                    before: "15.12.2021",
+                const fixedPayDay = generateFixedPayDay([], "test", {
+                    report: "fixedpayday",
+                    source: { type: "api" },
+                    categories: [],
+                    endDate: "15.12.2021",
                 });
 
                 expect(fixedPayDay).toStrictEqual({
@@ -35,12 +34,11 @@ describe("Test fixCostReport", () => {
             ];
 
             test("Return null, category doesn't match", () => {
-                const fixedPayDay = generateFixedPayDay(transactions, {
-                    category: {
-                        name: "test",
-                        type: TransactionType.Fixed,
-                    },
-                    before: "15.12.2021",
+                const fixedPayDay = generateFixedPayDay(transactions, "test", {
+                    report: "fixedpayday",
+                    source: { type: "api" },
+                    categories: [],
+                    endDate: "15.12.2021",
                 });
 
                 expect(fixedPayDay).toStrictEqual({
@@ -50,12 +48,11 @@ describe("Test fixCostReport", () => {
             });
 
             test("Return null, if there aren't any transactions that match toDate", () => {
-                const fixedPayDay = generateFixedPayDay(transactions, {
-                    category: {
-                        name: "rent",
-                        type: TransactionType.Fixed,
-                    },
-                    before: "15.12.1999",
+                const fixedPayDay = generateFixedPayDay(transactions, "rent", {
+                    report: "fixedpayday",
+                    source: { type: "api" },
+                    categories: [],
+                    endDate: "15.12.2021",
                 });
 
                 expect(fixedPayDay).toStrictEqual({
@@ -65,13 +62,11 @@ describe("Test fixCostReport", () => {
             });
 
             test("Return null, if sinceDate is after toDate", () => {
-                const fixedPayDay = generateFixedPayDay(transactions, {
-                    category: {
-                        name: "rent",
-                        type: TransactionType.Fixed,
-                    },
-                    before: "15.12.1999",
-                    after: "12.07.2002",
+                const fixedPayDay = generateFixedPayDay(transactions, "rent", {
+                    report: "fixedpayday",
+                    source: { type: "api" },
+                    categories: [],
+                    endDate: "15.12.2021",
                 });
 
                 expect(fixedPayDay).toStrictEqual({
@@ -172,12 +167,12 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "rent",
                     {
-                        category: {
-                            name: "rent",
-                            type: TransactionType.Fixed,
-                        },
-                        before: "30.11.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "30.11.2021",
                     },
                 );
 
@@ -261,12 +256,12 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "rent",
                     {
-                        category: {
-                            name: "rent",
-                            type: TransactionType.Fixed,
-                        },
-                        before: "15.10.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "15.10.2021",
                     },
                 );
 
@@ -311,13 +306,13 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "rent",
                     {
-                        category: {
-                            name: "rent",
-                            type: TransactionType.Fixed,
-                        },
-                        before: "15.11.2021",
-                        after: "01.09.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        startDate: "01.09.2021",
+                        endDate: "15.11.2021",
                     },
                 );
 
@@ -429,12 +424,12 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "insurance",
                     {
-                        category: {
-                            name: "insurance",
-                            type: TransactionType.Fixed,
-                        },
-                        before: "30.12.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "30.12.2021",
                     },
                 );
 
@@ -492,12 +487,12 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "insurance",
                     {
-                        category: {
-                            name: "insurance",
-                            type: TransactionType.Fixed,
-                        },
-                        before: "01.09.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "01.09.2021",
                     },
                 );
 
@@ -555,13 +550,13 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "insurance",
                     {
-                        category: {
-                            name: "insurance",
-                            type: TransactionType.Fixed,
-                        },
-                        before: "15.11.2021",
-                        after: "01.09.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        startDate: "01.09.2021",
+                        endDate: "15.11.2021",
                     },
                 );
 
@@ -671,11 +666,11 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "insurance",
                     {
-                        category: {
-                            name: "insurance",
-                            type: TransactionType.Fixed,
-                        },
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
                     },
                 );
 
@@ -759,11 +754,11 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "music subscription",
                     {
-                        category: {
-                            name: "music subscription",
-                            type: TransactionType.Fixed,
-                        },
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
                     },
                 );
 
@@ -797,11 +792,11 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "car insurance",
                     {
-                        category: {
-                            name: "car insurance",
-                            type: TransactionType.Fixed,
-                        },
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
                     },
                 );
 
@@ -872,11 +867,11 @@ describe("Test fixCostReport", () => {
 
                 const fixedPayDay = generateFixedPayDay(
                     categorizedTransactions,
+                    "luxury",
                     {
-                        category: {
-                            name: "luxury",
-                            type: TransactionType.Fixed,
-                        },
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
                     },
                 );
 
@@ -888,25 +883,22 @@ describe("Test fixCostReport", () => {
     describe("Test categorized fixed pay days", () => {
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
-                const fixCostOptions = {};
-                const categorizeOptions = {
-                    categories: [
-                        {
-                            name: "a",
-                            type: "",
-                            samples: [{ initiator: "b" }, { initiator: "c" }],
-                        },
-                    ],
-                };
                 expect(
-                    generateFixedPayDayReport(
-                        [],
-                        fixCostOptions,
-                        categorizeOptions,
-                        {
-                            allowedLogLevel: "none",
-                        },
-                    ),
+                    generateFixedPayDayReport([], {
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [
+                            {
+                                name: "a",
+                                type: "",
+                                samples: [
+                                    { initiator: "b" },
+                                    { initiator: "c" },
+                                ],
+                            },
+                        ],
+                        allowedLogLevel: "none",
+                    }),
                 ).toStrictEqual({
                     source: "fixedPayDay.ts",
                     message: "There are no transactions.",
@@ -914,20 +906,13 @@ describe("Test fixCostReport", () => {
             });
 
             test("Return null, if categories array is empty", () => {
-                const fixCostOptions = {};
-                const categorizeOptions = {
-                    categories: [],
-                };
-                const options: CategorizeOptions = { categories: [] };
                 expect(
-                    generateFixedPayDayReport(
-                        categorizedTransactions,
-                        fixCostOptions,
-                        categorizeOptions,
-                        {
-                            allowedLogLevel: "none",
-                        },
-                    ),
+                    generateFixedPayDayReport(categorizedTransactions, {
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        allowedLogLevel: "none",
+                    }),
                 ).toStrictEqual({
                     source: "fixedPayDay.ts",
                     message: "Couldn't match any categories.",
@@ -935,25 +920,22 @@ describe("Test fixCostReport", () => {
             });
 
             test("Return null, if no transaction can be categorized", () => {
-                const fixCostOptions = {};
-                const categorizeOptions = {
-                    categories: [
-                        {
-                            name: "a",
-                            type: "",
-                            samples: [{ initiator: "b" }, { initiator: "c" }],
-                        },
-                    ],
-                };
                 expect(
-                    generateFixedPayDayReport(
-                        categorizedTransactions,
-                        fixCostOptions,
-                        categorizeOptions,
-                        {
-                            allowedLogLevel: "none",
-                        },
-                    ),
+                    generateFixedPayDayReport(categorizedTransactions, {
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [
+                            {
+                                name: "a",
+                                type: "",
+                                samples: [
+                                    { initiator: "b" },
+                                    { initiator: "c" },
+                                ],
+                            },
+                        ],
+                        allowedLogLevel: "none",
+                    }),
                 ).toStrictEqual({
                     source: "fixedPayDay.ts",
                     message: "Couldn't match any categories.",
@@ -1095,39 +1077,31 @@ describe("Test fixCostReport", () => {
                     ],
                 };
 
-                const fixCostOptions = {
-                    before: "15.11.2021",
-                    after: "01.09.2021",
-                };
-                const categorizeOptions = {
-                    categories: [
-                        {
-                            name: "rent",
-                            type: TransactionType.Fixed,
-                            samples: [{ initiator: "Rent for my crib" }],
-                        },
-                        {
-                            name: "insurance",
-                            type: TransactionType.Fixed,
-                            samples: [{ initiator: "Stay Healthy Corp." }],
-                        },
-                        {
-                            name: "mobile",
-                            type: TransactionType.Fixed,
-                            samples: [{ initiator: "Mobilio Ltd." }],
-                        },
-                    ],
-                };
-
                 expect(
-                    generateFixedPayDayReport(
-                        categorizedTransactions,
-                        fixCostOptions,
-                        categorizeOptions,
-                        {
-                            allowedLogLevel: "none",
-                        },
-                    ),
+                    generateFixedPayDayReport(categorizedTransactions, {
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [
+                            {
+                                name: "rent",
+                                type: TransactionType.Fixed,
+                                samples: [{ initiator: "Rent for my crib" }],
+                            },
+                            {
+                                name: "insurance",
+                                type: TransactionType.Fixed,
+                                samples: [{ initiator: "Stay Healthy Corp." }],
+                            },
+                            {
+                                name: "mobile",
+                                type: TransactionType.Fixed,
+                                samples: [{ initiator: "Mobilio Ltd." }],
+                            },
+                        ],
+                        allowedLogLevel: "none",
+                        endDate: "15.11.2021",
+                        startDate: "01.09.2021",
+                    }),
                 ).toStrictEqual(expected);
             });
         });

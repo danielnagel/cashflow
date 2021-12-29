@@ -27,10 +27,8 @@ import { isApplicationError } from "../../utils/typeguards";
  * @returns TrendReport or an ApplicationError
  */
 export const generateTrendReport = (
-    categories: string[],
     transactions: Transaction[],
-    options?: TrendReportOptions,
-    logOptions?: LoggerOptions,
+    options: Configuration,
 ): TrendReport | ApplicationError => {
     if (transactions.length === 0)
         return {
@@ -38,45 +36,30 @@ export const generateTrendReport = (
             message: "There where no transactions.",
         };
 
-    if (categories.length === 0)
+    if (options.categories.length === 0)
         return {
             source: "trend.ts",
             message: "No categories avaialable.",
         };
 
-    if (typeof options !== "undefined" && typeof options.type !== "undefined") {
-        if (!isValidTransactionType(options.type)) {
+    if (
+        typeof options !== "undefined" &&
+        typeof options.trendType !== "undefined"
+    ) {
+        if (!isValidTransactionType(options.trendType)) {
             return {
                 source: "trend.ts",
-                message: `The transaction type '${options.type}' is unknown.`,
+                message: `The transaction type '${options.trendType}' is unknown.`,
             };
         }
-        const trend = generateTrend(
-            {
-                type: options.type,
-                categories,
-                start: options?.start,
-                dateFormat: options?.dateFormat,
-            },
-            transactions,
-            logOptions,
-        );
+        const trend = generateTrend(transactions, options.trendType, options);
         if (isApplicationError(trend)) return trend;
-        return { type: options.type, trends: [trend] };
+        return { type: options.trendType, trends: [trend] };
     }
 
     const trendReport: TrendReport = { trends: [] };
     for (const type of Object.values(TransactionType)) {
-        const trend = generateTrend(
-            {
-                type,
-                categories,
-                start: options?.start,
-                dateFormat: options?.dateFormat,
-            },
-            transactions,
-            logOptions,
-        );
+        const trend = generateTrend(transactions, type, options);
         if (isApplicationError(trend)) continue;
         trendReport.trends.push(trend);
     }
@@ -99,9 +82,9 @@ export const generateTrendReport = (
  * @returns Trend or an ApplicationError
  */
 export const generateTrend = (
-    options: TrendOptions,
     transactions: Transaction[],
-    logOptions?: LoggerOptions,
+    type: string,
+    options: Configuration,
 ): Trend | ApplicationError => {
     if (transactions.length === 0)
         return {
@@ -115,23 +98,19 @@ export const generateTrend = (
             message: "No categories avaialable.",
         };
 
-    if (!isValidTransactionType(options.type))
+    if (!isValidTransactionType(type))
         return {
             source: "trend.ts",
-            message: `The transaction type '${options.type}' is unknown.`,
+            message: `The transaction type '${type}' is unknown.`,
         };
 
-    const trend: Trend = { type: options.type, categories: [] };
+    const trend: Trend = { type: type, categories: [] };
     for (const category of options.categories) {
         const categoryTrend = generateCategoryTrend(
-            {
-                type: options.type,
-                category,
-                start: options.start,
-                dateFormat: options.dateFormat,
-            },
             transactions,
-            logOptions,
+            type,
+            category.name,
+            options,
         );
         if (isApplicationError(categoryTrend)) continue;
         trend.categories.push(categoryTrend);
@@ -153,34 +132,38 @@ export const generateTrend = (
  * @returns CategoryTrend or an ApplicationError
  */
 export const generateCategoryTrend = (
-    options: CategoryTrendOptions,
     transactions: Transaction[],
-    logOptions?: LoggerOptions,
+    type: string,
+    categoryName: string,
+    options: Configuration,
 ): CategoryTrend | ApplicationError => {
     if (transactions.length === 0)
         return { source: "trend.ts", message: "There where no transactions." };
 
-    if (!isValidTransactionType(options.type))
+    if (!isValidTransactionType(type))
         return {
             source: "trend.ts",
-            message: `The transaction type '${options.type}' is unknown.`,
+            message: `The transaction type '${type}' is unknown.`,
         };
 
     const stringPeriods = generatePeriods(transactions, options);
     const categoryTrend: CategoryTrend = {
-        name: options.category,
+        name: categoryName,
         periods: [],
     };
     for (const period of stringPeriods) {
         const trendPeriod = generateCategoryTrendPeriod(
-            { type: options.type, category: options.category, period },
             transactions,
+            type,
+            categoryName,
+            period,
+            options,
         );
         if (isApplicationError(trendPeriod)) {
             log({
                 message: trendPeriod,
                 level: "warn",
-                allowedLogLevel: logOptions?.allowedLogLevel,
+                allowedLogLevel: options.allowedLogLevel,
             });
             continue;
         }
@@ -201,10 +184,13 @@ export const generateCategoryTrend = (
  */
 const getOldestTransactionDate = (
     transactions: Transaction[],
-    options: CategoryTrendOptions,
+    options: Configuration,
 ): Date => {
-    if (typeof options.start !== "undefined") {
-        const startDate = parseDateString(options.start, options.dateFormat);
+    if (typeof options.startDate !== "undefined") {
+        const startDate = parseDateString(
+            options.startDate,
+            options.dateFormat,
+        );
         if (startDate !== null) return startDate;
     }
     let oldestDate = new Date();
@@ -225,13 +211,13 @@ const getOldestTransactionDate = (
  */
 const generatePeriods = (
     transactions: Transaction[],
-    options: CategoryTrendOptions,
+    options: Configuration,
 ): string[] => {
     const periods: string[] = [];
     let startDate = getOldestTransactionDate(transactions, options);
     let endDate = new Date();
-    if (typeof options.end !== "undefined") {
-        const parsedDate = parseDateString(options.end, options.dateFormat);
+    if (typeof options.endDate !== "undefined") {
+        const parsedDate = parseDateString(options.endDate, options.dateFormat);
         if (parsedDate !== null) endDate = parsedDate;
     }
     do {
@@ -252,8 +238,11 @@ const generatePeriods = (
  * @returns Fixed or variable category trend period or an ApplicationError
  */
 export const generateCategoryTrendPeriod = (
-    options: CategoryTrendPeriodOptions,
     transactions: Transaction[],
+    type: string,
+    categoryName: string,
+    stringPeriod: string,
+    options: Configuration,
 ):
     | FixedCategoryTrendPeriod
     | VariableCategoryTrendPeriod
@@ -264,39 +253,44 @@ export const generateCategoryTrendPeriod = (
             message: "There where no transactions.",
         };
 
-    if (!isValidTransactionType(options.type))
+    if (!isValidTransactionType(type))
         return {
             source: "trend.ts",
-            message: `The transaction type '${options.type}' is unknown.`,
+            message: `The transaction type '${type}' is unknown.`,
         };
 
-    const period = parseDateString(options.period, "yyyy.MM");
+    const period = parseDateString(stringPeriod, "yyyy.MM");
     if (period === null)
         return {
             source: "trend.ts",
-            message: `Period option '${options.period}' has the wrong format!`,
+            message: `Period option '${stringPeriod}' has the wrong format!`,
         };
 
     let matchedTransactions = filterTransactionsByCategoryType(
         transactions,
-        options.type,
+        type,
     );
     matchedTransactions = filterTransactionsByCategoryName(
         matchedTransactions,
-        options.category,
+        categoryName,
     );
     matchedTransactions = filterTransactionsByPeriod(
         matchedTransactions,
-        options.period,
+        stringPeriod,
     );
 
-    if (
-        options.type === TransactionType.Fixed ||
-        options.type === TransactionType.Income
-    )
-        return createFixedCategoryTrendPeriod(options, matchedTransactions);
+    if (type === TransactionType.Fixed || type === TransactionType.Income)
+        return createFixedCategoryTrendPeriod(
+            matchedTransactions,
+            stringPeriod,
+            options,
+        );
 
-    return createVariableCategoryTrendPeriod(options, matchedTransactions);
+    return createVariableCategoryTrendPeriod(
+        matchedTransactions,
+        stringPeriod,
+        options,
+    );
 };
 
 /**
@@ -324,8 +318,9 @@ const isValidTransactionType = (transactionType: string): boolean => {
  * @returns FixedCategoryTrendPeriod object or an ApplicationError
  */
 const createFixedCategoryTrendPeriod = (
-    options: CategoryTrendPeriodOptions,
     transactions: Transaction[],
+    period: string,
+    options: Configuration,
 ): FixedCategoryTrendPeriod | ApplicationError => {
     if (transactions.length === 0)
         return {
@@ -342,7 +337,7 @@ const createFixedCategoryTrendPeriod = (
     return {
         value: lastTransaction.value,
         bookingDate,
-        period: options.period,
+        period,
         transactions,
     };
 };
@@ -358,8 +353,9 @@ const createFixedCategoryTrendPeriod = (
  * @returns FixedCategoryTrendPeriod object or an ApplicationError
  */
 const createVariableCategoryTrendPeriod = (
-    options: CategoryTrendPeriodOptions,
     transactions: Transaction[],
+    period: string,
+    options: Configuration,
 ): VariableCategoryTrendPeriod | ApplicationError => {
     if (transactions.length === 0)
         return {
@@ -375,7 +371,7 @@ const createVariableCategoryTrendPeriod = (
 
     return {
         sum,
-        period: options.period,
+        period,
         transactions,
     };
 };

@@ -1,3 +1,4 @@
+import { LogLevel } from "../types/enums";
 import { formatDate } from "./dates";
 import { isApplicationError } from "./typeguards";
 
@@ -7,7 +8,7 @@ import { isApplicationError } from "./typeguards";
  * @param options  that specify how to handle the log message
  * and which logger type to use
  */
-export const log = (options: LogOptions): void => {
+export const log = (options: Log): void => {
     // fallback
     consoleHandler(options);
 };
@@ -17,13 +18,14 @@ export const log = (options: LogOptions): void => {
  *
  * @param options that specify how to handle the log message
  */
-const consoleHandler = (options: LogOptions): void => {
+const consoleHandler = (options: Log): void => {
     if (isLogLevelAllowed(options.level, options.allowedLogLevel))
         console.log(
             formatLogMessage(
                 options.message,
                 options.level,
-                options.dateTimeFormat,
+                options.dateFormat,
+                options.timeFormat,
             ),
         );
 };
@@ -41,12 +43,15 @@ const consoleHandler = (options: LogOptions): void => {
 const formatLogMessage = (
     message: string | ApplicationError,
     level = "error",
-    dateTimeFormat = "dd.MM.yyyy HH:mm:ss",
+    dateFormat = "dd.MM.yyyy ",
+    timeFormat = "HH:mm:ss",
 ): string => {
     if (isApplicationError(message)) {
         message = `[${message.source}]: ${message.message}`;
     }
-    return `${generateTimeStamp(dateTimeFormat)} {${level}} ${message}`;
+    return `${generateTimeStamp(
+        dateFormat + timeFormat,
+    )} {${level}} ${message}`;
 };
 
 /**
@@ -75,14 +80,18 @@ const isLogLevelAllowed = (
     allowedLogLevel: string | undefined,
 ): boolean => {
     switch (allowedLogLevel) {
-        case "none":
+        case LogLevel.None:
             return false;
-        case "info":
-            return level !== "debug";
-        case "warn":
-            return level !== "debug" && level !== "info";
-        case "error":
-            return level !== "debug" && level !== "info" && level !== "warn";
+        case LogLevel.Info:
+            return level !== LogLevel.Debug;
+        case LogLevel.Warn:
+            return level !== LogLevel.Debug && level !== LogLevel.Info;
+        case LogLevel.Error:
+            return (
+                level !== LogLevel.Debug &&
+                level !== LogLevel.Info &&
+                level !== LogLevel.Warn
+            );
         default:
             return true;
     }

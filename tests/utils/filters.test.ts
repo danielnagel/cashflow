@@ -20,7 +20,10 @@ describe("Test utils/filters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
                 expect(
                     filterTransactionsByDateString([], {
-                        before: "15.12.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "15.12.2021",
                     }),
                 ).toHaveLength(0);
             });
@@ -28,7 +31,10 @@ describe("Test utils/filters", () => {
             test("Return an array of length 0, if there aren't any transactions that match 'before date' option", () => {
                 expect(
                     filterTransactionsByDateString(transactions, {
-                        before: "15.12.1999",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "15.12.1999",
                     }),
                 ).toHaveLength(0);
             });
@@ -36,8 +42,11 @@ describe("Test utils/filters", () => {
             test("Return an array of length 0, if 'before date' is after 'after date' option", () => {
                 expect(
                     filterTransactionsByDateString(transactions, {
-                        before: "15.12.1999",
-                        after: "12.07.2002",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "15.12.1999",
+                        startDate: "12.07.2002",
                     }),
                 ).toHaveLength(0);
             });
@@ -67,7 +76,10 @@ describe("Test utils/filters", () => {
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
-                        before: "02.06.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "02.06.2021",
                     },
                 );
                 expect(filteredTransactions).toHaveLength(expected.length);
@@ -114,7 +126,10 @@ describe("Test utils/filters", () => {
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
-                        after: "20.11.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        startDate: "20.11.2021",
                     },
                 );
                 expect(filteredTransactions).toHaveLength(expected.length);
@@ -145,8 +160,11 @@ describe("Test utils/filters", () => {
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
-                        before: "01.12.2021",
-                        after: "20.11.2021",
+                        report: "fixedpayday",
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "01.12.2021",
+                        startDate: "20.11.2021",
                     },
                 );
                 expect(filteredTransactions).toHaveLength(expected.length);

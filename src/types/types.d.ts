@@ -41,30 +41,12 @@ type DataKeys = {
  * Options that are used for the csv connector implementation.
  */
 type CsvOptions = {
+    type: "csv";
     path: string;
     dataKeys: DataKeys;
     columns: string[];
-    dateFormat: string;
-};
-
-/**
- * Options on which a list of transactions can be filtered.
- * The list can be filtered to only return transactions after or before a specific date.
- * The date is parsed by configuration, otherwise ISO date format is expected.
- */
-type FilterTransactionsByDateStringOptions = {
-    after?: string;
-    before?: string;
     dateFormat?: string;
 };
-
-/**
- * Extends FilterTransactionsByDateStringOptions with a category object.
- */
-interface FilterTransactionsByCategoryOptions
-    extends FilterTransactionsByDateStringOptions {
-    category: Category;
-}
 
 /**
  * A sample is used to match specifc transactions
@@ -107,24 +89,6 @@ interface SampledCategory extends Category {
 }
 
 /**
- * Options used for the mutator categorize.
- * SkipErrors can be used to ignore uncategorized transactions.
- */
-type CategorizeOptions = {
-    categories: SampledCategory[];
-    skipErrors?: boolean;
-};
-
-/**
- * Options used for a fix cost report.
- */
-type FixedPayDayOptions = {
-    dateFormat?: string;
-    before?: string;
-    after?: string;
-};
-
-/**
  * A FixedPayDay object, paired with its category name.
  */
 type NamedFixedPayDay = {
@@ -141,57 +105,11 @@ type CategorizedFixedPayDays = {
     unpaidSum: number;
     namedFixedPayDays: NamedFixedPayDay[];
 };
-
-/**
- * Discriminating union to determine if the given options are from type CategorizeOptions.
- */
-type ReportOptionFixedPayDay = {
-    type: "fixedpayday";
-    options: FixedPayDayOptions;
-};
-
-/**
- * Discriminating union to determine if the given options are from type CategorizeOptions.
- */
-type ReportOptionTrend = {
-    type: "trend";
-    options?: TrendReportOptions;
-};
-
-/**
- * Report options for interactor, to interact with the correct report implementation.
- */
-type ReportOptions = ReportOptionFixedPayDay | ReportOptionTrend;
-
-/**
- * Discriminating union to determine if the given options are from type CsvOptions.
- */
-type CsvConnectorOptions = {
-    type: "csv";
-    options: CsvOptions;
-};
-
 /**
  * Discriminating union to determine if the given options are from type api.
  */
-type ApiConnectorOptions = {
+type ApiOptions = {
     type: "api";
-    options: UnknownRecord;
-};
-
-/**
- * Connector options for interactor, to interact with the correct connector implementation.
- */
-type ConnectorOptions = CsvConnectorOptions | ApiConnectorOptions;
-
-/**
- * Options for the interactor, to use the correct connector and report implementation.
- * Should load data from connector and generate a report on that given data.
- */
-type InteractorOptions = {
-    connector: ConnectorOptions;
-    mutator: CategorizeOptions;
-    report: ReportOptions;
 };
 
 /**
@@ -217,11 +135,49 @@ type Report = ReportFixedPayDay | ReportTrend;
 
 /**
  * Possible configurations, that a user could create.
+ *
+ * report:          has to be either "trend" or "fixedpayday",
+ *                  otherwise an error is printed
+ * allowedLogLevel: determines which logs should be logged,
+ *                  "debug" allows all logs
+ *                  and "none" does completly silent the logging,
+ *                  default log level is "error"
+ * currency:        used in the reports, deffault is "€$"
+ * dateFormat:      used to format dates for logs and in reports,
+ *                  see https://date-fns.org/v1.30.1/docs/format,
+ *                  default is "dd.MM.yyyy"
+ * timeFormat:      used to format time for logs and in reports,
+ *                  see https://date-fns.org/v1.30.1/docs/format,
+ *                  default is "HH:mm:ss"
+ * strict:          default is false,
+ *                  uncategorized transaction are marked as "unmatched",
+ *                  when true every transaction needs to be matched or
+ *                  an error is printed
+ * startDate:       user configuration on when to start a report,
+ *                  otherwise "oldest" transaction is used
+ * endDate:         user configuration on when to end a report,
+ *                  today is used as default
+ * trendType:       only used in trend report, can be fixed, variable, special
+ *                  or income for a detailed categorized report
+ *                  on a specific transaction type
+ *                  default is a trend report on all transaction types,
+ *                  without showing the details of every category.
+ * source:          options for a data source, see CsvOptions for details
+ * categories:      a list of categories to categorize every transaction
+ *                  from source, can be used in combination with strict: true
  */
 type Configuration = {
-    interactor: InteractorOptions;
-    viewer?: ConsoleViewerOptions;
-    logger?: LoggerOptions;
+    report: string;
+    allowedLogLevel?: string;
+    currency?: string;
+    dateFormat?: string;
+    timeFormat?: string;
+    strict?: boolean;
+    startDate?: string;
+    endDate?: string;
+    trendType?: string;
+    source: CsvOptions | ApiOptions;
+    categories: SampledCategory[];
 };
 
 /**
@@ -259,33 +215,13 @@ type ApplicationError = {
 /**
  * Options for a log message.
  */
-type LogOptions = {
+type Log = {
     message: string | ApplicationError;
-    level?: "debug" | "info" | "warn" | "error";
-    dateTimeFormat?: string;
-    allowedLogLevel?: "debug" | "info" | "warn" | "error" | "none";
-    type?: "console";
-};
-
-/**
- * Options for the logger utility.
- * DateFormat is used to format dates in the results, see https://date-fns.org/v1.30.1/docs/format on which formats are available
- * The allowed log level determines which logs should be logged, debug is all and the level can be shrinked to none
- */
-type LoggerOptions = {
-    dateTimeFormat?: string;
-    allowedLogLevel?: "debug" | "info" | "warn" | "error" | "none";
-};
-
-/**
- * Options for the console viewer.
- * Currency is the symbol, that should be displayed behind values.
- * DateFormat is used to format dates in the results, see https://date-fns.org/v1.30.1/docs/format on which formats are available
- */
-type ConsoleViewerOptions = {
-    currency?: string;
+    level: string;
     dateFormat?: string;
-    before?: string;
+    timeFormat?: string;
+    allowedLogLevel?: string;
+    type?: string;
 };
 
 /**
@@ -295,44 +231,6 @@ type ConsoleViewerOptions = {
 type MonthYear = {
     month: number;
     year: number;
-};
-
-/**
- * Options for a trend report.
- */
-type TrendReportOptions = {
-    type?: string; // fixed/variable/special/income
-    start?: string;
-    end?: string;
-    dateFormat?: string;
-};
-
-/**
- * Options for a single trend.
- */
-type TrendOptions = {
-    type: string; // fixed or variable/special/income
-    categories: string[];
-    start?: string;
-    end?: string;
-    dateFormat?: string;
-};
-
-/**
- * Options for a single category trend.
- */
-type CategoryTrendOptions = {
-    type: string; // fixed or variable/special/income
-    category: string;
-    start?: string;
-    end?: string;
-    dateFormat?: string;
-};
-
-type CategoryTrendPeriodOptions = {
-    type: string; // fixed or variable/special/income
-    category: string;
-    period: string; // 2021.01/2021
 };
 
 type CategoryTrend = {
