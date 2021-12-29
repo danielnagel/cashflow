@@ -3,11 +3,25 @@ import { generateReport } from "./interactor/interactor";
 import { log } from "./utils/loggers";
 import { isApplicationError } from "./utils/typeguards";
 import { generateReportAsTable } from "./interactor/mutator/tabularize";
+import {
+    exampleConfiguration,
+    saveConfigurationFile,
+} from "./configurator/saver";
 
 const main = async () => {
     const options = loadConfigurationFile(`data/config.json`);
     if (isApplicationError(options)) {
         log({ message: options, level: "error" });
+        saveConfigurationFile(exampleConfiguration, "data");
+        log({
+            message: {
+                source: "index.ts",
+                message: `Created new configuration file "${
+                    __dirname + "/data/config.json"
+                }".`,
+            },
+            level: "info",
+        });
         return;
     }
 

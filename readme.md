@@ -73,6 +73,8 @@ npm start
 }
 ```
 
+An example configuration, like this, is created on first start up.
+
 ## Tests
 
 I used this project to train my TDD skills.
@@ -99,6 +101,4 @@ This software is still under heavy development and these are the next steps:
 
 -   Implementing ApiConnector, to get the freshest Data from a web server
     -   I reached out to my bank and waiting now, that my bank finishes its API for private use.
--   Automatically generate configuration file on first start up, eventually user guided.
--   Implementing a budget report,
-    I think this is an extension of the _categorized variable costs develop over time_ report.
+-   Implementing a budget report

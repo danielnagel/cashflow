@@ -1,4 +1,11 @@
-import { existsSync, readFileSync, readdirSync, statSync } from "fs";
+import {
+    existsSync,
+    readFileSync,
+    readdirSync,
+    statSync,
+    writeFileSync,
+    mkdirSync,
+} from "fs";
 
 /**
  * Checks if a path exists.
@@ -73,4 +80,27 @@ export const isDirectory = (path: string): boolean => {
 
     const fileStat = statSync(path);
     return fileStat.isDirectory();
+};
+
+/**
+ * Write the content into a file.
+ *
+ * @param content that should be written into a file
+ * @param path to the file
+ * @returns true on success, false otherwise
+ */
+export const saveFile = (content: string, path: string): void => {
+    writeFileSync(path, content, { encoding: "utf-8" });
+};
+
+/**
+ * Creates, recursively, a path to a directory.
+ *
+ * @param path to the directory
+ * @returns true on success, false otherwise
+ */
+export const createDirectory = (path: string): boolean => {
+    if (pathExists(path)) return false;
+    mkdirSync(path, { recursive: true });
+    return true;
 };

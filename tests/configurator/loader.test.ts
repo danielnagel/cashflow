@@ -59,8 +59,3 @@ describe("Test configurator/loader", () => {
         });
     });
 });
-
-// -- test list
-// persist command line options as a configuration file
-// generate example configuration file
-// generate a configuration file on initial startup

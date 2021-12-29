@@ -4,7 +4,10 @@ import {
     loadFileNamesFromDirectory,
     isFile,
     isDirectory,
+    createDirectory,
+    saveFile,
 } from "../../src/utils/files";
+import { rmSync } from "fs";
 
 describe("Test utils/files", () => {
     describe("Check if files exist", () => {
@@ -96,5 +99,45 @@ describe("Test utils/files", () => {
             expect(fileNames).toHaveLength(1);
             expect(fileNames[0]).toBe("sample2.csv");
         });
+    });
+
+    describe("Create directory", () => {
+        test("Create a directory", () => {
+            const path = __dirname + "/samples/test";
+            expect(isDirectory(path)).toBeFalsy();
+            expect(createDirectory(path)).toBeTruthy();
+            expect(isDirectory(path)).toBeTruthy();
+        });
+
+        test("Don't create a directory, when it already exists", () => {
+            const path = __dirname + "/samples/test";
+            expect(isDirectory(path)).toBeTruthy();
+            expect(createDirectory(path)).toBeFalsy();
+        });
+    });
+
+    describe("Save file", () => {
+        test("Save a file", () => {
+            const path = __dirname + "/samples/test/test.txt";
+            expect(isFile(path)).toBeFalsy();
+            saveFile("test", path);
+            expect(loadFile(path)).toBe("test");
+        });
+
+        test("Override a file", () => {
+            const path = __dirname + "/samples/test/test.txt";
+            expect(isFile(path)).toBeTruthy();
+            saveFile("test123", path);
+            expect(loadFile(path)).toBe("test123");
+        });
+    });
+
+    afterAll(() => {
+        if (isDirectory(__dirname + "/samples/test")) {
+            rmSync(__dirname + "/samples/test", {
+                recursive: true,
+                force: true,
+            });
+        }
     });
 });
