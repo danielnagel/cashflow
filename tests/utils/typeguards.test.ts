@@ -162,13 +162,12 @@ describe("Test utils/typeguards", () => {
         });
 
         test("Configuration is an Configuration without deep equality", () => {
-            const configuration = { report: "", categories: [], source: {} };
+            const configuration = { categories: [], source: {} };
             expect(isConfiguration(configuration)).toBeFalsy();
         });
 
         test("Configuration is an Configuration", () => {
             const configuration = {
-                report: "",
                 categories: [],
                 source: {
                     type: "csv",

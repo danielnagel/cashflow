@@ -20,7 +20,6 @@ describe("Test utils/filters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
                 expect(
                     filterTransactionsByDateString([], {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "15.12.2021",
@@ -31,7 +30,6 @@ describe("Test utils/filters", () => {
             test("Return an array of length 0, if there aren't any transactions that match 'before date' option", () => {
                 expect(
                     filterTransactionsByDateString(transactions, {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "15.12.1999",
@@ -42,7 +40,6 @@ describe("Test utils/filters", () => {
             test("Return an array of length 0, if 'before date' is after 'after date' option", () => {
                 expect(
                     filterTransactionsByDateString(transactions, {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "15.12.1999",
@@ -76,7 +73,6 @@ describe("Test utils/filters", () => {
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "02.06.2021",
@@ -126,7 +122,6 @@ describe("Test utils/filters", () => {
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         startDate: "20.11.2021",
@@ -160,7 +155,6 @@ describe("Test utils/filters", () => {
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "01.12.2021",

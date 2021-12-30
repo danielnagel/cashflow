@@ -43,7 +43,6 @@ export const isConfiguration = (object: unknown): object is Configuration => {
     return (
         (object as Configuration).source !== undefined &&
         isCsvOptions((object as Configuration).source) &&
-        (object as Configuration).report !== undefined &&
         (object as Configuration).categories !== undefined
     );
 };

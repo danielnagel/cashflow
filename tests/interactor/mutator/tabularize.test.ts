@@ -27,7 +27,6 @@ describe("Test interactor/mutator/tabularize", () => {
                 const tabularizedReport = generateReportAsTable(
                     fixedPayDayReport,
                     {
-                        report: "",
                         source: { type: "api" },
                         categories: [],
                         currency: "$",
@@ -44,7 +43,6 @@ describe("Test interactor/mutator/tabularize", () => {
                 const tabularizedReport = generateReportAsTable(
                     { type: "trend", report: trendReport },
                     {
-                        report: "",
                         source: { type: "api" },
                         categories: [],
                         endDate: "13.12.2021",
@@ -59,7 +57,6 @@ describe("Test interactor/mutator/tabularize", () => {
                 const tabularizedReport = generateReportAsTable(
                     { type: "trend", report: fixedTrendReport },
                     {
-                        report: "",
                         source: { type: "api" },
                         categories: [],
                         endDate: "13.12.2021",
@@ -74,7 +71,6 @@ describe("Test interactor/mutator/tabularize", () => {
                 const tabularizedReport = generateReportAsTable(
                     { type: "trend", report: variableTrendReport },
                     {
-                        report: "",
                         source: { type: "api" },
                         categories: [],
                         endDate: "13.12.2021",

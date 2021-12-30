@@ -37,7 +37,6 @@ describe("Test report/trend", () => {
                 "mobile",
                 "2021.09",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -56,7 +55,6 @@ describe("Test report/trend", () => {
                 "hello",
                 "2021.09",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -75,7 +73,6 @@ describe("Test report/trend", () => {
                 "water",
                 "2021.09",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -94,7 +91,6 @@ describe("Test report/trend", () => {
                 "water",
                 "2021/09",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -113,7 +109,6 @@ describe("Test report/trend", () => {
                 "mobile",
                 "2021.09",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -130,7 +125,6 @@ describe("Test report/trend", () => {
                 "groceries",
                 "2021.09",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -147,7 +141,6 @@ describe("Test report/trend", () => {
                 "salary",
                 "2021.09",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -164,7 +157,6 @@ describe("Test report/trend", () => {
                 "home",
                 "2021.10",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -178,7 +170,6 @@ describe("Test report/trend", () => {
     describe("Test function generateCategoryTrend", () => {
         test("Return ApplicationError, when there are no transactions", () => {
             const result = generateCategoryTrend([], "fixed", "mobile", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [],
                 allowedLogLevel: "none",
@@ -196,7 +187,6 @@ describe("Test report/trend", () => {
                 "random",
                 "hello",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -215,7 +205,6 @@ describe("Test report/trend", () => {
                 "fixed",
                 "water",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -234,7 +223,6 @@ describe("Test report/trend", () => {
                 "fixed",
                 "mobile",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -251,7 +239,6 @@ describe("Test report/trend", () => {
                 "variable",
                 "groceries",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -268,7 +255,6 @@ describe("Test report/trend", () => {
                 "income",
                 "salary",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -285,7 +271,6 @@ describe("Test report/trend", () => {
                 "special",
                 "home",
                 {
-                    report: "trend",
                     source: { type: "api" },
                     categories: [],
                     allowedLogLevel: "none",
@@ -300,7 +285,6 @@ describe("Test report/trend", () => {
     describe("Test function generateTrend", () => {
         test("Return ApplicationError, when there are no transactions", () => {
             const result = generateTrend([], "fixed", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [{ name: "mobile", type: "fixed", samples: [] }],
                 allowedLogLevel: "none",
@@ -314,7 +298,6 @@ describe("Test report/trend", () => {
 
         test("Return ApplicationError, when type is unknown", () => {
             const result = generateTrend(categorizedTransactions, "random", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [{ name: "hello", type: "random", samples: [] }],
                 allowedLogLevel: "none",
@@ -328,7 +311,6 @@ describe("Test report/trend", () => {
 
         test("Return ApplicationError, when no transactions matched", () => {
             const result = generateTrend(categorizedTransactions, "fixed", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [{ name: "water", type: "fixed", samples: [] }],
                 allowedLogLevel: "none",
@@ -342,7 +324,6 @@ describe("Test report/trend", () => {
 
         test("Return ApplicationError, when categories array is empty", () => {
             const result = generateTrend(categorizedTransactions, "fixed", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [],
                 allowedLogLevel: "none",
@@ -356,7 +337,6 @@ describe("Test report/trend", () => {
 
         test("Generate a fixed trend for a single category", () => {
             const result = generateTrend(categorizedTransactions, "fixed", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [{ name: "mobile", type: "fixed", samples: [] }],
                 allowedLogLevel: "none",
@@ -368,7 +348,6 @@ describe("Test report/trend", () => {
 
         test("Generate a variable trend for a single category", () => {
             const result = generateTrend(categorizedTransactions, "variable", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [
                     { name: "groceries", type: "variable", samples: [] },
@@ -382,7 +361,6 @@ describe("Test report/trend", () => {
 
         test("Generate a income trend for a single category", () => {
             const result = generateTrend(categorizedTransactions, "income", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [{ name: "salary", type: "income", samples: [] }],
                 allowedLogLevel: "none",
@@ -394,7 +372,6 @@ describe("Test report/trend", () => {
 
         test("Generate a special trend for a single category", () => {
             const result = generateTrend(categorizedTransactions, "special", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [{ name: "home", type: "special", samples: [] }],
                 allowedLogLevel: "none",
@@ -406,7 +383,6 @@ describe("Test report/trend", () => {
 
         test("Generate a fixed trend for all categories", () => {
             const result = generateTrend(categorizedTransactions, "fixed", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [
                     { name: "car insurance", type: "fixed", samples: [] },
@@ -426,7 +402,6 @@ describe("Test report/trend", () => {
 
         test("Generate a variable trend for all categories", () => {
             const result = generateTrend(categorizedTransactions, "variable", {
-                report: "trend",
                 source: { type: "api" },
                 categories: [
                     { name: "food", type: "variable", samples: [] },
@@ -444,18 +419,25 @@ describe("Test report/trend", () => {
 
     describe("Test function generateTrendReport", () => {
         test("Return ApplicationError, when there are no transactions", () => {
-            const result = generateTrendReport([], {
-                report: "trend",
-                source: { type: "api" },
-                categories: [
-                    { name: "food", type: "variable", samples: [] },
-                    { name: "groceries", type: "variable", samples: [] },
-                    { name: "presents", type: "variable", samples: [] },
-                    { name: "shopping", type: "variable", samples: [] },
-                ],
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                [],
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "food", type: "variable", samples: [] },
+                        { name: "groceries", type: "variable", samples: [] },
+                        { name: "presents", type: "variable", samples: [] },
+                        { name: "shopping", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: undefined,
+                    configurationPath: "",
+                },
+            );
             expect(result).toStrictEqual({
                 source: "trend.ts",
                 message: "There where no transactions.",
@@ -463,14 +445,22 @@ describe("Test report/trend", () => {
         });
 
         test("Return ApplicationError, when type is unknown", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [{ name: "food", type: "variable", samples: [] }],
-                trendType: "random",
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "food", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: "random",
+                    configurationPath: "",
+                },
+            );
             expect(result).toStrictEqual({
                 source: "trend.ts",
                 message: "The transaction type 'random' is unknown.",
@@ -478,13 +468,22 @@ describe("Test report/trend", () => {
         });
 
         test("Return ApplicationError, when no transactions matched", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [{ name: "water", type: "variable", samples: [] }],
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "water", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: undefined,
+                    configurationPath: "",
+                },
+            );
             expect(result).toStrictEqual({
                 source: "trend.ts",
                 message: "No transactions matched.",
@@ -492,13 +491,20 @@ describe("Test report/trend", () => {
         });
 
         test("Return ApplicationError, when categories array is empty", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [],
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: undefined,
+                    configurationPath: "",
+                },
+            );
             expect(result).toStrictEqual({
                 source: "trend.ts",
                 message: "No categories avaialable.",
@@ -506,163 +512,249 @@ describe("Test report/trend", () => {
         });
 
         test("Generate a trend report, all categories, fixed transaction type", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [
-                    { name: "car insurance", type: "fixed", samples: [] },
-                    { name: "luxury", type: "fixed", samples: [] },
-                    { name: "rent", type: "fixed", samples: [] },
-                    { name: "insurance", type: "fixed", samples: [] },
-                    { name: "mobile", type: "fixed", samples: [] },
-                    { name: "music subscription", type: "fixed", samples: [] },
-                    { name: "gaming subscription", type: "fixed", samples: [] },
-                    { name: "salary", type: "income", samples: [] },
-                    { name: "home", type: "special", samples: [] },
-                    { name: "food", type: "variable", samples: [] },
-                    { name: "groceries", type: "variable", samples: [] },
-                    { name: "presents", type: "variable", samples: [] },
-                    { name: "shopping", type: "variable", samples: [] },
-                ],
-                trendType: "fixed",
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "car insurance", type: "fixed", samples: [] },
+                        { name: "luxury", type: "fixed", samples: [] },
+                        { name: "rent", type: "fixed", samples: [] },
+                        { name: "insurance", type: "fixed", samples: [] },
+                        { name: "mobile", type: "fixed", samples: [] },
+                        {
+                            name: "music subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        {
+                            name: "gaming subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        { name: "salary", type: "income", samples: [] },
+                        { name: "home", type: "special", samples: [] },
+                        { name: "food", type: "variable", samples: [] },
+                        { name: "groceries", type: "variable", samples: [] },
+                        { name: "presents", type: "variable", samples: [] },
+                        { name: "shopping", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: "fixed",
+                    configurationPath: "",
+                },
+            );
 
             expect(result).toStrictEqual(fixedTrendReport);
         });
 
         test("Generate a trend report, all categories, variable transaction type", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [
-                    { name: "car insurance", type: "fixed", samples: [] },
-                    { name: "luxury", type: "fixed", samples: [] },
-                    { name: "rent", type: "fixed", samples: [] },
-                    { name: "insurance", type: "fixed", samples: [] },
-                    { name: "mobile", type: "fixed", samples: [] },
-                    { name: "music subscription", type: "fixed", samples: [] },
-                    { name: "gaming subscription", type: "fixed", samples: [] },
-                    { name: "salary", type: "income", samples: [] },
-                    { name: "home", type: "special", samples: [] },
-                    { name: "food", type: "variable", samples: [] },
-                    { name: "groceries", type: "variable", samples: [] },
-                    { name: "presents", type: "variable", samples: [] },
-                    { name: "shopping", type: "variable", samples: [] },
-                ],
-                trendType: "variable",
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "car insurance", type: "fixed", samples: [] },
+                        { name: "luxury", type: "fixed", samples: [] },
+                        { name: "rent", type: "fixed", samples: [] },
+                        { name: "insurance", type: "fixed", samples: [] },
+                        { name: "mobile", type: "fixed", samples: [] },
+                        {
+                            name: "music subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        {
+                            name: "gaming subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        { name: "salary", type: "income", samples: [] },
+                        { name: "home", type: "special", samples: [] },
+                        { name: "food", type: "variable", samples: [] },
+                        { name: "groceries", type: "variable", samples: [] },
+                        { name: "presents", type: "variable", samples: [] },
+                        { name: "shopping", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: "variable",
+                    configurationPath: "",
+                },
+            );
 
             expect(result).toStrictEqual(variableTrendReport);
         });
 
         test("Generate a trend report, all categories, income transaction type", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [
-                    { name: "car insurance", type: "fixed", samples: [] },
-                    { name: "luxury", type: "fixed", samples: [] },
-                    { name: "rent", type: "fixed", samples: [] },
-                    { name: "insurance", type: "fixed", samples: [] },
-                    { name: "mobile", type: "fixed", samples: [] },
-                    { name: "music subscription", type: "fixed", samples: [] },
-                    { name: "gaming subscription", type: "fixed", samples: [] },
-                    { name: "salary", type: "income", samples: [] },
-                    { name: "home", type: "special", samples: [] },
-                    { name: "food", type: "variable", samples: [] },
-                    { name: "groceries", type: "variable", samples: [] },
-                    { name: "presents", type: "variable", samples: [] },
-                    { name: "shopping", type: "variable", samples: [] },
-                ],
-                trendType: "income",
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "car insurance", type: "fixed", samples: [] },
+                        { name: "luxury", type: "fixed", samples: [] },
+                        { name: "rent", type: "fixed", samples: [] },
+                        { name: "insurance", type: "fixed", samples: [] },
+                        { name: "mobile", type: "fixed", samples: [] },
+                        {
+                            name: "music subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        {
+                            name: "gaming subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        { name: "salary", type: "income", samples: [] },
+                        { name: "home", type: "special", samples: [] },
+                        { name: "food", type: "variable", samples: [] },
+                        { name: "groceries", type: "variable", samples: [] },
+                        { name: "presents", type: "variable", samples: [] },
+                        { name: "shopping", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: "income",
+                    configurationPath: "",
+                },
+            );
 
             expect(result).toStrictEqual(incomeTrendReport);
         });
 
         test("Generate a trend report, all categories, special transaction type", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [
-                    { name: "car insurance", type: "fixed", samples: [] },
-                    { name: "luxury", type: "fixed", samples: [] },
-                    { name: "rent", type: "fixed", samples: [] },
-                    { name: "insurance", type: "fixed", samples: [] },
-                    { name: "mobile", type: "fixed", samples: [] },
-                    { name: "music subscription", type: "fixed", samples: [] },
-                    { name: "gaming subscription", type: "fixed", samples: [] },
-                    { name: "salary", type: "income", samples: [] },
-                    { name: "home", type: "special", samples: [] },
-                    { name: "food", type: "variable", samples: [] },
-                    { name: "groceries", type: "variable", samples: [] },
-                    { name: "presents", type: "variable", samples: [] },
-                    { name: "shopping", type: "variable", samples: [] },
-                ],
-                trendType: "special",
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "car insurance", type: "fixed", samples: [] },
+                        { name: "luxury", type: "fixed", samples: [] },
+                        { name: "rent", type: "fixed", samples: [] },
+                        { name: "insurance", type: "fixed", samples: [] },
+                        { name: "mobile", type: "fixed", samples: [] },
+                        {
+                            name: "music subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        {
+                            name: "gaming subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        { name: "salary", type: "income", samples: [] },
+                        { name: "home", type: "special", samples: [] },
+                        { name: "food", type: "variable", samples: [] },
+                        { name: "groceries", type: "variable", samples: [] },
+                        { name: "presents", type: "variable", samples: [] },
+                        { name: "shopping", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: "special",
+                    configurationPath: "",
+                },
+            );
 
             expect(result).toStrictEqual(specialTrendReport);
         });
 
         test("Generate a trend report, all categories, all transaction types", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [
-                    { name: "car insurance", type: "fixed", samples: [] },
-                    { name: "luxury", type: "fixed", samples: [] },
-                    { name: "rent", type: "fixed", samples: [] },
-                    { name: "insurance", type: "fixed", samples: [] },
-                    { name: "mobile", type: "fixed", samples: [] },
-                    { name: "music subscription", type: "fixed", samples: [] },
-                    { name: "gaming subscription", type: "fixed", samples: [] },
-                    { name: "salary", type: "income", samples: [] },
-                    { name: "home", type: "special", samples: [] },
-                    { name: "food", type: "variable", samples: [] },
-                    { name: "groceries", type: "variable", samples: [] },
-                    { name: "presents", type: "variable", samples: [] },
-                    { name: "shopping", type: "variable", samples: [] },
-                ],
-                allowedLogLevel: "none",
-                endDate: "20.12.2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "car insurance", type: "fixed", samples: [] },
+                        { name: "luxury", type: "fixed", samples: [] },
+                        { name: "rent", type: "fixed", samples: [] },
+                        { name: "insurance", type: "fixed", samples: [] },
+                        { name: "mobile", type: "fixed", samples: [] },
+                        {
+                            name: "music subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        {
+                            name: "gaming subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        { name: "salary", type: "income", samples: [] },
+                        { name: "home", type: "special", samples: [] },
+                        { name: "food", type: "variable", samples: [] },
+                        { name: "groceries", type: "variable", samples: [] },
+                        { name: "presents", type: "variable", samples: [] },
+                        { name: "shopping", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: undefined,
+                    configurationPath: "",
+                },
+            );
 
             expect(result).toStrictEqual(trendReport);
         });
 
         test("Generate a trend report, all categories, all transaction types, with after option that produces a report from period 2021.09", () => {
-            const result = generateTrendReport(categorizedTransactions, {
-                report: "trend",
-                source: { type: "api" },
-                categories: [
-                    { name: "car insurance", type: "fixed", samples: [] },
-                    { name: "luxury", type: "fixed", samples: [] },
-                    { name: "rent", type: "fixed", samples: [] },
-                    { name: "insurance", type: "fixed", samples: [] },
-                    { name: "mobile", type: "fixed", samples: [] },
-                    { name: "music subscription", type: "fixed", samples: [] },
-                    { name: "gaming subscription", type: "fixed", samples: [] },
-                    { name: "salary", type: "income", samples: [] },
-                    { name: "home", type: "special", samples: [] },
-                    { name: "food", type: "variable", samples: [] },
-                    { name: "groceries", type: "variable", samples: [] },
-                    { name: "presents", type: "variable", samples: [] },
-                    { name: "shopping", type: "variable", samples: [] },
-                ],
-                allowedLogLevel: "none",
-                startDate: "09/15/2021",
-                dateFormat: "MM/dd/yyyy",
-                endDate: "12/20/2021",
-            });
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "car insurance", type: "fixed", samples: [] },
+                        { name: "luxury", type: "fixed", samples: [] },
+                        { name: "rent", type: "fixed", samples: [] },
+                        { name: "insurance", type: "fixed", samples: [] },
+                        { name: "mobile", type: "fixed", samples: [] },
+                        {
+                            name: "music subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        {
+                            name: "gaming subscription",
+                            type: "fixed",
+                            samples: [],
+                        },
+                        { name: "salary", type: "income", samples: [] },
+                        { name: "home", type: "special", samples: [] },
+                        { name: "food", type: "variable", samples: [] },
+                        { name: "groceries", type: "variable", samples: [] },
+                        { name: "presents", type: "variable", samples: [] },
+                        { name: "shopping", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    startDate: "09/15/2021",
+                    dateFormat: "MM/dd/yyyy",
+                    endDate: "12/20/2021",
+                },
+                {
+                    report: "trend",
+                    trendType: undefined,
+                    configurationPath: "",
+                },
+            );
 
             expect(result).toStrictEqual(trendReportAfter);
         });

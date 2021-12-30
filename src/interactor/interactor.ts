@@ -16,6 +16,7 @@ import { generateTrendReport } from "./report/trend";
  */
 export const generateReport = async (
     options: Configuration,
+    args: Arguments,
 ): Promise<Report | ApplicationError> => {
     let transactions: Transaction[] | ApplicationError = [];
     switch (options.source.type) {
@@ -34,7 +35,7 @@ export const generateReport = async (
     transactions = categorizeTransaction(transactions, options);
     if (isApplicationError(transactions)) return transactions;
 
-    switch (options.report) {
+    switch (args.report) {
         case ReportType.FixedPayDay:
             const fixedPayDayReport = generateFixedPayDayReport(
                 transactions,
@@ -43,13 +44,17 @@ export const generateReport = async (
             if (isApplicationError(fixedPayDayReport)) return fixedPayDayReport;
             return { type: "fixedpayday", report: fixedPayDayReport };
         case ReportType.Trend:
-            const trendReport = generateTrendReport(transactions, options);
+            const trendReport = generateTrendReport(
+                transactions,
+                options,
+                args,
+            );
             if (isApplicationError(trendReport)) return trendReport;
             return { type: "trend", report: trendReport };
         default:
             return {
                 source: "interactor.ts",
-                message: `Unkown report type "${options.report}".`,
+                message: `Unkown report type "${args.report}".`,
             };
     }
 };

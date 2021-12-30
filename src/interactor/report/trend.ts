@@ -29,6 +29,7 @@ import { isApplicationError } from "../../utils/typeguards";
 export const generateTrendReport = (
     transactions: Transaction[],
     options: Configuration,
+    args: Arguments,
 ): TrendReport | ApplicationError => {
     if (transactions.length === 0)
         return {
@@ -44,17 +45,17 @@ export const generateTrendReport = (
 
     if (
         typeof options !== "undefined" &&
-        typeof options.trendType !== "undefined"
+        typeof args.trendType !== "undefined"
     ) {
-        if (!isValidTransactionType(options.trendType)) {
+        if (!isValidTransactionType(args.trendType)) {
             return {
                 source: "trend.ts",
-                message: `The transaction type '${options.trendType}' is unknown.`,
+                message: `The transaction type '${args.trendType}' is unknown.`,
             };
         }
-        const trend = generateTrend(transactions, options.trendType, options);
+        const trend = generateTrend(transactions, args.trendType, options);
         if (isApplicationError(trend)) return trend;
-        return { type: options.trendType, trends: [trend] };
+        return { type: args.trendType, trends: [trend] };
     }
 
     const trendReport: TrendReport = { trends: [] };

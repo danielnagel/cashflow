@@ -7,9 +7,11 @@ import {
     exampleConfiguration,
     saveConfigurationFile,
 } from "./configurator/saver";
+import { processCliOptions } from "./configurator/cli";
 
 const main = async () => {
-    const options = loadConfigurationFile(`data/config.json`);
+    const args = processCliOptions();
+    const options = loadConfigurationFile(args.configurationPath);
     if (isApplicationError(options)) {
         log({ message: options, level: "error" });
         saveConfigurationFile(exampleConfiguration, "data");
@@ -24,8 +26,18 @@ const main = async () => {
         });
         return;
     }
+    if (typeof args.report === "undefined") {
+        log({
+            message: {
+                source: "index.ts",
+                message: `Report is undefined, use -r <report> option as cli parameter.`,
+            },
+            level: "error",
+        });
+        return;
+    }
 
-    const report = await generateReport(options);
+    const report = await generateReport(options, args);
     if (isApplicationError(report)) {
         log({
             message: report,

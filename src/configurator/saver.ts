@@ -36,8 +36,6 @@ export const exampleConfiguration: Configuration = {
     strict: false,
     startDate: "01.01.2021",
     endDate: "31.12.2021",
-    report: "trend",
-    trendType: "fixed",
     source: {
         type: "csv",
         path: "",

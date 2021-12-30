@@ -180,12 +180,17 @@ describe("Test Interactor", () => {
                         samples: [{ initiator: "Mobilio Ltd." }],
                     },
                 ],
-                report: "fixedpayday",
                 startDate: "01.09.2021",
                 endDate: "15.11.2021",
             };
 
-            expect(await generateReport(options)).toStrictEqual(expected);
+            expect(
+                await generateReport(options, {
+                    report: "fixedpayday",
+                    trendType: "",
+                    configurationPath: "",
+                }),
+            ).toStrictEqual(expected);
         });
 
         test("Generate report 'Trend' from csv samples as expected", async () => {
@@ -654,10 +659,15 @@ describe("Test Interactor", () => {
                         ],
                     },
                 ],
-                report: "trend",
             };
 
-            expect(await generateReport(options)).toStrictEqual(expected);
+            expect(
+                await generateReport(options, {
+                    report: "trend",
+                    trendType: undefined,
+                    configurationPath: "",
+                }),
+            ).toStrictEqual(expected);
         });
     });
 });

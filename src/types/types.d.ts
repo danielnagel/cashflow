@@ -136,8 +136,6 @@ type Report = ReportFixedPayDay | ReportTrend;
 /**
  * Possible configurations, that a user could create.
  *
- * report:          has to be either "trend" or "fixedpayday",
- *                  otherwise an error is printed
  * allowedLogLevel: determines which logs should be logged,
  *                  "debug" allows all logs
  *                  and "none" does completly silent the logging,
@@ -157,17 +155,11 @@ type Report = ReportFixedPayDay | ReportTrend;
  *                  otherwise "oldest" transaction is used
  * endDate:         user configuration on when to end a report,
  *                  today is used as default
- * trendType:       only used in trend report, can be fixed, variable, special
- *                  or income for a detailed categorized report
- *                  on a specific transaction type
- *                  default is a trend report on all transaction types,
- *                  without showing the details of every category.
  * source:          options for a data source, see CsvOptions for details
  * categories:      a list of categories to categorize every transaction
  *                  from source, can be used in combination with strict: true
  */
 type Configuration = {
-    report: string;
     allowedLogLevel?: string;
     currency?: string;
     dateFormat?: string;
@@ -175,7 +167,6 @@ type Configuration = {
     strict?: boolean;
     startDate?: string;
     endDate?: string;
-    trendType?: string;
     source: CsvOptions | ApiOptions;
     categories: SampledCategory[];
 };
@@ -260,4 +251,10 @@ type Trend = {
 type TrendReport = {
     type?: string;
     trends: Array<Trend>;
+};
+
+type Arguments = {
+    report: string | undefined;
+    trendType: string | undefined;
+    configurationPath: string;
 };

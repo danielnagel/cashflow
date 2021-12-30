@@ -129,7 +129,6 @@ describe("Test connector/csv", () => {
                         dateFormat: "",
                     },
                     allowedLogLevel: "none",
-                    report: "",
                     categories: [],
                 }),
             ).toStrictEqual({
@@ -156,7 +155,6 @@ describe("Test connector/csv", () => {
                         dateFormat: "",
                     },
                     allowedLogLevel: "none",
-                    report: "",
                     categories: [],
                 }),
             ).toStrictEqual({
@@ -193,7 +191,6 @@ describe("Test connector/csv", () => {
                     dateFormat: "dd.MM.yyyy",
                 },
                 allowedLogLevel: "none",
-                report: "",
                 categories: [],
             });
             expect(transactionData).toHaveLength(3);
@@ -249,7 +246,6 @@ describe("Test connector/csv", () => {
                     dateFormat: "dd.MM.yyyy",
                 },
                 allowedLogLevel: "none",
-                report: "",
                 categories: [],
             });
             expect(transactionData).toHaveLength(8);
@@ -347,7 +343,6 @@ describe("Test connector/csv", () => {
                     dateFormat: "dd.MM.yyyy",
                 },
                 allowedLogLevel: "none",
-                report: "",
                 categories: [],
             });
             expect(transactionData).toHaveLength(10);

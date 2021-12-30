@@ -10,7 +10,6 @@ describe("Test fixCostReport", () => {
         describe("Test falsy parameters", () => {
             test("Return null, if transactions array is empty", () => {
                 const fixedPayDay = generateFixedPayDay([], "test", {
-                    report: "fixedpayday",
                     source: { type: "api" },
                     categories: [],
                     endDate: "15.12.2021",
@@ -35,7 +34,6 @@ describe("Test fixCostReport", () => {
 
             test("Return null, category doesn't match", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, "test", {
-                    report: "fixedpayday",
                     source: { type: "api" },
                     categories: [],
                     endDate: "15.12.2021",
@@ -49,7 +47,6 @@ describe("Test fixCostReport", () => {
 
             test("Return null, if there aren't any transactions that match toDate", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, "rent", {
-                    report: "fixedpayday",
                     source: { type: "api" },
                     categories: [],
                     endDate: "15.12.2021",
@@ -63,7 +60,6 @@ describe("Test fixCostReport", () => {
 
             test("Return null, if sinceDate is after toDate", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, "rent", {
-                    report: "fixedpayday",
                     source: { type: "api" },
                     categories: [],
                     endDate: "15.12.2021",
@@ -169,7 +165,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "rent",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "30.11.2021",
@@ -258,7 +253,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "rent",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "15.10.2021",
@@ -308,7 +302,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "rent",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         startDate: "01.09.2021",
@@ -426,7 +419,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "insurance",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "30.12.2021",
@@ -489,7 +481,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "insurance",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         endDate: "01.09.2021",
@@ -552,7 +543,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "insurance",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         startDate: "01.09.2021",
@@ -668,7 +658,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "insurance",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                     },
@@ -756,7 +745,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "music subscription",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                     },
@@ -794,7 +782,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "car insurance",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                     },
@@ -869,7 +856,6 @@ describe("Test fixCostReport", () => {
                     categorizedTransactions,
                     "luxury",
                     {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                     },
@@ -885,7 +871,6 @@ describe("Test fixCostReport", () => {
             test("Return null, if transactions array is empty", () => {
                 expect(
                     generateFixedPayDayReport([], {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [
                             {
@@ -908,7 +893,6 @@ describe("Test fixCostReport", () => {
             test("Return null, if categories array is empty", () => {
                 expect(
                     generateFixedPayDayReport(categorizedTransactions, {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [],
                         allowedLogLevel: "none",
@@ -922,7 +906,6 @@ describe("Test fixCostReport", () => {
             test("Return null, if no transaction can be categorized", () => {
                 expect(
                     generateFixedPayDayReport(categorizedTransactions, {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [
                             {
@@ -1079,7 +1062,6 @@ describe("Test fixCostReport", () => {
 
                 expect(
                     generateFixedPayDayReport(categorizedTransactions, {
-                        report: "fixedpayday",
                         source: { type: "api" },
                         categories: [
                             {
