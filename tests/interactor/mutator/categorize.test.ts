@@ -11,7 +11,6 @@ describe("Test interactor/mutator/categorize", () => {
         describe("Test falsy parameters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
                 const options: Configuration = {
-                    report: "",
                     source: { type: "api" },
                     categories: [
                         {
@@ -26,7 +25,6 @@ describe("Test interactor/mutator/categorize", () => {
 
             test("Return an ApplicationError, if no transaction is matching and option strict is true", () => {
                 const options: Configuration = {
-                    report: "",
                     source: { type: "api" },
                     strict: true,
                     categories: [
@@ -48,7 +46,6 @@ describe("Test interactor/mutator/categorize", () => {
 
         test("Return all transactions with unmatched category, if no transaction is matching and option strict is false", () => {
             const options: Configuration = {
-                report: "",
                 source: { type: "api" },
                 strict: false,
                 categories: [
@@ -67,7 +64,6 @@ describe("Test interactor/mutator/categorize", () => {
         describe("Test categorizing transactions", () => {
             test("Categorize transactions", () => {
                 const options: Configuration = {
-                    report: "",
                     source: { type: "api" },
                     strict: false,
                     categories: [
@@ -169,7 +165,6 @@ describe("Test interactor/mutator/categorize", () => {
 
             test("Return ApplicationError if not all transactions could be categorized, strict is true", () => {
                 const options: Configuration = {
-                    report: "",
                     source: { type: "api" },
                     strict: true,
                     categories: [
@@ -262,7 +257,6 @@ describe("Test interactor/mutator/categorize", () => {
 
         describe("Test categorizing unmatched transactions", () => {
             const options: Configuration = {
-                report: "",
                 source: { type: "api" },
                 strict: false,
                 categories: [

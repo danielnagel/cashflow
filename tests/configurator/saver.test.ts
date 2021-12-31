@@ -9,7 +9,6 @@ import { isDirectory, isFile } from "../../src/utils/files";
 describe("Test configurator/saver", () => {
     describe("Save configuration file", () => {
         const minimalConfiguration: Configuration = {
-            report: "",
             categories: [],
             source: {
                 type: "csv",
@@ -61,7 +60,7 @@ describe("Test configurator/saver", () => {
             copyOfMinimalConfiguration.source = {
                 ...minimalConfiguration.source,
             };
-            copyOfMinimalConfiguration.report = "test";
+            copyOfMinimalConfiguration.currency = "test";
             expect(
                 saveConfigurationFile(
                     copyOfMinimalConfiguration,
@@ -80,7 +79,7 @@ describe("Test configurator/saver", () => {
             copyOfMinimalConfiguration.source = {
                 ...minimalConfiguration.source,
             };
-            copyOfMinimalConfiguration.report = "test";
+            copyOfMinimalConfiguration.currency = "test";
             saveConfigurationFile(
                 copyOfMinimalConfiguration,
                 __dirname + "/samples",

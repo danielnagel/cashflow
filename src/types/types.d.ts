@@ -215,15 +215,6 @@ type Log = {
     type?: string;
 };
 
-/**
- * Represents a month in a year.
- * Month january is 1, december is 12.
- */
-type MonthYear = {
-    month: number;
-    year: number;
-};
-
 type CategoryTrend = {
     name: string;
     periods: Array<FixedCategoryTrendPeriod | VariableCategoryTrendPeriod>;

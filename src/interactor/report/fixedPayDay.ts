@@ -1,4 +1,8 @@
-import { formatDate, parseDateString } from "../../utils/dates";
+import {
+    formatDate,
+    getDateFromTransaction,
+    parseDateString,
+} from "../../utils/dates";
 import {
     filterTransactionsByCategoryName,
     filterTransactionsByCategoryType,
@@ -8,6 +12,7 @@ import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError, isCategory } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
 import { Periods, TransactionType } from "../../types/enums";
+import { isSameMonth, isSameQuarter, isSameYear } from "date-fns";
 
 /**
  * Generates a FixedPayDay object from a list of Transaction considering given FilterTransactionsBySampleOptions.
@@ -109,28 +114,23 @@ const isPaidThisPeriod = (
     period: string | undefined,
     options: Configuration,
 ): boolean | ApplicationError => {
-    const monthYear = getComparsionMonthYear(options);
-    if (isApplicationError(monthYear)) return monthYear;
+    const comparsionDate = getComparsionDate(options);
+    if (isApplicationError(comparsionDate)) return comparsionDate;
+
+    const transactionDate = getDateFromTransaction(transaction);
 
     if (typeof period === "undefined" || period === Periods.Monthly) {
-        return (
-            transaction.month === monthYear.month &&
-            transaction.year === monthYear.year
-        );
+        return isSameMonth(transactionDate, comparsionDate);
     }
 
     if (period === Periods.Yearly) {
-        return transaction.year === monthYear.year;
+        return isSameYear(transactionDate, comparsionDate);
     }
 
-    if (period === Periods.Quarter) {
-        return (
-            transaction.year === monthYear.year &&
-            monthYear.month - transaction.month < 3
-        );
-    }
-
-    return false;
+    return (
+        period === Periods.Quarter &&
+        isSameQuarter(transactionDate, comparsionDate)
+    );
 };
 
 /**
@@ -167,14 +167,10 @@ const getSortedMatchedTransactions = (
 /**
  * Determines which month of a year is used for comparsion.
  *
- * @param filterOptions specify how to filter the transactions
+ * @param options specify how to filter the transactions
  * @returns month of a year
  */
-const getComparsionMonthYear = (
-    options: Configuration,
-): MonthYear | ApplicationError => {
-    let month = new Date().getMonth() + 1;
-    let year = new Date().getFullYear();
+const getComparsionDate = (options: Configuration): Date | ApplicationError => {
     if (options.endDate) {
         const endDate = parseDateString(options.endDate, options.dateFormat);
         if (!endDate)
@@ -182,10 +178,9 @@ const getComparsionMonthYear = (
                 source: "fixedPayDay.ts",
                 message: `Before date filter options can't be parse! Before date is '${endDate}'`,
             };
-        month = endDate.getMonth() + 1;
-        year = endDate.getFullYear();
+        return endDate;
     }
-    return { month, year };
+    return new Date();
 };
 
 /**
