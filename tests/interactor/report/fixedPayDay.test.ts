@@ -660,6 +660,7 @@ describe("Test fixCostReport", () => {
                     {
                         source: { type: "api" },
                         categories: [],
+                        endDate: "31.12.2021",
                     },
                 );
 
@@ -784,6 +785,7 @@ describe("Test fixCostReport", () => {
                     {
                         source: { type: "api" },
                         categories: [],
+                        endDate: "31.12.2021",
                     },
                 );
 
@@ -858,6 +860,7 @@ describe("Test fixCostReport", () => {
                     {
                         source: { type: "api" },
                         categories: [],
+                        endDate: "31.12.2021",
                     },
                 );
 
