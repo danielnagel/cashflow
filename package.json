@@ -31,6 +31,12 @@
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
     },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm test",
+            "pre-push": "npm test"
+        }
+    },
     "dependencies": {
         "csv-parse": "^4.16.3",
         "yargs": "^17.3.1"
