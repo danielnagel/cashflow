@@ -47,6 +47,26 @@ describe("Test utils/filters", () => {
                     }),
                 ).toHaveLength(0);
             });
+
+            test("Return unfiltered transactions, if 'end date' option can't be parsed", () => {
+                const result = filterTransactionsByDateString(transactions, {
+                    source: { type: "api" },
+                    categories: [],
+                    endDate: "13/12/991",
+                });
+                expect(result).toHaveLength(transactions.length);
+                expect(result).toStrictEqual(transactions);
+            });
+
+            test("Return unfiltered transactions, if 'start date' option can't be parsed", () => {
+                const result = filterTransactionsByDateString(transactions, {
+                    source: { type: "api" },
+                    categories: [],
+                    startDate: "13/12/991",
+                });
+                expect(result).toHaveLength(transactions.length);
+                expect(result).toStrictEqual(transactions);
+            });
         });
 
         describe("Test filtering transactions by exactly one sample", () => {
