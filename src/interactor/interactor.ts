@@ -1,5 +1,5 @@
 import { loadTransactionData } from "./connector/csv";
-import { isApplicationError } from "../utils/typeguards";
+import { isApplicationError, isCsvOptions } from "../utils/typeguards";
 import { generateFixedPayDayReport } from "./report/fixedPayDay";
 import { ConnectorType, ReportType } from "../types/enums";
 import { categorizeTransaction } from "./mutator/categorize";
@@ -21,10 +21,17 @@ export const generateReport = async (
     let transactions: Transaction[] | ApplicationError = [];
     switch (options.source.type) {
         case ConnectorType.CSV:
-            transactions = await loadTransactionData(options);
+            if (!isCsvOptions(options.source)) {
+                return {
+                    source: "interactor.ts",
+                    message: `Malformed source configuration for CSV type.`,
+                };
+            }
+            transactions = await loadTransactionData(
+                options as CsvConfiguration,
+            );
             if (isApplicationError(transactions)) return transactions;
             break;
-        case ConnectorType.API:
         default:
             return {
                 source: "interactor.ts",

@@ -34,7 +34,7 @@ export const generateTrendReport = (
     if (transactions.length === 0)
         return {
             source: "trend.ts",
-            message: "There where no transactions.",
+            message: "There are no transactions.",
         };
 
     if (options.categories.length === 0)

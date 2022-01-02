@@ -440,7 +440,7 @@ describe("Test report/trend", () => {
             );
             expect(result).toStrictEqual({
                 source: "trend.ts",
-                message: "There where no transactions.",
+                message: "There are no transactions.",
             });
         });
 

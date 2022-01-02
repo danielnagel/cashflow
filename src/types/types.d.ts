@@ -48,6 +48,10 @@ type CsvOptions = {
     dateFormat?: string;
 };
 
+type UnknownConnectionOptions = {
+    type: string;
+};
+
 /**
  * A sample is used to match specifc transactions
  */
@@ -167,9 +171,13 @@ type Configuration = {
     strict?: boolean;
     startDate?: string;
     endDate?: string;
-    source: CsvOptions | ApiOptions;
+    source: CsvOptions | ApiOptions | UnknownConnectionOptions;
     categories: SampledCategory[];
 };
+
+interface CsvConfiguration extends Configuration {
+    source: CsvOptions;
+}
 
 /**
  * One row contains the information of one category from the categorized fix costs report.
