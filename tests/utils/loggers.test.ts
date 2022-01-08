@@ -133,6 +133,28 @@ describe("Test utils/loggers", () => {
             consoleLog.mockReset();
         });
 
+        test("log 'TEST' to console, with another date format", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
+            const options: Log = {
+                type: LogType.Console,
+                message: "TEST",
+                level: LogLevel.Error,
+                dateFormat: "yyyy",
+                timeFormat: "HH:mm:ss",
+            };
+            log(options);
+            expect(consoleLog).toBeCalledTimes(1);
+            expect(consoleLog).toBeCalledWith(
+                `${formatDate(new Date(), "yyyy HH:mm:ss")} {error} ${
+                    options.message
+                }`,
+            );
+
+            consoleLog.mockReset();
+        });
+
         test("log 'TEST' to console, with invalid date format", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
@@ -155,6 +177,9 @@ describe("Test utils/loggers", () => {
 
     describe("Test function log, type file", () => {
         test("log 'TEST' to file", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 level: LogLevel.Error,
@@ -162,6 +187,7 @@ describe("Test utils/loggers", () => {
                 path: __dirname + "/samples/logs/",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
 
             const expected = `${formatDate(
                 new Date(),
@@ -175,6 +201,9 @@ describe("Test utils/loggers", () => {
         });
 
         test("log 'TEST2' to file 'test1', append log", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 level: LogLevel.Error,
@@ -182,6 +211,7 @@ describe("Test utils/loggers", () => {
                 path: __dirname + "/samples/logs/",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const expected = `${formatDate(
                 new Date(),
                 "dd.MM.yyyy HH:mm:ss",
@@ -197,6 +227,9 @@ describe("Test utils/loggers", () => {
         });
 
         test("log ApplicationError to file", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 level: LogLevel.Error,
@@ -206,6 +239,7 @@ describe("Test utils/loggers", () => {
             };
 
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const expected = `${formatDate(
                 new Date(),
                 "dd.MM.yyyy HH:mm:ss",
@@ -215,6 +249,9 @@ describe("Test utils/loggers", () => {
         });
 
         test("allowed log level is none", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 level: LogLevel.Error,
@@ -224,11 +261,15 @@ describe("Test utils/loggers", () => {
                 path: __dirname + "/samples/logs/",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const result = loadFile(__dirname + "/samples/logs/test3.log");
             expect(result).toBeNull();
         });
 
         test("log level is debug, allowed log level is info", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 message: "TEST",
@@ -238,11 +279,15 @@ describe("Test utils/loggers", () => {
                 path: __dirname + "/samples/logs/",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const result = loadFile(__dirname + "/samples/logs/test4.log");
             expect(result).toBeNull();
         });
 
         test("log level is info, allowed log level is warn", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 message: "TEST",
@@ -252,11 +297,15 @@ describe("Test utils/loggers", () => {
                 path: __dirname + "/samples/logs/",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const result = loadFile(__dirname + "/samples/logs/test5.log");
             expect(result).toBeNull();
         });
 
         test("log level is warn, allowed log level is error", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 message: "TEST",
@@ -266,11 +315,15 @@ describe("Test utils/loggers", () => {
                 path: __dirname + "/samples/logs/",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const result = loadFile(__dirname + "/samples/logs/test6.log");
             expect(result).toBeNull();
         });
 
         test("log 'TEST' to file, with other date format", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 message: "TEST",
@@ -281,6 +334,7 @@ describe("Test utils/loggers", () => {
                 path: __dirname + "/samples/logs/",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const expected = `${formatDate(new Date(), "HH:mm:ss")} {error} ${
                 options.message
             }\n`;
@@ -288,7 +342,33 @@ describe("Test utils/loggers", () => {
             expect(result).toStrictEqual(expected);
         });
 
+        test("log 'TEST' to file, with another date format", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
+            const options: Log = {
+                type: LogType.File,
+                message: "TEST",
+                level: LogLevel.Error,
+                dateFormat: "yyyy",
+                timeFormat: "HH:mm:ss",
+                fileName: "test77",
+                path: __dirname + "/samples/logs/",
+            };
+            log(options);
+            expect(consoleLog).toBeCalledTimes(0);
+            const expected = `${formatDate(
+                new Date(),
+                "yyyy HH:mm:ss",
+            )} {error} ${options.message}\n`;
+            const result = loadFile(__dirname + "/samples/logs/test77.log");
+            expect(result).toStrictEqual(expected);
+        });
+
         test("log 'TEST' to file, with invalid date format", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 message: "TEST",
@@ -298,6 +378,7 @@ describe("Test utils/loggers", () => {
                 path: __dirname + "/samples/logs/",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const expected = `${new Date().toLocaleDateString()} {error} ${
                 options.message
             }\n`;
@@ -306,6 +387,9 @@ describe("Test utils/loggers", () => {
         });
 
         test("log 'TEST' to file, changed path", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 level: LogLevel.Error,
@@ -314,6 +398,7 @@ describe("Test utils/loggers", () => {
                 fileName: "test9",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
             const expected = `${formatDate(
                 new Date(),
                 "dd.MM.yyyy HH:mm:ss",
@@ -323,6 +408,9 @@ describe("Test utils/loggers", () => {
         });
 
         test("log 'TEST' to file, default path", () => {
+            const consoleLog = jest
+                .spyOn(console, "log")
+                .mockImplementation(() => {});
             const options: Log = {
                 type: LogType.File,
                 level: LogLevel.Error,
@@ -330,6 +418,7 @@ describe("Test utils/loggers", () => {
                 fileName: "thisisatestlog",
             };
             log(options);
+            expect(consoleLog).toBeCalledTimes(0);
 
             const expected = `${formatDate(
                 new Date(),

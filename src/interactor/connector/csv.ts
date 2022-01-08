@@ -15,7 +15,7 @@ import { parseDateString } from "../../utils/dates";
 import { isApplicationError } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
 import { filterDoubleTransactions } from "../../utils/filters";
-import { ConnectorType } from "../../types/enums";
+import { ConnectorType, LogLevel } from "../../types/enums";
 
 /**
  * Generates a Transaction object from an unkown record.
@@ -185,10 +185,11 @@ const loadTransactionDataFromFile = async (
         if (isApplicationError(transaction)) {
             log({
                 message: transaction,
-                level: "debug",
+                level: LogLevel.Debug,
                 allowedLogLevel: options.allowedLogLevel,
                 dateFormat: options.dateFormat,
                 timeFormat: options.timeFormat,
+                type: options.logType,
             });
             continue;
         }

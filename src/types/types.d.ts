@@ -144,6 +144,8 @@ type Report = ReportFixedPayDay | ReportTrend;
  *                  "debug" allows all logs
  *                  and "none" does completly silent the logging,
  *                  default log level is "error"
+ * logType:         The type of log system to use,
+ *                  default is console
  * currency:        used in the reports, deffault is "€$"
  * dateFormat:      used to format dates for logs and in reports,
  *                  see https://date-fns.org/v1.30.1/docs/format,
@@ -165,6 +167,7 @@ type Report = ReportFixedPayDay | ReportTrend;
  */
 type Configuration = {
     allowedLogLevel?: string;
+    logType?: string;
     currency?: string;
     dateFormat?: string;
     timeFormat?: string;

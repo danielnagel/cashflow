@@ -18,6 +18,7 @@ export const log = (options: Log): void => {
     switch (options.type) {
         case LogType.File:
             fileHandler(options);
+            break;
         default:
             // fallback
             consoleHandler(options);
@@ -73,13 +74,19 @@ const formatLogMessage = (options: Log): string => {
         typeof options.timeFormat === "string"
             ? options.timeFormat
             : "HH:mm:ss";
+    let dateTimeFormat = `${dateFormat}${timeFormat}`;
+    if (
+        timeFormat.length > 0 &&
+        dateFormat.length > 0 &&
+        !dateFormat.endsWith(" ")
+    ) {
+        dateTimeFormat = `${dateFormat} ${timeFormat}`;
+    }
     let message = options.message;
     if (isApplicationError(options.message)) {
         message = `[${options.message.source}]: ${options.message.message}`;
     }
-    return `${generateTimeStamp(dateFormat + timeFormat)} {${
-        options.level
-    }} ${message}`;
+    return `${generateTimeStamp(dateTimeFormat)} {${options.level}} ${message}`;
 };
 
 /**
