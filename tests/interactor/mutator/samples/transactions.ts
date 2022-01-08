@@ -1,11 +1,27 @@
 export const transactions: Transaction[] = [
     {
+        day: 3,
+        month: 1,
+        year: 2020,
+        initiator: "Big Insurance Corp.",
+        purpose: "For you car",
+        value: 1200,
+    },
+    {
         day: 19,
         month: 10,
         year: 2021,
         initiator: "Beef Burger Palace",
         purpose: "We hope that you had a beefy good time!",
         value: 49.55,
+    },
+    {
+        day: 6,
+        month: 1,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
     },
     {
         day: 1,
@@ -30,6 +46,15 @@ export const transactions: Transaction[] = [
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
         value: 650,
+    },
+
+    {
+        day: 6,
+        month: 4,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
     },
     {
         day: 1,
@@ -70,6 +95,14 @@ export const transactions: Transaction[] = [
         initiator: "Grocerie Land",
         purpose: "VISA 11 GROCERIE LAND TES71234123423134",
         value: 88.86,
+    },
+    {
+        day: 6,
+        month: 7,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
     },
     {
         day: 1,
@@ -118,6 +151,15 @@ export const transactions: Transaction[] = [
         initiator: "my-online-shop.com",
         purpose: "my-online-shop.com; 22.11;  TES710928476309298",
         value: 9.99,
+    },
+
+    {
+        day: 6,
+        month: 10,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
     },
     {
         day: 1,
@@ -302,5 +344,13 @@ export const transactions: Transaction[] = [
         initiator: "Warren Buffet",
         purpose: "",
         value: 300,
+    },
+    {
+        day: 2,
+        month: 1,
+        year: 2021,
+        initiator: "Big Insurance Corp.",
+        purpose: "For you car",
+        value: 1200,
     },
 ];

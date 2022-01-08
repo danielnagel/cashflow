@@ -44,7 +44,7 @@ export const categorizeTransaction = (
     }
 
     const unmatchedTransactions = getUnmatchedTransactions(copyOfTransactions);
-    if (options.strict) {
+    if (options.strict && unmatchedTransactions.length > 0) {
         const error = generateError(copyOfTransactions, unmatchedTransactions);
         if (isApplicationError(error)) {
             return error;
@@ -78,10 +78,9 @@ const copy = (transactions: Transaction[]): Transaction[] => {
 const generateError = (
     transactions: Transaction[],
     unmatchedTransactions: Transaction[],
-): ApplicationError | null => {
+): ApplicationError => {
     let message = "Couldn't match any transaction.";
 
-    if (unmatchedTransactions.length === 0) return null;
     if (unmatchedTransactions.length < transactions.length) {
         message = "Couldn't match all transactions. Unmatched Transactions:";
         for (let i = 0; i < unmatchedTransactions.length; i++) {

@@ -155,6 +155,26 @@ describe("Test interactor/mutator/categorize", () => {
                                 },
                             ],
                         },
+                        {
+                            name: "car insurance",
+                            type: "fixed",
+                            period: "yearly",
+                            samples: [
+                                {
+                                    initiator: "Big Insurance Corp.",
+                                },
+                            ],
+                        },
+                        {
+                            name: "tax",
+                            type: "fixed",
+                            period: "quarter",
+                            samples: [
+                                {
+                                    initiator: "Taxes",
+                                },
+                            ],
+                        },
                     ],
                 };
 
@@ -240,6 +260,27 @@ describe("Test interactor/mutator/categorize", () => {
                                 {
                                     initiator: "Warren Buffet",
                                     purpose: null,
+                                },
+                            ],
+                        },
+
+                        {
+                            name: "car insurance",
+                            type: "fixed",
+                            period: "yearly",
+                            samples: [
+                                {
+                                    initiator: "Big Insurance Corp.",
+                                },
+                            ],
+                        },
+                        {
+                            name: "tax",
+                            type: "fixed",
+                            period: "quarter",
+                            samples: [
+                                {
+                                    initiator: "Taxes",
                                 },
                             ],
                         },

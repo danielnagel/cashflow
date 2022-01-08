@@ -1,5 +1,18 @@
 export const categorizedTransactions: Transaction[] = [
     {
+        day: 3,
+        month: 1,
+        year: 2020,
+        initiator: "Big Insurance Corp.",
+        purpose: "For you car",
+        value: 1200,
+        category: {
+            name: "car insurance",
+            type: "fixed",
+            period: "yearly",
+        },
+    },
+    {
         day: 19,
         month: 10,
         year: 2021,
@@ -9,6 +22,19 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "food",
             type: "variable",
+        },
+    },
+    {
+        day: 6,
+        month: 1,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
+        category: {
+            name: "tax",
+            type: "fixed",
+            period: "quarter",
         },
     },
     {
@@ -46,6 +72,19 @@ export const categorizedTransactions: Transaction[] = [
             name: "rent",
             type: "fixed",
             period: "monthly",
+        },
+    },
+    {
+        day: 6,
+        month: 4,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
+        category: {
+            name: "tax",
+            type: "fixed",
+            period: "quarter",
         },
     },
     {
@@ -109,6 +148,19 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "groceries",
             type: "variable",
+        },
+    },
+    {
+        day: 6,
+        month: 7,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
+        category: {
+            name: "tax",
+            type: "fixed",
+            period: "quarter",
         },
     },
     {
@@ -183,6 +235,19 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "shopping",
             type: "variable",
+        },
+    },
+    {
+        day: 6,
+        month: 10,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
+        category: {
+            name: "tax",
+            type: "fixed",
+            period: "quarter",
         },
     },
     {
@@ -466,10 +531,35 @@ export const categorizedTransactions: Transaction[] = [
         year: 2021,
         category: { name: "present for me", period: "monthly", type: "fixed" },
     },
+    {
+        day: 2,
+        month: 1,
+        year: 2021,
+        initiator: "Big Insurance Corp.",
+        purpose: "For you car",
+        value: 1200,
+        category: {
+            name: "car insurance",
+            type: "fixed",
+            period: "yearly",
+        },
+    },
 ];
 
 export const categorizedTransactionsWithUnmatchedTransactionCategory: Transaction[] =
     [
+        {
+            day: 3,
+            month: 1,
+            year: 2020,
+            initiator: "Big Insurance Corp.",
+            purpose: "For you car",
+            value: 1200,
+            category: {
+                name: "unmatched",
+                type: "variable",
+            },
+        },
         {
             day: 19,
             month: 10,
@@ -477,6 +567,18 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             initiator: "Beef Burger Palace",
             purpose: "We hope that you had a beefy good time!",
             value: 49.55,
+            category: {
+                name: "unmatched",
+                type: "variable",
+            },
+        },
+        {
+            day: 6,
+            month: 1,
+            year: 2021,
+            initiator: "Taxes",
+            purpose: "The state wants some money from you",
+            value: 55.56,
             category: {
                 name: "unmatched",
                 type: "variable",
@@ -517,6 +619,18 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
                 name: "rent",
                 type: "fixed",
                 period: "monthly",
+            },
+        },
+        {
+            day: 6,
+            month: 4,
+            year: 2021,
+            initiator: "Taxes",
+            purpose: "The state wants some money from you",
+            value: 55.56,
+            category: {
+                name: "unmatched",
+                type: "variable",
             },
         },
         {
@@ -579,6 +693,18 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             value: 88.86,
             category: {
                 name: "groceries",
+                type: "variable",
+            },
+        },
+        {
+            day: 6,
+            month: 7,
+            year: 2021,
+            initiator: "Taxes",
+            purpose: "The state wants some money from you",
+            value: 55.56,
+            category: {
+                name: "unmatched",
                 type: "variable",
             },
         },
@@ -653,6 +779,18 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             value: 9.99,
             category: {
                 name: "shopping",
+                type: "variable",
+            },
+        },
+        {
+            day: 6,
+            month: 10,
+            year: 2021,
+            initiator: "Taxes",
+            purpose: "The state wants some money from you",
+            value: 55.56,
+            category: {
+                name: "unmatched",
                 type: "variable",
             },
         },
@@ -941,9 +1079,33 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
                 type: "fixed",
             },
         },
+        {
+            day: 2,
+            month: 1,
+            year: 2021,
+            initiator: "Big Insurance Corp.",
+            purpose: "For you car",
+            value: 1200,
+            category: {
+                name: "unmatched",
+                type: "variable",
+            },
+        },
     ];
 
 export const categorizedTransactionsAllUnmatched: Transaction[] = [
+    {
+        day: 3,
+        month: 1,
+        year: 2020,
+        initiator: "Big Insurance Corp.",
+        purpose: "For you car",
+        value: 1200,
+        category: {
+            name: "unmatched",
+            type: "variable",
+        },
+    },
     {
         day: 19,
         month: 10,
@@ -951,6 +1113,18 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         initiator: "Beef Burger Palace",
         purpose: "We hope that you had a beefy good time!",
         value: 49.55,
+        category: {
+            name: "unmatched",
+            type: "variable",
+        },
+    },
+    {
+        day: 6,
+        month: 1,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
         category: {
             name: "unmatched",
             type: "variable",
@@ -987,6 +1161,18 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
         value: 650,
+        category: {
+            name: "unmatched",
+            type: "variable",
+        },
+    },
+    {
+        day: 6,
+        month: 4,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
         category: {
             name: "unmatched",
             type: "variable",
@@ -1047,6 +1233,18 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         initiator: "Grocerie Land",
         purpose: "VISA 11 GROCERIE LAND TES71234123423134",
         value: 88.86,
+        category: {
+            name: "unmatched",
+            type: "variable",
+        },
+    },
+    {
+        day: 6,
+        month: 7,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
         category: {
             name: "unmatched",
             type: "variable",
@@ -1119,6 +1317,18 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         initiator: "my-online-shop.com",
         purpose: "my-online-shop.com; 22.11;  TES710928476309298",
         value: 9.99,
+        category: {
+            name: "unmatched",
+            type: "variable",
+        },
+    },
+    {
+        day: 6,
+        month: 10,
+        year: 2021,
+        initiator: "Taxes",
+        purpose: "The state wants some money from you",
+        value: 55.56,
         category: {
             name: "unmatched",
             type: "variable",
@@ -1395,6 +1605,18 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         purpose: "",
         value: 300,
         year: 2021,
+        category: {
+            name: "unmatched",
+            type: "variable",
+        },
+    },
+    {
+        day: 2,
+        month: 1,
+        year: 2021,
+        initiator: "Big Insurance Corp.",
+        purpose: "For you car",
+        value: 1200,
         category: {
             name: "unmatched",
             type: "variable",
