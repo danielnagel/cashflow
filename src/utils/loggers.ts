@@ -44,18 +44,16 @@ const fileHandler = (options: Log): void => {
     if (isLogLevelAllowed(options.level, options.allowedLogLevel)) {
         let path =
             typeof options.path === "string" ? options.path : "data/logs/";
-        let formattedDate = formatDate(new Date(), "yyyy-MM-dd");
-        if (formattedDate === null)
-            formattedDate = new Date().toLocaleDateString();
         let fileName =
             typeof options.fileName === "string"
                 ? options.fileName
-                : `${formattedDate}.log`;
+                : `${formatDate(new Date(), "yyyy-MM-dd")}.log`;
         if (!fileName.endsWith(".log")) fileName += ".log";
         const filePath = createFilePath(path, fileName);
-        if (filePath === null) return;
-        if (!pathExists(path)) createDirectory(path);
-        appendFile(`${formatLogMessage(options)}\n`, filePath);
+        if (filePath !== null) {
+            if (!pathExists(path)) createDirectory(path);
+            appendFile(`${formatLogMessage(options)}\n`, filePath);
+        }
     }
 };
 
@@ -97,7 +95,7 @@ const formatLogMessage = (options: Log): string => {
  * see https://date-fns.org/v1.30.1/docs/format
  * @returns a time stamp string
  */
-const generateTimeStamp = (dateTimeFormat = "dd.MM.yyyy HH:mm:ss"): string => {
+const generateTimeStamp = (dateTimeFormat: string): string => {
     let dateTime = formatDate(new Date(), dateTimeFormat);
     if (!dateTime) dateTime = new Date().toLocaleDateString();
     return dateTime;

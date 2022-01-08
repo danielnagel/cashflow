@@ -365,7 +365,7 @@ describe("Test utils/loggers", () => {
             expect(result).toStrictEqual(expected);
         });
 
-        test("log 'TEST' to file, with invalid date format", () => {
+        test("log, with invalid date format", () => {
             const consoleLog = jest
                 .spyOn(console, "log")
                 .mockImplementation(() => {});
