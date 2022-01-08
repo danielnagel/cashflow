@@ -6,6 +6,8 @@ import {
     isDirectory,
     createDirectory,
     saveFile,
+    createFilePath,
+    appendFile,
 } from "../../src/utils/files";
 import { rmSync } from "fs";
 
@@ -129,6 +131,50 @@ describe("Test utils/files", () => {
             expect(isFile(path)).toBeTruthy();
             saveFile("test123", path);
             expect(loadFile(path)).toBe("test123");
+        });
+    });
+
+    describe("Append file", () => {
+        test("Append a file", () => {
+            const path = __dirname + "/samples/test/test2.txt";
+            expect(isFile(path)).toBeFalsy();
+            appendFile("test", path);
+            expect(loadFile(path)).toBe("test");
+        });
+
+        test("Append a file", () => {
+            const path = __dirname + "/samples/test/test2.txt";
+            expect(isFile(path)).toBeTruthy();
+            appendFile("test123", path);
+            expect(loadFile(path)).toBe("testtest123");
+        });
+    });
+
+    describe("Create file path", () => {
+        test("Create path with ending /", () => {
+            const path = "/samples/test/";
+            const fileName = "test.txt";
+            const expected = `${path}${fileName}`;
+            expect(createFilePath(path, fileName)).toBe(expected);
+        });
+
+        test("Create path without ending /", () => {
+            const path = "/samples/test";
+            const fileName = "test.txt";
+            const expected = `${path}/${fileName}`;
+            expect(createFilePath(path, fileName)).toBe(expected);
+        });
+
+        test("Return null if path parameter is less than one character", () => {
+            const path = "";
+            const fileName = "test.txt";
+            expect(createFilePath(path, fileName)).toBeNull();
+        });
+
+        test("Return null if fileName parameter is less than one character", () => {
+            const path = "/samples/test";
+            const fileName = "";
+            expect(createFilePath(path, fileName)).toBeNull();
         });
     });
 

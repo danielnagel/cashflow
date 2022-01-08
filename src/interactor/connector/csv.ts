@@ -5,6 +5,7 @@ import {
     isDirectory,
     isFile,
     loadFileNamesFromDirectory,
+    createFilePath,
 } from "../../utils/files";
 import {
     decimalNumberToFloat,
@@ -139,14 +140,11 @@ const loadTransactionDataFromDirectory = async (
             ConnectorType.CSV,
         );
         for (const fileName of filesInDirectory) {
-            if (options.source.path.endsWith("/"))
-                options.source.path = options.source.path.slice(
-                    0,
-                    options.source.path.length - 1,
-                );
             const optionsCopy = { ...options };
             optionsCopy.source = { ...options.source };
-            optionsCopy.source.path = `${options.source.path}/${fileName}`;
+            const filePath = createFilePath(options.source.path, fileName);
+            if (filePath === null) continue;
+            optionsCopy.source.path = filePath;
             const transactions = await loadTransactionDataFromFile(optionsCopy);
             mergedTransactions = filterDoubleTransactions(
                 mergedTransactions,

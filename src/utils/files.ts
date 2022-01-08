@@ -87,10 +87,19 @@ export const isDirectory = (path: string): boolean => {
  *
  * @param content that should be written into a file
  * @param path to the file
- * @returns true on success, false otherwise
  */
 export const saveFile = (content: string, path: string): void => {
-    writeFileSync(path, content, { encoding: "utf-8" });
+    writeFileSync(path, content, { encoding: "utf-8", flag: "w+" });
+};
+
+/**
+ * Append the content of a file.
+ *
+ * @param content that should be written into a file
+ * @param path to the file
+ */
+export const appendFile = (content: string, path: string): void => {
+    writeFileSync(path, content, { encoding: "utf-8", flag: "a+" });
 };
 
 /**
@@ -103,4 +112,22 @@ export const createDirectory = (path: string): boolean => {
     if (pathExists(path)) return false;
     mkdirSync(path, { recursive: true });
     return true;
+};
+
+/**
+ * Creates a file path from a path and a file name.
+ * Checks if the path ends with "/".
+ *
+ * @param path to the file
+ * @param fileName
+ * @returns path to a file or null.
+ */
+export const createFilePath = (
+    path: string,
+    fileName: string,
+): string | null => {
+    if (path.length === 0 || fileName.length === 0) return null;
+
+    if (!path.endsWith("/")) path += "/";
+    return `${path}${fileName}`;
 };
