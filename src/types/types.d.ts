@@ -221,6 +221,8 @@ type Log = {
     timeFormat?: string;
     allowedLogLevel?: string;
     type?: string;
+    path?: string;
+    fileName?: string;
 };
 
 type CategoryTrend = {

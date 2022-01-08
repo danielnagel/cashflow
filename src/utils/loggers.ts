@@ -1,5 +1,11 @@
-import { LogLevel } from "../types/enums";
+import { LogLevel, LogType } from "../types/enums";
 import { formatDate } from "./dates";
+import {
+    appendFile,
+    createDirectory,
+    createFilePath,
+    pathExists,
+} from "./files";
 import { isApplicationError } from "./typeguards";
 
 /**
@@ -9,8 +15,13 @@ import { isApplicationError } from "./typeguards";
  * and which logger type to use
  */
 export const log = (options: Log): void => {
-    // fallback
-    consoleHandler(options);
+    switch (options.type) {
+        case LogType.File:
+            fileHandler(options);
+        default:
+            // fallback
+            consoleHandler(options);
+    }
 };
 
 /**
@@ -20,38 +31,55 @@ export const log = (options: Log): void => {
  */
 const consoleHandler = (options: Log): void => {
     if (isLogLevelAllowed(options.level, options.allowedLogLevel))
-        console.log(
-            formatLogMessage(
-                options.message,
-                options.level,
-                options.dateFormat,
-                options.timeFormat,
-            ),
-        );
+        console.log(formatLogMessage(options));
+};
+
+/**
+ * Logs a message to file, by given options.
+ *
+ * @param options that specify how to handle the log message
+ */
+const fileHandler = (options: Log): void => {
+    if (isLogLevelAllowed(options.level, options.allowedLogLevel)) {
+        let path =
+            typeof options.path === "string" ? options.path : "data/logs/";
+        let formattedDate = formatDate(new Date(), "yyyy-MM-dd");
+        if (formattedDate === null)
+            formattedDate = new Date().toLocaleDateString();
+        let fileName =
+            typeof options.fileName === "string"
+                ? options.fileName
+                : `${formattedDate}.log`;
+        if (!fileName.endsWith(".log")) fileName += ".log";
+        const filePath = createFilePath(path, fileName);
+        if (filePath === null) return;
+        if (!pathExists(path)) createDirectory(path);
+        appendFile(`${formatLogMessage(options)}\n`, filePath);
+    }
 };
 
 /**
  * Creates a log message in a specific format.
  *
- * @param message that should be logged
- * @param level log level, default is error
- * @param dateTimeFormat format to be used as timestamp,
- * default is "dd.MM.yyyy HH:mm:ss",
- * see https://date-fns.org/v1.30.1/docs/format
+ * @param options which are used to format the log message
  * @returns a fomatted log message
  */
-const formatLogMessage = (
-    message: string | ApplicationError,
-    level = "error",
-    dateFormat = "dd.MM.yyyy ",
-    timeFormat = "HH:mm:ss",
-): string => {
-    if (isApplicationError(message)) {
-        message = `[${message.source}]: ${message.message}`;
+const formatLogMessage = (options: Log): string => {
+    const dateFormat =
+        typeof options.dateFormat === "string"
+            ? options.dateFormat
+            : "dd.MM.yyyy ";
+    const timeFormat =
+        typeof options.timeFormat === "string"
+            ? options.timeFormat
+            : "HH:mm:ss";
+    let message = options.message;
+    if (isApplicationError(options.message)) {
+        message = `[${options.message.source}]: ${options.message.message}`;
     }
-    return `${generateTimeStamp(
-        dateFormat + timeFormat,
-    )} {${level}} ${message}`;
+    return `${generateTimeStamp(dateFormat + timeFormat)} {${
+        options.level
+    }} ${message}`;
 };
 
 /**
