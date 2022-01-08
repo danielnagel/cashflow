@@ -43,4 +43,5 @@ export enum LogLevel {
 
 export enum LogType {
     Console = "console",
+    File = "file",
 }

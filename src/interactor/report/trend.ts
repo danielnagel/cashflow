@@ -1,5 +1,5 @@
 import { addMonths, isBefore } from "date-fns";
-import { TransactionType } from "../../types/enums";
+import { LogLevel, TransactionType } from "../../types/enums";
 import {
     formatDate,
     getDateFromTransaction,
@@ -163,8 +163,9 @@ export const generateCategoryTrend = (
         if (isApplicationError(trendPeriod)) {
             log({
                 message: trendPeriod,
-                level: "warn",
+                level: LogLevel.Warn,
                 allowedLogLevel: options.allowedLogLevel,
+                type: options.logType,
             });
             continue;
         }

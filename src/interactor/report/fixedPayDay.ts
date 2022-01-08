@@ -11,7 +11,7 @@ import {
 import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError, isCategory } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
-import { Periods, TransactionType } from "../../types/enums";
+import { LogLevel, Periods, TransactionType } from "../../types/enums";
 import { isSameMonth, isSameQuarter, isSameYear } from "date-fns";
 
 /**
@@ -222,10 +222,11 @@ export const generateFixedPayDayReport = (
         if (isApplicationError(fixedPayDay)) {
             log({
                 message: fixedPayDay,
-                level: "warn",
+                level: LogLevel.Warn,
                 allowedLogLevel: options?.allowedLogLevel,
                 dateFormat: options?.dateFormat,
                 timeFormat: options?.timeFormat,
+                type: options.logType,
             });
             continue;
         }

@@ -8,12 +8,13 @@ import {
     saveConfigurationFile,
 } from "./configurator/saver";
 import { processCliOptions } from "./configurator/cli";
+import { LogLevel } from "./types/enums";
 
 const main = async () => {
     const args = processCliOptions();
     const options = loadConfigurationFile(args.configurationPath);
     if (isApplicationError(options)) {
-        log({ message: options, level: "error" });
+        log({ message: options, level: LogLevel.Error });
         saveConfigurationFile(exampleConfiguration, "data");
         log({
             message: {
@@ -22,17 +23,27 @@ const main = async () => {
                     __dirname + "/data/config.json"
                 }".`,
             },
-            level: "info",
+            level: LogLevel.Info,
         });
         return;
     }
+
+    log({
+        message: "--- Started cashflow. ---",
+        level: LogLevel.Info,
+        allowedLogLevel: options.allowedLogLevel,
+        type: options.logType,
+    });
+
     if (typeof args.report === "undefined") {
         log({
             message: {
                 source: "index.ts",
                 message: `Report is undefined, use -r <report> option as cli parameter.`,
             },
-            level: "error",
+            level: LogLevel.Error,
+            allowedLogLevel: options.allowedLogLevel,
+            type: options.logType,
         });
         return;
     }
@@ -41,10 +52,11 @@ const main = async () => {
     if (isApplicationError(report)) {
         log({
             message: report,
-            level: "error",
+            level: LogLevel.Error,
             allowedLogLevel: options.allowedLogLevel,
             dateFormat: options.dateFormat,
             timeFormat: options.timeFormat,
+            type: options.logType,
         });
         return;
     }
@@ -53,10 +65,11 @@ const main = async () => {
     if (isApplicationError(result)) {
         log({
             message: result,
-            level: "error",
+            level: LogLevel.Error,
             allowedLogLevel: options.allowedLogLevel,
             dateFormat: options.dateFormat,
             timeFormat: options.timeFormat,
+            type: options.logType,
         });
         return;
     }

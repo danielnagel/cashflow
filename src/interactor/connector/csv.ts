@@ -5,6 +5,7 @@ import {
     isDirectory,
     isFile,
     loadFileNamesFromDirectory,
+    createFilePath,
 } from "../../utils/files";
 import {
     decimalNumberToFloat,
@@ -14,7 +15,7 @@ import { parseDateString } from "../../utils/dates";
 import { isApplicationError } from "../../utils/typeguards";
 import { log } from "../../utils/loggers";
 import { filterDoubleTransactions } from "../../utils/filters";
-import { ConnectorType } from "../../types/enums";
+import { ConnectorType, LogLevel } from "../../types/enums";
 
 /**
  * Generates a Transaction object from an unkown record.
@@ -139,14 +140,11 @@ const loadTransactionDataFromDirectory = async (
             ConnectorType.CSV,
         );
         for (const fileName of filesInDirectory) {
-            if (options.source.path.endsWith("/"))
-                options.source.path = options.source.path.slice(
-                    0,
-                    options.source.path.length - 1,
-                );
             const optionsCopy = { ...options };
             optionsCopy.source = { ...options.source };
-            optionsCopy.source.path = `${options.source.path}/${fileName}`;
+            const filePath = createFilePath(options.source.path, fileName);
+            if (filePath === null) continue;
+            optionsCopy.source.path = filePath;
             const transactions = await loadTransactionDataFromFile(optionsCopy);
             mergedTransactions = filterDoubleTransactions(
                 mergedTransactions,
@@ -187,10 +185,11 @@ const loadTransactionDataFromFile = async (
         if (isApplicationError(transaction)) {
             log({
                 message: transaction,
-                level: "debug",
+                level: LogLevel.Debug,
                 allowedLogLevel: options.allowedLogLevel,
                 dateFormat: options.dateFormat,
                 timeFormat: options.timeFormat,
+                type: options.logType,
             });
             continue;
         }
