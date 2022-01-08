@@ -143,13 +143,16 @@ const loadTransactionDataFromDirectory = async (
             const optionsCopy = { ...options };
             optionsCopy.source = { ...options.source };
             const filePath = createFilePath(options.source.path, fileName);
-            if (filePath === null) continue;
-            optionsCopy.source.path = filePath;
-            const transactions = await loadTransactionDataFromFile(optionsCopy);
-            mergedTransactions = filterDoubleTransactions(
-                mergedTransactions,
-                transactions,
-            );
+            if (filePath !== null) {
+                optionsCopy.source.path = filePath;
+                const transactions = await loadTransactionDataFromFile(
+                    optionsCopy,
+                );
+                mergedTransactions = filterDoubleTransactions(
+                    mergedTransactions,
+                    transactions,
+                );
+            }
         }
     }
     return mergedTransactions;

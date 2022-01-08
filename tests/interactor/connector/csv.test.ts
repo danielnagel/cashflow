@@ -50,6 +50,78 @@ describe("Test connector/csv", () => {
             });
         });
 
+        test("Return ApplicationError, if data keys date is undefined", async () => {
+            expect(
+                parseRecordToTransaction(
+                    {
+                        booking: undefined,
+                        initiator: "2",
+                        use: "3",
+                        amount: "4",
+                    },
+                    dataKeys,
+                    dateFormat,
+                ),
+            ).toStrictEqual({
+                source: "csv.ts",
+                message: "Record doesn't match given data keys.",
+            });
+        });
+
+        test("Return ApplicationError, if data keys initiator is undefined", async () => {
+            expect(
+                parseRecordToTransaction(
+                    {
+                        booking: "1",
+                        initiator: undefined,
+                        use: "3",
+                        amount: "4",
+                    },
+                    dataKeys,
+                    dateFormat,
+                ),
+            ).toStrictEqual({
+                source: "csv.ts",
+                message: "Record doesn't match given data keys.",
+            });
+        });
+
+        test("Return ApplicationError, if data keys use is undefined", async () => {
+            expect(
+                parseRecordToTransaction(
+                    {
+                        booking: "1",
+                        initiator: "2",
+                        use: undefined,
+                        amount: "4",
+                    },
+                    dataKeys,
+                    dateFormat,
+                ),
+            ).toStrictEqual({
+                source: "csv.ts",
+                message: "Record doesn't match given data keys.",
+            });
+        });
+
+        test("Return ApplicationError, if data keys amount is undefined", async () => {
+            expect(
+                parseRecordToTransaction(
+                    {
+                        booking: "1",
+                        initiator: "2",
+                        use: "3",
+                        amount: undefined,
+                    },
+                    dataKeys,
+                    dateFormat,
+                ),
+            ).toStrictEqual({
+                source: "csv.ts",
+                message: "Record doesn't match given data keys.",
+            });
+        });
+
         test("Return transaction, if data keys match record", async () => {
             expect(
                 parseRecordToTransaction(record, dataKeys, dateFormat),
