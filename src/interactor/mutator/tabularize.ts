@@ -8,6 +8,8 @@ import {
 import { roundToString } from "../../utils/numbers";
 import {
     isFixedCategoryTrendPeriod,
+    isReportFixedPayDay,
+    isReportTrend,
     isVariableCategoryTrendPeriod,
 } from "../../utils/typeguards";
 
@@ -25,21 +27,21 @@ export const generateReportAsTable = (
 ): FixedPayDayReportTableRow[] | TrendReportTableRow[] | ApplicationError => {
     switch (report.type) {
         case ReportType.FixedPayDay:
-            if (!report.report) {
+            if (!isReportFixedPayDay(report)) {
                 return {
                     source: "tabularize.ts",
-                    message: `Cannot print ${report.type} report! Report is null.`,
+                    message: `Cannot print ${report.type} report! Report has wrong format.`,
                 };
             }
-            return fixedPayDayReportAsTable(report.report, options);
+            return fixedPayDayReportAsTable(report, options);
         case ReportType.Trend:
-            if (!report.report) {
+            if (!isReportTrend(report)) {
                 return {
                     source: "tabularize.ts",
-                    message: `Cannot print ${report.type} report! Report is null.`,
+                    message: `Cannot print ${report.type} report! Report has wrong format.`,
                 };
             }
-            return trendReportAsTable(report.report, options);
+            return trendReportAsTable(report, options);
         default:
             return {
                 source: "tabularize.ts",
@@ -110,9 +112,12 @@ const trendReportAsTable = (
     const tabularData: TrendReportTableRow[] = [];
     const startPeriod = getStartPeriod(report, options);
     const endPeriod = getEndPeriod(options);
-    const currency = options?.currency ? options.currency : "€$";
+    const currency =
+        typeof options !== "undefined" && typeof options.currency === "string"
+            ? options.currency
+            : "€$";
     for (const trend of report.trends) {
-        if (typeof report.type === "undefined") {
+        if (typeof report.trendType === "undefined") {
             tabularData.push(
                 generateTrendReportSummaryRow(
                     trend,
@@ -153,8 +158,7 @@ const getStartPeriod = (report: TrendReport, options?: Configuration): Date => {
                 category.periods[0].period,
                 "yyyy.MM",
             );
-            if (period === null) continue;
-            if (isBefore(period, startPeriod)) {
+            if (period !== null && isBefore(period, startPeriod)) {
                 startPeriod = period;
             }
         }
@@ -172,10 +176,11 @@ const getStartPeriod = (report: TrendReport, options?: Configuration): Date => {
  */
 const getEndPeriod = (options?: Configuration) => {
     let endPeriod = new Date();
-    if (options?.endDate) {
-        const dateFormat = options?.dateFormat
-            ? options.dateFormat
-            : "dd.MM.yyyy";
+    if (typeof options !== "undefined" && typeof options.endDate === "string") {
+        const dateFormat =
+            typeof options.dateFormat === "string"
+                ? options.dateFormat
+                : "dd.MM.yyyy";
         const before = parseDateString(options.endDate, dateFormat);
         if (before !== null) endPeriod = before;
     }
@@ -204,23 +209,24 @@ const generateTrendReportSummaryRow = (
     let temporaryStartPeriod = startPeriod;
     while (isBefore(temporaryStartPeriod, endPeriod)) {
         const startPeriodString = formatDate(temporaryStartPeriod, "yyyy.MM");
-        if (startPeriodString === null) return row;
-        let value: number = 0;
-        for (const category of trend.categories) {
-            for (const period of category.periods) {
-                if (period.period === startPeriodString) {
-                    if (isFixedCategoryTrendPeriod(period)) {
-                        value += period.value;
-                    }
-                    if (isVariableCategoryTrendPeriod(period)) {
-                        value += period.sum;
+        if (startPeriodString !== null) {
+            let value: number = 0;
+            for (const category of trend.categories) {
+                for (const period of category.periods) {
+                    if (period.period === startPeriodString) {
+                        if (isFixedCategoryTrendPeriod(period)) {
+                            value += period.value;
+                        }
+                        if (isVariableCategoryTrendPeriod(period)) {
+                            value += period.sum;
+                        }
                     }
                 }
             }
-        }
 
-        row[startPeriodString] = `${roundToString(value)} ${currency}`;
-        temporaryStartPeriod = addMonths(temporaryStartPeriod, 1);
+            row[startPeriodString] = `${roundToString(value)} ${currency}`;
+            temporaryStartPeriod = addMonths(temporaryStartPeriod, 1);
+        }
     }
     return row;
 };
@@ -250,32 +256,33 @@ const generateTrendReportCategoryRow = (
     let temporaryStartPeriod = startPeriod;
     while (isBefore(temporaryStartPeriod, endPeriod)) {
         const startPeriodString = formatDate(temporaryStartPeriod, "yyyy.MM");
-        if (startPeriodString === null) return row;
-        let value: number = 0;
-        let bookindDate: string = "";
-        for (const period of category.periods) {
-            if (period.period === startPeriodString) {
-                if (isFixedCategoryTrendPeriod(period)) {
-                    value += period.value;
-                    bookindDate = " " + period.bookingDate;
-                }
-                if (isVariableCategoryTrendPeriod(period)) {
-                    value += period.sum;
+        if (startPeriodString !== null) {
+            let value: number = 0;
+            let bookindDate: string = "";
+            for (const period of category.periods) {
+                if (period.period === startPeriodString) {
+                    if (isFixedCategoryTrendPeriod(period)) {
+                        value += period.value;
+                        bookindDate = " " + period.bookingDate;
+                    }
+                    if (isVariableCategoryTrendPeriod(period)) {
+                        value += period.sum;
+                    }
                 }
             }
-        }
 
-        if (
-            trend.type === TransactionType.Fixed ||
-            trend.type === TransactionType.Income
-        ) {
-            row[startPeriodString] = `${roundToString(
-                value,
-            )} ${currency}${bookindDate}`;
-        } else {
-            row[startPeriodString] = `${roundToString(value)} ${currency}`;
+            if (
+                trend.type === TransactionType.Fixed ||
+                trend.type === TransactionType.Income
+            ) {
+                row[startPeriodString] = `${roundToString(
+                    value,
+                )} ${currency}${bookindDate}`;
+            } else {
+                row[startPeriodString] = `${roundToString(value)} ${currency}`;
+            }
+            temporaryStartPeriod = addMonths(temporaryStartPeriod, 1);
         }
-        temporaryStartPeriod = addMonths(temporaryStartPeriod, 1);
     }
     return row;
 };

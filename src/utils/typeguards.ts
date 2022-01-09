@@ -79,3 +79,24 @@ export const isVariableCategoryTrendPeriod = (
         (object as VariableCategoryTrendPeriod).sum !== undefined
     );
 };
+
+export const isReportFixedPayDay = (
+    object: unknown,
+): object is ReportFixedPayDay => {
+    if (!object) return false;
+    return (
+        (object as ReportFixedPayDay).type === "fixedpayday" &&
+        (object as ReportFixedPayDay).date !== undefined &&
+        (object as ReportFixedPayDay).sum !== undefined &&
+        (object as ReportFixedPayDay).unpaidSum !== undefined &&
+        (object as ReportFixedPayDay).namedFixedPayDays !== undefined
+    );
+};
+
+export const isReportTrend = (object: unknown): object is ReportTrend => {
+    if (!object) return false;
+    return (
+        (object as ReportTrend).type === "trend" &&
+        (object as ReportTrend).trends !== undefined
+    );
+};

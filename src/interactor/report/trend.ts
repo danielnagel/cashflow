@@ -55,7 +55,7 @@ export const generateTrendReport = (
         }
         const trend = generateTrend(transactions, args.trendType, options);
         if (isApplicationError(trend)) return trend;
-        return { type: args.trendType, trends: [trend] };
+        return { trendType: args.trendType, trends: [trend] };
     }
 
     const trendReport: TrendReport = { trends: [] };

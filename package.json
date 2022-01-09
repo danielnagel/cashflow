@@ -1,6 +1,6 @@
 {
     "name": "cashflow",
-    "version": "0.12.12",
+    "version": "0.12.13",
     "description": "Generates reports from financial data csv files.",
     "keywords": [
         "financial",

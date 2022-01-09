@@ -15,6 +15,35 @@ import {
 
 describe("Test interactor/mutator/tabularize", () => {
     describe("Test function generateReportAsTable", () => {
+        describe("Test falsy parameters", () => {
+            test("FixedPayDay report has wrong format", () => {
+                const tabularizedReport = generateReportAsTable({
+                    type: "fixedpayday",
+                });
+                expect(tabularizedReport).toStrictEqual({
+                    source: "tabularize.ts",
+                    message: `Cannot print fixedpayday report! Report has wrong format.`,
+                });
+            });
+            test("Trend report is null", () => {
+                const tabularizedReport = generateReportAsTable({
+                    type: "trend",
+                });
+                expect(tabularizedReport).toStrictEqual({
+                    source: "tabularize.ts",
+                    message: `Cannot print trend report! Report has wrong format.`,
+                });
+            });
+            test("Unknown report", () => {
+                const tabularizedReport = generateReportAsTable({
+                    type: "unknown",
+                });
+                expect(tabularizedReport).toStrictEqual({
+                    source: "tabularize.ts",
+                    message: `Unkown report type: unknown!`,
+                });
+            });
+        });
         describe("Test FixedPaxDay Report", () => {
             test("Generate table data as expected, without options", () => {
                 const tabularizedReport =
@@ -41,7 +70,7 @@ describe("Test interactor/mutator/tabularize", () => {
         describe("Test Trend Report", () => {
             test("Generate trend report for more than one transaction type", () => {
                 const tabularizedReport = generateReportAsTable(
-                    { type: "trend", report: trendReport },
+                    { type: "trend", ...trendReport },
                     {
                         source: { type: "api" },
                         categories: [],
@@ -55,11 +84,12 @@ describe("Test interactor/mutator/tabularize", () => {
 
             test("Generate trend report for transaction type fixed", () => {
                 const tabularizedReport = generateReportAsTable(
-                    { type: "trend", report: fixedTrendReport },
+                    { type: "trend", ...fixedTrendReport },
                     {
                         source: { type: "api" },
                         categories: [],
-                        endDate: "13.12.2021",
+                        dateFormat: "MM/dd/yyyy",
+                        endDate: "12/13/2021",
                     },
                 );
                 expect(tabularizedReport).toStrictEqual(
@@ -69,11 +99,12 @@ describe("Test interactor/mutator/tabularize", () => {
 
             test("Generate trend report for transaction type variable", () => {
                 const tabularizedReport = generateReportAsTable(
-                    { type: "trend", report: variableTrendReport },
+                    { type: "trend", ...variableTrendReport },
                     {
                         source: { type: "api" },
                         categories: [],
                         endDate: "13.12.2021",
+                        currency: "€",
                     },
                 );
                 expect(tabularizedReport).toStrictEqual(

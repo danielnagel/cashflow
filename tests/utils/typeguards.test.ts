@@ -7,6 +7,8 @@ import {
     isApplicationError,
     isFixedCategoryTrendPeriod,
     isVariableCategoryTrendPeriod,
+    isReportFixedPayDay,
+    isReportTrend,
 } from "../../src/utils/typeguards";
 
 describe("Test utils/typeguards", () => {
@@ -233,23 +235,19 @@ describe("Test utils/typeguards", () => {
             expect(isFixedCategoryTrendPeriod(123)).toBeFalsy();
         });
 
-        test("FixedCategoryTrendPeriod is not an CategoryTrendPeriod", () => {
-            const fixedCategoryTrendPeriod = { period: "", transactions: [] };
-            expect(
-                isFixedCategoryTrendPeriod(fixedCategoryTrendPeriod),
-            ).toBeFalsy();
+        test("FixedCategoryTrendPeriod is not an FixedCategoryTrendPeriod", () => {
+            const expected = { period: "", transactions: [] };
+            expect(isFixedCategoryTrendPeriod(expected)).toBeFalsy();
         });
 
         test("FixedCategoryTrendPeriod is an FixedCategoryTrendPeriod", () => {
-            const fixedCategoryTrendPeriod = {
+            const expected = {
                 period: "",
                 transactions: [],
                 value: "",
                 bookingDate: "",
             };
-            expect(
-                isFixedCategoryTrendPeriod(fixedCategoryTrendPeriod),
-            ).toBeTruthy();
+            expect(isFixedCategoryTrendPeriod(expected)).toBeTruthy();
         });
     });
 
@@ -274,25 +272,98 @@ describe("Test utils/typeguards", () => {
             expect(isVariableCategoryTrendPeriod(123)).toBeFalsy();
         });
 
-        test("VariableCategoryTrendPeriod is not an CategoryTrendPeriod", () => {
-            const variableCategoryTrendPeriod = {
+        test("VariableCategoryTrendPeriod is not an VariableCategoryTrendPeriod", () => {
+            const expected = {
                 period: "",
                 transactions: [],
             };
-            expect(
-                isVariableCategoryTrendPeriod(variableCategoryTrendPeriod),
-            ).toBeFalsy();
+            expect(isVariableCategoryTrendPeriod(expected)).toBeFalsy();
         });
 
         test("VariableCategoryTrendPeriod is an VariableCategoryTrendPeriod", () => {
-            const variableCategoryTrendPeriod = {
+            const expected = {
                 period: "",
                 transactions: [],
                 sum: "",
             };
-            expect(
-                isVariableCategoryTrendPeriod(variableCategoryTrendPeriod),
-            ).toBeTruthy();
+            expect(isVariableCategoryTrendPeriod(expected)).toBeTruthy();
+        });
+    });
+
+    describe("Check if object is ReportFixedPayDay", () => {
+        test("Null is not an ReportFixedPayDay", () => {
+            expect(isReportFixedPayDay(null)).toBeFalsy();
+        });
+
+        test("undefined is not an ReportFixedPayDay", () => {
+            expect(isReportFixedPayDay(undefined)).toBeFalsy();
+        });
+
+        test("Empty object is not an ReportFixedPayDay", () => {
+            expect(isReportFixedPayDay({})).toBeFalsy();
+        });
+
+        test("string is not an ReportFixedPayDay", () => {
+            expect(isReportFixedPayDay("hello")).toBeFalsy();
+        });
+
+        test("number is not an ReportFixedPayDay", () => {
+            expect(isReportFixedPayDay(123)).toBeFalsy();
+        });
+
+        test("ReportFixedPayDay is not an ReportFixedPayDay", () => {
+            const expected = {
+                type: "unknown",
+            };
+            expect(isReportFixedPayDay(expected)).toBeFalsy();
+        });
+
+        test("ReportFixedPayDay is an ReportFixedPayDay", () => {
+            const expected = {
+                type: "fixedpayday",
+                date: "",
+                namedFixedPayDays: [],
+                sum: 0,
+                unpaidSum: 0,
+            };
+            expect(isReportFixedPayDay(expected)).toBeTruthy();
+        });
+    });
+
+    describe("Check if object is ReportTrend", () => {
+        test("Null is not an ReportTrend", () => {
+            expect(isReportTrend(null)).toBeFalsy();
+        });
+
+        test("undefined is not an ReportTrend", () => {
+            expect(isReportTrend(undefined)).toBeFalsy();
+        });
+
+        test("Empty object is not an ReportTrend", () => {
+            expect(isReportTrend({})).toBeFalsy();
+        });
+
+        test("string is not an ReportTrend", () => {
+            expect(isReportTrend("hello")).toBeFalsy();
+        });
+
+        test("number is not an ReportTrend", () => {
+            expect(isReportTrend(123)).toBeFalsy();
+        });
+
+        test("ReportTrend is not an ReportTrend", () => {
+            const expected = {
+                type: "unknown",
+            };
+            expect(isReportTrend(expected)).toBeFalsy();
+        });
+
+        test("ReportTrend is an ReportTrend", () => {
+            const expected: ReportTrend = {
+                type: "trend",
+                trends: [],
+            };
+            expect(isReportTrend(expected)).toBeTruthy();
         });
     });
 });

@@ -48,7 +48,7 @@ type CsvOptions = {
     dateFormat?: string;
 };
 
-type UnknownConnectionOptions = {
+type UnknownTypeOption = {
     type: string;
 };
 
@@ -119,23 +119,21 @@ type ApiOptions = {
 /**
  * Discriminating union to determine if the given report is from type CategorizedFixedPayDays.
  */
-type ReportFixedPayDay = {
+interface ReportFixedPayDay extends CategorizedFixedPayDays {
     type: "fixedpayday";
-    report: CategorizedFixedPayDays | null;
-};
+}
 
 /**
  * Discriminating union to determine if the given report is from type TrendReport.
  */
-type ReportTrend = {
+interface ReportTrend extends TrendReport {
     type: "trend";
-    report: TrendReport | null;
-};
+}
 
 /**
  * Possible reports, that the interactor could generate.
  */
-type Report = ReportFixedPayDay | ReportTrend;
+type Report = ReportFixedPayDay | ReportTrend | UnknownTypeOption;
 
 /**
  * Possible configurations, that a user could create.
@@ -174,7 +172,7 @@ type Configuration = {
     strict?: boolean;
     startDate?: string;
     endDate?: string;
-    source: CsvOptions | ApiOptions | UnknownConnectionOptions;
+    source: CsvOptions | ApiOptions | UnknownTypeOption;
     categories: SampledCategory[];
 };
 
@@ -253,7 +251,7 @@ type Trend = {
 };
 
 type TrendReport = {
-    type?: string;
+    trendType?: string;
     trends: Array<Trend>;
 };
 

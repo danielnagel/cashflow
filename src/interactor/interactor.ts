@@ -49,7 +49,7 @@ export const generateReport = async (
                 options,
             );
             if (isApplicationError(fixedPayDayReport)) return fixedPayDayReport;
-            return { type: "fixedpayday", report: fixedPayDayReport };
+            return { type: "fixedpayday", ...fixedPayDayReport };
         case ReportType.Trend:
             const trendReport = generateTrendReport(
                 transactions,
@@ -57,7 +57,7 @@ export const generateReport = async (
                 args,
             );
             if (isApplicationError(trendReport)) return trendReport;
-            return { type: "trend", report: trendReport };
+            return { type: "trend", ...trendReport };
         default:
             return {
                 source: "interactor.ts",
