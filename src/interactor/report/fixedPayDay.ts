@@ -83,9 +83,6 @@ export const generateFixedPayDay = (
  * Otherwise period "monthly" is always returned.
  */
 const getPeriodFromTransactions = (transactions: Transaction[]): string => {
-    let period = Periods.Monthly;
-
-    if (transactions.length === 0) return period;
     const firstTransaction = transactions[0];
     if (
         isCategory(firstTransaction.category) &&
@@ -97,7 +94,7 @@ const getPeriodFromTransactions = (transactions: Transaction[]): string => {
         }
     }
 
-    return period;
+    return Periods.Monthly;
 };
 
 /**
@@ -176,7 +173,7 @@ const getComparsionDate = (options: Configuration): Date | ApplicationError => {
         if (!endDate)
             return {
                 source: "fixedPayDay.ts",
-                message: `Before date filter options can't be parse! Before date is '${endDate}'`,
+                message: `Before date filter options can't be parse! Before date is '${options.endDate}'`,
             };
         return endDate;
     }
@@ -220,14 +217,6 @@ export const generateFixedPayDayReport = (
             options,
         );
         if (isApplicationError(fixedPayDay)) {
-            log({
-                message: fixedPayDay,
-                level: LogLevel.Warn,
-                allowedLogLevel: options?.allowedLogLevel,
-                dateFormat: options?.dateFormat,
-                timeFormat: options?.timeFormat,
-                type: options.logType,
-            });
             continue;
         }
 
@@ -243,23 +232,8 @@ export const generateFixedPayDayReport = (
         };
 
     return {
-        date: generateReportDateString(options),
         sum,
         unpaidSum,
         namedFixedPayDays: namedFixedPayDay,
     };
-};
-
-/**
- * Generates a date string for the report.
- * It can either be the before date from categorizing options
- * or the current date.
- *
- * @param options specifies how to categorize generated fix costs
- * @returns date string
- */
-const generateReportDateString = (options: Configuration): string => {
-    let date = options.endDate ? options.endDate : formatDate(new Date());
-    if (date === null) date = new Date().toLocaleDateString();
-    return date;
 };

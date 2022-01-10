@@ -8,7 +8,7 @@ import { categorizedTransactions } from "./samples/categorizedTransactions";
 describe("Test fixCostReport", () => {
     describe("Test function generateFixedPayDay", () => {
         describe("Test falsy parameters", () => {
-            test("Return null, if transactions array is empty", () => {
+            test("Return ApplicationError, if transactions array is empty", () => {
                 const fixedPayDay = generateFixedPayDay([], "test", {
                     source: { type: "api" },
                     categories: [],
@@ -32,7 +32,7 @@ describe("Test fixCostReport", () => {
                 },
             ];
 
-            test("Return null, category doesn't match", () => {
+            test("Return ApplicationError, category doesn't match", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, "test", {
                     source: { type: "api" },
                     categories: [],
@@ -45,7 +45,7 @@ describe("Test fixCostReport", () => {
                 });
             });
 
-            test("Return null, if there aren't any transactions that match toDate", () => {
+            test("Return ApplicationError, if there aren't any transactions that match toDate", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, "rent", {
                     source: { type: "api" },
                     categories: [],
@@ -58,16 +58,35 @@ describe("Test fixCostReport", () => {
                 });
             });
 
-            test("Return null, if sinceDate is after toDate", () => {
+            test("Return ApplicationError, if startDate is after endDate", () => {
                 const fixedPayDay = generateFixedPayDay(transactions, "rent", {
                     source: { type: "api" },
                     categories: [],
                     endDate: "15.12.2021",
+                    startDate: "30.12.2021",
                 });
 
                 expect(fixedPayDay).toStrictEqual({
                     source: "fixedPayDay.ts",
                     message: "No transactions matched by filter.",
+                });
+            });
+
+            test("Return ApplicationError, if endDate has wrong format", () => {
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    "rent",
+                    {
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "15122021",
+                    },
+                );
+
+                expect(fixedPayDay).toStrictEqual({
+                    source: "fixedPayDay.ts",
+                    message:
+                        "Before date filter options can't be parse! Before date is '15122021'",
                 });
             });
         });
@@ -753,6 +772,77 @@ describe("Test fixCostReport", () => {
 
                 expect(fixedPayDay).toStrictEqual(expected);
             });
+
+            test("Match categories without periods", () => {
+                const expected: FixedPayDay = {
+                    value: 19.99,
+                    isPaid: true,
+                    lastBookingDays: [23, 23, 23, 23],
+                    averageBookingDay: 23,
+                    transactions: [
+                        {
+                            day: 23,
+                            month: 8,
+                            year: 2021,
+                            initiator: "Online Payments Group",
+                            purpose: "Game Suprise Box Subscription",
+                            value: 19.99,
+                            category: {
+                                name: "gaming subscription",
+                                type: "fixed",
+                            },
+                        },
+                        {
+                            day: 23,
+                            month: 9,
+                            year: 2021,
+                            initiator: "Online Payments Group",
+                            purpose: "Game Suprise Box Subscription",
+                            value: 19.99,
+                            category: {
+                                name: "gaming subscription",
+                                type: "fixed",
+                            },
+                        },
+                        {
+                            day: 23,
+                            month: 10,
+                            year: 2021,
+                            initiator: "Online Payments Group",
+                            purpose: "Game Suprise Box Subscription",
+                            value: 19.99,
+                            category: {
+                                name: "gaming subscription",
+                                type: "fixed",
+                            },
+                        },
+                        {
+                            day: 23,
+                            month: 11,
+                            year: 2021,
+                            initiator: "Online Payments Group",
+                            purpose: "Game Suprise Box Subscription",
+                            value: 19.99,
+                            category: {
+                                name: "gaming subscription",
+                                type: "fixed",
+                            },
+                        },
+                    ],
+                };
+
+                const fixedPayDay = generateFixedPayDay(
+                    categorizedTransactions,
+                    "gaming subscription",
+                    {
+                        source: { type: "api" },
+                        categories: [],
+                        endDate: "30.11.2021",
+                    },
+                );
+
+                expect(fixedPayDay).toStrictEqual(expected);
+            });
         });
 
         describe("Test fixed pay day generation with non-monthly periods", () => {
@@ -932,7 +1022,6 @@ describe("Test fixCostReport", () => {
         describe("Test categorized fixed pay days to match multiple categories to a specific date", () => {
             test("Generate categorized fixed pay days as expected", () => {
                 const expected: CategorizedFixedPayDays = {
-                    date: "15.11.2021",
                     sum: 704.98,
                     unpaidSum: 39.99,
                     namedFixedPayDays: [

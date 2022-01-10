@@ -632,7 +632,6 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "gaming subscription",
             type: "fixed",
-            period: "monthly",
         },
     },
     {
@@ -658,7 +657,6 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "gaming subscription",
             type: "fixed",
-            period: "monthly",
         },
     },
     {
@@ -697,7 +695,6 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "gaming subscription",
             type: "fixed",
-            period: "monthly",
         },
     },
     {
@@ -710,7 +707,6 @@ export const categorizedTransactions: Transaction[] = [
         category: {
             name: "gaming subscription",
             type: "fixed",
-            period: "monthly",
         },
     },
     {

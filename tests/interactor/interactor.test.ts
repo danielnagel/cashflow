@@ -330,7 +330,6 @@ describe("Test Interactor", () => {
         test("Generate report 'FixedPayDay' from csv samples as expected", async () => {
             const expected: ReportFixedPayDay = {
                 type: "fixedpayday",
-                date: "15.11.2021",
                 sum: -704.98,
                 unpaidSum: -39.99,
                 namedFixedPayDays: [

@@ -104,7 +104,6 @@ type NamedFixedPayDay = {
  * Multiple fix cost, categorized through the CategorizeOptions.
  */
 type CategorizedFixedPayDays = {
-    date: string;
     sum: number;
     unpaidSum: number;
     namedFixedPayDays: NamedFixedPayDay[];

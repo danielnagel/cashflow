@@ -1099,7 +1099,6 @@ export const trendForFixed: Trend = {
                             category: {
                                 name: "gaming subscription",
                                 type: "fixed",
-                                period: "monthly",
                             },
                         },
                     ],
@@ -1119,7 +1118,6 @@ export const trendForFixed: Trend = {
                             category: {
                                 name: "gaming subscription",
                                 type: "fixed",
-                                period: "monthly",
                             },
                         },
                     ],
@@ -1139,7 +1137,6 @@ export const trendForFixed: Trend = {
                             category: {
                                 name: "gaming subscription",
                                 type: "fixed",
-                                period: "monthly",
                             },
                         },
                     ],
@@ -1159,7 +1156,6 @@ export const trendForFixed: Trend = {
                             category: {
                                 name: "gaming subscription",
                                 type: "fixed",
-                                period: "monthly",
                             },
                         },
                     ],
@@ -1613,7 +1609,6 @@ export const trendForFixedAfter: Trend = {
                             category: {
                                 name: "gaming subscription",
                                 type: "fixed",
-                                period: "monthly",
                             },
                         },
                     ],
@@ -1633,7 +1628,6 @@ export const trendForFixedAfter: Trend = {
                             category: {
                                 name: "gaming subscription",
                                 type: "fixed",
-                                period: "monthly",
                             },
                         },
                     ],
@@ -1653,7 +1647,6 @@ export const trendForFixedAfter: Trend = {
                             category: {
                                 name: "gaming subscription",
                                 type: "fixed",
-                                period: "monthly",
                             },
                         },
                     ],
