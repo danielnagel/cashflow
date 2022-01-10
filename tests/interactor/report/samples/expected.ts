@@ -1335,7 +1335,7 @@ export const trendForFixedAfter: Trend = {
             periods: [
                 {
                     value: 56.4,
-                    bookingDate: "01.10.2021",
+                    bookingDate: "10/01/2021",
                     period: "2021.10",
                     transactions: [
                         {
@@ -1360,7 +1360,7 @@ export const trendForFixedAfter: Trend = {
             periods: [
                 {
                     value: 650,
-                    bookingDate: "01.09.2021",
+                    bookingDate: "09/01/2021",
                     period: "2021.09",
                     transactions: [
                         {
@@ -1380,7 +1380,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 650,
-                    bookingDate: "01.10.2021",
+                    bookingDate: "10/01/2021",
                     period: "2021.10",
                     transactions: [
                         {
@@ -1400,7 +1400,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 650,
-                    bookingDate: "01.11.2021",
+                    bookingDate: "11/01/2021",
                     period: "2021.11",
                     transactions: [
                         {
@@ -1420,7 +1420,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 650,
-                    bookingDate: "01.12.2021",
+                    bookingDate: "12/01/2021",
                     period: "2021.12",
                     transactions: [
                         {
@@ -1445,7 +1445,7 @@ export const trendForFixedAfter: Trend = {
             periods: [
                 {
                     value: 14.99,
-                    bookingDate: "03.09.2021",
+                    bookingDate: "09/03/2021",
                     period: "2021.09",
                     transactions: [
                         {
@@ -1465,7 +1465,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 14.99,
-                    bookingDate: "01.10.2021",
+                    bookingDate: "10/01/2021",
                     period: "2021.10",
                     transactions: [
                         {
@@ -1485,7 +1485,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 14.99,
-                    bookingDate: "02.11.2021",
+                    bookingDate: "11/02/2021",
                     period: "2021.11",
                     transactions: [
                         {
@@ -1505,7 +1505,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 14.99,
-                    bookingDate: "03.12.2021",
+                    bookingDate: "12/03/2021",
                     period: "2021.12",
                     transactions: [
                         {
@@ -1525,13 +1525,77 @@ export const trendForFixedAfter: Trend = {
                 },
             ],
         },
-        fixedSingleCategoryTrend,
+        {
+            name: "mobile",
+            periods: [
+                {
+                    value: 39.99,
+                    bookingDate: "09/22/2021",
+                    period: "2021.09",
+                    transactions: [
+                        {
+                            day: 22,
+                            month: 9,
+                            year: 2021,
+                            initiator: "Mobilio Ltd.",
+                            purpose: "your mobile phone provider",
+                            value: 39.99,
+                            category: {
+                                name: "mobile",
+                                type: "fixed",
+                                period: "monthly",
+                            },
+                        },
+                    ],
+                },
+                {
+                    value: 39.99,
+                    bookingDate: "10/22/2021",
+                    period: "2021.10",
+                    transactions: [
+                        {
+                            day: 22,
+                            month: 10,
+                            year: 2021,
+                            initiator: "Mobilio Ltd.",
+                            purpose: "your mobile phone provider",
+                            value: 39.99,
+                            category: {
+                                name: "mobile",
+                                type: "fixed",
+                                period: "monthly",
+                            },
+                        },
+                    ],
+                },
+                {
+                    value: 49.99,
+                    bookingDate: "11/22/2021",
+                    period: "2021.11",
+                    transactions: [
+                        {
+                            day: 22,
+                            month: 11,
+                            year: 2021,
+                            initiator: "Mobilio Ltd.",
+                            purpose: "your mobile phone provider",
+                            value: 49.99,
+                            category: {
+                                name: "mobile",
+                                type: "fixed",
+                                period: "monthly",
+                            },
+                        },
+                    ],
+                },
+            ],
+        },
         {
             name: "music subscription",
             periods: [
                 {
                     value: 9.99,
-                    bookingDate: "15.09.2021",
+                    bookingDate: "09/15/2021",
                     period: "2021.09",
                     transactions: [
                         {
@@ -1551,7 +1615,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 9.99,
-                    bookingDate: "15.10.2021",
+                    bookingDate: "10/15/2021",
                     period: "2021.10",
                     transactions: [
                         {
@@ -1571,7 +1635,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 9.99,
-                    bookingDate: "15.11.2021",
+                    bookingDate: "11/15/2021",
                     period: "2021.11",
                     transactions: [
                         {
@@ -1596,7 +1660,7 @@ export const trendForFixedAfter: Trend = {
             periods: [
                 {
                     value: 19.99,
-                    bookingDate: "23.09.2021",
+                    bookingDate: "09/23/2021",
                     period: "2021.09",
                     transactions: [
                         {
@@ -1615,7 +1679,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 19.99,
-                    bookingDate: "23.10.2021",
+                    bookingDate: "10/23/2021",
                     period: "2021.10",
                     transactions: [
                         {
@@ -1634,7 +1698,7 @@ export const trendForFixedAfter: Trend = {
                 },
                 {
                     value: 19.99,
-                    bookingDate: "23.11.2021",
+                    bookingDate: "11/23/2021",
                     period: "2021.11",
                     transactions: [
                         {
@@ -1873,7 +1937,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
             periods: [
                 {
                     value: 1667.99,
-                    bookingDate: "28.09.2021",
+                    bookingDate: "09/28/2021",
                     period: "2021.09",
                     transactions: [
                         {
@@ -1892,7 +1956,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                 },
                 {
                     value: 1667.99,
-                    bookingDate: "28.10.2021",
+                    bookingDate: "10/28/2021",
                     period: "2021.10",
                     transactions: [
                         {
@@ -1911,7 +1975,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                 },
                 {
                     value: 1822.37,
-                    bookingDate: "29.11.2021",
+                    bookingDate: "11/29/2021",
                     period: "2021.11",
                     transactions: [
                         {
@@ -1930,7 +1994,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                 },
                 {
                     value: 1822.37,
-                    bookingDate: "28.12.2021",
+                    bookingDate: "12/28/2021",
                     period: "2021.12",
                     transactions: [
                         {

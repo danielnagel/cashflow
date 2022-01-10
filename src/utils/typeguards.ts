@@ -86,7 +86,6 @@ export const isReportFixedPayDay = (
     if (!object) return false;
     return (
         (object as ReportFixedPayDay).type === "fixedpayday" &&
-        (object as ReportFixedPayDay).date !== undefined &&
         (object as ReportFixedPayDay).sum !== undefined &&
         (object as ReportFixedPayDay).unpaidSum !== undefined &&
         (object as ReportFixedPayDay).namedFixedPayDays !== undefined

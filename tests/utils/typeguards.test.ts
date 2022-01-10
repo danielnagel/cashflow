@@ -321,7 +321,6 @@ describe("Test utils/typeguards", () => {
         test("ReportFixedPayDay is an ReportFixedPayDay", () => {
             const expected = {
                 type: "fixedpayday",
-                date: "",
                 namedFixedPayDays: [],
                 sum: 0,
                 unpaidSum: 0,

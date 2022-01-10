@@ -102,6 +102,25 @@ describe("Test report/trend", () => {
             });
         });
 
+        test("Return ApplicationError, when date format option is wrong", () => {
+            const result = generateCategoryTrendPeriod(
+                categorizedTransactions,
+                "fixed",
+                "mobile",
+                "2021.09",
+                {
+                    source: { type: "api" },
+                    categories: [],
+                    allowedLogLevel: "none",
+                    dateFormat: "abcdef",
+                },
+            );
+            expect(result).toStrictEqual({
+                source: "trend.ts",
+                message: "Could not format date from latest transaction.",
+            });
+        });
+
         test("Generate a fixed trend period for one category", () => {
             const result = generateCategoryTrendPeriod(
                 categorizedTransactions,
@@ -481,6 +500,29 @@ describe("Test report/trend", () => {
                 {
                     report: "trend",
                     trendType: undefined,
+                    configurationPath: "",
+                },
+            );
+            expect(result).toStrictEqual({
+                source: "trend.ts",
+                message: "No transactions matched.",
+            });
+        });
+
+        test("Return ApplicationError, when no transactions matched, trendType fixed", () => {
+            const result = generateTrendReport(
+                categorizedTransactions,
+                {
+                    source: { type: "api" },
+                    categories: [
+                        { name: "water", type: "variable", samples: [] },
+                    ],
+                    allowedLogLevel: "none",
+                    endDate: "20.12.2021",
+                },
+                {
+                    report: "trend",
+                    trendType: "fixed",
                     configurationPath: "",
                 },
             );

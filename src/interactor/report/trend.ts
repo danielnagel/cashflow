@@ -1,4 +1,5 @@
 import { addMonths, isBefore } from "date-fns";
+import { options } from "yargs";
 import { LogLevel, TransactionType } from "../../types/enums";
 import {
     formatDate,
@@ -288,11 +289,7 @@ export const generateCategoryTrendPeriod = (
             options,
         );
 
-    return createVariableCategoryTrendPeriod(
-        matchedTransactions,
-        stringPeriod,
-        options,
-    );
+    return createVariableCategoryTrendPeriod(matchedTransactions, stringPeriod);
 };
 
 /**
@@ -331,10 +328,15 @@ const createFixedCategoryTrendPeriod = (
         };
 
     const lastTransaction = transactions[transactions.length - 1];
-    let bookingDate = formatDate(getDateFromTransaction(lastTransaction));
+    let bookingDate = formatDate(
+        getDateFromTransaction(lastTransaction),
+        options.dateFormat,
+    );
     if (bookingDate === null)
-        bookingDate =
-            getDateFromTransaction(lastTransaction).toLocaleDateString();
+        return {
+            source: "trend.ts",
+            message: "Could not format date from latest transaction.",
+        };
 
     return {
         value: lastTransaction.value,
@@ -357,7 +359,6 @@ const createFixedCategoryTrendPeriod = (
 const createVariableCategoryTrendPeriod = (
     transactions: Transaction[],
     period: string,
-    options: Configuration,
 ): VariableCategoryTrendPeriod | ApplicationError => {
     if (transactions.length === 0)
         return {
