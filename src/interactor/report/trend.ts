@@ -1,6 +1,5 @@
 import { addMonths, isBefore } from "date-fns";
-import { options } from "yargs";
-import { LogLevel, TransactionType } from "../../types/enums";
+import { TransactionType } from "../../types/enums";
 import {
     formatDate,
     getDateFromTransaction,
@@ -11,7 +10,6 @@ import {
     filterTransactionsByCategoryType,
     filterTransactionsByPeriod,
 } from "../../utils/filters";
-import { log } from "../../utils/loggers";
 import { round } from "../../utils/numbers";
 import { isApplicationError } from "../../utils/typeguards";
 
@@ -162,12 +160,6 @@ export const generateCategoryTrend = (
             options,
         );
         if (isApplicationError(trendPeriod)) {
-            log({
-                message: trendPeriod,
-                level: LogLevel.Warn,
-                allowedLogLevel: options.allowedLogLevel,
-                type: options.logType,
-            });
             continue;
         }
         categoryTrend.periods.push(trendPeriod);
