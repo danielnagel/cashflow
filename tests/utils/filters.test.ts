@@ -6,6 +6,8 @@ import {
     filterTransactionsByCategoryType,
     filterTransactionsByPeriod,
     isTransactionMatchingSample,
+    getLatestTransactionDate,
+    getOldestTransactionDate,
 } from "../../src/utils/filters";
 import {
     transactions,
@@ -600,6 +602,68 @@ describe("Test utils/filters", () => {
             expect(
                 isTransactionMatchingSample(transaction, sample),
             ).toBeFalsy();
+        });
+    });
+
+    describe("Test getting latest date from a list of transactions", () => {
+        test("Return null, if transactions list is null", () => {
+            expect(getLatestTransactionDate([])).toBeNull();
+        });
+        test("Return date of latest transaction, in a list of one transaction", () => {
+            const smallTransactionList: Transaction[] = [
+                {
+                    day: 7,
+                    month: 9,
+                    year: 2021,
+                    initiator: "Grocerie Land",
+                    purpose: "VISA 34 GROCERIE LAND TES7123123",
+                    value: 111.96,
+                    category: {
+                        name: "groceries",
+                        type: "variable",
+                    },
+                },
+            ];
+            expect(
+                getLatestTransactionDate(smallTransactionList),
+            ).toStrictEqual(new Date(2021, 8, 7));
+        });
+
+        test("Return date of latest transaction, in a list of multiple transaction", () => {
+            expect(getLatestTransactionDate(transactions)).toStrictEqual(
+                new Date(2021, 11, 3),
+            );
+        });
+    });
+
+    describe("Test getting oldest date from a list of transactions", () => {
+        test("Return null, if transactions list is null", () => {
+            expect(getOldestTransactionDate([])).toBeNull();
+        });
+        test("Return date of oldest transaction, in a list of one transaction", () => {
+            const smallTransactionList: Transaction[] = [
+                {
+                    day: 7,
+                    month: 9,
+                    year: 2021,
+                    initiator: "Grocerie Land",
+                    purpose: "VISA 34 GROCERIE LAND TES7123123",
+                    value: 111.96,
+                    category: {
+                        name: "groceries",
+                        type: "variable",
+                    },
+                },
+            ];
+            expect(
+                getOldestTransactionDate(smallTransactionList),
+            ).toStrictEqual(new Date(2021, 8, 7));
+        });
+
+        test("Return date of oldest transaction, in a list of multiple transaction", () => {
+            expect(getOldestTransactionDate(transactions)).toStrictEqual(
+                new Date(2021, 5, 1),
+            );
         });
     });
 });

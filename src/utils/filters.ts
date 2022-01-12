@@ -1,4 +1,4 @@
-import { addMonths, subDays } from "date-fns";
+import { addMonths, subDays, isBefore, isAfter } from "date-fns";
 import { getDateFromTransaction, parseDateString } from "./dates";
 import { isCategory } from "./typeguards";
 
@@ -126,7 +126,6 @@ export const filterDoubleTransactions = (
     const transactions: Transaction[] = [...transactionsA];
     for (const transactionB of transactionsB) {
         let isTransactionUnknown = true;
-        // TODO: fix filters
         for (const transactionA of transactionsA) {
             if (isSameTransaction(transactionA, transactionB)) {
                 isTransactionUnknown = false;
@@ -229,4 +228,42 @@ export const filterTransactionsByPeriod = (
     transactions = transactionsBeforeDate(transactions, periodEnd);
 
     return transactions;
+};
+
+/**
+ * Searches the oldest transaction date in a list of transactions.
+ *
+ * @param transactions to search through
+ * @returns a javascript Date object of the oldest transaction
+ * or null if an error occured
+ */
+export const getOldestTransactionDate = (
+    transactions: Transaction[],
+): Date | null => {
+    if (transactions.length === 0) return null;
+    let oldestDate = getDateFromTransaction(transactions[0]);
+    for (let i = 1; i < transactions.length; i++) {
+        const transactionDate = getDateFromTransaction(transactions[i]);
+        if (isBefore(transactionDate, oldestDate)) oldestDate = transactionDate;
+    }
+    return oldestDate;
+};
+
+/**
+ * Searches the latest transaction date in a list of transactions.
+ *
+ * @param transactions to search through
+ * @returns a javascript Date object of the latest transaction
+ * or null if an error occured
+ */
+export const getLatestTransactionDate = (
+    transactions: Transaction[],
+): Date | null => {
+    if (transactions.length === 0) return null;
+    let latestDate = getDateFromTransaction(transactions[0]);
+    for (let i = 1; i < transactions.length; i++) {
+        const transactionDate = getDateFromTransaction(transactions[i]);
+        if (isAfter(transactionDate, latestDate)) latestDate = transactionDate;
+    }
+    return latestDate;
 };
