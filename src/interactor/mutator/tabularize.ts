@@ -65,20 +65,28 @@ const fixedPayDayReportAsTable = (
     const dateFormat = options?.dateFormat ? options.dateFormat : "dd.MM.yyyy";
     const currency = options?.currency ? options.currency : "€$";
     for (const fixedPayDay of report.namedFixedPayDays) {
+        const lastTransaction =
+            fixedPayDay.fixedPayDay.transactions[
+                fixedPayDay.fixedPayDay.transactions.length - 1
+            ];
         const lastBookingDate = formatDate(
-            getDateFromTransaction(
-                fixedPayDay.fixedPayDay.transactions[
-                    fixedPayDay.fixedPayDay.transactions.length - 1
-                ],
-            ),
+            getDateFromTransaction(lastTransaction),
             dateFormat,
         );
+        let period = null;
+        if (
+            typeof lastTransaction.category !== "undefined" &&
+            typeof lastTransaction.category.period === "string"
+        ) {
+            period = lastTransaction.category.period;
+        }
         tabularData.push({
             category: fixedPayDay.name,
             paid: fixedPayDay.fixedPayDay.isPaid,
             bookingDay: fixedPayDay.fixedPayDay.averageBookingDay,
             cost: `${roundToString(fixedPayDay.fixedPayDay.value)} ${currency}`,
             lastBookingDate,
+            period,
         });
     }
     tabularData.push({
@@ -87,6 +95,7 @@ const fixedPayDayReportAsTable = (
         bookingDay: null,
         cost: `${roundToString(-report.sum)} ${currency}`,
         lastBookingDate: null,
+        period: null,
     });
     tabularData.push({
         category: "Unpaid",
@@ -94,6 +103,7 @@ const fixedPayDayReportAsTable = (
         bookingDay: null,
         cost: `${roundToString(-report.unpaidSum)} ${currency}`,
         lastBookingDate: null,
+        period: null,
     });
     return tabularData;
 };

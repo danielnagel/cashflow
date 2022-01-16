@@ -188,6 +188,7 @@ type FixedPayDayReportTableRow = {
     bookingDay: number | null;
     cost: string;
     lastBookingDate: string | null;
+    period: string | null;
 };
 
 /**

@@ -1,8 +1,4 @@
-import {
-    formatDate,
-    getDateFromTransaction,
-    parseDateString,
-} from "../../utils/dates";
+import { getDateFromTransaction, parseDateString } from "../../utils/dates";
 import {
     filterTransactionsByCategoryName,
     filterTransactionsByCategoryType,
@@ -10,9 +6,8 @@ import {
 } from "../../utils/filters";
 import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError, isCategory } from "../../utils/typeguards";
-import { log } from "../../utils/loggers";
-import { LogLevel, Periods, TransactionType } from "../../types/enums";
-import { isSameMonth, isSameQuarter, isSameYear } from "date-fns";
+import { Periods, TransactionType } from "../../types/enums";
+import { differenceInYears, isSameMonth, isSameQuarter } from "date-fns";
 
 /**
  * Generates a FixedPayDay object from a list of Transaction considering given FilterTransactionsBySampleOptions.
@@ -121,7 +116,7 @@ const isPaidThisPeriod = (
     }
 
     if (period === Periods.Yearly) {
-        return isSameYear(transactionDate, comparsionDate);
+        return differenceInYears(transactionDate, comparsionDate) <= 1;
     }
 
     return (

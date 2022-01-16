@@ -5,6 +5,7 @@ export const tabularizedFixedPayDayReport = [
         bookingDay: 1,
         cost: "-650.00 €$",
         lastBookingDate: "01.11.2021",
+        period: "monthly",
     },
     {
         category: "insurance",
@@ -12,6 +13,7 @@ export const tabularizedFixedPayDayReport = [
         bookingDay: 2,
         cost: "-14.99 €$",
         lastBookingDate: "02.11.2021",
+        period: "monthly",
     },
     {
         category: "mobile",
@@ -19,6 +21,7 @@ export const tabularizedFixedPayDayReport = [
         bookingDay: 22,
         cost: "-39.99 €$",
         lastBookingDate: "22.10.2021",
+        period: "monthly",
     },
     {
         category: "Sum",
@@ -26,6 +29,7 @@ export const tabularizedFixedPayDayReport = [
         bookingDay: null,
         cost: "704.98 €$",
         lastBookingDate: null,
+        period: null,
     },
     {
         category: "Unpaid",
@@ -33,6 +37,7 @@ export const tabularizedFixedPayDayReport = [
         bookingDay: null,
         cost: "39.99 €$",
         lastBookingDate: null,
+        period: null,
     },
 ];
 
@@ -43,6 +48,7 @@ export const tabularizedFixedPayDayReportWithOptions = [
         bookingDay: 1,
         cost: "-650.00 $",
         lastBookingDate: "11/01/2021",
+        period: "monthly",
     },
     {
         category: "insurance",
@@ -50,6 +56,7 @@ export const tabularizedFixedPayDayReportWithOptions = [
         bookingDay: 2,
         cost: "-14.99 $",
         lastBookingDate: "11/02/2021",
+        period: "monthly",
     },
     {
         category: "mobile",
@@ -57,6 +64,7 @@ export const tabularizedFixedPayDayReportWithOptions = [
         bookingDay: 22,
         cost: "-39.99 $",
         lastBookingDate: "10/22/2021",
+        period: "monthly",
     },
     {
         category: "Sum",
@@ -64,6 +72,7 @@ export const tabularizedFixedPayDayReportWithOptions = [
         bookingDay: null,
         cost: "704.98 $",
         lastBookingDate: null,
+        period: null,
     },
     {
         category: "Unpaid",
@@ -71,6 +80,7 @@ export const tabularizedFixedPayDayReportWithOptions = [
         bookingDay: null,
         cost: "39.99 $",
         lastBookingDate: null,
+        period: null,
     },
 ];
 
