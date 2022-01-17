@@ -1,10 +1,6 @@
 import { isBefore, addMonths } from "date-fns";
 import { ReportType, TransactionType } from "../../types/enums";
-import {
-    getDateFromTransaction,
-    formatDate,
-    parseDateString,
-} from "../../utils/dates";
+import { formatDate, parseDateString } from "../../utils/dates";
 import { roundToString } from "../../utils/numbers";
 import {
     isFixedCategoryTrendPeriod,
@@ -69,10 +65,7 @@ const fixedPayDayReportAsTable = (
             fixedPayDay.fixedPayDay.transactions[
                 fixedPayDay.fixedPayDay.transactions.length - 1
             ];
-        const lastBookingDate = formatDate(
-            getDateFromTransaction(lastTransaction),
-            dateFormat,
-        );
+        const lastBookingDate = formatDate(lastTransaction.date, dateFormat);
         let period = null;
         if (
             typeof lastTransaction.category !== "undefined" &&
@@ -83,7 +76,6 @@ const fixedPayDayReportAsTable = (
         tabularData.push({
             category: fixedPayDay.name,
             paid: fixedPayDay.fixedPayDay.isPaid,
-            bookingDay: fixedPayDay.fixedPayDay.averageBookingDay,
             cost: `${roundToString(fixedPayDay.fixedPayDay.value)} ${currency}`,
             lastBookingDate,
             period,
@@ -92,7 +84,6 @@ const fixedPayDayReportAsTable = (
     tabularData.push({
         category: "Sum",
         paid: null,
-        bookingDay: null,
         cost: `${roundToString(-report.sum)} ${currency}`,
         lastBookingDate: null,
         period: null,
@@ -100,7 +91,6 @@ const fixedPayDayReportAsTable = (
     tabularData.push({
         category: "Unpaid",
         paid: null,
-        bookingDay: null,
         cost: `${roundToString(-report.unpaidSum)} ${currency}`,
         lastBookingDate: null,
         period: null,

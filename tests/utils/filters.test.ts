@@ -75,17 +75,13 @@ describe("Test utils/filters", () => {
             test("Filter transactions until 'before date' ", () => {
                 const expected = [
                     {
-                        day: 1,
-                        month: 6,
-                        year: 2021,
+                        date: new Date(2021, 5, 1),
                         initiator: "Rent for my crib",
                         purpose: "Thanks landlord",
                         value: 650,
                     },
                     {
-                        day: 1,
-                        month: 6,
-                        year: 2021,
+                        date: new Date(2021, 5, 1),
                         initiator: "Almost Healthy Inc.",
                         purpose: "We bet that you're going to be sick",
                         value: 12.99,
@@ -107,34 +103,26 @@ describe("Test utils/filters", () => {
             test("Filter transactions from 'after date' ", () => {
                 const expected = [
                     {
-                        day: 22,
-                        month: 11,
-                        year: 2021,
+                        date: new Date(2021, 10, 22),
                         initiator: "my-online-shop.com",
                         purpose:
                             "my-online-shop.com; 22.11;  TES710928476309298",
                         value: 9.99,
                     },
                     {
-                        day: 1,
-                        month: 12,
-                        year: 2021,
+                        date: new Date(2021, 11, 1),
                         initiator: "Rent for my crib",
                         purpose: "Thanks landlord",
                         value: 650,
                     },
                     {
-                        day: 3,
-                        month: 12,
-                        year: 2021,
+                        date: new Date(2021, 11, 3),
                         initiator: "Stay Healthy Corp.",
                         purpose: "Your health is our mission",
                         value: 14.99,
                     },
                     {
-                        day: 23,
-                        month: 11,
-                        year: 2021,
+                        date: new Date(2021, 10, 23),
                         initiator: "Online Payments Group",
                         purpose: "Game Suprise Box Subscription",
                         value: 19.99,
@@ -156,18 +144,14 @@ describe("Test utils/filters", () => {
             test("Filter transactions from 'before date' to 'after date'", () => {
                 const expected = [
                     {
-                        day: 22,
-                        month: 11,
-                        year: 2021,
+                        date: new Date(2021, 10, 22),
                         initiator: "my-online-shop.com",
                         purpose:
                             "my-online-shop.com; 22.11;  TES710928476309298",
                         value: 9.99,
                     },
                     {
-                        day: 23,
-                        month: 11,
-                        year: 2021,
+                        date: new Date(2021, 10, 23),
                         initiator: "Online Payments Group",
                         purpose: "Game Suprise Box Subscription",
                         value: 19.99,
@@ -232,9 +216,7 @@ describe("Test utils/filters", () => {
                         );
                     const expected: Transaction[] = [
                         {
-                            day: 1,
-                            month: 6,
-                            year: 2021,
+                            date: new Date(2021, 5, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -245,9 +227,7 @@ describe("Test utils/filters", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 6,
-                            year: 2021,
+                            date: new Date(2021, 5, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -258,9 +238,7 @@ describe("Test utils/filters", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -271,9 +249,7 @@ describe("Test utils/filters", () => {
                             },
                         },
                         {
-                            day: 3,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -296,9 +272,7 @@ describe("Test utils/filters", () => {
                         );
                     const expected: Transaction[] = [
                         {
-                            day: 19,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 19),
                             initiator: "Beef Burger Palace",
                             purpose: "We hope that you had a beefy good time!",
                             value: 49.55,
@@ -309,9 +283,7 @@ describe("Test utils/filters", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 1),
                             initiator: "Melon the Man",
                             purpose: "Juicy Melons",
                             value: 39.38,
@@ -322,9 +294,7 @@ describe("Test utils/filters", () => {
                             },
                         },
                         {
-                            day: 11,
-                            month: 11,
-                            year: 2021,
+                            date: new Date(2021, 10, 11),
                             initiator: "Presentable Presents",
                             purpose: "Good luck!",
                             value: 199.78,
@@ -335,9 +305,7 @@ describe("Test utils/filters", () => {
                             },
                         },
                         {
-                            day: 7,
-                            month: 7,
-                            year: 2021,
+                            date: new Date(2021, 6, 7),
                             initiator: "Grocerie Land",
                             purpose: "VISA 23 GROCERIE LAND TES71234123423134",
                             value: 109.56,
@@ -348,9 +316,7 @@ describe("Test utils/filters", () => {
                             },
                         },
                         {
-                            day: 11,
-                            month: 8,
-                            year: 2021,
+                            date: new Date(2021, 7, 11),
                             initiator: "Grocerie Land",
                             purpose: "VISA 11 GROCERIE LAND TES71234123423134",
                             value: 88.86,
@@ -376,9 +342,7 @@ describe("Test utils/filters", () => {
 
                     const expected: Transaction[] = [
                         {
-                            day: 19,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 19),
                             initiator: "Beef Burger Palace",
                             purpose: "We hope that you had a beefy good time!",
                             value: 49.55,
@@ -389,9 +353,7 @@ describe("Test utils/filters", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 1),
                             initiator: "Melon the Man",
                             purpose: "Juicy Melons",
                             value: 39.38,
@@ -424,33 +386,25 @@ describe("Test utils/filters", () => {
                 });
                 const expected = [
                     {
-                        day: 1,
-                        month: 6,
-                        year: 2021,
+                        date: new Date(2021, 5, 1),
                         initiator: "Rent for my crib",
                         purpose: "Thanks landlord",
                         value: 650,
                     },
                     {
-                        day: 1,
-                        month: 6,
-                        year: 2021,
+                        date: new Date(2021, 5, 1),
                         initiator: "Almost Healthy Inc.",
                         purpose: "We bet that you're going to be sick",
                         value: 12.99,
                     },
                     {
-                        day: 13,
-                        month: 6,
-                        year: 2021,
+                        date: new Date(2021, 5, 13),
                         initiator: "Tasty Deli and Grocerie Store",
                         purpose: "Thanks for buying the freshest food",
                         value: 33.97,
                     },
                     {
-                        day: 30,
-                        month: 6,
-                        year: 2021,
+                        date: new Date(2021, 5, 30),
                         initiator: "Grocerie Land",
                         purpose: "VISA 34 GROCERIE LAND TES412347123234334",
                         value: 111.11,
@@ -481,9 +435,7 @@ describe("Test utils/filters", () => {
     describe("Test matching of samples", () => {
         test("Match transaction with exact sample", () => {
             const transaction: Transaction = {
-                day: 7,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 7),
                 initiator: "Grocerie Land",
                 purpose: "VISA 34 GROCERIE LAND TES7123123",
                 value: 111.96,
@@ -500,9 +452,7 @@ describe("Test utils/filters", () => {
 
         test("Don't match transaction with false sample", () => {
             const transaction: Transaction = {
-                day: 7,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 7),
                 initiator: "Grocerie Land",
                 purpose: "VISA 34 GROCERIE LAND TES7123123",
                 value: 111.96,
@@ -519,9 +469,7 @@ describe("Test utils/filters", () => {
 
         test("Matching initiators with unique purposes", () => {
             const transaction: Transaction = {
-                day: 7,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 7),
                 initiator: "Grocerie Land",
                 purpose: "VISA 34 GROCERIE LAND TES7123123",
                 value: 111.96,
@@ -541,9 +489,7 @@ describe("Test utils/filters", () => {
 
         test("Matching initiator with like match", () => {
             const transaction: Transaction = {
-                day: 7,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 7),
                 initiator: "Grocerie Land",
                 purpose: "VISA 34 GROCERIE LAND TES7123123",
                 value: 111.96,
@@ -562,9 +508,7 @@ describe("Test utils/filters", () => {
 
         test("Matching initiator explicitly without purpose", () => {
             const transaction: Transaction = {
-                day: 7,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 7),
                 initiator: "Grocerie Land",
                 purpose: "",
                 value: 111.96,
@@ -584,9 +528,7 @@ describe("Test utils/filters", () => {
 
         test("Not matching initiator, which has a purpose, explicitly without purpose", () => {
             const transaction: Transaction = {
-                day: 7,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 7),
                 initiator: "Grocerie Land",
                 purpose: "VISA 34 GROCERIE LAND TES7123123",
                 value: 111.96,
@@ -612,9 +554,7 @@ describe("Test utils/filters", () => {
         test("Return date of latest transaction, in a list of one transaction", () => {
             const smallTransactionList: Transaction[] = [
                 {
-                    day: 7,
-                    month: 9,
-                    year: 2021,
+                    date: new Date(2021, 8, 7),
                     initiator: "Grocerie Land",
                     purpose: "VISA 34 GROCERIE LAND TES7123123",
                     value: 111.96,
@@ -643,9 +583,7 @@ describe("Test utils/filters", () => {
         test("Return date of oldest transaction, in a list of one transaction", () => {
             const smallTransactionList: Transaction[] = [
                 {
-                    day: 7,
-                    month: 9,
-                    year: 2021,
+                    date: new Date(2021, 8, 7),
                     initiator: "Grocerie Land",
                     purpose: "VISA 34 GROCERIE LAND TES7123123",
                     value: 111.96,

@@ -23,9 +23,7 @@ describe("Test connector/csv", () => {
             initiator: "FOOD SHOP 1",
             purpose: "Thanks for paying the food",
             value: -23,
-            day: 1,
-            month: 11,
-            year: 2021,
+            date: new Date(2021, 10, 1),
         };
 
         test("Return ApplicationError, if record is empty", async () => {
@@ -270,25 +268,19 @@ describe("Test connector/csv", () => {
                 initiator: "FOOD SHOP 1",
                 purpose: "Thanks for paying the food",
                 value: -23,
-                day: 1,
-                month: 11,
-                year: 2021,
+                date: new Date(2021, 10, 1),
             });
             expect(transactionData[1]).toStrictEqual({
                 initiator: "ONLINE SHOP 3",
                 purpose: "Good choice mate 2345452",
                 value: -57.21,
-                day: 2,
-                month: 11,
-                year: 2021,
+                date: new Date(2021, 10, 2),
             });
             expect(transactionData[2]).toStrictEqual({
                 initiator: "ONLINE SHOP 3",
                 purpose: "Good choice mate 2344534",
                 value: -7.99,
-                day: 3,
-                month: 11,
-                year: 2021,
+                date: new Date(2021, 10, 3),
             });
         });
 
@@ -325,65 +317,49 @@ describe("Test connector/csv", () => {
                 initiator: "ONLINE SHOP 3",
                 purpose: "Good choice mate 2344534",
                 value: -7.99,
-                day: 3,
-                month: 11,
-                year: 2021,
+                date: new Date(2021, 10, 3),
             });
             expect(transactionData[1]).toStrictEqual({
                 initiator: "Rent for my crib",
                 purpose: "Thanks landlord",
                 value: -650,
-                day: 1,
-                month: 6,
-                year: 2021,
+                date: new Date(2021, 5, 1),
             });
             expect(transactionData[2]).toStrictEqual({
                 initiator: "Almost Healthy Inc.",
                 purpose: "We bet that you're going to be sick",
                 value: -12.99,
-                day: 1,
-                month: 6,
-                year: 2021,
+                date: new Date(2021, 5, 1),
             });
             expect(transactionData[3]).toStrictEqual({
                 initiator: "Grocerie Land",
                 purpose: "VISA 23 GROCERIE LAND TES71234123423134",
                 value: -109.56,
-                day: 7,
-                month: 7,
-                year: 2021,
+                date: new Date(2021, 6, 7),
             });
             expect(transactionData[4]).toStrictEqual({
                 initiator: "Rent for my crib",
                 purpose: "Thanks landlord",
                 value: -650,
-                day: 1,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 1),
             });
             expect(transactionData[5]).toStrictEqual({
                 initiator: "Stay Healthy Corp.",
                 purpose: "Your health is our mission",
                 value: -14.99,
-                day: 3,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 3),
             });
             expect(transactionData[6]).toStrictEqual({
                 initiator: "Grocerie Land",
                 purpose: "VISA 11 GROCERIE LAND TES71234123423134",
                 value: -88.86,
-                day: 11,
-                month: 8,
-                year: 2021,
+                date: new Date(2021, 7, 11),
             });
             expect(transactionData[7]).toStrictEqual({
                 initiator: "Rent for my crib",
                 purpose: "Thanks landlord",
                 value: -650,
-                day: 1,
-                month: 8,
-                year: 2021,
+                date: new Date(2021, 7, 1),
             });
         });
     });
@@ -422,81 +398,61 @@ describe("Test connector/csv", () => {
                 initiator: "FOOD SHOP 1",
                 purpose: "Thanks for paying the food",
                 value: -23,
-                day: 1,
-                month: 11,
-                year: 2021,
+                date: new Date(2021, 10, 1),
             });
             expect(transactionData[1]).toStrictEqual({
                 initiator: "ONLINE SHOP 3",
                 purpose: "Good choice mate 2345452",
                 value: -57.21,
-                day: 2,
-                month: 11,
-                year: 2021,
+                date: new Date(2021, 10, 2),
             });
             expect(transactionData[2]).toStrictEqual({
                 initiator: "ONLINE SHOP 3",
                 purpose: "Good choice mate 2344534",
                 value: -7.99,
-                day: 3,
-                month: 11,
-                year: 2021,
+                date: new Date(2021, 10, 3),
             });
             expect(transactionData[3]).toStrictEqual({
                 initiator: "Rent for my crib",
                 purpose: "Thanks landlord",
                 value: -650,
-                day: 1,
-                month: 6,
-                year: 2021,
+                date: new Date(2021, 5, 1),
             });
             expect(transactionData[4]).toStrictEqual({
                 initiator: "Almost Healthy Inc.",
                 purpose: "We bet that you're going to be sick",
                 value: -12.99,
-                day: 1,
-                month: 6,
-                year: 2021,
+                date: new Date(2021, 5, 1),
             });
             expect(transactionData[5]).toStrictEqual({
                 initiator: "Grocerie Land",
                 purpose: "VISA 23 GROCERIE LAND TES71234123423134",
                 value: -109.56,
-                day: 7,
-                month: 7,
-                year: 2021,
+                date: new Date(2021, 6, 7),
             });
             expect(transactionData[6]).toStrictEqual({
                 initiator: "Rent for my crib",
                 purpose: "Thanks landlord",
                 value: -650,
-                day: 1,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 1),
             });
             expect(transactionData[7]).toStrictEqual({
                 initiator: "Stay Healthy Corp.",
                 purpose: "Your health is our mission",
                 value: -14.99,
-                day: 3,
-                month: 9,
-                year: 2021,
+                date: new Date(2021, 8, 3),
             });
             expect(transactionData[8]).toStrictEqual({
                 initiator: "Grocerie Land",
                 purpose: "VISA 11 GROCERIE LAND TES71234123423134",
                 value: -88.86,
-                day: 11,
-                month: 8,
-                year: 2021,
+                date: new Date(2021, 7, 11),
             });
             expect(transactionData[9]).toStrictEqual({
                 initiator: "Rent for my crib",
                 purpose: "Thanks landlord",
                 value: -650,
-                day: 1,
-                month: 8,
-                year: 2021,
+                date: new Date(2021, 7, 1),
             });
         });
     });

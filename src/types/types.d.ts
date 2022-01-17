@@ -5,9 +5,7 @@ type Transaction = {
     initiator: string;
     purpose: string;
     value: number;
-    day: number;
-    month: number;
-    year: number;
+    date: Date;
     category?: Category;
 };
 
@@ -70,8 +68,6 @@ type Sample = {
 type FixedPayDay = {
     value: number;
     isPaid: boolean;
-    averageBookingDay: number;
-    lastBookingDays: number[];
     transactions: Transaction[];
 };
 
@@ -185,7 +181,6 @@ interface CsvConfiguration extends Configuration {
 type FixedPayDayReportTableRow = {
     category: string;
     paid: boolean | null;
-    bookingDay: number | null;
     cost: string;
     lastBookingDate: string | null;
     period: string | null;

@@ -1,10 +1,6 @@
 import { addMonths, isBefore } from "date-fns";
 import { TransactionType } from "../../types/enums";
-import {
-    formatDate,
-    getDateFromTransaction,
-    parseDateString,
-} from "../../utils/dates";
+import { formatDate, parseDateString } from "../../utils/dates";
 import {
     filterTransactionsByCategoryName,
     filterTransactionsByCategoryType,
@@ -190,7 +186,7 @@ const getOldestTransactionDate = (
     }
     let oldestDate = new Date();
     for (const transaction of transactions) {
-        const transactionDate = getDateFromTransaction(transaction);
+        const transactionDate = transaction.date;
         if (isBefore(transactionDate, oldestDate)) oldestDate = transactionDate;
     }
     return oldestDate;
@@ -320,10 +316,7 @@ const createFixedCategoryTrendPeriod = (
         };
 
     const lastTransaction = transactions[transactions.length - 1];
-    let bookingDate = formatDate(
-        getDateFromTransaction(lastTransaction),
-        options.dateFormat,
-    );
+    let bookingDate = formatDate(lastTransaction.date, options.dateFormat);
     if (bookingDate === null)
         return {
             source: "trend.ts",

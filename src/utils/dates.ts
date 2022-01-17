@@ -1,16 +1,6 @@
 import { parse, format } from "date-fns";
 
 /**
- * Creates a javascript Date object from a Transaction object.
- *
- * @param transaction to create the date from
- * @returns javascript Date object from a Transaction object
- */
-export const getDateFromTransaction = (transaction: Transaction): Date => {
-    return new Date(transaction.year, transaction.month - 1, transaction.day);
-};
-
-/**
  * Parses a dateString by a given format into a javascript Date object.
  *
  * @param dateString to parse into a Date

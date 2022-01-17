@@ -1,5 +1,5 @@
-import { addMonths, subDays, isBefore, isAfter } from "date-fns";
-import { getDateFromTransaction, parseDateString } from "./dates";
+import { addMonths, subDays, isBefore, isAfter, isSameDay } from "date-fns";
+import { parseDateString } from "./dates";
 import { isCategory } from "./typeguards";
 
 /**
@@ -14,7 +14,7 @@ export const transactionsAfterDate = (
     after: Date,
 ): Transaction[] => {
     return transactions.filter((transaction) => {
-        return getDateFromTransaction(transaction).getTime() > after.getTime();
+        return transaction.date.getTime() > after.getTime();
     });
 };
 
@@ -30,7 +30,7 @@ export const transactionsBeforeDate = (
     before: Date,
 ): Transaction[] => {
     return transactions.filter((transaction) => {
-        return getDateFromTransaction(transaction).getTime() < before.getTime();
+        return transaction.date.getTime() < before.getTime();
     });
 };
 
@@ -150,9 +150,7 @@ const isSameTransaction = (
     transactionB: Transaction,
 ): boolean => {
     return (
-        transactionA.day === transactionB.day &&
-        transactionA.month === transactionB.month &&
-        transactionA.year === transactionB.year &&
+        isSameDay(transactionA.date, transactionB.date) &&
         transactionA.initiator === transactionB.initiator &&
         transactionA.purpose === transactionB.purpose &&
         transactionA.value === transactionB.value
@@ -241,9 +239,9 @@ export const getOldestTransactionDate = (
     transactions: Transaction[],
 ): Date | null => {
     if (transactions.length === 0) return null;
-    let oldestDate = getDateFromTransaction(transactions[0]);
+    let oldestDate = transactions[0].date;
     for (let i = 1; i < transactions.length; i++) {
-        const transactionDate = getDateFromTransaction(transactions[i]);
+        const transactionDate = transactions[i].date;
         if (isBefore(transactionDate, oldestDate)) oldestDate = transactionDate;
     }
     return oldestDate;
@@ -260,9 +258,9 @@ export const getLatestTransactionDate = (
     transactions: Transaction[],
 ): Date | null => {
     if (transactions.length === 0) return null;
-    let latestDate = getDateFromTransaction(transactions[0]);
+    let latestDate = transactions[0].date;
     for (let i = 1; i < transactions.length; i++) {
-        const transactionDate = getDateFromTransaction(transactions[i]);
+        const transactionDate = transactions[i].date;
         if (isAfter(transactionDate, latestDate)) latestDate = transactionDate;
     }
     return latestDate;

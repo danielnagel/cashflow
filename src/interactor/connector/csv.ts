@@ -60,9 +60,7 @@ export const parseRecordToTransaction = (
         initiator: matchedRecord.initiator,
         purpose: matchedRecord.purpose,
         value: parsedValue,
-        day: date.getDate(),
-        month: date.getMonth() + 1,
-        year: date.getFullYear(),
+        date,
     };
 };
 

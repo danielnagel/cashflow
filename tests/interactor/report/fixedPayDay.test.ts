@@ -23,9 +23,7 @@ describe("Test fixCostReport", () => {
 
             const transactions: Transaction[] = [
                 {
-                    day: 19,
-                    month: 10,
-                    year: 2021,
+                    date: new Date(2021, 9, 19),
                     initiator: "Rent for my crib",
                     purpose: "Thanks landlord",
                     value: 23.65,
@@ -96,13 +94,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 650,
                     isPaid: true,
-                    lastBookingDays: [1, 1, 1, 1, 1, 1],
-                    averageBookingDay: 1,
                     transactions: [
                         {
-                            day: 1,
-                            month: 6,
-                            year: 2021,
+                            date: new Date(2021, 5, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -113,9 +107,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 7,
-                            year: 2021,
+                            date: new Date(2021, 6, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -126,9 +118,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 8,
-                            year: 2021,
+                            date: new Date(2021, 7, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -139,9 +129,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -152,9 +140,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -165,9 +151,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 11,
-                            year: 2021,
+                            date: new Date(2021, 10, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -197,13 +181,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 650,
                     isPaid: true,
-                    lastBookingDays: [1, 1, 1, 1, 1],
-                    averageBookingDay: 1,
                     transactions: [
                         {
-                            day: 1,
-                            month: 6,
-                            year: 2021,
+                            date: new Date(2021, 5, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -214,9 +194,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 7,
-                            year: 2021,
+                            date: new Date(2021, 6, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -227,9 +205,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 8,
-                            year: 2021,
+                            date: new Date(2021, 7, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -240,9 +216,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -253,9 +227,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -285,13 +257,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 650,
                     isPaid: true,
-                    lastBookingDays: [1, 1],
-                    averageBookingDay: 1,
                     transactions: [
                         {
-                            day: 1,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -302,9 +270,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 11,
-                            year: 2021,
+                            date: new Date(2021, 10, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
                             value: 650,
@@ -337,13 +303,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 14.99,
                     isPaid: true,
-                    lastBookingDays: [1, 1, 2, 3, 1, 2, 3],
-                    averageBookingDay: 1,
                     transactions: [
                         {
-                            day: 1,
-                            month: 6,
-                            year: 2021,
+                            date: new Date(2021, 5, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -354,9 +316,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 7,
-                            year: 2021,
+                            date: new Date(2021, 6, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -367,9 +327,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 2,
-                            month: 8,
-                            year: 2021,
+                            date: new Date(2021, 7, 2),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -380,9 +338,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 3,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -393,9 +349,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 1),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -406,9 +360,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 2,
-                            month: 11,
-                            year: 2021,
+                            date: new Date(2021, 10, 2),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -419,9 +371,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 3,
-                            month: 12,
-                            year: 2021,
+                            date: new Date(2021, 11, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -451,13 +401,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 12.99,
                     isPaid: false,
-                    lastBookingDays: [1, 1, 2],
-                    averageBookingDay: 1,
                     transactions: [
                         {
-                            day: 1,
-                            month: 6,
-                            year: 2021,
+                            date: new Date(2021, 5, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -468,9 +414,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 7,
-                            year: 2021,
+                            date: new Date(2021, 6, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -481,9 +425,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 2,
-                            month: 8,
-                            year: 2021,
+                            date: new Date(2021, 7, 2),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -513,13 +455,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 14.99,
                     isPaid: true,
-                    lastBookingDays: [3, 1, 2],
-                    averageBookingDay: 2,
                     transactions: [
                         {
-                            day: 3,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -530,9 +468,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 1),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -543,9 +479,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 2,
-                            month: 11,
-                            year: 2021,
+                            date: new Date(2021, 10, 2),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -576,13 +510,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 14.99,
                     isPaid: true,
-                    lastBookingDays: [1, 1, 2, 3, 1, 2, 3],
-                    averageBookingDay: 1,
                     transactions: [
                         {
-                            day: 1,
-                            month: 6,
-                            year: 2021,
+                            date: new Date(2021, 5, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -593,9 +523,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 7,
-                            year: 2021,
+                            date: new Date(2021, 6, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -606,9 +534,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 2,
-                            month: 8,
-                            year: 2021,
+                            date: new Date(2021, 7, 2),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
                             value: 12.99,
@@ -619,9 +545,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 3,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -632,9 +556,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 1),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -645,9 +567,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 2,
-                            month: 11,
-                            year: 2021,
+                            date: new Date(2021, 10, 2),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -658,9 +578,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 3,
-                            month: 12,
-                            year: 2021,
+                            date: new Date(2021, 11, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
                             value: 14.99,
@@ -690,13 +608,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 9.99,
                     isPaid: false,
-                    lastBookingDays: [15, 15, 15, 15, 15],
-                    averageBookingDay: 15,
                     transactions: [
                         {
-                            day: 15,
-                            month: 7,
-                            year: 2021,
+                            date: new Date(2021, 6, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
@@ -707,9 +621,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 15,
-                            month: 8,
-                            year: 2021,
+                            date: new Date(2021, 7, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
@@ -720,9 +632,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 15,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
@@ -733,9 +643,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 15,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
@@ -746,9 +654,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 15,
-                            month: 11,
-                            year: 2021,
+                            date: new Date(2021, 10, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
                             value: 9.99,
@@ -777,13 +683,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 19.99,
                     isPaid: true,
-                    lastBookingDays: [23, 23, 23, 23],
-                    averageBookingDay: 23,
                     transactions: [
                         {
-                            day: 23,
-                            month: 8,
-                            year: 2021,
+                            date: new Date(2021, 7, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
                             value: 19.99,
@@ -793,9 +695,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 23,
-                            month: 9,
-                            year: 2021,
+                            date: new Date(2021, 8, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
                             value: 19.99,
@@ -805,9 +705,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 23,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
                             value: 19.99,
@@ -817,9 +715,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 23,
-                            month: 11,
-                            year: 2021,
+                            date: new Date(2021, 10, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
                             value: 19.99,
@@ -850,13 +746,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 83.3325,
                     isPaid: true,
-                    lastBookingDays: [13],
-                    averageBookingDay: 13,
                     transactions: [
                         {
-                            day: 13,
-                            month: 1,
-                            year: 2021,
+                            date: new Date(2021, 0, 13),
                             initiator: "Car Insurance Corp.",
                             purpose: "Safety first!",
                             value: 999.99,
@@ -886,13 +778,9 @@ describe("Test fixCostReport", () => {
                 const expected: FixedPayDay = {
                     value: 18.8,
                     isPaid: true,
-                    lastBookingDays: [1, 1, 1, 1],
-                    averageBookingDay: 1,
                     transactions: [
                         {
-                            day: 1,
-                            month: 1,
-                            year: 2021,
+                            date: new Date(2021, 0, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
                             value: 56.4,
@@ -903,9 +791,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 4,
-                            year: 2021,
+                            date: new Date(2021, 3, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
                             value: 56.4,
@@ -916,9 +802,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 7,
-                            year: 2021,
+                            date: new Date(2021, 6, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
                             value: 56.4,
@@ -929,9 +813,7 @@ describe("Test fixCostReport", () => {
                             },
                         },
                         {
-                            day: 1,
-                            month: 10,
-                            year: 2021,
+                            date: new Date(2021, 9, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
                             value: 56.4,
@@ -1030,13 +912,9 @@ describe("Test fixCostReport", () => {
                             fixedPayDay: {
                                 value: 650,
                                 isPaid: true,
-                                lastBookingDays: [1, 1],
-                                averageBookingDay: 1,
                                 transactions: [
                                     {
-                                        day: 1,
-                                        month: 10,
-                                        year: 2021,
+                                        date: new Date(2021, 9, 1),
                                         initiator: "Rent for my crib",
                                         purpose: "Thanks landlord",
                                         value: 650,
@@ -1047,9 +925,7 @@ describe("Test fixCostReport", () => {
                                         },
                                     },
                                     {
-                                        day: 1,
-                                        month: 11,
-                                        year: 2021,
+                                        date: new Date(2021, 10, 1),
                                         initiator: "Rent for my crib",
                                         purpose: "Thanks landlord",
                                         value: 650,
@@ -1067,13 +943,9 @@ describe("Test fixCostReport", () => {
                             fixedPayDay: {
                                 value: 14.99,
                                 isPaid: true,
-                                lastBookingDays: [3, 1, 2],
-                                averageBookingDay: 2,
                                 transactions: [
                                     {
-                                        day: 3,
-                                        month: 9,
-                                        year: 2021,
+                                        date: new Date(2021, 8, 3),
                                         initiator: "Stay Healthy Corp.",
                                         purpose: "Your health is our mission",
                                         value: 14.99,
@@ -1084,9 +956,7 @@ describe("Test fixCostReport", () => {
                                         },
                                     },
                                     {
-                                        day: 1,
-                                        month: 10,
-                                        year: 2021,
+                                        date: new Date(2021, 9, 1),
                                         initiator: "Stay Healthy Corp.",
                                         purpose: "Your health is our mission",
                                         value: 14.99,
@@ -1097,9 +967,7 @@ describe("Test fixCostReport", () => {
                                         },
                                     },
                                     {
-                                        day: 2,
-                                        month: 11,
-                                        year: 2021,
+                                        date: new Date(2021, 10, 2),
                                         initiator: "Stay Healthy Corp.",
                                         purpose: "Your health is our mission",
                                         value: 14.99,
@@ -1117,13 +985,9 @@ describe("Test fixCostReport", () => {
                             fixedPayDay: {
                                 value: 39.99,
                                 isPaid: false,
-                                lastBookingDays: [22, 22],
-                                averageBookingDay: 22,
                                 transactions: [
                                     {
-                                        day: 22,
-                                        month: 9,
-                                        year: 2021,
+                                        date: new Date(2021, 8, 22),
                                         initiator: "Mobilio Ltd.",
                                         purpose: "your mobile phone provider",
                                         value: 39.99,
@@ -1134,9 +998,7 @@ describe("Test fixCostReport", () => {
                                         },
                                     },
                                     {
-                                        day: 22,
-                                        month: 10,
-                                        year: 2021,
+                                        date: new Date(2021, 9, 22),
                                         initiator: "Mobilio Ltd.",
                                         purpose: "your mobile phone provider",
                                         value: 39.99,

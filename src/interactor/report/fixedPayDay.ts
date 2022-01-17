@@ -1,4 +1,4 @@
-import { getDateFromTransaction, parseDateString } from "../../utils/dates";
+import { parseDateString } from "../../utils/dates";
 import {
     filterTransactionsByCategoryName,
     filterTransactionsByCategoryType,
@@ -43,8 +43,6 @@ export const generateFixedPayDay = (
     const result: FixedPayDay = {
         value: 0,
         isPaid,
-        lastBookingDays: [],
-        averageBookingDay: 0,
         transactions: [],
     };
 
@@ -55,15 +53,6 @@ export const generateFixedPayDay = (
     if (period === Periods.Yearly) {
         result.value = result.value / 12;
     }
-
-    for (const matchedTransaction of matchedTransactions) {
-        result.lastBookingDays.push(matchedTransaction.day);
-        result.averageBookingDay += matchedTransaction.day;
-    }
-
-    result.averageBookingDay = Math.floor(
-        result.averageBookingDay / matchedTransactions.length,
-    );
     result.transactions = matchedTransactions;
 
     return result;
@@ -109,19 +98,17 @@ const isPaidThisPeriod = (
     const comparsionDate = getComparsionDate(options);
     if (isApplicationError(comparsionDate)) return comparsionDate;
 
-    const transactionDate = getDateFromTransaction(transaction);
-
     if (typeof period === "undefined" || period === Periods.Monthly) {
-        return isSameMonth(transactionDate, comparsionDate);
+        return isSameMonth(transaction.date, comparsionDate);
     }
 
     if (period === Periods.Yearly) {
-        return differenceInYears(transactionDate, comparsionDate) <= 1;
+        return differenceInYears(transaction.date, comparsionDate) <= 1;
     }
 
     return (
         period === Periods.Quarter &&
-        isSameQuarter(transactionDate, comparsionDate)
+        isSameQuarter(transaction.date, comparsionDate)
     );
 };
 

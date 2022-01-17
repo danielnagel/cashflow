@@ -338,13 +338,9 @@ describe("Test Interactor", () => {
                         fixedPayDay: {
                             value: -650,
                             isPaid: true,
-                            lastBookingDays: [1, 1],
-                            averageBookingDay: 1,
                             transactions: [
                                 {
-                                    day: 1,
-                                    month: 10,
-                                    year: 2021,
+                                    date: new Date(2021, 9, 1),
                                     initiator: "Rent for my crib",
                                     purpose: "Thanks landlord",
                                     value: -650,
@@ -355,9 +351,7 @@ describe("Test Interactor", () => {
                                     },
                                 },
                                 {
-                                    day: 1,
-                                    month: 11,
-                                    year: 2021,
+                                    date: new Date(2021, 10, 1),
                                     initiator: "Rent for my crib",
                                     purpose: "Thanks landlord",
                                     value: -650,
@@ -375,13 +369,9 @@ describe("Test Interactor", () => {
                         fixedPayDay: {
                             value: -14.99,
                             isPaid: true,
-                            lastBookingDays: [3, 1, 2],
-                            averageBookingDay: 2,
                             transactions: [
                                 {
-                                    day: 3,
-                                    month: 9,
-                                    year: 2021,
+                                    date: new Date(2021, 8, 3),
                                     initiator: "Stay Healthy Corp.",
                                     purpose: "Your health is our mission",
                                     value: -14.99,
@@ -392,9 +382,7 @@ describe("Test Interactor", () => {
                                     },
                                 },
                                 {
-                                    day: 1,
-                                    month: 10,
-                                    year: 2021,
+                                    date: new Date(2021, 9, 1),
                                     initiator: "Stay Healthy Corp.",
                                     purpose: "Your health is our mission",
                                     value: -14.99,
@@ -405,9 +393,7 @@ describe("Test Interactor", () => {
                                     },
                                 },
                                 {
-                                    day: 2,
-                                    month: 11,
-                                    year: 2021,
+                                    date: new Date(2021, 10, 2),
                                     initiator: "Stay Healthy Corp.",
                                     purpose: "Your health is our mission",
                                     value: -14.99,
@@ -425,13 +411,9 @@ describe("Test Interactor", () => {
                         fixedPayDay: {
                             value: -39.99,
                             isPaid: false,
-                            lastBookingDays: [22, 22],
-                            averageBookingDay: 22,
                             transactions: [
                                 {
-                                    day: 22,
-                                    month: 9,
-                                    year: 2021,
+                                    date: new Date(2021, 8, 22),
                                     initiator: "Mobilio Ltd.",
                                     purpose: "your mobile phone provider",
                                     value: -39.99,
@@ -442,9 +424,7 @@ describe("Test Interactor", () => {
                                     },
                                 },
                                 {
-                                    day: 22,
-                                    month: 10,
-                                    year: 2021,
+                                    date: new Date(2021, 9, 22),
                                     initiator: "Mobilio Ltd.",
                                     purpose: "your mobile phone provider",
                                     value: -39.99,
@@ -530,9 +510,7 @@ describe("Test Interactor", () => {
                                         period: "2021.06",
                                         transactions: [
                                             {
-                                                day: 1,
-                                                month: 6,
-                                                year: 2021,
+                                                date: new Date(2021, 5, 1),
                                                 initiator: "Rent for my crib",
                                                 purpose: "Thanks landlord",
                                                 value: -650,
@@ -550,9 +528,7 @@ describe("Test Interactor", () => {
                                         period: "2021.07",
                                         transactions: [
                                             {
-                                                day: 1,
-                                                month: 7,
-                                                year: 2021,
+                                                date: new Date(2021, 6, 1),
                                                 initiator: "Rent for my crib",
                                                 purpose: "Thanks landlord",
                                                 value: -650,
@@ -570,9 +546,7 @@ describe("Test Interactor", () => {
                                         period: "2021.08",
                                         transactions: [
                                             {
-                                                day: 1,
-                                                month: 8,
-                                                year: 2021,
+                                                date: new Date(2021, 7, 1),
                                                 initiator: "Rent for my crib",
                                                 purpose: "Thanks landlord",
                                                 value: -650,
@@ -590,9 +564,7 @@ describe("Test Interactor", () => {
                                         period: "2021.09",
                                         transactions: [
                                             {
-                                                day: 1,
-                                                month: 9,
-                                                year: 2021,
+                                                date: new Date(2021, 8, 1),
                                                 initiator: "Rent for my crib",
                                                 purpose: "Thanks landlord",
                                                 value: -650,
@@ -610,9 +582,7 @@ describe("Test Interactor", () => {
                                         period: "2021.10",
                                         transactions: [
                                             {
-                                                day: 1,
-                                                month: 10,
-                                                year: 2021,
+                                                date: new Date(2021, 9, 1),
                                                 initiator: "Rent for my crib",
                                                 purpose: "Thanks landlord",
                                                 value: -650,
@@ -630,9 +600,7 @@ describe("Test Interactor", () => {
                                         period: "2021.11",
                                         transactions: [
                                             {
-                                                day: 1,
-                                                month: 11,
-                                                year: 2021,
+                                                date: new Date(2021, 10, 1),
                                                 initiator: "Rent for my crib",
                                                 purpose: "Thanks landlord",
                                                 value: -650,
@@ -650,9 +618,7 @@ describe("Test Interactor", () => {
                                         period: "2021.12",
                                         transactions: [
                                             {
-                                                day: 1,
-                                                month: 12,
-                                                year: 2021,
+                                                date: new Date(2021, 11, 1),
                                                 initiator: "Rent for my crib",
                                                 purpose: "Thanks landlord",
                                                 value: -650,
@@ -675,9 +641,7 @@ describe("Test Interactor", () => {
                                         period: "2021.09",
                                         transactions: [
                                             {
-                                                day: 3,
-                                                month: 9,
-                                                year: 2021,
+                                                date: new Date(2021, 8, 3),
                                                 initiator: "Stay Healthy Corp.",
                                                 purpose:
                                                     "Your health is our mission",
@@ -696,9 +660,7 @@ describe("Test Interactor", () => {
                                         period: "2021.10",
                                         transactions: [
                                             {
-                                                day: 1,
-                                                month: 10,
-                                                year: 2021,
+                                                date: new Date(2021, 9, 1),
                                                 initiator: "Stay Healthy Corp.",
                                                 purpose:
                                                     "Your health is our mission",
@@ -717,9 +679,7 @@ describe("Test Interactor", () => {
                                         period: "2021.11",
                                         transactions: [
                                             {
-                                                day: 2,
-                                                month: 11,
-                                                year: 2021,
+                                                date: new Date(2021, 10, 2),
                                                 initiator: "Stay Healthy Corp.",
                                                 purpose:
                                                     "Your health is our mission",
@@ -738,9 +698,7 @@ describe("Test Interactor", () => {
                                         period: "2021.12",
                                         transactions: [
                                             {
-                                                day: 3,
-                                                month: 12,
-                                                year: 2021,
+                                                date: new Date(2021, 11, 3),
                                                 initiator: "Stay Healthy Corp.",
                                                 purpose:
                                                     "Your health is our mission",
@@ -764,9 +722,7 @@ describe("Test Interactor", () => {
                                         period: "2021.09",
                                         transactions: [
                                             {
-                                                day: 22,
-                                                month: 9,
-                                                year: 2021,
+                                                date: new Date(2021, 8, 22),
                                                 initiator: "Mobilio Ltd.",
                                                 purpose:
                                                     "your mobile phone provider",
@@ -785,9 +741,7 @@ describe("Test Interactor", () => {
                                         period: "2021.10",
                                         transactions: [
                                             {
-                                                day: 22,
-                                                month: 10,
-                                                year: 2021,
+                                                date: new Date(2021, 9, 22),
                                                 initiator: "Mobilio Ltd.",
                                                 purpose:
                                                     "your mobile phone provider",
@@ -806,9 +760,7 @@ describe("Test Interactor", () => {
                                         period: "2021.11",
                                         transactions: [
                                             {
-                                                day: 22,
-                                                month: 11,
-                                                year: 2021,
+                                                date: new Date(2021, 10, 22),
                                                 initiator: "Mobilio Ltd.",
                                                 purpose:
                                                     "your mobile phone provider",
@@ -836,9 +788,7 @@ describe("Test Interactor", () => {
                                         period: "2021.08",
                                         transactions: [
                                             {
-                                                day: 20,
-                                                month: 8,
-                                                year: 2021,
+                                                date: new Date(2021, 7, 20),
                                                 initiator: "cool-gadgets.com",
                                                 purpose: "cool-gadgets.com.com",
                                                 value: -18.45,
@@ -854,9 +804,7 @@ describe("Test Interactor", () => {
                                         period: "2021.09",
                                         transactions: [
                                             {
-                                                day: 21,
-                                                month: 9,
-                                                year: 2021,
+                                                date: new Date(2021, 8, 21),
                                                 initiator: "my-online-shop.com",
                                                 purpose: "my-online-shop.com",
                                                 value: -44.86,
@@ -872,9 +820,7 @@ describe("Test Interactor", () => {
                                         period: "2021.10",
                                         transactions: [
                                             {
-                                                day: 19,
-                                                month: 10,
-                                                year: 2021,
+                                                date: new Date(2021, 9, 19),
                                                 initiator: "my-online-shop.com",
                                                 purpose: "my-online-shop.com",
                                                 value: -23.65,
@@ -890,9 +836,7 @@ describe("Test Interactor", () => {
                                         period: "2021.11",
                                         transactions: [
                                             {
-                                                day: 22,
-                                                month: 11,
-                                                year: 2021,
+                                                date: new Date(2021, 10, 22),
                                                 initiator: "my-online-shop.com",
                                                 purpose: "my-online-shop.com",
                                                 value: -9.99,
