@@ -181,7 +181,7 @@ const loadTransactionDataFromFile = async (
         const transaction = parseRecordToTransaction(
             record,
             options.source.dataKeys,
-            options.dateFormat,
+            options.source.dateFormat,
         );
         if (isApplicationError(transaction)) {
             log({
