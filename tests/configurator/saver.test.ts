@@ -12,7 +12,7 @@ describe("Test configurator/saver", () => {
             categories: [],
             source: {
                 type: "csv",
-                columns: [],
+                formats: [],
                 dataKeys: {
                     purpose: "",
                     date: "",

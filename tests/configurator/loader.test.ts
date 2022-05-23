@@ -43,7 +43,7 @@ describe("Test configurator/loader", () => {
                 categories: [],
                 source: {
                     type: "csv",
-                    columns: [],
+                    formats: [],
                     dataKeys: {
                         purpose: "",
                         date: "",

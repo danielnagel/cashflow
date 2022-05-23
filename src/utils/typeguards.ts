@@ -5,7 +5,7 @@ export const isCsvOptions = (object: unknown): object is CsvOptions => {
         (object as CsvOptions).path !== undefined &&
         (object as CsvOptions).dataKeys !== undefined &&
         isDataKeys((object as CsvOptions).dataKeys) &&
-        (object as CsvOptions).columns !== undefined
+        (object as CsvOptions).formats !== undefined
     );
 };
 

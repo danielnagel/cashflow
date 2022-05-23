@@ -6,6 +6,7 @@ import {
     isFile,
     loadFileNamesFromDirectory,
     createFilePath,
+    loadFile,
 } from "../../utils/files";
 import {
     decimalNumberToFloat,
@@ -96,11 +97,12 @@ const matchDataKeysWithRecord = (
  * Loads transaction data from a csv file or multiple csv files in a directory.
  *
  * @param options that specifies where to load the csv file from and how to handle its content.
- * @param loggerOptions (optional) to control logging behaviour
  * @returns a list of Transaction objects or an ApplcationError, when the given path doesn't exist.
  */
 export const loadTransactionData = async (
     options: CsvConfiguration,
+    allowedLogLevel?: string,
+    logType?: string,
 ): Promise<Transaction[] | ApplicationError> => {
     if (!pathExists(options.source.path))
         return {
@@ -118,7 +120,7 @@ export const loadTransactionData = async (
         return await loadTransactionDataFromFile(options);
     }
 
-    return loadTransactionDataFromDirectory(options);
+    return loadTransactionDataFromDirectory(options, allowedLogLevel, logType);
 };
 
 /**
@@ -130,7 +132,9 @@ export const loadTransactionData = async (
  */
 const loadTransactionDataFromDirectory = async (
     options: CsvConfiguration,
-): Promise<Transaction[]> => {
+    allowedLogLevel?: string,
+    logType?: string,
+): Promise<Transaction[] | ApplicationError> => {
     let mergedTransactions: Transaction[] = [];
     if (isDirectory(options.source.path)) {
         const filesInDirectory = loadFileNamesFromDirectory(
@@ -146,6 +150,15 @@ const loadTransactionDataFromDirectory = async (
                 const transactions = await loadTransactionDataFromFile(
                     optionsCopy,
                 );
+                if (isApplicationError(transactions)) {
+                    log({
+                        message: transactions,
+                        level: LogLevel.Error,
+                        allowedLogLevel,
+                        type: logType,
+                    });
+                    continue;
+                }
                 mergedTransactions = filterDoubleTransactions(
                     mergedTransactions,
                     transactions,
@@ -156,6 +169,45 @@ const loadTransactionDataFromDirectory = async (
     return mergedTransactions;
 };
 
+const getColumnFormat = (
+    options: CsvConfiguration,
+): string[] | ApplicationError => {
+    if (!options.source.formats || options.source.formats.length === 0)
+        return { source: "csv.ts", message: "There are no formats." };
+
+    const file = loadFile(options.source.path);
+    if (file === null || file.length === 0)
+        return {
+            source: "csv.ts",
+            message: `File ${options.source.path.substring(
+                options.source.path.lastIndexOf("/") + 1,
+            )} does not exist.`,
+        };
+
+    for (const format of options.source.formats) {
+        if (hasFormat(file, format)) {
+            return format.columns;
+        }
+    }
+
+    return {
+        source: "csv.ts",
+        message: `File ${options.source.path.substring(
+            options.source.path.lastIndexOf("/") + 1,
+        )} matches none of the given formats.`,
+    };
+};
+
+const hasFormat = (file: string, format: CsvColumnFormat): boolean => {
+    const lines = file.split("\n");
+    const stringFormat = format.columns.join(";");
+    for (const l of lines) {
+        if (l.length === 0) continue;
+        if (stringFormat === l) return true;
+    }
+    return false;
+};
+
 /**
  * Loads the content of a csv file and merges it to a list of Transaction objects.
  *
@@ -164,14 +216,19 @@ const loadTransactionDataFromDirectory = async (
  */
 const loadTransactionDataFromFile = async (
     options: CsvConfiguration,
-): Promise<Transaction[]> => {
+): Promise<Transaction[] | ApplicationError> => {
+    const columns = getColumnFormat(options);
+    if (isApplicationError(columns)) {
+        return columns;
+    }
+
     const transactions: Transaction[] = [];
     const parser = createReadStream(options.source.path, {
         encoding: "latin1",
     }).pipe(
         parse({
             delimiter: ";",
-            columns: options.source.columns,
+            columns,
             relaxColumnCount: true,
             skipEmptyLines: true,
         }),

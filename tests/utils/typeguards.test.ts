@@ -38,7 +38,7 @@ describe("Test utils/typeguards", () => {
                 type: "csv",
                 path: "",
                 dataKeys: {},
-                columns: [],
+                formats: [],
                 dateFormat: "",
             };
             expect(isCsvOptions(csvConnectorOptions)).toBeFalsy();
@@ -49,7 +49,7 @@ describe("Test utils/typeguards", () => {
                 type: "csv",
                 path: "",
                 dataKeys: { date: "", initiator: "", purpose: "", value: "" },
-                columns: [],
+                formats: [],
                 dateFormat: "",
             };
             expect(isCsvOptions(csvConnectorOptions)).toBeTruthy();
@@ -173,7 +173,7 @@ describe("Test utils/typeguards", () => {
                 categories: [],
                 source: {
                     type: "csv",
-                    columns: [],
+                    formats: [],
                     dataKeys: {
                         purpose: "",
                         date: "",

@@ -42,8 +42,15 @@ type CsvOptions = {
     type: "csv";
     path: string;
     dataKeys: DataKeys;
-    columns: string[];
+    formats: CsvColumnFormat[];
     dateFormat?: string;
+};
+
+/**
+ * Defines how exactly a csv file is structured
+ */
+type CsvColumnFormat = {
+    columns: string[];
 };
 
 type UnknownTypeOption = {
