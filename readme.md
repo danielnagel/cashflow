@@ -51,7 +51,12 @@ When you are done, you can test your configuration running one of the available 
             "value": "",
             "date": ""
         },
-        "columns": [], // has to be filled apropriatly by the user
+        "formats": [
+            // multiple column formats are possible
+            {
+                "columns": [] // has to be filled apropriatly by the user
+            }
+        ],
         "dateFormat": "MM/dd/yyyy" // optional when date format in csv file and date format for logs and other output are different
     },
     // a list of categories to categorize every transaction from source, can be used in combination with strict: true
