@@ -7,11 +7,9 @@ import {
     exampleConfiguration,
     saveConfigurationFile,
 } from "../../configurator/saver";
-import { processCliOptions } from "../../configurator/cli";
 import { LogLevel } from "../../types/enums";
 
-export default async () => {
-    const args = processCliOptions();
+export default async (args: Arguments) => {
     const options = loadConfigurationFile(args.configurationPath);
     if (isApplicationError(options)) {
         log({ message: options, level: LogLevel.Error });

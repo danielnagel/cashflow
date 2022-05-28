@@ -29,6 +29,13 @@ export const processCliOptions = (): Arguments => {
                 alias: "configurationPath",
                 description: "Path to configuration file.",
             },
+            m: {
+                type: "string",
+                default: "cli",
+                alias: "mode",
+                description:
+                    "Controls in which mode the application should operate, default is cli",
+            },
         })
         .parseSync();
 
@@ -36,5 +43,6 @@ export const processCliOptions = (): Arguments => {
         report: argv.r,
         trendType: argv.t,
         configurationPath: argv.c,
+        mode: argv.m,
     };
 };

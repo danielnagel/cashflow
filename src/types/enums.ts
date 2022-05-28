@@ -45,3 +45,8 @@ export enum LogType {
     Console = "console",
     File = "file",
 }
+
+export enum OperatingMode {
+    Cli = "cli",
+    Server = "server",
+}

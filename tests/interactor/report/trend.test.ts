@@ -455,6 +455,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: undefined,
                     configurationPath: "",
+                    mode: "",
                 },
             );
             expect(result).toStrictEqual({
@@ -478,6 +479,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: "random",
                     configurationPath: "",
+                    mode: "",
                 },
             );
             expect(result).toStrictEqual({
@@ -501,6 +503,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: undefined,
                     configurationPath: "",
+                    mode: "",
                 },
             );
             expect(result).toStrictEqual({
@@ -524,6 +527,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: "fixed",
                     configurationPath: "",
+                    mode: "",
                 },
             );
             expect(result).toStrictEqual({
@@ -545,6 +549,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: undefined,
                     configurationPath: "",
+                    mode: "",
                 },
             );
             expect(result).toStrictEqual({
@@ -588,6 +593,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: "fixed",
                     configurationPath: "",
+                    mode: "",
                 },
             );
 
@@ -629,6 +635,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: "variable",
                     configurationPath: "",
+                    mode: "",
                 },
             );
 
@@ -670,6 +677,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: "income",
                     configurationPath: "",
+                    mode: "",
                 },
             );
 
@@ -711,6 +719,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: "special",
                     configurationPath: "",
+                    mode: "",
                 },
             );
 
@@ -752,6 +761,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: undefined,
                     configurationPath: "",
+                    mode: "",
                 },
             );
 
@@ -795,6 +805,7 @@ describe("Test report/trend", () => {
                     report: "trend",
                     trendType: undefined,
                     configurationPath: "",
+                    mode: "",
                 },
             );
 

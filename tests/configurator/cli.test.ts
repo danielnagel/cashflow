@@ -11,6 +11,7 @@ describe("Test configurator/cli", () => {
                 report: undefined,
                 trendType: undefined,
                 configurationPath: "data/config.json",
+                mode: "cli",
             });
         });
 
@@ -22,6 +23,7 @@ describe("Test configurator/cli", () => {
                 report: "trend",
                 trendType: undefined,
                 configurationPath: "data/config.json",
+                mode: "cli",
             });
         });
 
@@ -33,6 +35,7 @@ describe("Test configurator/cli", () => {
                 report: undefined,
                 trendType: "variable",
                 configurationPath: "data/config.json",
+                mode: "cli",
             });
         });
 
@@ -44,6 +47,7 @@ describe("Test configurator/cli", () => {
                 report: undefined,
                 trendType: undefined,
                 configurationPath: "my/path/to/some/where/hello.json",
+                mode: "cli",
             });
         });
 
@@ -59,6 +63,7 @@ describe("Test configurator/cli", () => {
                 report: "trend",
                 trendType: "variable",
                 configurationPath: "my/path/to/some/where/hello.json",
+                mode: "cli",
             });
         });
     });

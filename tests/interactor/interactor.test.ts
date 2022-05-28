@@ -17,6 +17,7 @@ describe("Test Interactor", () => {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "interactor.ts",
@@ -38,6 +39,7 @@ describe("Test Interactor", () => {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "interactor.ts",
@@ -82,6 +84,7 @@ describe("Test Interactor", () => {
                     report: "unknown",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "interactor.ts",
@@ -133,6 +136,7 @@ describe("Test Interactor", () => {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "categorize.ts",
@@ -202,6 +206,7 @@ describe("Test Interactor", () => {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "categorize.ts",
@@ -237,6 +242,7 @@ describe("Test Interactor", () => {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "csv.ts",
@@ -272,6 +278,7 @@ describe("Test Interactor", () => {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "csv.ts",
@@ -316,6 +323,7 @@ describe("Test Interactor", () => {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "fixedPayDay.ts",
@@ -360,6 +368,7 @@ describe("Test Interactor", () => {
                     report: "trend",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual({
                 source: "trend.ts",
@@ -536,6 +545,7 @@ describe("Test Interactor", () => {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual(expected);
         });
@@ -960,6 +970,7 @@ describe("Test Interactor", () => {
                     report: "trend",
                     trendType: undefined,
                     configurationPath: "",
+                    mode: "",
                 }),
             ).toStrictEqual(expected);
         });

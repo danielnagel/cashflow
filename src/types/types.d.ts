@@ -261,4 +261,5 @@ type Arguments = {
     report: string | undefined;
     trendType: string | undefined;
     configurationPath: string;
+    mode: string;
 };
