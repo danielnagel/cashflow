@@ -26,7 +26,8 @@
         "report:trend:fixed": "node dist/index.js -r trend -t fixed",
         "report:trend:variable": "node dist/index.js -r trend -t variable",
         "report:trend:special": "node dist/index.js -r trend -t special",
-        "report:trend:income": "node dist/index.js -r trend -t income"
+        "report:trend:income": "node dist/index.js -r trend -t income",
+        "postinstall": "npm install --prefix src/web"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
