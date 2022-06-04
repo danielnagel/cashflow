@@ -6,18 +6,14 @@ import { categorizeTransaction } from "./mutator/categorize";
 import { generateTrendReport } from "./report/trend";
 
 /**
- * Generates a report using a connector.
- * Connector and report type are specified through user configuration.
+ * Loads all transactions from specified source and categorizes them by given options.
  *
- * @param options
- * @returns Generated report when successful, otherwise an ApplicationError.
- * An ApplicationError is returned either on misconfiguration or when an error occures,
- * while loading the data or generating the report.
+ * @param options user configuration
+ * @returns Array of Transaction or an ApplicationError
  */
-export const generateReport = async (
+export const loadCategorizedTransactions = async (
     options: Configuration,
-    args: Arguments,
-): Promise<Report | ApplicationError> => {
+): Promise<Transaction[] | ApplicationError> => {
     let transactions: Transaction[] | ApplicationError = [];
     switch (options.source.type) {
         case ConnectorType.CSV:
@@ -39,7 +35,24 @@ export const generateReport = async (
             };
     }
 
-    transactions = categorizeTransaction(transactions, options);
+    return categorizeTransaction(transactions, options);
+};
+
+/**
+ * Generates a report using a connector.
+ * Connector and report type are specified through user configuration.
+ *
+ * @param options
+ * @returns Generated report when successful, otherwise an ApplicationError.
+ * An ApplicationError is returned either on misconfiguration or when an error occures,
+ * while loading the data or generating the report.
+ */
+export const generateReport = async (
+    options: Configuration,
+    args: Arguments,
+): Promise<Report | ApplicationError> => {
+    const transactions: Transaction[] | ApplicationError =
+        await loadCategorizedTransactions(options);
     if (isApplicationError(transactions)) return transactions;
 
     switch (args.report) {
