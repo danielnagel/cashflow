@@ -1,14 +1,15 @@
 import { loadCategorizedTransactions } from "../../../interactor/interactor";
-import { generateFixedPayDayReport } from "../../../interactor/report/fixedPayDay";
+import { generateTrendReport } from "../../../interactor/report/trend";
 import { isApplicationError } from "../../../utils/typeguards";
 
-export const getFixedPayDay = async (
+export const getTrend = async (
     options: Configuration,
-): Promise<CategorizedFixedPayDays | ApplicationError> => {
+    args: Arguments,
+): Promise<TrendReport | ApplicationError> => {
     const transactions = await loadCategorizedTransactions(options);
     if (isApplicationError(transactions)) {
         return transactions;
     }
 
-    return generateFixedPayDayReport(transactions, options);
+    return generateTrendReport(transactions, options, args);
 };

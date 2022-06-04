@@ -1,10 +1,11 @@
 import express, { Request, Response } from "express";
 import { loadConfigurationFile } from "../../configurator/loader";
-import { LogLevel } from "../../types/enums";
+import { LogLevel, TransactionType } from "../../types/enums";
 import { log } from "../../utils/loggers";
 import { isApplicationError } from "../../utils/typeguards";
 import { getFixedPayDay } from "./endpoints/fixedPayDay";
 import { getAllTransactions } from "./endpoints/transactions";
+import { getTrend } from "./endpoints/trend";
 const app = express();
 const port = 8080; // default port to listen
 
@@ -16,12 +17,32 @@ export default (args: Arguments) => {
     }
 
     // register endpoints and handlers
-    app.get("/transactions", async (_, res) =>
+    app.get("/transactions", async (_: Request, res: Response) =>
         res.status(200).json(await getAllTransactions(options)),
     );
-    app.get("/fixedpayday", async (_, res) =>
+    app.get("/fixedpayday", async (_: Request, res: Response) =>
         res.status(200).json(await getFixedPayDay(options)),
     );
+    app.get("/trend", async (_: Request, res: Response) => {
+        args.trendType = undefined;
+        res.status(200).json(await getTrend(options, args));
+    });
+    app.get("/trend/variable", async (_: Request, res: Response) => {
+        args.trendType = TransactionType.Variable;
+        res.status(200).json(await getTrend(options, args));
+    });
+    app.get("/trend/fixed", async (_: Request, res: Response) => {
+        args.trendType = TransactionType.Fixed;
+        res.status(200).json(await getTrend(options, args));
+    });
+    app.get("/trend/income", async (_: Request, res: Response) => {
+        args.trendType = TransactionType.Income;
+        res.status(200).json(await getTrend(options, args));
+    });
+    app.get("/trend/special", async (_: Request, res: Response) => {
+        args.trendType = TransactionType.Special;
+        res.status(200).json(await getTrend(options, args));
+    });
 
     // start the Express server
     app.listen(port, () => {
