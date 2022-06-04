@@ -3,6 +3,7 @@ import { loadConfigurationFile } from "../../configurator/loader";
 import { LogLevel } from "../../types/enums";
 import { log } from "../../utils/loggers";
 import { isApplicationError } from "../../utils/typeguards";
+import { getFixedPayDay } from "./endpoints/fixedPayDay";
 import { getAllTransactions } from "./endpoints/transactions";
 const app = express();
 const port = 8080; // default port to listen
@@ -17,6 +18,9 @@ export default (args: Arguments) => {
     // register endpoints and handlers
     app.get("/transactions", async (_, res) =>
         res.status(200).json(await getAllTransactions(options)),
+    );
+    app.get("/fixedpayday", async (_, res) =>
+        res.status(200).json(await getFixedPayDay(options)),
     );
 
     // start the Express server
