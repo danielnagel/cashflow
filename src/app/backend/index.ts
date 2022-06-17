@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import { loadConfigurationFile } from "../../configurator/loader";
 import { LogLevel, TransactionType } from "../../types/enums";
 import { log } from "../../utils/loggers";
@@ -7,6 +8,15 @@ import { getFixedPayDay } from "./endpoints/fixedPayDay";
 import { getAllTransactions } from "./endpoints/transactions";
 import { getTrend } from "./endpoints/trend";
 const app = express();
+app.use(
+    cors({
+        origin: [
+            "http://localhost:3000",
+            "http://172.31.32.116:3000",
+            "http://192.168.178.73:3000",
+        ],
+    }),
+);
 const port = 8080; // default port to listen
 
 export default (args: Arguments) => {
