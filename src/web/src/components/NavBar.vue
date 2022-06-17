@@ -1,0 +1,58 @@
+<script setup lang="ts">
+import { Options } from "../enums";
+
+const props = defineProps<{
+    selection?: string;
+}>();
+
+const isSelected = (name: string): string => {
+    const selected =
+        "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium";
+    const unselected =
+        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium";
+
+    if (name === props.selection) {
+        return selected;
+    }
+
+    return unselected;
+};
+</script>
+
+<template>
+    <nav class="bg-gray-800">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="relative flex items-center justify-between h-16">
+                <div
+                    class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
+                >
+                    <div class="flex-shrink-0 flex items-center">
+                        <h1
+                            class="h-auto w-auto text-xl font-bold text-green-300 dark:text-green-700"
+                        >
+                            💲♻ cashflow
+                        </h1>
+                    </div>
+                    <div class="hidden sm:block sm:ml-6">
+                        <div class="flex space-x-4">
+                            <button
+                                @click="$emit('selection', Options.FixedPayDay)"
+                                :class="isSelected(Options.FixedPayDay)"
+                            >
+                                {{ Options.FixedPayDay }}
+                            </button>
+                            <button
+                                @click="
+                                    $emit('selection', Options.Transactions)
+                                "
+                                :class="isSelected(Options.Transactions)"
+                            >
+                                {{ Options.Transactions }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</template>
