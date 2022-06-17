@@ -16,6 +16,7 @@
         "clean": "rimraf dist && rimraf coverage",
         "build": "tsc -p tsconfig.build.json",
         "test": "jest",
+        "posttest": "npm test --prefix src/web",
         "test:coverage": "jest --coverage --coverageReporters='text-summary'",
         "start": "npm run build && node dist/index.js",
         "checkFormat": "prettier --check .",

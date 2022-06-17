@@ -4,4 +4,5 @@ module.exports = {
     moduleDirectories: ["node_modules", "src"],
     modulePaths: [__dirname],
     testMatch: ["**/tests/**/*.test.ts"],
+    modulePathIgnorePatterns: ["<rootDir>/src/web"],
 };
