@@ -47,6 +47,7 @@ export const generateFixedPayDay = (
     };
 
     result.value = lastTransaction.value;
+    if (result.value < 0) result.value *= -1;
     if (period === Periods.Quarter) {
         result.value = result.value / 3;
     }

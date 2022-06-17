@@ -381,13 +381,13 @@ describe("Test Interactor", () => {
         test("Generate report 'FixedPayDay' from csv samples as expected", async () => {
             const expected: ReportFixedPayDay = {
                 type: "fixedpayday",
-                sum: -704.98,
-                unpaidSum: -39.99,
+                sum: 704.98,
+                unpaidSum: 39.99,
                 namedFixedPayDays: [
                     {
                         name: "rent",
                         fixedPayDay: {
-                            value: -650,
+                            value: 650,
                             isPaid: true,
                             transactions: [
                                 {
@@ -418,7 +418,7 @@ describe("Test Interactor", () => {
                     {
                         name: "insurance",
                         fixedPayDay: {
-                            value: -14.99,
+                            value: 14.99,
                             isPaid: true,
                             transactions: [
                                 {
@@ -460,7 +460,7 @@ describe("Test Interactor", () => {
                     {
                         name: "mobile",
                         fixedPayDay: {
-                            value: -39.99,
+                            value: 39.99,
                             isPaid: false,
                             transactions: [
                                 {

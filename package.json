@@ -1,6 +1,6 @@
 {
     "name": "cashflow",
-    "version": "0.13.2",
+    "version": "0.14.0",
     "description": "Generates reports from financial data csv files.",
     "keywords": [
         "financial",
@@ -26,7 +26,8 @@
         "report:trend:fixed": "node dist/index.js -r trend -t fixed",
         "report:trend:variable": "node dist/index.js -r trend -t variable",
         "report:trend:special": "node dist/index.js -r trend -t special",
-        "report:trend:income": "node dist/index.js -r trend -t income"
+        "report:trend:income": "node dist/index.js -r trend -t income",
+        "postinstall": "npm install --prefix src/web"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
@@ -42,9 +43,13 @@
         "yargs": "^17.3.1"
     },
     "devDependencies": {
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.13",
         "@types/jest": "^27.0.3",
         "@types/yargs": "^17.0.8",
+        "cors": "^2.8.5",
         "date-fns": "^2.27.0",
+        "express": "^4.18.1",
         "husky": "^7.0.4",
         "jest": "^27.3.1",
         "lint-staged": "^12.1.2",

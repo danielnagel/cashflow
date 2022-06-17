@@ -189,6 +189,34 @@ To see test coverage, run:
 npm test:coverage
 ```
 
+## Web Mode
+
+Since 0.14.0 there is also a web mode besides the cli mode of this application.
+You can start it as following:
+
+```
+# in project root
+npm run build
+node dist/index.js -m server -c <path-to-your-config>
+# in src/web
+# create a file .env with the following content
+VITE_BACKEND_ADDRESS="<your-ip-address>"
+# I also need to run wsl-portforward.ps1,
+# but only because I run this application in wsl and want to expose it to my network
+# Now run the following in src/web
+# rebuilds the styles
+npm run styles:watch
+# start frontend
+npm run dev
+```
+
+As you can see, there is no "ready to go" build that you can start.
+I'll plan to add it as soon that i deploy the app in my home network.
+
+The reports (currently only FixedPayDay is available in web mode) will now be available in web:
+
+![fixedpayday report](documentation/fixedpayday-web.png)
+
 ## Future plans
 
 This software is still under heavy development and these are the next steps:
