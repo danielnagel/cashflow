@@ -13,7 +13,7 @@ const fixedPayDayReport = ref(
 const setup = async () => {
     error.value = "";
 
-    const url = `http://${process.env.VITE_BACKEND_ADDRESS}/fixedpayday`;
+    const url = `http://${process.env.BACKEND_ADDRESS}/fixedpayday`;
     let response = null;
     try {
         response = await fetch(url);
@@ -104,11 +104,12 @@ onMounted(() => {
                     <th class="px-6 py-3">Date</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody data-testid="table-body">
                 <tr
                     v-for="fixed of namedFixedPayDays"
                     :key="fixed.name"
                     :class="isPaidStyle(fixed)"
+                    data-testid="fixedpayday"
                 >
                     <th
                         class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
@@ -125,6 +126,7 @@ onMounted(() => {
                 </tr>
                 <tr
                     class="bg-gray-300 text-gray-700 border-b dark:bg-gray-700 dark:border-gray-700 dark:text-white"
+                    data-testid="summary"
                 >
                     <td class="px-6 py-4 font-medium whitespace-nowrap">
                         Sum (all)
