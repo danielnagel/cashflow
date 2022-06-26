@@ -1,6 +1,6 @@
 {
     "name": "cashflow",
-    "version": "0.14.0",
+    "version": "0.14.2",
     "description": "Generates reports from financial data csv files.",
     "keywords": [
         "financial",
@@ -15,6 +15,8 @@
     "scripts": {
         "clean": "rimraf dist && rimraf coverage",
         "build": "tsc -p tsconfig.build.json",
+        "postbuild": "npm run build:frontend",
+        "build:frontend": "npm run build --prefix src/web",
         "test": "jest",
         "posttest": "npm test --prefix src/web",
         "test:coverage": "jest --coverage --coverageReporters='text-summary'",
