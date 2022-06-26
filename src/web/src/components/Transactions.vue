@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { formatDate } from "../../../utils/dates";
 import { roundToString } from "../../../utils/numbers";
+import Alert from "./Alert.vue";
 
 const error = ref("");
 const transactions = ref([] as Transaction[]);
@@ -9,10 +10,17 @@ const transactions = ref([] as Transaction[]);
 const setup = async () => {
     error.value = "";
 
-    const url = `http://${import.meta.env.VITE_BACKEND_ADDRESS}/transactions`;
-    const response = await fetch(url);
+    const url = `http://${process.env.BACKEND_ADDRESS}/transactions`;
+    let response = null;
     try {
-        transactions.value = await response.json(); // parses JSON response into native JavaScript objects
+        response = await fetch(url);
+    } catch (e: any) {
+        error.value = `Backend server is unreachable.`;
+        return;
+    }
+
+    try {
+        transactions.value = await response.json();
     } catch (e: any) {
         error.value = `Couldn't parse JSON data. Expected fixed pay day report json, got unparsable object.`;
     }
@@ -25,7 +33,7 @@ onMounted(() => {
 
 <template>
     <div id="transactions-root" class="relative overflow-x-auto shadow-md">
-        <p v-show="error">{{ error }}</p>
+        <alert :message="error"></alert>
         <table
             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
         >
@@ -39,11 +47,12 @@ onMounted(() => {
                     <th class="px-6 py-3">Value</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody data-testid="table-body">
                 <tr
                     v-for="t of transactions"
                     :key="t.date + t.initiator + t.purpose"
                     class="border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-800"
+                    data-testid="transaction"
                 >
                     <th class="px-6 py-4">
                         {{ formatDate(new Date(t.date)) }}

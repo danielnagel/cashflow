@@ -1,14 +1,13 @@
 import { render } from "@testing-library/vue";
 import "@testing-library/jest-dom";
 import NavBar from "../components/NavBar.vue";
-import { fireEvent } from "@testing-library/dom";
 
 const selected =
     "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium";
 const unselected =
     "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium";
 
-describe("NavBar test", () => {
+describe("NavBar component test", () => {
     test("Initial state", () => {
         const { getByText } = render(NavBar);
 

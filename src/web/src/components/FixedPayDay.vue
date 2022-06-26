@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from "vue";
 import { isApplicationError } from "../../../utils/typeguards";
 import { formatDate } from "../../../utils/dates";
 import { roundToString } from "../../../utils/numbers";
+import Alert from "./Alert.vue";
 
 const error = ref("");
 const fixedPayDayReport = ref(
@@ -12,8 +13,15 @@ const fixedPayDayReport = ref(
 const setup = async () => {
     error.value = "";
 
-    const url = `http://${import.meta.env.VITE_BACKEND_ADDRESS}/fixedpayday`;
-    const response = await fetch(url);
+    const url = `http://${process.env.VITE_BACKEND_ADDRESS}/fixedpayday`;
+    let response = null;
+    try {
+        response = await fetch(url);
+    } catch (e: any) {
+        error.value = `Backend server is unreachable.`;
+        return;
+    }
+
     try {
         fixedPayDayReport.value = await response.json(); // parses JSON response into native JavaScript objects
     } catch (e: any) {
@@ -82,7 +90,7 @@ onMounted(() => {
 
 <template>
     <div id="fixedpayday-root" class="relative overflow-x-auto shadow-md">
-        <p v-show="error">{{ error }}</p>
+        <alert :message="error"></alert>
         <table
             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
         >
