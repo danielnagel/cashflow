@@ -6,7 +6,7 @@ import { log } from "../../utils/loggers";
 import { isApplicationError } from "../../utils/typeguards";
 import { getFixedPayDay } from "./endpoints/fixedPayDay";
 import { getAllTransactions } from "./endpoints/transactions";
-import { getTrend } from "./endpoints/trend";
+import { getTrend, getTrendSummary } from "./endpoints/trend";
 const app = express();
 app.use(
     cors({
@@ -34,8 +34,7 @@ export default (args: Arguments) => {
         res.status(200).json(await getFixedPayDay(options)),
     );
     app.get("/trend", async (_: Request, res: Response) => {
-        args.trendType = undefined;
-        res.status(200).json(await getTrend(options, args));
+        res.status(200).json(await getTrendSummary(options, args));
     });
     app.get("/trend/variable", async (_: Request, res: Response) => {
         args.trendType = TransactionType.Variable;

@@ -1,4 +1,5 @@
 export enum Options {
-    FixedPayDay = "FixedPayDay",
     Transactions = "Transactions",
+    FixedPayDay = "FixedPayDay",
+    Trend = "Trend",
 }

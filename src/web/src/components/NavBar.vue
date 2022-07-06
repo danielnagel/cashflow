@@ -36,18 +36,11 @@ const isSelected = (name: string): string => {
                     <div class="hidden sm:block sm:ml-6">
                         <div class="flex space-x-4">
                             <button
-                                @click="$emit('selection', Options.FixedPayDay)"
-                                :class="isSelected(Options.FixedPayDay)"
+                                v-for="option of Object.values(Options)"
+                                @click="$emit('selection', option)"
+                                :class="isSelected(option)"
                             >
-                                {{ Options.FixedPayDay }}
-                            </button>
-                            <button
-                                @click="
-                                    $emit('selection', Options.Transactions)
-                                "
-                                :class="isSelected(Options.Transactions)"
-                            >
-                                {{ Options.Transactions }}
+                                {{ option }}
                             </button>
                         </div>
                     </div>

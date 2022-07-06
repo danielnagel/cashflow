@@ -4,8 +4,9 @@ import FixedPayDay from "./components/FixedPayDay.vue";
 import { ref } from "vue";
 import Transactions from "./components/Transactions.vue";
 import NavBar from "./components/NavBar.vue";
+import Trend from "./components/Trend.vue";
 
-const selected = ref(Options.FixedPayDay as string);
+const selected = ref(Options.Trend as string);
 
 const changeSelection = (newSelection: string): void => {
     if (selected.value === newSelection) return;
@@ -25,8 +26,9 @@ const changeSelection = (newSelection: string): void => {
     >
         <NavBar @selection="changeSelection" :selection="selected" />
         <div class="p-10">
-            <FixedPayDay v-show="selected === Options.FixedPayDay" />
             <Transactions v-show="selected === Options.Transactions" />
+            <FixedPayDay v-show="selected === Options.FixedPayDay" />
+            <Trend v-show="selected === Options.Trend" />
         </div>
     </div>
 </template>

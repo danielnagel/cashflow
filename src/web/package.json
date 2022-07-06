@@ -1,7 +1,7 @@
 {
     "name": "cashflow-frontend",
     "private": true,
-    "version": "0.14.4",
+    "version": "0.15.0",
     "scripts": {
         "dev": "vite",
         "prebuild": "tailwindcss -i ./src/index.css -o ./dist/output.css",
@@ -11,6 +11,7 @@
         "test": "jest"
     },
     "dependencies": {
+        "billboard.js": "^3.5.0",
         "vue": "^3.2.25"
     },
     "devDependencies": {
