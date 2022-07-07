@@ -78,22 +78,26 @@ onMounted(async () => {
 
     const xAxis = getX();
     const incomeData = getData(TransactionType.Income);
-    const fixedData = getData(TransactionType.Fixed);
     const variableData = getData(TransactionType.Variable);
+    const fixedData = getData(TransactionType.Fixed);
 
     bb.generate({
         data: {
             x: "x",
             columns: [xAxis, incomeData, fixedData, variableData],
-            types: {
-                [incomeData[0]]: area(),
-                [fixedData[0]]: area(),
-                [variableData[0]]: area(),
-            },
+            type: area(),
             groups: [
                 [incomeData[0].toString()],
                 [fixedData[0].toString(), variableData[0].toString()],
             ],
+        },
+        axis: {
+            x: {
+                type: "timeseries",
+                tick: {
+                    format: "%m.%Y",
+                },
+            },
         },
         bindto: "#stackedAreaChart",
     });

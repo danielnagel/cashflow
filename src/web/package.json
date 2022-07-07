@@ -1,11 +1,13 @@
 {
     "name": "cashflow-frontend",
     "private": true,
-    "version": "0.15.0",
+    "version": "0.15.1",
     "scripts": {
         "dev": "vite",
-        "prebuild": "tailwindcss -i ./src/index.css -o ./dist/output.css",
+        "prebuild": "npm run build:styles",
         "build": "vue-tsc --noEmit && vite build",
+        "postbuild": "npm run build:styles",
+        "build:styles": "tailwindcss -i ./src/index.css -o ./dist/output.css",
         "preview": "vite preview",
         "styles:watch": "tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
         "test": "jest"
