@@ -85,7 +85,7 @@ onMounted(async () => {
                 },
             },
         },
-        bindto: "#stackedAreaChart",
+        bindto: "#trend-summary-root-chart",
     });
 });
 </script>
@@ -93,6 +93,6 @@ onMounted(async () => {
 <template>
     <div id="trend-summary-root" class="relative overflow-x-auto">
         <alert :message="error"></alert>
-        <div id="stackedAreaChart"></div>
+        <div id="trend-summary-root-chart"></div>
     </div>
 </template>

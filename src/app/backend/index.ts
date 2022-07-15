@@ -34,24 +34,29 @@ export default (args: Arguments) => {
         res.status(200).json(await getFixedPayDay(options)),
     );
     app.get("/trend", async (_: Request, res: Response) => {
-        args.trendType = undefined;
-        res.status(200).json(await getTrendReportTable(options, args));
+        const argsCopy = { ...args };
+        argsCopy.trendType = undefined;
+        res.status(200).json(await getTrendReportTable(options, argsCopy));
     });
     app.get("/trend/variable", async (_: Request, res: Response) => {
-        args.trendType = TransactionType.Variable;
-        res.status(200).json(await getTrendReportTable(options, args));
+        const argsCopy = { ...args };
+        argsCopy.trendType = TransactionType.Variable;
+        res.status(200).json(await getTrendReportTable(options, argsCopy));
     });
     app.get("/trend/fixed", async (_: Request, res: Response) => {
-        args.trendType = TransactionType.Fixed;
-        res.status(200).json(await getTrendReportTable(options, args));
+        const argsCopy = { ...args };
+        argsCopy.trendType = TransactionType.Fixed;
+        res.status(200).json(await getTrendReportTable(options, argsCopy));
     });
     app.get("/trend/income", async (_: Request, res: Response) => {
-        args.trendType = TransactionType.Income;
-        res.status(200).json(await getTrendReportTable(options, args));
+        const argsCopy = { ...args };
+        argsCopy.trendType = TransactionType.Income;
+        res.status(200).json(await getTrendReportTable(options, argsCopy));
     });
     app.get("/trend/special", async (_: Request, res: Response) => {
-        args.trendType = TransactionType.Special;
-        res.status(200).json(await getTrendReportTable(options, args));
+        const argsCopy = { ...args };
+        argsCopy.trendType = TransactionType.Special;
+        res.status(200).json(await getTrendReportTable(options, argsCopy));
     });
 
     // start the Express server
