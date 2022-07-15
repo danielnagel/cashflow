@@ -3,26 +3,18 @@ import { onMounted, ref } from "vue";
 import { formatDate } from "../../../utils/dates";
 import { roundToString } from "../../../utils/numbers";
 import Alert from "./Alert.vue";
+import { getApi } from "../utils";
 
 const error = ref("");
 const transactions = ref([] as Transaction[]);
 
 const setup = async () => {
     error.value = "";
-
-    const url = `http://${process.env.BACKEND_ADDRESS}/transactions`;
-    let response = null;
     try {
-        response = await fetch(url);
+        const result = await getApi("/transactions");
+        transactions.value = result as Transaction[];
     } catch (e: any) {
-        error.value = `Backend server is unreachable.`;
-        return;
-    }
-
-    try {
-        transactions.value = await response.json();
-    } catch (e: any) {
-        error.value = `Couldn't parse JSON data. Expected fixed pay day report json, got unparsable object.`;
+        if (typeof e === "string") error.value = e;
     }
 };
 

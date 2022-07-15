@@ -6,7 +6,7 @@ import { log } from "../../utils/loggers";
 import { isApplicationError } from "../../utils/typeguards";
 import { getFixedPayDay } from "./endpoints/fixedPayDay";
 import { getAllTransactions } from "./endpoints/transactions";
-import { getTrend, getTrendSummary } from "./endpoints/trend";
+import { getTrendReportTable } from "./endpoints/trend";
 const app = express();
 app.use(
     cors({
@@ -34,23 +34,24 @@ export default (args: Arguments) => {
         res.status(200).json(await getFixedPayDay(options)),
     );
     app.get("/trend", async (_: Request, res: Response) => {
-        res.status(200).json(await getTrendSummary(options, args));
+        args.trendType = undefined;
+        res.status(200).json(await getTrendReportTable(options, args));
     });
     app.get("/trend/variable", async (_: Request, res: Response) => {
         args.trendType = TransactionType.Variable;
-        res.status(200).json(await getTrend(options, args));
+        res.status(200).json(await getTrendReportTable(options, args));
     });
     app.get("/trend/fixed", async (_: Request, res: Response) => {
         args.trendType = TransactionType.Fixed;
-        res.status(200).json(await getTrend(options, args));
+        res.status(200).json(await getTrendReportTable(options, args));
     });
     app.get("/trend/income", async (_: Request, res: Response) => {
         args.trendType = TransactionType.Income;
-        res.status(200).json(await getTrend(options, args));
+        res.status(200).json(await getTrendReportTable(options, args));
     });
     app.get("/trend/special", async (_: Request, res: Response) => {
         args.trendType = TransactionType.Special;
-        res.status(200).json(await getTrend(options, args));
+        res.status(200).json(await getTrendReportTable(options, args));
     });
 
     // start the Express server

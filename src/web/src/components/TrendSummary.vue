@@ -5,32 +5,18 @@ import { onMounted, ref } from "vue";
 import { isApplicationError } from "../../../utils/typeguards";
 import { TransactionType } from "../../../types/enums";
 import Alert from "./Alert.vue";
+import { getApi } from "../utils";
 
 const error = ref("");
-const trendReportTable = ref(
-    null as TrendReportTableRow[] | ApplicationError | null,
-);
+const trendReportTable = ref(null as TrendReportTableRow[] | null);
 
 const setup = async () => {
     error.value = "";
-
-    const url = `http://${process.env.BACKEND_ADDRESS}/trend`;
-    let response = null;
     try {
-        response = await fetch(url);
+        const result = await getApi("/trend");
+        trendReportTable.value = result as TrendReportTableRow[];
     } catch (e: any) {
-        error.value = `Backend server is unreachable.`;
-        return;
-    }
-
-    try {
-        trendReportTable.value = await response.json();
-    } catch (e: any) {
-        error.value = `Couldn't parse JSON data. Expected fixed pay day report json, got unparsable object.`;
-    }
-
-    if (isApplicationError(trendReportTable.value)) {
-        error.value = trendReportTable.value.message;
+        if (typeof e === "string") error.value = e;
     }
 };
 
@@ -105,7 +91,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div id="trend-root" class="relative overflow-x-auto">
+    <div id="trend-summary-root" class="relative overflow-x-auto">
         <alert :message="error"></alert>
         <div id="stackedAreaChart"></div>
     </div>

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { Options } from "../enums";
-
 const props = defineProps<{
     selection?: string;
+    options?: string[];
 }>();
 
 const isSelected = (name: string): string => {
@@ -36,7 +35,7 @@ const isSelected = (name: string): string => {
                     <div class="hidden sm:block sm:ml-6">
                         <div class="flex space-x-4">
                             <button
-                                v-for="option of Object.values(Options)"
+                                v-for="option of options"
                                 @click="$emit('selection', option)"
                                 :class="isSelected(option)"
                             >

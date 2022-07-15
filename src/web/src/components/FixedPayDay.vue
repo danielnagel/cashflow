@@ -4,6 +4,7 @@ import { isApplicationError } from "../../../utils/typeguards";
 import { formatDate } from "../../../utils/dates";
 import { roundToString } from "../../../utils/numbers";
 import Alert from "./Alert.vue";
+import { getApi } from "../utils";
 
 const error = ref("");
 const fixedPayDayReport = ref(
@@ -12,20 +13,11 @@ const fixedPayDayReport = ref(
 
 const setup = async () => {
     error.value = "";
-
-    const url = `http://${process.env.BACKEND_ADDRESS}/fixedpayday`;
-    let response = null;
     try {
-        response = await fetch(url);
+        const result = await getApi("/fixedpayday");
+        fixedPayDayReport.value = result as CategorizedFixedPayDays;
     } catch (e: any) {
-        error.value = `Backend server is unreachable.`;
-        return;
-    }
-
-    try {
-        fixedPayDayReport.value = await response.json(); // parses JSON response into native JavaScript objects
-    } catch (e: any) {
-        error.value = `Couldn't parse JSON data. Expected fixed pay day report json, got unparsable object.`;
+        if (typeof e === "string") error.value = e;
     }
 };
 
