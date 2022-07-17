@@ -14,6 +14,7 @@
     "license": "ISC",
     "scripts": {
         "clean": "rimraf dist && rimraf coverage",
+        "prebuild": "npm install",
         "build": "npm run build:backend && npm run build:frontend",
         "build:backend": "tsc -p tsconfig.build.json",
         "build:frontend": "npm run build --prefix src/web",
@@ -30,7 +31,9 @@
         "report:trend:variable": "node dist/index.js -r trend -t variable",
         "report:trend:special": "node dist/index.js -r trend -t special",
         "report:trend:income": "node dist/index.js -r trend -t income",
-        "postinstall": "npm install --prefix src/web"
+        "postinstall": "npm install --prefix src/web",
+        "prestart": "npm run build",
+        "start": "npm run backend & npm run preview --prefix src/web -- --host"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"

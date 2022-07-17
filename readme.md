@@ -16,6 +16,8 @@ so you (and me) can get the best overview on what your (or my) current financial
 
 ## Setup
 
+Run `npm start` to install, build and run the project.
+
 Before you start, you need to configurate _cashflow_.
 When you are done, you can test your configuration running one of the available reports.
 
