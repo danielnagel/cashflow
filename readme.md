@@ -21,6 +21,14 @@ Run `npm start` to install, build and run the project.
 Before you start, you need to configurate _cashflow_.
 When you are done, you can test your configuration running one of the available reports.
 
+First you need to setup a .env in `src/web` with the following content:
+
+```jsonc
+BACKEND_ADDRESS="localhost:8080"
+```
+
+Example `data/config.json`:
+
 ```jsonc
 {
     // allowedLogLevel: determines which logs should be logged, "debug" allows all logs, default log level is "error"

@@ -18,6 +18,7 @@
         "build": "npm run build:backend && npm run build:frontend",
         "build:backend": "tsc -p tsconfig.build.json",
         "build:frontend": "npm run build --prefix src/web",
+        "dev": "npm run backend & npm run dev --prefix src/web -- --host",
         "test": "jest",
         "posttest": "npm test --prefix src/web",
         "test:coverage": "jest --coverage --coverageReporters='text-summary'",
