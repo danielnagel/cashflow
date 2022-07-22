@@ -1,6 +1,7 @@
 import bb, { area } from "billboard.js";
 import { isApplicationError } from "../../../utils/typeguards";
 import { TransactionType } from "../../../types/enums";
+import { parseDateString, formatDate } from "../../../utils/dates";
 
 // aus summary
 
@@ -54,8 +55,8 @@ const getVariableData = (
 
 const getX = (
     table: TrendReportTableRow[] | ApplicationError | null,
-): string[] => {
-    const result = ["x"];
+): Array<string | Date> => {
+    const result: Array<string | Date> = ["x"];
 
     if (isApplicationError(table) || table === null) {
         return result;
@@ -64,14 +65,16 @@ const getX = (
     const firstRow = table[0];
     for (const key of Object.keys(firstRow)) {
         if (key === "category") continue;
-        result.push(key);
+        const date = parseDateString(key, "yyyy.MM");
+        if (date === null) continue;
+        result.push(date);
     }
     return result;
 };
 
 export const generateTrendTypeColumns = (
     table: TrendReportTableRow[] | ApplicationError | null,
-): Array<Array<string | number>> => {
+): Array<Array<string | number | Date>> => {
     const xAxis = getX(table);
     const incomeData = getTransactionTypeData(table, TransactionType.Income);
     const variableData = getTransactionTypeData(
@@ -85,14 +88,14 @@ export const generateTrendTypeColumns = (
 
 export const generateVariableTrendColumns = (
     table: TrendReportTableRow[] | ApplicationError | null,
-): Array<Array<string | number>> => {
+): Array<Array<string | number | Date>> => {
     const xAxis = getX(table);
     const data = getVariableData(table);
     return [xAxis, ...data];
 };
 
 export const generateAreaChart = (
-    columns: Array<Array<string | number>>,
+    columns: Array<Array<string | number | Date>>,
     bindto: string,
     groups?: string[][],
     filter?: (v: unknown) => boolean,
@@ -108,8 +111,14 @@ export const generateAreaChart = (
         axis: {
             x: {
                 type: "timeseries",
+                localtime: false,
                 tick: {
-                    format: "%m.%Y",
+                    format: function (x: number | Date): string {
+                        if (typeof x === "number") return x.toString();
+                        const date = formatDate(x, "yyyy.MM");
+                        if (date !== null) return date;
+                        return x.toDateString();
+                    },
                 },
             },
         },

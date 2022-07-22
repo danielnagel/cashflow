@@ -19,7 +19,7 @@ const error = ref("");
 const trendReportTable = ref(null as TrendReportTableRow[] | null);
 const selectedFilter = ref("");
 const filters = ref([] as string[]);
-const columns = ref([] as Array<Array<string | number>>);
+const columns = ref([] as Array<Array<string | number | Date>>);
 
 const loadApiData = async () => {
     error.value = "";
