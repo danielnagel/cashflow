@@ -1,7 +1,7 @@
 export enum ReportType {
-    Transactions = "Transactions",
     FixedPayDay = "FixedPayDay",
     Trend = "Trend",
+    Transactions = "Transactions",
 }
 
 export enum TrendType {

@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import "billboard.js/dist/theme/insight.css";
 import bb, { area } from "billboard.js";
-import { onMounted, ref } from "vue";
+import { watch, ref, onMounted } from "vue";
 import { isApplicationError } from "../../../utils/typeguards";
 import { TransactionType } from "../../../types/enums";
 import Alert from "./Alert.vue";
-import { getApi } from "../utils";
+import { getApi } from "../utilities/api";
+
+const props = defineProps<{
+    visible?: boolean;
+}>();
 
 const error = ref("");
 const trendReportTable = ref(null as TrendReportTableRow[] | null);
 
-const setup = async () => {
+const loadApiData = async () => {
     error.value = "";
     try {
         const result = await getApi("/trend");
@@ -59,9 +63,7 @@ const getX = (): string[] => {
     return result;
 };
 
-onMounted(async () => {
-    await setup();
-
+const generateChart = () => {
     const xAxis = getX();
     const incomeData = getData(TransactionType.Income);
     const variableData = getData(TransactionType.Variable);
@@ -87,11 +89,28 @@ onMounted(async () => {
         },
         bindto: "#trend-summary-root-chart",
     });
-});
+};
+
+const setup = async () => {
+    if (props.visible && trendReportTable.value === null) {
+        await loadApiData();
+        generateChart();
+    }
+};
+
+onMounted(() => setup());
+watch(
+    () => props.visible,
+    () => setup(),
+);
 </script>
 
 <template>
-    <div id="trend-summary-root" class="relative overflow-x-auto">
+    <div
+        v-show="visible"
+        id="trend-summary-root"
+        class="relative overflow-x-auto"
+    >
         <alert :message="error"></alert>
         <div id="trend-summary-root-chart"></div>
     </div>

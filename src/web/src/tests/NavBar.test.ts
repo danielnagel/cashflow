@@ -1,7 +1,7 @@
 import { render } from "@testing-library/vue";
 import "@testing-library/jest-dom";
 import NavBar from "../components/NavBar.vue";
-import { ReportType } from "../enums";
+import { ReportType } from "../utilities/enums";
 
 const selected =
     "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium";

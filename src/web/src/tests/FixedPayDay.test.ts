@@ -45,7 +45,9 @@ describe("Transactions component test", () => {
             }),
         ) as jest.Mock;
 
-        const { getByTestId } = await render(FixedPayDay);
+        const { getByTestId } = await render(FixedPayDay, {
+            props: { visible: true },
+        });
 
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledWith("http://test-server/fixedpayday");
@@ -74,7 +76,9 @@ describe("Transactions component test", () => {
             Promise.reject("Error backend is down!"),
         ) as jest.Mock;
 
-        const { getByTestId } = await render(FixedPayDay);
+        const { getByTestId } = await render(FixedPayDay, {
+            props: { visible: true },
+        });
 
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledWith("http://test-server/fixedpayday");

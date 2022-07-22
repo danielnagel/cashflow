@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, watch, ref, onMounted } from "vue";
 import { isApplicationError } from "../../../utils/typeguards";
 import { formatDate } from "../../../utils/dates";
 import { roundToString } from "../../../utils/numbers";
 import Alert from "./Alert.vue";
-import { getApi } from "../utils";
+import { getApi } from "../utilities/api";
+
+const props = defineProps<{
+    visible?: boolean;
+}>();
 
 const error = ref("");
 const fixedPayDayReport = ref(
     null as CategorizedFixedPayDays | ApplicationError | null,
 );
 
-const setup = async () => {
+const loadApiData = async () => {
     error.value = "";
     try {
         const result = await getApi("/fixedpayday");
@@ -75,13 +79,25 @@ const isPaidStyle = (nfpd: NamedFixedPayDay): string[] => {
     return styles;
 };
 
-onMounted(() => {
-    setup();
-});
+const setup = () => {
+    if (props.visible && fixedPayDayReport.value === null) {
+        loadApiData();
+    }
+};
+
+onMounted(() => setup());
+watch(
+    () => props.visible,
+    () => setup(),
+);
 </script>
 
 <template>
-    <div id="fixedpayday-root" class="relative overflow-x-auto shadow-md">
+    <div
+        id="fixedpayday-root"
+        class="relative overflow-x-auto shadow-md"
+        v-show="visible"
+    >
         <alert :message="error"></alert>
         <table
             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"

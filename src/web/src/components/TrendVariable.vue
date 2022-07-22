@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import "billboard.js/dist/theme/insight.css";
 import bb, { area } from "billboard.js";
-import { onMounted, ref } from "vue";
+import { watch, ref, onMounted } from "vue";
 import { isApplicationError } from "../../../utils/typeguards";
 import Alert from "./Alert.vue";
-import { getApi } from "../utils";
+import { getApi } from "../utilities/api";
+import ComboBox from "./ComboBox.vue";
+
+const props = defineProps<{
+    visible?: boolean;
+}>();
 
 const error = ref("");
 const trendReportTable = ref(null as TrendReportTableRow[] | null);
@@ -98,36 +103,44 @@ const generateChart = (): void => {
     });
 };
 
-onMounted(async () => {
-    await loadApiData();
-
-    filters.value = getFilters();
-    selectedFilter.value = filters.value[0];
-    chartxAxis.value = getX();
-    charData.value = getData();
-
+const handleChange = (value: string) => {
+    selectedFilter.value = value;
     generateChart();
-});
+};
+
+const setup = async () => {
+    if (props.visible && trendReportTable.value === null) {
+        await loadApiData();
+
+        filters.value = getFilters();
+        selectedFilter.value = filters.value[0];
+        chartxAxis.value = getX();
+        charData.value = getData();
+
+        generateChart();
+    }
+};
+
+onMounted(() => setup());
+watch(
+    () => props.visible,
+    () => setup(),
+);
 </script>
 
 <template>
-    <div id="trend-variable-root" class="relative overflow-x-auto">
+    <div
+        id="trend-variable-root"
+        class="relative overflow-x-auto"
+        v-show="visible"
+    >
         <alert :message="error"></alert>
-        <div id="trend-variable-type-selection-container" class="mb-4">
-            <label
-                for="trend-variable-type-selection"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-                >Filter: {{ selectedFilter }}</label
-            >
-            <select
-                v-model="selectedFilter"
-                id="trend-variable-type-selection"
-                class="block p-2 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                @change="generateChart"
-            >
-                <option v-for="f of filters" :value="f">{{ f }}</option>
-            </select>
-        </div>
+        <ComboBox
+            @change="handleChange"
+            :selected="selectedFilter"
+            :items="filters"
+            :label="`Filter: ${selectedFilter}`"
+        />
         <div id="trend-variable-root-chart-container">
             <div id="trend-variable-root-chart"></div>
         </div>

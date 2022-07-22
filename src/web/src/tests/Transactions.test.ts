@@ -47,7 +47,9 @@ describe("Transactions component test", () => {
             }),
         ) as jest.Mock;
 
-        const { getByTestId } = await render(Transactions);
+        const { getByTestId } = await render(Transactions, {
+            props: { visible: true },
+        });
 
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledWith("http://test-server/transactions");
@@ -69,7 +71,9 @@ describe("Transactions component test", () => {
             Promise.reject("Error backend is down!"),
         ) as jest.Mock;
 
-        const { getByTestId } = await render(Transactions);
+        const { getByTestId } = await render(Transactions, {
+            props: { visible: true },
+        });
 
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledWith("http://test-server/transactions");

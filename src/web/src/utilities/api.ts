@@ -1,4 +1,4 @@
-import { isApplicationError } from "../../utils/typeguards";
+import { isApplicationError } from "../../../utils/typeguards";
 
 /**
  * GET request to backend

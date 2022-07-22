@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ReportType } from "./enums";
+import { ReportType } from "./utilities/enums";
 import FixedPayDay from "./components/FixedPayDay.vue";
 import { ref } from "vue";
 import Transactions from "./components/Transactions.vue";
 import NavBar from "./components/NavBar.vue";
 import Trend from "./components/Trend.vue";
 
-const selected = ref(ReportType.Trend as string);
+const selected = ref(ReportType.FixedPayDay as string);
 
 const changeSelection = (newSelection: string): void => {
     if (selected.value === newSelection) return;
@@ -30,9 +30,9 @@ const changeSelection = (newSelection: string): void => {
             :options="Object.values(ReportType)"
         />
         <div class="p-10">
-            <Transactions v-show="selected === ReportType.Transactions" />
-            <FixedPayDay v-show="selected === ReportType.FixedPayDay" />
-            <Trend v-show="selected === ReportType.Trend" />
+            <Transactions :visible="selected === ReportType.Transactions" />
+            <FixedPayDay :visible="selected === ReportType.FixedPayDay" />
+            <Trend :visible="selected === ReportType.Trend" />
         </div>
     </div>
 </template>

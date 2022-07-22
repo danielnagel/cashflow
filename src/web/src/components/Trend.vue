@@ -1,15 +1,28 @@
 <script setup lang="ts">
-import { TrendType } from "../enums";
+import { TrendType } from "../utilities/enums";
 import { ref } from "vue";
 import TrendSummary from "./TrendSummary.vue";
 import TrendVariable from "./TrendVariable.vue";
+import ComboBox from "./ComboBox.vue";
 
-const selected = ref(TrendType.Variable as string);
+const props = defineProps<{
+    visible?: boolean;
+}>();
+
+const selected = ref("");
 </script>
 
 <template>
-    <div id="trend-container-root" class="p-10">
-        <TrendSummary v-show="selected === TrendType.All" />
-        <TrendVariable v-show="selected === TrendType.Variable" />
+    <div id="trend-container-root" class="p-10" v-show="visible">
+        <ComboBox
+            @change="(v) => (selected = v)"
+            :selected="selected"
+            :items="Object.values(TrendType)"
+            :label="`Trend type: ${selected}`"
+        />
+        <TrendSummary :visible="props.visible && selected === TrendType.All" />
+        <TrendVariable
+            :visible="props.visible && selected === TrendType.Variable"
+        />
     </div>
 </template>
