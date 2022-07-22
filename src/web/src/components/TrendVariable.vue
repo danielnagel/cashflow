@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import "billboard.js/dist/theme/insight.css";
-import bb, { area } from "billboard.js";
 import { watch, ref, onMounted } from "vue";
 import { isApplicationError } from "../../../utils/typeguards";
 import Alert from "./Alert.vue";
 import { getApi } from "../utilities/api";
 import ComboBox from "./ComboBox.vue";
+import {
+    generateAreaChart,
+    generateVariableTrendColumns,
+} from "../utilities/chart";
 
 const props = defineProps<{
     visible?: boolean;
@@ -15,8 +17,8 @@ const error = ref("");
 const trendReportTable = ref(null as TrendReportTableRow[] | null);
 const selectedFilter = ref("");
 const filters = ref([] as string[]);
-const chartxAxis = ref([] as string[]);
-const charData = ref([] as Array<Array<string | number>>);
+const columns = ref([] as Array<Array<string | number>>);
+const chartId = "#trend-variable-root-chart";
 
 const loadApiData = async () => {
     error.value = "";
@@ -26,46 +28,6 @@ const loadApiData = async () => {
     } catch (e: any) {
         if (typeof e === "string") error.value = e;
     }
-};
-
-const getData = (): Array<Array<string | number>> => {
-    const table = trendReportTable.value;
-
-    const result: Array<Array<string | number>> = [];
-
-    if (isApplicationError(table) || table === null) {
-        return result;
-    }
-
-    for (const row of table) {
-        const resultRow: Array<string | number> = [];
-        resultRow.push(row.category);
-        for (const value of Object.values(row)) {
-            if (!value) continue;
-            let number = parseFloat(value.substring(0, value.length - 2));
-            if (isNaN(number)) continue;
-            if (number < 0) number *= -1;
-            resultRow.push(number);
-        }
-        if (resultRow.length > 0) result.push(resultRow);
-    }
-    return result;
-};
-
-const getX = (): string[] => {
-    const result = ["x"];
-    const table = trendReportTable.value;
-
-    if (isApplicationError(table) || table === null) {
-        return result;
-    }
-
-    const firstRow = table[0];
-    for (const key of Object.keys(firstRow)) {
-        if (key === "category") continue;
-        result.push(key);
-    }
-    return result;
 };
 
 const getFilters = (): string[] => {
@@ -78,46 +40,23 @@ const getFilters = (): string[] => {
     return result;
 };
 
-const generateChart = (): void => {
-    const columns = [chartxAxis.value, ...charData.value];
-    bb.generate({
-        data: {
-            x: "x",
-            columns,
-            type: area(),
-            filter: function (v) {
-                if (selectedFilter.value === "all") return true;
-                const typeSafeV = v as unknown as { id: string };
-                return typeSafeV.id === selectedFilter.value;
-            },
-        },
-        axis: {
-            x: {
-                type: "timeseries",
-                tick: {
-                    format: "%m.%Y",
-                },
-            },
-        },
-        bindto: "#trend-variable-root-chart",
-    });
+const chartFilter = (v: unknown) => {
+    if (selectedFilter.value === "all") return true;
+    const typeSafeV = v as unknown as { id: string };
+    return typeSafeV.id === selectedFilter.value;
 };
 
 const handleChange = (value: string) => {
     selectedFilter.value = value;
-    generateChart();
+    generateAreaChart(columns.value, chartId, undefined, chartFilter);
 };
 
 const setup = async () => {
     if (props.visible && trendReportTable.value === null) {
         await loadApiData();
-
         filters.value = getFilters();
-        selectedFilter.value = filters.value[0];
-        chartxAxis.value = getX();
-        charData.value = getData();
-
-        generateChart();
+        columns.value = generateVariableTrendColumns(trendReportTable.value);
+        generateAreaChart(columns.value, chartId, undefined, chartFilter);
     }
 };
 
