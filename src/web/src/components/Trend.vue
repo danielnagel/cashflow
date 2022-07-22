@@ -3,6 +3,7 @@ import { TrendType } from "../utilities/enums";
 import { ref } from "vue";
 import TrendSummary from "./TrendSummary.vue";
 import TrendVariable from "./TrendVariable.vue";
+import TrendFixed from "./TrendFixed.vue";
 import ComboBox from "./ComboBox.vue";
 
 const props = defineProps<{
@@ -24,5 +25,6 @@ const selected = ref("");
         <TrendVariable
             :visible="props.visible && selected === TrendType.Variable"
         />
+        <TrendFixed :visible="props.visible && selected === TrendType.Fixed" />
     </div>
 </template>
