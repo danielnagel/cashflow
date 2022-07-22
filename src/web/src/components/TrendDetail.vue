@@ -11,6 +11,8 @@ import {
 
 const props = defineProps<{
     visible?: boolean;
+    chartId: string;
+    type: string;
 }>();
 
 const error = ref("");
@@ -18,12 +20,11 @@ const trendReportTable = ref(null as TrendReportTableRow[] | null);
 const selectedFilter = ref("");
 const filters = ref([] as string[]);
 const columns = ref([] as Array<Array<string | number>>);
-const chartId = "#trend-variable-root-chart";
 
 const loadApiData = async () => {
     error.value = "";
     try {
-        const result = await getApi("/trend/variable");
+        const result = await getApi(`/trend/${props.type}`);
         trendReportTable.value = result as TrendReportTableRow[];
     } catch (e: any) {
         if (typeof e === "string") error.value = e;
@@ -48,15 +49,26 @@ const chartFilter = (v: unknown) => {
 
 const handleChange = (value: string) => {
     selectedFilter.value = value;
-    generateAreaChart(columns.value, chartId, undefined, chartFilter);
+    generateAreaChart(
+        columns.value,
+        `#${props.chartId}`,
+        undefined,
+        chartFilter,
+    );
 };
 
 const setup = async () => {
     if (props.visible && trendReportTable.value === null) {
         await loadApiData();
         filters.value = getFilters();
+        selectedFilter.value = "all";
         columns.value = generateVariableTrendColumns(trendReportTable.value);
-        generateAreaChart(columns.value, chartId, undefined, chartFilter);
+        generateAreaChart(
+            columns.value,
+            `#${props.chartId}`,
+            undefined,
+            chartFilter,
+        );
     }
 };
 
@@ -69,7 +81,7 @@ watch(
 
 <template>
     <div
-        id="trend-variable-root"
+        :id="`trend-detail-root-${type}`"
         class="relative overflow-x-auto"
         v-show="visible"
     >
@@ -80,8 +92,8 @@ watch(
             :items="filters"
             :label="`Filter: ${selectedFilter}`"
         />
-        <div id="trend-variable-root-chart-container">
-            <div id="trend-variable-root-chart"></div>
+        <div :id="`trend-detail-root-chart-container-${type}`">
+            <div :id="chartId"></div>
         </div>
     </div>
 </template>

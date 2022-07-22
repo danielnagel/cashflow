@@ -2,8 +2,7 @@
 import { TrendType } from "../utilities/enums";
 import { ref } from "vue";
 import TrendSummary from "./TrendSummary.vue";
-import TrendVariable from "./TrendVariable.vue";
-import TrendFixed from "./TrendFixed.vue";
+import TrendDetail from "./TrendDetail.vue";
 import ComboBox from "./ComboBox.vue";
 
 const props = defineProps<{
@@ -11,6 +10,10 @@ const props = defineProps<{
 }>();
 
 const selected = ref("");
+
+const allTrendTypes = Object.values(TrendType);
+const trendTypes = [...allTrendTypes];
+trendTypes.shift();
 </script>
 
 <template>
@@ -18,13 +21,15 @@ const selected = ref("");
         <ComboBox
             @change="(v) => (selected = v)"
             :selected="selected"
-            :items="Object.values(TrendType)"
+            :items="allTrendTypes"
             :label="`Trend type: ${selected}`"
         />
         <TrendSummary :visible="props.visible && selected === TrendType.All" />
-        <TrendVariable
-            :visible="props.visible && selected === TrendType.Variable"
+        <TrendDetail
+            v-for="type of trendTypes"
+            :visible="props.visible && selected === type"
+            :type="type"
+            :chart-id="`trend-chart-${type}`"
         />
-        <TrendFixed :visible="props.visible && selected === TrendType.Fixed" />
     </div>
 </template>
