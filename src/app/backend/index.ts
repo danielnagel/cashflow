@@ -7,6 +7,7 @@ import { isApplicationError } from "../../utils/typeguards";
 import { getFixedPayDay } from "./endpoints/fixedPayDay";
 import { getAllTransactions } from "./endpoints/transactions";
 import { getTrendReportTable } from "./endpoints/trend";
+import { round } from "../../utils/numbers";
 const app = express();
 app.use(
     cors({
@@ -19,44 +20,72 @@ app.use(
 );
 const port = 8080; // default port to listen
 
-export default (args: Arguments) => {
+export default async (args: Arguments) => {
     const options = loadConfigurationFile(args.configurationPath);
     if (isApplicationError(options)) {
         log({ message: options, level: LogLevel.Error });
         return;
     }
 
+    // cache data
+    const start = new Date().getTime();
+    log({
+        message: `pre loading reports and transactions...`,
+        level: LogLevel.Info,
+        allowedLogLevel: options.allowedLogLevel,
+        type: options.logType,
+    });
+    const transactions = await getAllTransactions(options);
+    const fixedPayDay = await getFixedPayDay(options);
+    const allTrends = await getTrendReportTable(options, {
+        ...args,
+        trendType: undefined,
+    });
+    const variableTrend = await getTrendReportTable(options, {
+        ...args,
+        trendType: TransactionType.Variable,
+    });
+    const fixedTrend = await getTrendReportTable(options, {
+        ...args,
+        trendType: TransactionType.Fixed,
+    });
+    const incomeTrend = await getTrendReportTable(options, {
+        ...args,
+        trendType: TransactionType.Income,
+    });
+    const specialTrend = await getTrendReportTable(options, {
+        ...args,
+        trendType: TransactionType.Special,
+    });
+    const time = round((new Date().getTime() - start) / 1000);
+    log({
+        message: `Done. Needed ${time} s.`,
+        level: LogLevel.Info,
+        allowedLogLevel: options.allowedLogLevel,
+        type: options.logType,
+    });
+
     // register endpoints and handlers
-    app.get("/transactions", async (_: Request, res: Response) =>
-        res.status(200).json(await getAllTransactions(options)),
+    app.get("/transactions", (_: Request, res: Response) =>
+        res.status(200).json(transactions),
     );
-    app.get("/fixedpayday", async (_: Request, res: Response) =>
-        res.status(200).json(await getFixedPayDay(options)),
+    app.get("/fixedpayday", (_: Request, res: Response) =>
+        res.status(200).json(fixedPayDay),
     );
-    app.get("/trend", async (_: Request, res: Response) => {
-        const argsCopy = { ...args };
-        argsCopy.trendType = undefined;
-        res.status(200).json(await getTrendReportTable(options, argsCopy));
+    app.get("/trend", (_: Request, res: Response) => {
+        res.status(200).json(allTrends);
     });
     app.get("/trend/variable", async (_: Request, res: Response) => {
-        const argsCopy = { ...args };
-        argsCopy.trendType = TransactionType.Variable;
-        res.status(200).json(await getTrendReportTable(options, argsCopy));
+        res.status(200).json(variableTrend);
     });
-    app.get("/trend/fixed", async (_: Request, res: Response) => {
-        const argsCopy = { ...args };
-        argsCopy.trendType = TransactionType.Fixed;
-        res.status(200).json(await getTrendReportTable(options, argsCopy));
+    app.get("/trend/fixed", (_: Request, res: Response) => {
+        res.status(200).json(fixedTrend);
     });
-    app.get("/trend/income", async (_: Request, res: Response) => {
-        const argsCopy = { ...args };
-        argsCopy.trendType = TransactionType.Income;
-        res.status(200).json(await getTrendReportTable(options, argsCopy));
+    app.get("/trend/income", (_: Request, res: Response) => {
+        res.status(200).json(incomeTrend);
     });
-    app.get("/trend/special", async (_: Request, res: Response) => {
-        const argsCopy = { ...args };
-        argsCopy.trendType = TransactionType.Special;
-        res.status(200).json(await getTrendReportTable(options, argsCopy));
+    app.get("/trend/special", (_: Request, res: Response) => {
+        res.status(200).json(specialTrend);
     });
 
     // start the Express server
