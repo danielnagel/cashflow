@@ -3,6 +3,7 @@ import { LogLevel, OperatingMode } from "./types/enums";
 import { log } from "./utils/loggers";
 import cli from "./app/cli";
 import server from "./app/backend";
+import "dotenv/config";
 
 const args = processCliOptions();
 

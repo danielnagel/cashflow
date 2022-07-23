@@ -11,10 +11,9 @@ import { round } from "../../utils/numbers";
 const app = express();
 app.use(
     cors({
-        origin: [
+        origin: process.env.ALLOWED_ORIGIN?.split(",") || [
             "http://localhost:3000",
-            "http://172.31.32.116:3000",
-            "http://192.168.178.73:3000",
+            "http://localhost:4173",
         ],
     }),
 );
@@ -75,7 +74,7 @@ export default async (args: Arguments) => {
     app.get("/trend", (_: Request, res: Response) => {
         res.status(200).json(allTrends);
     });
-    app.get("/trend/variable", async (_: Request, res: Response) => {
+    app.get("/trend/variable", (_: Request, res: Response) => {
         res.status(200).json(variableTrend);
     });
     app.get("/trend/fixed", (_: Request, res: Response) => {

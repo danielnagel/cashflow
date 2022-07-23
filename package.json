@@ -1,6 +1,6 @@
 {
     "name": "cashflow",
-    "version": "0.15.4",
+    "version": "0.15.5",
     "description": "Generates reports from financial data csv files.",
     "keywords": [
         "financial",
@@ -34,7 +34,11 @@
         "report:trend:income": "node dist/index.js -r trend -t income",
         "postinstall": "npm install --prefix src/web",
         "prestart": "npm run build",
-        "start": "npm run backend & npm run preview --prefix src/web -- --host"
+        "start": "npm run backend & npm run preview --prefix src/web -- --host",
+        "background:backend": "npm run backend &",
+        "background:frontend": "npm run preview --prefix src/web -- --host &",
+        "background": "npm run background:backend && npm run background:frontend",
+        "background:stop": "kill $(lsof -t -i:8080); kill $(lsof -t -i:4173)"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
@@ -56,6 +60,7 @@
         "@types/yargs": "^17.0.8",
         "cors": "^2.8.5",
         "date-fns": "^2.27.0",
+        "dotenv": "^16.0.1",
         "express": "^4.18.1",
         "husky": "^7.0.4",
         "jest": "^27.3.1",
