@@ -8,16 +8,17 @@ import { getFixedPayDay } from "./endpoints/fixedPayDay";
 import { getAllTransactions } from "./endpoints/transactions";
 import { getTrendReportTable } from "./endpoints/trend";
 import { round } from "../../utils/numbers";
+import "dotenv/config";
+
 const app = express();
-app.use(
-    cors({
-        origin: process.env.ALLOWED_ORIGIN?.split(",") || [
-            "http://localhost:3000",
-            "http://localhost:4173",
-        ],
-    }),
-);
-const port = 8080; // default port to listen
+
+const origin = process.env.ALLOWED_ORIGIN?.split(",") || [
+    "http://localhost:3000",
+    "http://localhost:4173",
+];
+app.use(cors({ origin }));
+
+const port = process.env.BACKEND_PORT || 8080; // default port to listen
 
 export default async (args: Arguments) => {
     const options = loadConfigurationFile(args.configurationPath);
