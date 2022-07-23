@@ -17,7 +17,7 @@ trendTypes.shift();
 </script>
 
 <template>
-    <div id="trend-container-root" class="p-10" v-show="visible">
+    <div id="trend-container-root" v-show="visible">
         <ComboBox
             @change="(v) => (selected = v)"
             :selected="selected"

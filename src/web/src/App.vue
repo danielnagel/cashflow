@@ -29,7 +29,7 @@ const changeSelection = (newSelection: string): void => {
             :selection="selected"
             :options="Object.values(ReportType)"
         />
-        <div class="p-10">
+        <div class="p-4">
             <Transactions :visible="selected === ReportType.Transactions" />
             <FixedPayDay :visible="selected === ReportType.FixedPayDay" />
             <Trend :visible="selected === ReportType.Trend" />
