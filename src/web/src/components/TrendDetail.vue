@@ -14,6 +14,7 @@ const props = defineProps<{
     chartId: string;
     type: string;
     category: string;
+    period: string;
 }>();
 
 const emit = defineEmits(["categories"]);
@@ -57,8 +58,8 @@ const chartFilter = (v: unknown) => {
 
 const handleChange = () => {
     columns.value = isTrendTypeAll()
-        ? generateTrendTypeColumns(trendReportTable.value)
-        : generateVariableTrendColumns(trendReportTable.value);
+        ? generateTrendTypeColumns(trendReportTable.value, props.period)
+        : generateVariableTrendColumns(trendReportTable.value, props.period);
     groups.value = isTrendTypeAll()
         ? [
               [columns.value[1][0].toString()],
@@ -90,6 +91,10 @@ watch(
 );
 watch(
     () => props.category,
+    () => handleChange(),
+);
+watch(
+    () => props.period,
     () => handleChange(),
 );
 </script>

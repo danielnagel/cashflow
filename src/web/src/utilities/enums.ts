@@ -11,3 +11,10 @@ export enum TrendType {
     Income = "income",
     Special = "special",
 }
+
+export enum FilterPeriod {
+    LastQuarter = "LastQuarter",
+    LastMonth = "LastMonth",
+    LastYear = "LastYear",
+    NoPeriod = "NoPeriod",
+}

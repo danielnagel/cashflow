@@ -2,6 +2,7 @@ import bb, { area } from "billboard.js";
 import { isApplicationError } from "../../../utils/typeguards";
 import { TransactionType } from "../../../types/enums";
 import { parseDateString, formatDate } from "../../../utils/dates";
+import { FilterPeriod } from "./enums";
 
 // aus summary
 
@@ -74,6 +75,7 @@ const getX = (
 
 export const generateTrendTypeColumns = (
     table: TrendReportTableRow[] | ApplicationError | null,
+    period: string,
 ): Array<Array<string | number | Date>> => {
     const xAxis = getX(table);
     const incomeData = getTransactionTypeData(table, TransactionType.Income);
@@ -83,15 +85,48 @@ export const generateTrendTypeColumns = (
     );
     const fixedData = getTransactionTypeData(table, TransactionType.Fixed);
 
-    return [xAxis, incomeData, variableData, fixedData];
+    return filterByPeriod([xAxis, incomeData, variableData, fixedData], period);
+};
+
+const filterByPeriod = (
+    columns: Array<Array<string | number | Date>>,
+    period: string,
+): Array<Array<string | number | Date>> => {
+    switch (period) {
+        case FilterPeriod.LastMonth:
+            // xAxis - keep first element and only keep the latest xAxis[xAxis.length -1];
+            const firstElements = columns.map((c) => {
+                return c[0];
+            });
+            const filteredColumns: Array<Array<string | number | Date>> = [];
+            for (let i = 0; i < firstElements.length; i++) {
+                filteredColumns[i] = [
+                    firstElements[i],
+                    columns[i][firstElements.length - 1],
+                ];
+            }
+            columns = filteredColumns;
+            break;
+        case FilterPeriod.LastQuarter:
+            // xAxis - keep first element and only keep the three latest xAxis[xAxis.length -1 -2 -3];
+            break;
+        case FilterPeriod.LastYear:
+            // xAxis - keep first element and only keep the twelve latest xAxis[xAxis.length -1 ... -12];
+            break;
+        case FilterPeriod.NoPeriod:
+        default:
+        // do nothing
+    }
+    return columns;
 };
 
 export const generateVariableTrendColumns = (
     table: TrendReportTableRow[] | ApplicationError | null,
+    period: string,
 ): Array<Array<string | number | Date>> => {
     const xAxis = getX(table);
     const data = getVariableData(table);
-    return [xAxis, ...data];
+    return filterByPeriod([xAxis, ...data], period);
 };
 
 export const generateAreaChart = (

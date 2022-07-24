@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TrendType } from "../utilities/enums";
+import { TrendType, FilterPeriod } from "../utilities/enums";
 import { ref } from "vue";
 
 const props = defineProps<{
@@ -17,6 +17,11 @@ const availableCategories = ref([] as string[]);
 const handleNewCategories = (v: string[]) => {
     availableCategories.value = v;
     selectedCategory.value = "all";
+};
+
+const selectedPeriod = ref("");
+const handleSelectedPeriodChange = (v: string) => {
+    selectedPeriod.value = v;
 };
 </script>
 
@@ -37,6 +42,13 @@ const handleNewCategories = (v: string[]) => {
                 :label="`Category type: ${selectedCategory}`"
                 class="basis-1/4 px-2"
             />
+            <combo-box
+                @change="handleSelectedPeriodChange"
+                :selected="selectedPeriod"
+                :items="Object.values(FilterPeriod)"
+                :label="`Filter period: ${selectedPeriod}`"
+                class="basis-1/4 px-2"
+            />
         </div>
         <TrendDetail
             v-for="type of Object.values(TrendType)"
@@ -45,6 +57,7 @@ const handleNewCategories = (v: string[]) => {
             :type="type"
             :chart-id="`trend-chart-${type}`"
             :category="selectedCategory"
+            :period="selectedPeriod"
             @categories="handleNewCategories"
         />
     </div>
