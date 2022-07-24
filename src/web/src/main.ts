@@ -10,7 +10,6 @@ import {
     Transactions,
     Trend,
     TrendDetail,
-    TrendSummary,
 } from "./components";
 
 const app = createApp(App);
@@ -21,7 +20,6 @@ app.component("Alert", Alert)
     .component("NavBar", NavBar)
     .component("Transactions", Transactions)
     .component("Trend", Trend)
-    .component("TrendDetail", TrendDetail)
-    .component("TrendSummary", TrendSummary);
+    .component("TrendDetail", TrendDetail);
 
 app.mount("#app");

@@ -5,7 +5,6 @@ import NavBar from "./NavBar.vue";
 import Transactions from "./Transactions.vue";
 import Trend from "./Trend.vue";
 import TrendDetail from "./TrendDetail.vue";
-import TrendSummary from "./TrendSummary.vue";
 
 export {
     Alert,
@@ -15,5 +14,4 @@ export {
     Transactions,
     Trend,
     TrendDetail,
-    TrendSummary,
 };

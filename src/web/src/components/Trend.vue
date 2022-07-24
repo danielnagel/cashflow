@@ -6,24 +6,22 @@ const props = defineProps<{
     visible?: boolean;
 }>();
 
-const selected = ref("");
+const selected = ref("all");
+const handleSelectedChange = (v: string) => (selected.value = v);
 
-const allTrendTypes = Object.values(TrendType);
-const trendTypes = [...allTrendTypes];
-trendTypes.shift();
+// TODO: selectedCategory vom laptop!
 </script>
 
 <template>
     <div id="trend-container-root" v-show="visible">
         <ComboBox
-            @change="(v) => (selected = v)"
+            @change="handleSelectedChange"
             :selected="selected"
-            :items="allTrendTypes"
+            :items="Object.values(TrendType)"
             :label="`Trend type: ${selected}`"
         />
-        <TrendSummary :visible="props.visible && selected === TrendType.All" />
         <TrendDetail
-            v-for="type of trendTypes"
+            v-for="type of Object.values(TrendType)"
             :key="type"
             :visible="props.visible && selected === type"
             :type="type"
