@@ -6,26 +6,46 @@ const props = defineProps<{
     visible?: boolean;
 }>();
 
-const selected = ref("all");
-const handleSelectedChange = (v: string) => (selected.value = v);
+const selectedTrend = ref("all");
+const handleSelectedTrendChange = (v: string) => (selectedTrend.value = v);
 
-// TODO: selectedCategory vom laptop!
+const selectedCategory = ref("all");
+const handleSelectedCategoryChange = (v: string) =>
+    (selectedCategory.value = v);
+
+const availableCategories = ref([] as string[]);
+const handleNewCategories = (v: string[]) => {
+    availableCategories.value = v;
+    selectedCategory.value = "all";
+};
 </script>
 
 <template>
     <div id="trend-container-root" v-show="visible">
-        <ComboBox
-            @change="handleSelectedChange"
-            :selected="selected"
-            :items="Object.values(TrendType)"
-            :label="`Trend type: ${selected}`"
-        />
+        <div id="trend-container-menu" class="px-6 flex flex-row">
+            <ComboBox
+                @change="handleSelectedTrendChange"
+                :selected="selectedTrend"
+                :items="Object.values(TrendType)"
+                :label="`Trend type: ${selectedTrend}`"
+                class="basis-1/4 px-2"
+            />
+            <ComboBox
+                @change="handleSelectedCategoryChange"
+                :selected="selectedCategory"
+                :items="availableCategories"
+                :label="`Category type: ${selectedCategory}`"
+                class="basis-1/4 px-2"
+            />
+        </div>
         <TrendDetail
             v-for="type of Object.values(TrendType)"
             :key="type"
-            :visible="props.visible && selected === type"
+            :visible="props.visible && selectedTrend === type"
             :type="type"
             :chart-id="`trend-chart-${type}`"
+            :category="selectedCategory"
+            @categories="handleNewCategories"
         />
     </div>
 </template>

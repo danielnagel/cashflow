@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref, onMounted, computed } from "vue";
+import { watch, ref, onMounted } from "vue";
 import { isApplicationError } from "../../../utils/typeguards";
 import { getApi } from "../utilities/api";
 import {
@@ -13,12 +13,13 @@ const props = defineProps<{
     visible?: boolean;
     chartId: string;
     type: string;
+    category: string;
 }>();
+
+const emit = defineEmits(["categories"]);
 
 const error = ref("");
 const trendReportTable = ref(null as TrendReportTableRow[] | null);
-const selectedFilter = ref("");
-const filters = ref([] as string[]);
 const columns = ref([] as Array<Array<string | number | Date>>);
 const groups = ref(undefined as Array<Array<string>> | undefined);
 
@@ -38,7 +39,7 @@ const loadApiData = async () => {
     }
 };
 
-const getFilters = (): string[] => {
+const getCategories = (): string[] => {
     const table = trendReportTable.value;
     const result: Array<string> = ["all"];
     if (isApplicationError(table) || table === null) {
@@ -49,13 +50,12 @@ const getFilters = (): string[] => {
 };
 
 const chartFilter = (v: unknown) => {
-    if (selectedFilter.value === "all") return true;
+    if (props.category === "all") return true;
     const typeSafeV = v as unknown as { id: string };
-    return typeSafeV.id === selectedFilter.value;
+    return typeSafeV.id === props.category;
 };
 
-const handleChange = (value: string) => {
-    selectedFilter.value = value;
+const handleChange = () => {
     columns.value = isTrendTypeAll()
         ? generateTrendTypeColumns(trendReportTable.value)
         : generateVariableTrendColumns(trendReportTable.value);
@@ -74,10 +74,12 @@ const handleChange = (value: string) => {
 };
 
 const setup = async () => {
-    if (props.visible && trendReportTable.value === null) {
-        await loadApiData();
-        filters.value = getFilters();
-        handleChange("all");
+    if (props.visible) {
+        if (trendReportTable.value === null) {
+            await loadApiData();
+        }
+        emit("categories", getCategories());
+        handleChange();
     }
 };
 
@@ -85,6 +87,10 @@ onMounted(() => setup());
 watch(
     () => props.visible,
     () => setup(),
+);
+watch(
+    () => props.category,
+    () => handleChange(),
 );
 </script>
 
@@ -95,12 +101,6 @@ watch(
         v-show="visible"
     >
         <alert :message="error"></alert>
-        <ComboBox
-            @change="handleChange"
-            :selected="selectedFilter"
-            :items="filters"
-            :label="`Filter: ${selectedFilter}`"
-        />
         <div :id="`trend-detail-root-chart-container-${type}`">
             <div :id="chartId"></div>
         </div>
