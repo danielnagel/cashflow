@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { watch, ref, onMounted } from "vue";
-import Alert from "./Alert.vue";
 import { getApi } from "../utilities/api";
 import {
     generateAreaChart,

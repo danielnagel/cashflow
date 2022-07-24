@@ -63,7 +63,13 @@ onBeforeMount(() => {
             @change="handleChange"
         >
             <option disabled value="">{{ noSelectionText }}</option>
-            <option v-for="i of items" :value="i">{{ i }}</option>
+            <option
+                v-for="(item, index) of items"
+                :key="`${index}_${item}`"
+                :value="item"
+            >
+                {{ item }}
+            </option>
         </select>
     </div>
 </template>

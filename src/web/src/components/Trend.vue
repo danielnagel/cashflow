@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { TrendType } from "../utilities/enums";
 import { ref } from "vue";
-import TrendSummary from "./TrendSummary.vue";
-import TrendDetail from "./TrendDetail.vue";
-import ComboBox from "./ComboBox.vue";
 
 const props = defineProps<{
     visible?: boolean;
@@ -27,6 +24,7 @@ trendTypes.shift();
         <TrendSummary :visible="props.visible && selected === TrendType.All" />
         <TrendDetail
             v-for="type of trendTypes"
+            :key="type"
             :visible="props.visible && selected === type"
             :type="type"
             :chart-id="`trend-chart-${type}`"

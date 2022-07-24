@@ -35,7 +35,8 @@ const isSelected = (name: string): string => {
                     <div class="hidden sm:block sm:ml-6">
                         <div class="flex space-x-4">
                             <button
-                                v-for="option of options"
+                                v-for="(option, index) of options"
+                                :key="`${index}_${option}`"
                                 @click="$emit('selection', option)"
                                 :class="isSelected(option)"
                             >

@@ -80,7 +80,10 @@ describe("Transactions component test", () => {
 
         await waitFor(() => {
             const alert = getByTestId("alert");
-            expect(alert).toHaveTextContent("Backend server is unreachable.");
+            expect(alert).toHaveAttribute(
+                "message",
+                "Backend server is unreachable.",
+            );
         });
     });
 });

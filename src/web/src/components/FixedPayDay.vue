@@ -3,7 +3,6 @@ import { computed, watch, ref, onMounted } from "vue";
 import { isApplicationError } from "../../../utils/typeguards";
 import { formatDate } from "../../../utils/dates";
 import { roundToString } from "../../../utils/numbers";
-import Alert from "./Alert.vue";
 import { getApi } from "../utilities/api";
 
 const props = defineProps<{
@@ -98,7 +97,7 @@ watch(
         class="relative overflow-x-auto shadow-md"
         v-show="visible"
     >
-        <alert :message="error"></alert>
+        <alert :message="error" data-testid="alert"></alert>
         <table
             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
         >
