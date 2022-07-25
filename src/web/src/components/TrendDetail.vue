@@ -57,21 +57,29 @@ const chartFilter = (v: unknown) => {
 };
 
 const handleChange = () => {
-    columns.value = isTrendTypeAll()
-        ? generateTrendTypeColumns(trendReportTable.value, props.period)
-        : generateVariableTrendColumns(trendReportTable.value, props.period);
-    groups.value = isTrendTypeAll()
-        ? [
-              [columns.value[1][0].toString()],
-              [columns.value[2][0].toString(), columns.value[3][0].toString()],
-          ]
-        : undefined;
-    generateAreaChart(
-        columns.value,
-        `#${props.chartId}`,
-        groups.value,
-        chartFilter,
-    );
+    if (props.visible) {
+        columns.value = isTrendTypeAll()
+            ? generateTrendTypeColumns(trendReportTable.value, props.period)
+            : generateVariableTrendColumns(
+                  trendReportTable.value,
+                  props.period,
+              );
+        groups.value = isTrendTypeAll()
+            ? [
+                  [columns.value[1][0].toString()],
+                  [
+                      columns.value[2][0].toString(),
+                      columns.value[3][0].toString(),
+                  ],
+              ]
+            : undefined;
+        generateAreaChart(
+            columns.value,
+            `#${props.chartId}`,
+            groups.value,
+            chartFilter,
+        );
+    }
 };
 
 const setup = async () => {

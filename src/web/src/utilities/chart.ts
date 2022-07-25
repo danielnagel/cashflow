@@ -94,30 +94,45 @@ const filterByPeriod = (
 ): Array<Array<string | number | Date>> => {
     switch (period) {
         case FilterPeriod.LastMonth:
-            // xAxis - keep first element and only keep the latest xAxis[xAxis.length -1];
-            const firstElements = columns.map((c) => {
-                return c[0];
-            });
-            const filteredColumns: Array<Array<string | number | Date>> = [];
-            for (let i = 0; i < firstElements.length; i++) {
-                filteredColumns[i] = [
-                    firstElements[i],
-                    columns[i][firstElements.length - 1],
-                ];
-            }
-            columns = filteredColumns;
+            columns = getLatestPeriods(columns, 1);
             break;
         case FilterPeriod.LastQuarter:
-            // xAxis - keep first element and only keep the three latest xAxis[xAxis.length -1 -2 -3];
+            columns = getLatestPeriods(columns, 3);
             break;
         case FilterPeriod.LastYear:
-            // xAxis - keep first element and only keep the twelve latest xAxis[xAxis.length -1 ... -12];
+            columns = getLatestPeriods(columns, 12);
             break;
         case FilterPeriod.NoPeriod:
         default:
         // do nothing
     }
     return columns;
+};
+
+const getLatestPeriods = (
+    columns: Array<Array<string | number | Date>>,
+    periods: number,
+): Array<Array<string | number | Date>> => {
+    if (columns.length === 0) return columns;
+
+    const firstElements = columns.map((c) => {
+        return c[0];
+    });
+    const firstElementLength = columns[0].length;
+
+    const filteredColumns: Array<Array<string | number | Date>> = [];
+    for (let i = 0; i < firstElements.length; i++) {
+        for (
+            let j = firstElementLength - 1;
+            j >= firstElementLength - periods;
+            j--
+        ) {
+            if (typeof filteredColumns[i] === "undefined")
+                filteredColumns[i] = [firstElements[i], columns[i][j]];
+            else filteredColumns[i].push(columns[i][j]);
+        }
+    }
+    return filteredColumns;
 };
 
 export const generateVariableTrendColumns = (
