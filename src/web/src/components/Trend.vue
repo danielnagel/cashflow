@@ -6,20 +6,20 @@ const props = defineProps<{
     visible?: boolean;
 }>();
 
-const selectedTrend = ref("all");
+const selectedTrend = ref(TrendType.All.toString());
 const handleSelectedTrendChange = (v: string) => (selectedTrend.value = v);
 
-const selectedCategory = ref("all");
+const selectedCategory = ref(TrendType.All.toString());
 const handleSelectedCategoryChange = (v: string) =>
     (selectedCategory.value = v);
 
 const availableCategories = ref([] as string[]);
 const handleNewCategories = (v: string[]) => {
     availableCategories.value = v;
-    selectedCategory.value = "all";
+    selectedCategory.value = TrendType.All.toString();
 };
 
-const selectedPeriod = ref("");
+const selectedPeriod = ref(FilterPeriod.NoPeriod.toString());
 const handleSelectedPeriodChange = (v: string) => {
     selectedPeriod.value = v;
 };
