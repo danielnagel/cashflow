@@ -52,6 +52,8 @@ watch(
                     <th class="px-6 py-3">Initiator</th>
                     <th class="px-6 py-3">Purpose</th>
                     <th class="px-6 py-3">Value</th>
+                    <th class="px-6 py-3">Type</th>
+                    <th class="px-6 py-3">Category</th>
                 </tr>
             </thead>
             <tbody data-testid="table-body">
@@ -71,6 +73,8 @@ watch(
                     <td class="px-6 py-4">
                         {{ roundToString(t.value) }}
                     </td>
+                    <td class="px-6 py-4">{{ t.category?.type }}</td>
+                    <td class="px-6 py-4">{{ t.category?.name }}</td>
                 </tr>
             </tbody>
         </table>
