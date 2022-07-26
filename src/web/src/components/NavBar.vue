@@ -26,10 +26,15 @@ const isSelected = (name: string): string => {
                     class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
                 >
                     <div class="flex-shrink-0 flex items-center">
+                        <img
+                            src="/cashflow-logo.png"
+                            class="mr-3 h-6 sm:h-9"
+                            alt="Flowbite Logo"
+                        />
                         <h1
                             class="h-auto w-auto text-xl font-bold text-green-300 dark:text-green-700"
                         >
-                            💲♻ cashflow
+                            cashflow
                         </h1>
                     </div>
                     <div class="hidden sm:block sm:ml-6">

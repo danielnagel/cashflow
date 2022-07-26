@@ -1,4 +1,8 @@
-# cashflow 💲♻
+# cashflow
+
+<p align="center">
+  <img width="300" height="300" src="documentation/cashflow-logo.png">
+</p>
 
 Generates financial reports from various data sources.
 
