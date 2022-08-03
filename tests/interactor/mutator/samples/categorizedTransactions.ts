@@ -1,5 +1,6 @@
-export const categorizedTransactions: Transaction[] = [
+export const categorizedTransactions: ExtendedTransaction[] = [
     {
+        id: 0,
         date: new Date(2020, 0, 3),
         initiator: "Big Insurance Corp.",
         purpose: "For you car",
@@ -7,6 +8,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "car insurance", type: "fixed", period: "yearly" },
     },
     {
+        id: 1,
         date: new Date(2021, 9, 19),
         initiator: "Beef Burger Palace",
         purpose: "We hope that you had a beefy good time!",
@@ -14,6 +16,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "food", type: "variable" },
     },
     {
+        id: 2,
         date: new Date(2021, 0, 6),
         initiator: "Taxes",
         purpose: "The state wants some money from you",
@@ -21,6 +24,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "tax", type: "fixed", period: "quarter" },
     },
     {
+        id: 3,
         date: new Date(2021, 8, 1),
         initiator: "Melon the Man",
         purpose: "Juicy Melons",
@@ -28,6 +32,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "food", type: "variable" },
     },
     {
+        id: 4,
         date: new Date(2021, 10, 11),
         initiator: "Presentable Presents",
         purpose: "Good luck!",
@@ -35,6 +40,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "presents", type: "variable" },
     },
     {
+        id: 5,
         date: new Date(2021, 5, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -42,6 +48,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "rent", type: "fixed", period: "monthly" },
     },
     {
+        id: 6,
         date: new Date(2021, 3, 6),
         initiator: "Taxes",
         purpose: "The state wants some money from you",
@@ -49,6 +56,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "tax", type: "fixed", period: "quarter" },
     },
     {
+        id: 7,
         date: new Date(2021, 5, 1),
         initiator: "Almost Healthy Inc.",
         purpose: "We bet that you're going to be sick",
@@ -56,6 +64,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "insurance", type: "fixed", period: "monthly" },
     },
     {
+        id: 8,
         date: new Date(2021, 6, 7),
         initiator: "Grocerie Land",
         purpose: "VISA 23 GROCERIE LAND TES71234123423134",
@@ -63,6 +72,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "groceries", type: "variable" },
     },
     {
+        id: 9,
         date: new Date(2021, 8, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -70,6 +80,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "rent", type: "fixed", period: "monthly" },
     },
     {
+        id: 10,
         date: new Date(2021, 8, 3),
         initiator: "Stay Healthy Corp.",
         purpose: "Your health is our mission",
@@ -77,6 +88,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "insurance", type: "fixed", period: "monthly" },
     },
     {
+        id: 11,
         date: new Date(2021, 7, 11),
         initiator: "Grocerie Land",
         purpose: "VISA 11 GROCERIE LAND TES71234123423134",
@@ -84,6 +96,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "groceries", type: "variable" },
     },
     {
+        id: 12,
         date: new Date(2021, 6, 6),
         initiator: "Taxes",
         purpose: "The state wants some money from you",
@@ -91,6 +104,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "tax", type: "fixed", period: "quarter" },
     },
     {
+        id: 13,
         date: new Date(2021, 7, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -98,6 +112,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "rent", type: "fixed", period: "monthly" },
     },
     {
+        id: 14,
         date: new Date(2021, 7, 2),
         initiator: "Almost Healthy Inc.",
         purpose: "We bet that you're going to be sick",
@@ -105,6 +120,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "insurance", type: "fixed", period: "monthly" },
     },
     {
+        id: 15,
         date: new Date(2021, 9, 19),
         initiator: "my-online-shop.com",
         purpose: "my-online-shop.com; 19.10; TES710928476309298",
@@ -112,6 +128,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "shopping", type: "variable" },
     },
     {
+        id: 16,
         date: new Date(2021, 6, 7),
         initiator: "Grocerie Land",
         purpose: "VISA 23 GROCERIE LAND TES71234123423134",
@@ -119,6 +136,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "groceries", type: "variable" },
     },
     {
+        id: 17,
         date: new Date(2021, 8, 21),
         initiator: "my-online-shop.com",
         purpose: "my-online-shop.com; 21.09;  TES710928476309298",
@@ -126,6 +144,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "shopping", type: "variable" },
     },
     {
+        id: 18,
         date: new Date(2021, 10, 22),
         initiator: "my-online-shop.com",
         purpose: "my-online-shop.com; 22.11;  TES710928476309298",
@@ -133,6 +152,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "shopping", type: "variable" },
     },
     {
+        id: 19,
         date: new Date(2021, 9, 6),
         initiator: "Taxes",
         purpose: "The state wants some money from you",
@@ -140,6 +160,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "tax", type: "fixed", period: "quarter" },
     },
     {
+        id: 20,
         date: new Date(2021, 9, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -147,6 +168,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "rent", type: "fixed", period: "monthly" },
     },
     {
+        id: 21,
         date: new Date(2021, 9, 1),
         initiator: "Stay Healthy Corp.",
         purpose: "Your health is our mission",
@@ -154,6 +176,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "insurance", type: "fixed", period: "monthly" },
     },
     {
+        id: 22,
         date: new Date(2021, 10, 10),
         initiator: "Tasty Deli and Grocerie Store",
         purpose: "Thanks for buying the freshest food",
@@ -161,6 +184,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "groceries", type: "variable" },
     },
     {
+        id: 23,
         date: new Date(2021, 10, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -168,6 +192,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "rent", type: "fixed", period: "monthly" },
     },
     {
+        id: 24,
         date: new Date(2021, 10, 2),
         initiator: "Stay Healthy Corp.",
         purpose: "Your health is our mission",
@@ -175,6 +200,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "insurance", type: "fixed", period: "monthly" },
     },
     {
+        id: 25,
         date: new Date(2021, 6, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -182,6 +208,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "rent", type: "fixed", period: "monthly" },
     },
     {
+        id: 26,
         date: new Date(2021, 6, 1),
         initiator: "Almost Healthy Inc.",
         purpose: "We bet that you're going to be sick",
@@ -189,6 +216,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "insurance", type: "fixed", period: "monthly" },
     },
     {
+        id: 27,
         date: new Date(2021, 10, 10),
         initiator: "Tasty Deli and Grocerie Store",
         purpose: "Thanks for buying the freshest food",
@@ -196,6 +224,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "groceries", type: "variable" },
     },
     {
+        id: 28,
         date: new Date(2021, 11, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -203,6 +232,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "rent", type: "fixed", period: "monthly" },
     },
     {
+        id: 29,
         date: new Date(2021, 11, 3),
         initiator: "Stay Healthy Corp.",
         purpose: "Your health is our mission",
@@ -210,6 +240,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "insurance", type: "fixed", period: "monthly" },
     },
     {
+        id: 30,
         date: new Date(2021, 6, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -221,6 +252,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 31,
         date: new Date(2021, 7, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -232,6 +264,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 32,
         date: new Date(2021, 7, 23),
         initiator: "Online Payments Group",
         purpose: "Game Suprise Box Subscription",
@@ -243,6 +276,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 33,
         date: new Date(2021, 8, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -254,6 +288,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 34,
         date: new Date(2021, 8, 23),
         initiator: "Online Payments Group",
         purpose: "Game Suprise Box Subscription",
@@ -265,6 +300,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 35,
         date: new Date(2021, 9, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -276,6 +312,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 36,
         date: new Date(2021, 10, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -287,6 +324,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 37,
         date: new Date(2021, 9, 23),
         initiator: "Online Payments Group",
         purpose: "Game Suprise Box Subscription",
@@ -298,6 +336,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 38,
         date: new Date(2021, 10, 23),
         initiator: "Online Payments Group",
         purpose: "Game Suprise Box Subscription",
@@ -309,6 +348,7 @@ export const categorizedTransactions: Transaction[] = [
         },
     },
     {
+        id: 39,
         date: new Date(2021, 9, 15),
         initiator: "Big Furniture Temple 34123",
         purpose: "VISA Big Furniture Temple; 15.10 ;34123",
@@ -316,6 +356,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "furniture", type: "variable" },
     },
     {
+        id: 40,
         date: new Date(2021, 10, 15),
         initiator: "Big Furniture Temple 31235",
         purpose: "VISA Big Furniture Temple; 15.11 ;31235",
@@ -323,6 +364,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "furniture", type: "variable" },
     },
     {
+        id: 41,
         date: new Date(2021, 9, 15),
         initiator: "Warren Buffet",
         purpose: "For my ETFs",
@@ -330,6 +372,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "etfs", period: "monthly", type: "fixed" },
     },
     {
+        id: 42,
         date: new Date(2021, 10, 15),
         initiator: "Warren Buffet",
         purpose: "",
@@ -337,6 +380,7 @@ export const categorizedTransactions: Transaction[] = [
         category: { name: "present for me", period: "monthly", type: "fixed" },
     },
     {
+        id: 43,
         date: new Date(2021, 0, 2),
         initiator: "Big Insurance Corp.",
         purpose: "For you car",
@@ -345,9 +389,10 @@ export const categorizedTransactions: Transaction[] = [
     },
 ];
 
-export const categorizedTransactionsWithUnmatchedTransactionCategory: Transaction[] =
+export const categorizedTransactionsWithUnmatchedTransactionCategory: ExtendedTransaction[] =
     [
         {
+            id: 0,
             date: new Date(2020, 0, 3),
             initiator: "Big Insurance Corp.",
             purpose: "For you car",
@@ -355,6 +400,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "unmatched", type: "variable" },
         },
         {
+            id: 1,
             date: new Date(2021, 9, 19),
             initiator: "Beef Burger Palace",
             purpose: "We hope that you had a beefy good time!",
@@ -362,6 +408,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "unmatched", type: "variable" },
         },
         {
+            id: 2,
             date: new Date(2021, 0, 6),
             initiator: "Taxes",
             purpose: "The state wants some money from you",
@@ -369,6 +416,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "unmatched", type: "variable" },
         },
         {
+            id: 3,
             date: new Date(2021, 8, 1),
             initiator: "Melon the Man",
             purpose: "Juicy Melons",
@@ -376,6 +424,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "unmatched", type: "variable" },
         },
         {
+            id: 4,
             date: new Date(2021, 10, 11),
             initiator: "Presentable Presents",
             purpose: "Good luck!",
@@ -383,6 +432,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "unmatched", type: "variable" },
         },
         {
+            id: 5,
             date: new Date(2021, 5, 1),
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
@@ -390,6 +440,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "rent", type: "fixed", period: "monthly" },
         },
         {
+            id: 6,
             date: new Date(2021, 3, 6),
             initiator: "Taxes",
             purpose: "The state wants some money from you",
@@ -397,6 +448,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "unmatched", type: "variable" },
         },
         {
+            id: 7,
             date: new Date(2021, 5, 1),
             initiator: "Almost Healthy Inc.",
             purpose: "We bet that you're going to be sick",
@@ -404,6 +456,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "insurance", type: "fixed", period: "monthly" },
         },
         {
+            id: 8,
             date: new Date(2021, 6, 7),
             initiator: "Grocerie Land",
             purpose: "VISA 23 GROCERIE LAND TES71234123423134",
@@ -411,6 +464,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "groceries", type: "variable" },
         },
         {
+            id: 9,
             date: new Date(2021, 8, 1),
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
@@ -418,6 +472,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "rent", type: "fixed", period: "monthly" },
         },
         {
+            id: 10,
             date: new Date(2021, 8, 3),
             initiator: "Stay Healthy Corp.",
             purpose: "Your health is our mission",
@@ -425,6 +480,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "insurance", type: "fixed", period: "monthly" },
         },
         {
+            id: 11,
             date: new Date(2021, 7, 11),
             initiator: "Grocerie Land",
             purpose: "VISA 11 GROCERIE LAND TES71234123423134",
@@ -432,6 +488,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "groceries", type: "variable" },
         },
         {
+            id: 12,
             date: new Date(2021, 6, 6),
             initiator: "Taxes",
             purpose: "The state wants some money from you",
@@ -439,6 +496,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "unmatched", type: "variable" },
         },
         {
+            id: 13,
             date: new Date(2021, 7, 1),
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
@@ -446,6 +504,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "rent", type: "fixed", period: "monthly" },
         },
         {
+            id: 14,
             date: new Date(2021, 7, 2),
             initiator: "Almost Healthy Inc.",
             purpose: "We bet that you're going to be sick",
@@ -453,6 +512,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "insurance", type: "fixed", period: "monthly" },
         },
         {
+            id: 15,
             date: new Date(2021, 9, 19),
             initiator: "my-online-shop.com",
             purpose: "my-online-shop.com; 19.10; TES710928476309298",
@@ -460,6 +520,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "shopping", type: "variable" },
         },
         {
+            id: 16,
             date: new Date(2021, 6, 7),
             initiator: "Grocerie Land",
             purpose: "VISA 23 GROCERIE LAND TES71234123423134",
@@ -467,6 +528,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "groceries", type: "variable" },
         },
         {
+            id: 17,
             date: new Date(2021, 8, 21),
             initiator: "my-online-shop.com",
             purpose: "my-online-shop.com; 21.09;  TES710928476309298",
@@ -474,6 +536,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "shopping", type: "variable" },
         },
         {
+            id: 18,
             date: new Date(2021, 10, 22),
             initiator: "my-online-shop.com",
             purpose: "my-online-shop.com; 22.11;  TES710928476309298",
@@ -481,6 +544,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "shopping", type: "variable" },
         },
         {
+            id: 19,
             date: new Date(2021, 9, 6),
             initiator: "Taxes",
             purpose: "The state wants some money from you",
@@ -488,6 +552,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "unmatched", type: "variable" },
         },
         {
+            id: 20,
             date: new Date(2021, 9, 1),
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
@@ -495,6 +560,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "rent", type: "fixed", period: "monthly" },
         },
         {
+            id: 21,
             date: new Date(2021, 9, 1),
             initiator: "Stay Healthy Corp.",
             purpose: "Your health is our mission",
@@ -502,6 +568,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "insurance", type: "fixed", period: "monthly" },
         },
         {
+            id: 22,
             date: new Date(2021, 10, 10),
             initiator: "Tasty Deli and Grocerie Store",
             purpose: "Thanks for buying the freshest food",
@@ -509,6 +576,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "groceries", type: "variable" },
         },
         {
+            id: 23,
             date: new Date(2021, 10, 1),
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
@@ -516,6 +584,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "rent", type: "fixed", period: "monthly" },
         },
         {
+            id: 24,
             date: new Date(2021, 10, 2),
             initiator: "Stay Healthy Corp.",
             purpose: "Your health is our mission",
@@ -523,6 +592,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "insurance", type: "fixed", period: "monthly" },
         },
         {
+            id: 25,
             date: new Date(2021, 6, 1),
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
@@ -530,6 +600,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "rent", type: "fixed", period: "monthly" },
         },
         {
+            id: 26,
             date: new Date(2021, 6, 1),
             initiator: "Almost Healthy Inc.",
             purpose: "We bet that you're going to be sick",
@@ -537,6 +608,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "insurance", type: "fixed", period: "monthly" },
         },
         {
+            id: 27,
             date: new Date(2021, 10, 10),
             initiator: "Tasty Deli and Grocerie Store",
             purpose: "Thanks for buying the freshest food",
@@ -544,6 +616,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "groceries", type: "variable" },
         },
         {
+            id: 28,
             date: new Date(2021, 11, 1),
             initiator: "Rent for my crib",
             purpose: "Thanks landlord",
@@ -551,6 +624,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "rent", type: "fixed", period: "monthly" },
         },
         {
+            id: 29,
             date: new Date(2021, 11, 3),
             initiator: "Stay Healthy Corp.",
             purpose: "Your health is our mission",
@@ -558,6 +632,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "insurance", type: "fixed", period: "monthly" },
         },
         {
+            id: 30,
             date: new Date(2021, 6, 15),
             initiator: "Online Payments Group",
             purpose: "Music Whale",
@@ -569,6 +644,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 31,
             date: new Date(2021, 7, 15),
             initiator: "Online Payments Group",
             purpose: "Music Whale",
@@ -580,6 +656,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 32,
             date: new Date(2021, 7, 23),
             initiator: "Online Payments Group",
             purpose: "Game Suprise Box Subscription",
@@ -591,6 +668,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 33,
             date: new Date(2021, 8, 15),
             initiator: "Online Payments Group",
             purpose: "Music Whale",
@@ -602,6 +680,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 34,
             date: new Date(2021, 8, 23),
             initiator: "Online Payments Group",
             purpose: "Game Suprise Box Subscription",
@@ -613,6 +692,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 35,
             date: new Date(2021, 9, 15),
             initiator: "Online Payments Group",
             purpose: "Music Whale",
@@ -624,6 +704,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 36,
             date: new Date(2021, 10, 15),
             initiator: "Online Payments Group",
             purpose: "Music Whale",
@@ -635,6 +716,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 37,
             date: new Date(2021, 9, 23),
             initiator: "Online Payments Group",
             purpose: "Game Suprise Box Subscription",
@@ -646,6 +728,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 38,
             date: new Date(2021, 10, 23),
             initiator: "Online Payments Group",
             purpose: "Game Suprise Box Subscription",
@@ -657,6 +740,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 39,
             date: new Date(2021, 9, 15),
             initiator: "Big Furniture Temple 34123",
             purpose: "VISA Big Furniture Temple; 15.10 ;34123",
@@ -664,6 +748,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "furniture", type: "variable" },
         },
         {
+            id: 40,
             date: new Date(2021, 10, 15),
             initiator: "Big Furniture Temple 31235",
             purpose: "VISA Big Furniture Temple; 15.11 ;31235",
@@ -671,6 +756,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "furniture", type: "variable" },
         },
         {
+            id: 41,
             date: new Date(2021, 9, 15),
             initiator: "Warren Buffet",
             purpose: "For my ETFs",
@@ -678,6 +764,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             category: { name: "etfs", period: "monthly", type: "fixed" },
         },
         {
+            id: 42,
             date: new Date(2021, 10, 15),
             initiator: "Warren Buffet",
             purpose: "",
@@ -689,6 +776,7 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
             },
         },
         {
+            id: 43,
             date: new Date(2021, 0, 2),
             initiator: "Big Insurance Corp.",
             purpose: "For you car",
@@ -697,8 +785,9 @@ export const categorizedTransactionsWithUnmatchedTransactionCategory: Transactio
         },
     ];
 
-export const categorizedTransactionsAllUnmatched: Transaction[] = [
+export const categorizedTransactionsAllUnmatched: ExtendedTransaction[] = [
     {
+        id: 0,
         date: new Date(2020, 0, 3),
         initiator: "Big Insurance Corp.",
         purpose: "For you car",
@@ -706,6 +795,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 1,
         date: new Date(2021, 9, 19),
         initiator: "Beef Burger Palace",
         purpose: "We hope that you had a beefy good time!",
@@ -713,6 +803,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 2,
         date: new Date(2021, 0, 6),
         initiator: "Taxes",
         purpose: "The state wants some money from you",
@@ -720,6 +811,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 3,
         date: new Date(2021, 8, 1),
         initiator: "Melon the Man",
         purpose: "Juicy Melons",
@@ -727,6 +819,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 4,
         date: new Date(2021, 10, 11),
         initiator: "Presentable Presents",
         purpose: "Good luck!",
@@ -734,6 +827,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 5,
         date: new Date(2021, 5, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -741,6 +835,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 6,
         date: new Date(2021, 3, 6),
         initiator: "Taxes",
         purpose: "The state wants some money from you",
@@ -748,6 +843,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 7,
         date: new Date(2021, 5, 1),
         initiator: "Almost Healthy Inc.",
         purpose: "We bet that you're going to be sick",
@@ -755,6 +851,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 8,
         date: new Date(2021, 6, 7),
         initiator: "Grocerie Land",
         purpose: "VISA 23 GROCERIE LAND TES71234123423134",
@@ -762,6 +859,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 9,
         date: new Date(2021, 8, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -769,6 +867,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 10,
         date: new Date(2021, 8, 3),
         initiator: "Stay Healthy Corp.",
         purpose: "Your health is our mission",
@@ -776,6 +875,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 11,
         date: new Date(2021, 7, 11),
         initiator: "Grocerie Land",
         purpose: "VISA 11 GROCERIE LAND TES71234123423134",
@@ -783,6 +883,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 12,
         date: new Date(2021, 6, 6),
         initiator: "Taxes",
         purpose: "The state wants some money from you",
@@ -790,6 +891,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 13,
         date: new Date(2021, 7, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -797,6 +899,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 14,
         date: new Date(2021, 7, 2),
         initiator: "Almost Healthy Inc.",
         purpose: "We bet that you're going to be sick",
@@ -804,6 +907,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 15,
         date: new Date(2021, 9, 19),
         initiator: "my-online-shop.com",
         purpose: "my-online-shop.com; 19.10; TES710928476309298",
@@ -811,6 +915,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 16,
         date: new Date(2021, 6, 7),
         initiator: "Grocerie Land",
         purpose: "VISA 23 GROCERIE LAND TES71234123423134",
@@ -818,6 +923,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 17,
         date: new Date(2021, 8, 21),
         initiator: "my-online-shop.com",
         purpose: "my-online-shop.com; 21.09;  TES710928476309298",
@@ -825,6 +931,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 18,
         date: new Date(2021, 10, 22),
         initiator: "my-online-shop.com",
         purpose: "my-online-shop.com; 22.11;  TES710928476309298",
@@ -832,6 +939,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 19,
         date: new Date(2021, 9, 6),
         initiator: "Taxes",
         purpose: "The state wants some money from you",
@@ -839,6 +947,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 20,
         date: new Date(2021, 9, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -846,6 +955,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 21,
         date: new Date(2021, 9, 1),
         initiator: "Stay Healthy Corp.",
         purpose: "Your health is our mission",
@@ -853,6 +963,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 22,
         date: new Date(2021, 10, 10),
         initiator: "Tasty Deli and Grocerie Store",
         purpose: "Thanks for buying the freshest food",
@@ -860,6 +971,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 23,
         date: new Date(2021, 10, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -867,6 +979,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 24,
         date: new Date(2021, 10, 2),
         initiator: "Stay Healthy Corp.",
         purpose: "Your health is our mission",
@@ -874,6 +987,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 25,
         date: new Date(2021, 6, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -881,6 +995,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 26,
         date: new Date(2021, 6, 1),
         initiator: "Almost Healthy Inc.",
         purpose: "We bet that you're going to be sick",
@@ -888,6 +1003,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 27,
         date: new Date(2021, 10, 10),
         initiator: "Tasty Deli and Grocerie Store",
         purpose: "Thanks for buying the freshest food",
@@ -895,6 +1011,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 28,
         date: new Date(2021, 11, 1),
         initiator: "Rent for my crib",
         purpose: "Thanks landlord",
@@ -902,6 +1019,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 29,
         date: new Date(2021, 11, 3),
         initiator: "Stay Healthy Corp.",
         purpose: "Your health is our mission",
@@ -909,6 +1027,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 30,
         date: new Date(2021, 6, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -916,6 +1035,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 31,
         date: new Date(2021, 7, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -923,6 +1043,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 32,
         date: new Date(2021, 7, 23),
         initiator: "Online Payments Group",
         purpose: "Game Suprise Box Subscription",
@@ -930,6 +1051,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 33,
         date: new Date(2021, 8, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -937,6 +1059,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 34,
         date: new Date(2021, 8, 23),
         initiator: "Online Payments Group",
         purpose: "Game Suprise Box Subscription",
@@ -944,6 +1067,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 35,
         date: new Date(2021, 9, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -951,6 +1075,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 36,
         date: new Date(2021, 10, 15),
         initiator: "Online Payments Group",
         purpose: "Music Whale",
@@ -958,6 +1083,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 37,
         date: new Date(2021, 9, 23),
         initiator: "Online Payments Group",
         purpose: "Game Suprise Box Subscription",
@@ -965,6 +1091,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 38,
         date: new Date(2021, 10, 23),
         initiator: "Online Payments Group",
         purpose: "Game Suprise Box Subscription",
@@ -972,6 +1099,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 39,
         date: new Date(2021, 9, 15),
         initiator: "Big Furniture Temple 34123",
         purpose: "VISA Big Furniture Temple; 15.10 ;34123",
@@ -979,6 +1107,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 40,
         date: new Date(2021, 10, 15),
         initiator: "Big Furniture Temple 31235",
         purpose: "VISA Big Furniture Temple; 15.11 ;31235",
@@ -986,6 +1115,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 41,
         date: new Date(2021, 9, 15),
         initiator: "Warren Buffet",
         purpose: "For my ETFs",
@@ -993,6 +1123,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 42,
         date: new Date(2021, 10, 15),
         initiator: "Warren Buffet",
         purpose: "",
@@ -1000,6 +1131,7 @@ export const categorizedTransactionsAllUnmatched: Transaction[] = [
         category: { name: "unmatched", type: "variable" },
     },
     {
+        id: 43,
         date: new Date(2021, 0, 2),
         initiator: "Big Insurance Corp.",
         purpose: "For you car",

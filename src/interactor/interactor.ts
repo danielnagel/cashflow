@@ -13,7 +13,11 @@ import { generateTrendReport } from "./report/trend";
  */
 export const loadCategorizedTransactions = async (
     options: Configuration,
-): Promise<Transaction[] | ApplicationError> => {
+): Promise<ExtendedTransaction[] | ApplicationError> => {
+    // TODO: check if data in store
+
+    // when not load from csv files
+    // also store which files where already loaded and stored in store
     let transactions: Transaction[] | ApplicationError = [];
     switch (options.source.type) {
         case ConnectorType.CSV:
@@ -35,6 +39,8 @@ export const loadCategorizedTransactions = async (
             };
     }
 
+    // TODO: store categorized transactions to use later
+    // store remembers id of latest storage
     return categorizeTransaction(transactions, options);
 };
 
@@ -51,8 +57,7 @@ export const generateReport = async (
     options: Configuration,
     args: Arguments,
 ): Promise<Report | ApplicationError> => {
-    const transactions: Transaction[] | ApplicationError =
-        await loadCategorizedTransactions(options);
+    const transactions = await loadCategorizedTransactions(options);
     if (isApplicationError(transactions)) return transactions;
 
     switch (args.report) {

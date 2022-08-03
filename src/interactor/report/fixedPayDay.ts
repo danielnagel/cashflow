@@ -18,7 +18,7 @@ import { differenceInYears, isSameMonth, isSameQuarter } from "date-fns";
  * no transactions matched by filter or by malformed configuration.
  */
 export const generateFixedPayDay = (
-    fixedTransactions: Transaction[],
+    fixedTransactions: ExtendedTransaction[],
     categoryName: string,
     options: Configuration,
 ): FixedPayDay | ApplicationError => {
@@ -67,7 +67,9 @@ export const generateFixedPayDay = (
  * and available in Periods enumeration.
  * Otherwise period "monthly" is always returned.
  */
-const getPeriodFromTransactions = (transactions: Transaction[]): string => {
+const getPeriodFromTransactions = (
+    transactions: ExtendedTransaction[],
+): string => {
     const firstTransaction = transactions[0];
     if (
         isCategory(firstTransaction.category) &&
@@ -122,10 +124,10 @@ const isPaidThisPeriod = (
  * @returns sorted matched transactions
  */
 const getSortedMatchedTransactions = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     categoryName: string,
     options: Configuration,
-): Transaction[] | ApplicationError => {
+): ExtendedTransaction[] | ApplicationError => {
     let matchedTransactions = filterTransactionsByCategoryName(
         transactions,
         categoryName,
@@ -175,7 +177,7 @@ const getComparsionDate = (options: Configuration): Date | ApplicationError => {
  * no categories or no categories could be matched.
  */
 export const generateFixedPayDayReport = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     options: Configuration,
 ): CategorizedFixedPayDays | ApplicationError => {
     if (transactions.length == 0) {
@@ -185,7 +187,7 @@ export const generateFixedPayDayReport = (
         };
     }
 
-    const fixedTransactions: Transaction[] = filterTransactionsByCategoryType(
+    const fixedTransactions = filterTransactionsByCategoryType(
         transactions,
         TransactionType.Fixed,
     );

@@ -22,7 +22,7 @@ import { isApplicationError } from "../../utils/typeguards";
  * @returns TrendReport or an ApplicationError
  */
 export const generateTrendReport = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     options: Configuration,
     args: Arguments,
 ): TrendReport | ApplicationError => {
@@ -78,7 +78,7 @@ export const generateTrendReport = (
  * @returns Trend or an ApplicationError
  */
 export const generateTrend = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     type: string,
     options: Configuration,
 ): Trend | ApplicationError => {
@@ -128,7 +128,7 @@ export const generateTrend = (
  * @returns CategoryTrend or an ApplicationError
  */
 export const generateCategoryTrend = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     type: string,
     categoryName: string,
     options: Configuration,
@@ -229,7 +229,7 @@ const generatePeriods = (
  * @returns Fixed or variable category trend period or an ApplicationError
  */
 export const generateCategoryTrendPeriod = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     type: string,
     categoryName: string,
     stringPeriod: string,
@@ -305,7 +305,7 @@ const isValidTransactionType = (transactionType: string): boolean => {
  * @returns FixedCategoryTrendPeriod object or an ApplicationError
  */
 const createFixedCategoryTrendPeriod = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     period: string,
     options: Configuration,
 ): FixedCategoryTrendPeriod | ApplicationError => {
@@ -342,7 +342,7 @@ const createFixedCategoryTrendPeriod = (
  * @returns FixedCategoryTrendPeriod object or an ApplicationError
  */
 const createVariableCategoryTrendPeriod = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     period: string,
 ): VariableCategoryTrendPeriod | ApplicationError => {
     if (transactions.length === 0)

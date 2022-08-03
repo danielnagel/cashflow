@@ -4,6 +4,7 @@ export const fixedTrendPeriodForOneCategory: FixedCategoryTrendPeriod = {
     period: "2021.09",
     transactions: [
         {
+            id: 33,
             date: new Date(2021, 8, 22),
             initiator: "Mobilio Ltd.",
             purpose: "your mobile phone provider",
@@ -18,6 +19,7 @@ export const variableTrendPeriodForOneCategory: VariableCategoryTrendPeriod = {
     period: "2021.09",
     transactions: [
         {
+            id: 5,
             date: new Date(2021, 8, 7),
             initiator: "Grocerie Land",
             purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -25,6 +27,7 @@ export const variableTrendPeriodForOneCategory: VariableCategoryTrendPeriod = {
             category: { name: "groceries", type: "variable" },
         },
         {
+            id: 30,
             date: new Date(2021, 8, 16),
             initiator: "Grocerie Land",
             purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -32,6 +35,7 @@ export const variableTrendPeriodForOneCategory: VariableCategoryTrendPeriod = {
             category: { name: "groceries", type: "variable" },
         },
         {
+            id: 45,
             date: new Date(2021, 8, 24),
             initiator: "Grocerie Land",
             purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -47,6 +51,7 @@ export const incomeTrendPeriodForOneCategory: FixedCategoryTrendPeriod = {
     period: "2021.09",
     transactions: [
         {
+            id: 29,
             date: new Date(2021, 8, 28),
             initiator: "Owl Logistic Corp.",
             purpose: "Have fun",
@@ -61,6 +66,7 @@ export const specialTrendPeriodForOneCategory: VariableCategoryTrendPeriod = {
     period: "2021.10",
     transactions: [
         {
+            id: 26,
             date: new Date(2021, 9, 25),
             initiator: "Kitchen Shop 24/7",
             purpose: "VISA Kitchen Shop Store 24/7; 25.10;  TES71234326654734",
@@ -79,6 +85,7 @@ export const fixedSingleCategoryTrend: CategoryTrend = {
             period: "2021.09",
             transactions: [
                 {
+                    id: 33,
                     date: new Date(2021, 8, 22),
                     initiator: "Mobilio Ltd.",
                     purpose: "your mobile phone provider",
@@ -97,6 +104,7 @@ export const fixedSingleCategoryTrend: CategoryTrend = {
             period: "2021.10",
             transactions: [
                 {
+                    id: 23,
                     date: new Date(2021, 9, 22),
                     initiator: "Mobilio Ltd.",
                     purpose: "your mobile phone provider",
@@ -115,6 +123,7 @@ export const fixedSingleCategoryTrend: CategoryTrend = {
             period: "2021.11",
             transactions: [
                 {
+                    id: 57,
                     date: new Date(2021, 10, 22),
                     initiator: "Mobilio Ltd.",
                     purpose: "your mobile phone provider",
@@ -138,6 +147,7 @@ export const variableSingleCategoryTrend: CategoryTrend = {
             period: "2021.07",
             transactions: [
                 {
+                    id: 12,
                     date: new Date(2021, 6, 7),
                     initiator: "Grocerie Land",
                     purpose: "VISA 23 GROCERIE LAND TES71234123423134",
@@ -145,6 +155,7 @@ export const variableSingleCategoryTrend: CategoryTrend = {
                     category: { name: "groceries", type: "variable" },
                 },
                 {
+                    id: 28,
                     date: new Date(2021, 6, 7),
                     initiator: "Grocerie Land",
                     purpose: "VISA 23 GROCERIE LAND TES71234123423134",
@@ -158,6 +169,7 @@ export const variableSingleCategoryTrend: CategoryTrend = {
             period: "2021.08",
             transactions: [
                 {
+                    id: 18,
                     date: new Date(2021, 7, 11),
                     initiator: "Grocerie Land",
                     purpose: "VISA 11 GROCERIE LAND TES71234123423134",
@@ -171,6 +183,7 @@ export const variableSingleCategoryTrend: CategoryTrend = {
             period: "2021.09",
             transactions: [
                 {
+                    id: 5,
                     date: new Date(2021, 8, 7),
                     initiator: "Grocerie Land",
                     purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -178,6 +191,7 @@ export const variableSingleCategoryTrend: CategoryTrend = {
                     category: { name: "groceries", type: "variable" },
                 },
                 {
+                    id: 30,
                     date: new Date(2021, 8, 16),
                     initiator: "Grocerie Land",
                     purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -185,6 +199,7 @@ export const variableSingleCategoryTrend: CategoryTrend = {
                     category: { name: "groceries", type: "variable" },
                 },
                 {
+                    id: 45,
                     date: new Date(2021, 8, 24),
                     initiator: "Grocerie Land",
                     purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -198,6 +213,7 @@ export const variableSingleCategoryTrend: CategoryTrend = {
             period: "2021.11",
             transactions: [
                 {
+                    id: 38,
                     date: new Date(2021, 10, 10),
                     initiator: "Tasty Deli and Grocerie Store",
                     purpose: "Thanks for buying the freshest food",
@@ -205,6 +221,7 @@ export const variableSingleCategoryTrend: CategoryTrend = {
                     category: { name: "groceries", type: "variable" },
                 },
                 {
+                    id: 44,
                     date: new Date(2021, 10, 10),
                     initiator: "Tasty Deli and Grocerie Store",
                     purpose: "Thanks for buying the freshest food",
@@ -225,6 +242,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.01",
             transactions: [
                 {
+                    id: 1,
                     date: new Date(2021, 0, 28),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -239,6 +257,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.02",
             transactions: [
                 {
+                    id: 4,
                     date: new Date(2021, 1, 26),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -253,6 +272,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.03",
             transactions: [
                 {
+                    id: 9,
                     date: new Date(2021, 2, 29),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -267,6 +287,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.04",
             transactions: [
                 {
+                    id: 13,
                     date: new Date(2021, 3, 28),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -281,6 +302,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.05",
             transactions: [
                 {
+                    id: 16,
                     date: new Date(2021, 4, 27),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -295,6 +317,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.06",
             transactions: [
                 {
+                    id: 19,
                     date: new Date(2021, 5, 28),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -309,6 +332,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.07",
             transactions: [
                 {
+                    id: 22,
                     date: new Date(2021, 6, 29),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -323,6 +347,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.08",
             transactions: [
                 {
+                    id: 25,
                     date: new Date(2021, 7, 27),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -337,6 +362,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.09",
             transactions: [
                 {
+                    id: 29,
                     date: new Date(2021, 8, 28),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -351,6 +377,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.10",
             transactions: [
                 {
+                    id: 32,
                     date: new Date(2021, 9, 28),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -365,6 +392,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.11",
             transactions: [
                 {
+                    id: 35,
                     date: new Date(2021, 10, 29),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -379,6 +407,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             period: "2021.12",
             transactions: [
                 {
+                    id: 43,
                     date: new Date(2021, 11, 28),
                     initiator: "Owl Logistic Corp.",
                     purpose: "Have fun",
@@ -398,6 +427,7 @@ export const specialSingleCategoryTrend: CategoryTrend = {
             period: "2021.10",
             transactions: [
                 {
+                    id: 26,
                     date: new Date(2021, 9, 25),
                     initiator: "Kitchen Shop 24/7",
                     purpose:
@@ -442,6 +472,7 @@ export const trendForFixed: Trend = {
                     period: "2021.01",
                     transactions: [
                         {
+                            id: 3,
                             date: new Date(2021, 0, 13),
                             initiator: "Car Insurance Corp.",
                             purpose: "Safety first!",
@@ -465,6 +496,7 @@ export const trendForFixed: Trend = {
                     period: "2021.01",
                     transactions: [
                         {
+                            id: 6,
                             date: new Date(2021, 0, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
@@ -483,6 +515,7 @@ export const trendForFixed: Trend = {
                     period: "2021.04",
                     transactions: [
                         {
+                            id: 10,
                             date: new Date(2021, 3, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
@@ -501,6 +534,7 @@ export const trendForFixed: Trend = {
                     period: "2021.07",
                     transactions: [
                         {
+                            id: 15,
                             date: new Date(2021, 6, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
@@ -519,6 +553,7 @@ export const trendForFixed: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 27,
                             date: new Date(2021, 9, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
@@ -542,6 +577,7 @@ export const trendForFixed: Trend = {
                     period: "2021.06",
                     transactions: [
                         {
+                            id: 8,
                             date: new Date(2021, 5, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -560,6 +596,7 @@ export const trendForFixed: Trend = {
                     period: "2021.07",
                     transactions: [
                         {
+                            id: 41,
                             date: new Date(2021, 6, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -578,6 +615,7 @@ export const trendForFixed: Trend = {
                     period: "2021.08",
                     transactions: [
                         {
+                            id: 20,
                             date: new Date(2021, 7, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -596,6 +634,7 @@ export const trendForFixed: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 14,
                             date: new Date(2021, 8, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -614,6 +653,7 @@ export const trendForFixed: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 36,
                             date: new Date(2021, 9, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -632,6 +672,7 @@ export const trendForFixed: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 39,
                             date: new Date(2021, 10, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -650,6 +691,7 @@ export const trendForFixed: Trend = {
                     period: "2021.12",
                     transactions: [
                         {
+                            id: 46,
                             date: new Date(2021, 11, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -673,6 +715,7 @@ export const trendForFixed: Trend = {
                     period: "2021.06",
                     transactions: [
                         {
+                            id: 11,
                             date: new Date(2021, 5, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
@@ -691,6 +734,7 @@ export const trendForFixed: Trend = {
                     period: "2021.07",
                     transactions: [
                         {
+                            id: 42,
                             date: new Date(2021, 6, 1),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
@@ -709,6 +753,7 @@ export const trendForFixed: Trend = {
                     period: "2021.08",
                     transactions: [
                         {
+                            id: 21,
                             date: new Date(2021, 7, 2),
                             initiator: "Almost Healthy Inc.",
                             purpose: "We bet that you're going to be sick",
@@ -727,6 +772,7 @@ export const trendForFixed: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 17,
                             date: new Date(2021, 8, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
@@ -745,6 +791,7 @@ export const trendForFixed: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 37,
                             date: new Date(2021, 9, 1),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
@@ -763,6 +810,7 @@ export const trendForFixed: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 40,
                             date: new Date(2021, 10, 2),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
@@ -781,6 +829,7 @@ export const trendForFixed: Trend = {
                     period: "2021.12",
                     transactions: [
                         {
+                            id: 47,
                             date: new Date(2021, 11, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
@@ -805,6 +854,7 @@ export const trendForFixed: Trend = {
                     period: "2021.07",
                     transactions: [
                         {
+                            id: 48,
                             date: new Date(2021, 6, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
@@ -823,6 +873,7 @@ export const trendForFixed: Trend = {
                     period: "2021.08",
                     transactions: [
                         {
+                            id: 49,
                             date: new Date(2021, 7, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
@@ -841,6 +892,7 @@ export const trendForFixed: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 51,
                             date: new Date(2021, 8, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
@@ -859,6 +911,7 @@ export const trendForFixed: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 53,
                             date: new Date(2021, 9, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
@@ -877,6 +930,7 @@ export const trendForFixed: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 54,
                             date: new Date(2021, 10, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
@@ -900,6 +954,7 @@ export const trendForFixed: Trend = {
                     period: "2021.08",
                     transactions: [
                         {
+                            id: 50,
                             date: new Date(2021, 7, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
@@ -917,6 +972,7 @@ export const trendForFixed: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 52,
                             date: new Date(2021, 8, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
@@ -934,6 +990,7 @@ export const trendForFixed: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 55,
                             date: new Date(2021, 9, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
@@ -951,6 +1008,7 @@ export const trendForFixed: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 56,
                             date: new Date(2021, 10, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
@@ -978,6 +1036,7 @@ export const trendForVariable: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 2,
                             date: new Date(2021, 8, 1),
                             initiator: "Melon the Man",
                             purpose: "Juicy Melons",
@@ -991,6 +1050,7 @@ export const trendForVariable: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 0,
                             date: new Date(2021, 9, 19),
                             initiator: "Beef Burger Palace",
                             purpose: "We hope that you had a beefy good time!",
@@ -1010,6 +1070,7 @@ export const trendForVariable: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 7,
                             date: new Date(2021, 10, 11),
                             initiator: "Presentable Presents",
                             purpose: "Good luck!",
@@ -1028,6 +1089,7 @@ export const trendForVariable: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 31,
                             date: new Date(2021, 8, 21),
                             initiator: "my-online-shop.com",
                             purpose:
@@ -1042,6 +1104,7 @@ export const trendForVariable: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 24,
                             date: new Date(2021, 9, 19),
                             initiator: "my-online-shop.com",
                             purpose:
@@ -1056,6 +1119,7 @@ export const trendForVariable: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 34,
                             date: new Date(2021, 10, 22),
                             initiator: "my-online-shop.com",
                             purpose:
@@ -1111,6 +1175,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 27,
                             date: new Date(2021, 9, 1),
                             initiator: "Luxurious Subscriptions",
                             purpose: "At least, it's not cheap.",
@@ -1134,6 +1199,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 14,
                             date: new Date(2021, 8, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -1152,6 +1218,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 36,
                             date: new Date(2021, 9, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -1170,6 +1237,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 39,
                             date: new Date(2021, 10, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -1188,6 +1256,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.12",
                     transactions: [
                         {
+                            id: 46,
                             date: new Date(2021, 11, 1),
                             initiator: "Rent for my crib",
                             purpose: "Thanks landlord",
@@ -1211,6 +1280,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 17,
                             date: new Date(2021, 8, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
@@ -1229,6 +1299,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 37,
                             date: new Date(2021, 9, 1),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
@@ -1247,6 +1318,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 40,
                             date: new Date(2021, 10, 2),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
@@ -1265,6 +1337,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.12",
                     transactions: [
                         {
+                            id: 47,
                             date: new Date(2021, 11, 3),
                             initiator: "Stay Healthy Corp.",
                             purpose: "Your health is our mission",
@@ -1288,6 +1361,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 33,
                             date: new Date(2021, 8, 22),
                             initiator: "Mobilio Ltd.",
                             purpose: "your mobile phone provider",
@@ -1306,6 +1380,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 23,
                             date: new Date(2021, 9, 22),
                             initiator: "Mobilio Ltd.",
                             purpose: "your mobile phone provider",
@@ -1324,6 +1399,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 57,
                             date: new Date(2021, 10, 22),
                             initiator: "Mobilio Ltd.",
                             purpose: "your mobile phone provider",
@@ -1347,6 +1423,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 51,
                             date: new Date(2021, 8, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
@@ -1365,6 +1442,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 53,
                             date: new Date(2021, 9, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
@@ -1383,6 +1461,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 54,
                             date: new Date(2021, 10, 15),
                             initiator: "Online Payments Group",
                             purpose: "Music Whale",
@@ -1406,6 +1485,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 52,
                             date: new Date(2021, 8, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
@@ -1423,6 +1503,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 55,
                             date: new Date(2021, 9, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
@@ -1440,6 +1521,7 @@ export const trendForFixedAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 56,
                             date: new Date(2021, 10, 23),
                             initiator: "Online Payments Group",
                             purpose: "Game Suprise Box Subscription",
@@ -1467,6 +1549,7 @@ export const trendForVariableAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 2,
                             date: new Date(2021, 8, 1),
                             initiator: "Melon the Man",
                             purpose: "Juicy Melons",
@@ -1480,6 +1563,7 @@ export const trendForVariableAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 0,
                             date: new Date(2021, 9, 19),
                             initiator: "Beef Burger Palace",
                             purpose: "We hope that you had a beefy good time!",
@@ -1498,6 +1582,7 @@ export const trendForVariableAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 5,
                             date: new Date(2021, 8, 7),
                             initiator: "Grocerie Land",
                             purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -1505,6 +1590,7 @@ export const trendForVariableAfter: Trend = {
                             category: { name: "groceries", type: "variable" },
                         },
                         {
+                            id: 30,
                             date: new Date(2021, 8, 16),
                             initiator: "Grocerie Land",
                             purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -1512,6 +1598,7 @@ export const trendForVariableAfter: Trend = {
                             category: { name: "groceries", type: "variable" },
                         },
                         {
+                            id: 45,
                             date: new Date(2021, 8, 24),
                             initiator: "Grocerie Land",
                             purpose: "VISA 34 GROCERIE LAND TES7123123",
@@ -1525,6 +1612,7 @@ export const trendForVariableAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 38,
                             date: new Date(2021, 10, 10),
                             initiator: "Tasty Deli and Grocerie Store",
                             purpose: "Thanks for buying the freshest food",
@@ -1532,6 +1620,7 @@ export const trendForVariableAfter: Trend = {
                             category: { name: "groceries", type: "variable" },
                         },
                         {
+                            id: 44,
                             date: new Date(2021, 10, 10),
                             initiator: "Tasty Deli and Grocerie Store",
                             purpose: "Thanks for buying the freshest food",
@@ -1550,6 +1639,7 @@ export const trendForVariableAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 7,
                             date: new Date(2021, 10, 11),
                             initiator: "Presentable Presents",
                             purpose: "Good luck!",
@@ -1568,6 +1658,7 @@ export const trendForVariableAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 31,
                             date: new Date(2021, 8, 21),
                             initiator: "my-online-shop.com",
                             purpose:
@@ -1582,6 +1673,7 @@ export const trendForVariableAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 24,
                             date: new Date(2021, 9, 19),
                             initiator: "my-online-shop.com",
                             purpose:
@@ -1596,6 +1688,7 @@ export const trendForVariableAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 34,
                             date: new Date(2021, 10, 22),
                             initiator: "my-online-shop.com",
                             purpose:
@@ -1622,6 +1715,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                     period: "2021.09",
                     transactions: [
                         {
+                            id: 29,
                             date: new Date(2021, 8, 28),
                             initiator: "Owl Logistic Corp.",
                             purpose: "Have fun",
@@ -1636,6 +1730,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                     period: "2021.10",
                     transactions: [
                         {
+                            id: 32,
                             date: new Date(2021, 9, 28),
                             initiator: "Owl Logistic Corp.",
                             purpose: "Have fun",
@@ -1650,6 +1745,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                     period: "2021.11",
                     transactions: [
                         {
+                            id: 35,
                             date: new Date(2021, 10, 29),
                             initiator: "Owl Logistic Corp.",
                             purpose: "Have fun",
@@ -1664,6 +1760,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                     period: "2021.12",
                     transactions: [
                         {
+                            id: 43,
                             date: new Date(2021, 11, 28),
                             initiator: "Owl Logistic Corp.",
                             purpose: "Have fun",
@@ -1683,5 +1780,760 @@ export const trendReportAfter: TrendReport = {
         trendForVariableAfter,
         trendForIncomeSingleCategoryAfter,
         trendForSpecialSingleCategory,
+    ],
+};
+
+export const expectedFixedPayDay1: FixedPayDay = {
+    value: 650,
+    isPaid: true,
+    transactions: [
+        {
+            id: 8,
+            date: new Date(2021, 5, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 41,
+            date: new Date(2021, 6, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 20,
+            date: new Date(2021, 7, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 14,
+            date: new Date(2021, 8, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 36,
+            date: new Date(2021, 9, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 39,
+            date: new Date(2021, 10, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay2: FixedPayDay = {
+    value: 650,
+    isPaid: true,
+    transactions: [
+        {
+            id: 8,
+            date: new Date(2021, 5, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 41,
+            date: new Date(2021, 6, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 20,
+            date: new Date(2021, 7, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 14,
+            date: new Date(2021, 8, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 36,
+            date: new Date(2021, 9, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay3: FixedPayDay = {
+    value: 650,
+    isPaid: true,
+    transactions: [
+        {
+            id: 36,
+            date: new Date(2021, 9, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 39,
+            date: new Date(2021, 10, 1),
+            initiator: "Rent for my crib",
+            purpose: "Thanks landlord",
+            value: 650,
+            category: {
+                name: "rent",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay4: FixedPayDay = {
+    value: 14.99,
+    isPaid: true,
+    transactions: [
+        {
+            id: 11,
+            date: new Date(2021, 5, 1),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 42,
+            date: new Date(2021, 6, 1),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 21,
+            date: new Date(2021, 7, 2),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 17,
+            date: new Date(2021, 8, 3),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 37,
+            date: new Date(2021, 9, 1),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 40,
+            date: new Date(2021, 10, 2),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 47,
+            date: new Date(2021, 11, 3),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay5: FixedPayDay = {
+    value: 12.99,
+    isPaid: false,
+    transactions: [
+        {
+            id: 11,
+            date: new Date(2021, 5, 1),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 42,
+            date: new Date(2021, 6, 1),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 21,
+            date: new Date(2021, 7, 2),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay6: FixedPayDay = {
+    value: 14.99,
+    isPaid: true,
+    transactions: [
+        {
+            id: 17,
+            date: new Date(2021, 8, 3),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 37,
+            date: new Date(2021, 9, 1),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 40,
+            date: new Date(2021, 10, 2),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay7: FixedPayDay = {
+    value: 14.99,
+    isPaid: true,
+    transactions: [
+        {
+            id: 11,
+            date: new Date(2021, 5, 1),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 42,
+            date: new Date(2021, 6, 1),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 21,
+            date: new Date(2021, 7, 2),
+            initiator: "Almost Healthy Inc.",
+            purpose: "We bet that you're going to be sick",
+            value: 12.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 17,
+            date: new Date(2021, 8, 3),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 37,
+            date: new Date(2021, 9, 1),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 40,
+            date: new Date(2021, 10, 2),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 47,
+            date: new Date(2021, 11, 3),
+            initiator: "Stay Healthy Corp.",
+            purpose: "Your health is our mission",
+            value: 14.99,
+            category: {
+                name: "insurance",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay8: FixedPayDay = {
+    value: 9.99,
+    isPaid: false,
+    transactions: [
+        {
+            id: 48,
+            date: new Date(2021, 6, 15),
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 49,
+            date: new Date(2021, 7, 15),
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 51,
+            date: new Date(2021, 8, 15),
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 53,
+            date: new Date(2021, 9, 15),
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+        {
+            id: 54,
+            date: new Date(2021, 10, 15),
+            initiator: "Online Payments Group",
+            purpose: "Music Whale",
+            value: 9.99,
+            category: {
+                name: "music subscription",
+                type: "fixed",
+                period: "monthly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay9: FixedPayDay = {
+    value: 19.99,
+    isPaid: true,
+    transactions: [
+        {
+            id: 50,
+            date: new Date(2021, 7, 23),
+            initiator: "Online Payments Group",
+            purpose: "Game Suprise Box Subscription",
+            value: 19.99,
+            category: {
+                name: "gaming subscription",
+                type: "fixed",
+            },
+        },
+        {
+            id: 52,
+            date: new Date(2021, 8, 23),
+            initiator: "Online Payments Group",
+            purpose: "Game Suprise Box Subscription",
+            value: 19.99,
+            category: {
+                name: "gaming subscription",
+                type: "fixed",
+            },
+        },
+        {
+            id: 55,
+            date: new Date(2021, 9, 23),
+            initiator: "Online Payments Group",
+            purpose: "Game Suprise Box Subscription",
+            value: 19.99,
+            category: {
+                name: "gaming subscription",
+                type: "fixed",
+            },
+        },
+        {
+            id: 56,
+            date: new Date(2021, 10, 23),
+            initiator: "Online Payments Group",
+            purpose: "Game Suprise Box Subscription",
+            value: 19.99,
+            category: {
+                name: "gaming subscription",
+                type: "fixed",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay10: FixedPayDay = {
+    value: 83.3325,
+    isPaid: true,
+    transactions: [
+        {
+            id: 3,
+            date: new Date(2021, 0, 13),
+            initiator: "Car Insurance Corp.",
+            purpose: "Safety first!",
+            value: 999.99,
+            category: {
+                name: "car insurance",
+                type: "fixed",
+                period: "yearly",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDay11: FixedPayDay = {
+    value: 18.8,
+    isPaid: true,
+    transactions: [
+        {
+            id: 6,
+            date: new Date(2021, 0, 1),
+            initiator: "Luxurious Subscriptions",
+            purpose: "At least, it's not cheap.",
+            value: 56.4,
+            category: {
+                name: "luxury",
+                type: "fixed",
+                period: "quarter",
+            },
+        },
+        {
+            id: 10,
+            date: new Date(2021, 3, 1),
+            initiator: "Luxurious Subscriptions",
+            purpose: "At least, it's not cheap.",
+            value: 56.4,
+            category: {
+                name: "luxury",
+                type: "fixed",
+                period: "quarter",
+            },
+        },
+        {
+            id: 15,
+            date: new Date(2021, 6, 1),
+            initiator: "Luxurious Subscriptions",
+            purpose: "At least, it's not cheap.",
+            value: 56.4,
+            category: {
+                name: "luxury",
+                type: "fixed",
+                period: "quarter",
+            },
+        },
+        {
+            id: 27,
+            date: new Date(2021, 9, 1),
+            initiator: "Luxurious Subscriptions",
+            purpose: "At least, it's not cheap.",
+            value: 56.4,
+            category: {
+                name: "luxury",
+                type: "fixed",
+                period: "quarter",
+            },
+        },
+    ],
+};
+
+export const expectedFixedPayDayReport: CategorizedFixedPayDays = {
+    sum: 704.98,
+    unpaidSum: 39.99,
+    namedFixedPayDays: [
+        {
+            name: "rent",
+            fixedPayDay: {
+                value: 650,
+                isPaid: true,
+                transactions: [
+                    {
+                        id: 36,
+                        date: new Date(2021, 9, 1),
+                        initiator: "Rent for my crib",
+                        purpose: "Thanks landlord",
+                        value: 650,
+                        category: {
+                            name: "rent",
+                            type: "fixed",
+                            period: "monthly",
+                        },
+                    },
+                    {
+                        id: 39,
+                        date: new Date(2021, 10, 1),
+                        initiator: "Rent for my crib",
+                        purpose: "Thanks landlord",
+                        value: 650,
+                        category: {
+                            name: "rent",
+                            type: "fixed",
+                            period: "monthly",
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            name: "insurance",
+            fixedPayDay: {
+                value: 14.99,
+                isPaid: true,
+                transactions: [
+                    {
+                        id: 17,
+                        date: new Date(2021, 8, 3),
+                        initiator: "Stay Healthy Corp.",
+                        purpose: "Your health is our mission",
+                        value: 14.99,
+                        category: {
+                            name: "insurance",
+                            type: "fixed",
+                            period: "monthly",
+                        },
+                    },
+                    {
+                        id: 37,
+                        date: new Date(2021, 9, 1),
+                        initiator: "Stay Healthy Corp.",
+                        purpose: "Your health is our mission",
+                        value: 14.99,
+                        category: {
+                            name: "insurance",
+                            type: "fixed",
+                            period: "monthly",
+                        },
+                    },
+                    {
+                        id: 40,
+                        date: new Date(2021, 10, 2),
+                        initiator: "Stay Healthy Corp.",
+                        purpose: "Your health is our mission",
+                        value: 14.99,
+                        category: {
+                            name: "insurance",
+                            type: "fixed",
+                            period: "monthly",
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            name: "mobile",
+            fixedPayDay: {
+                value: 39.99,
+                isPaid: false,
+                transactions: [
+                    {
+                        id: 33,
+                        date: new Date(2021, 8, 22),
+                        initiator: "Mobilio Ltd.",
+                        purpose: "your mobile phone provider",
+                        value: 39.99,
+                        category: {
+                            name: "mobile",
+                            type: "fixed",
+                            period: "monthly",
+                        },
+                    },
+                    {
+                        id: 23,
+                        date: new Date(2021, 9, 22),
+                        initiator: "Mobilio Ltd.",
+                        purpose: "your mobile phone provider",
+                        value: 39.99,
+                        category: {
+                            name: "mobile",
+                            type: "fixed",
+                            period: "monthly",
+                        },
+                    },
+                ],
+            },
+        },
     ],
 };

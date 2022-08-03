@@ -1,13 +1,20 @@
 /**
  * A transaction is the base object upon every report is generated.
  */
-type Transaction = {
+interface Transaction {
     initiator: string;
     purpose: string;
     value: number;
     date: Date;
-    category?: Category;
-};
+}
+
+/**
+ * Extends a transaction by an id and a category object.
+ */
+interface ExtendedTransaction extends Transaction {
+    id: number;
+    category: Category;
+}
 
 /**
  * A matched record, which is used to create a transaction object.
@@ -75,7 +82,8 @@ type Sample = {
 type FixedPayDay = {
     value: number;
     isPaid: boolean;
-    transactions: Transaction[];
+    // TODO: list of ids
+    transactions: ExtendedTransaction[];
 };
 
 /**
@@ -235,7 +243,8 @@ type CategoryTrend = {
 
 type CategoryTrendPeriod = {
     period: string;
-    transactions: Transaction[];
+    // TODO: list of ids
+    transactions: ExtendedTransaction[];
 };
 
 interface FixedCategoryTrendPeriod extends CategoryTrendPeriod {

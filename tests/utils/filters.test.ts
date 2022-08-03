@@ -16,6 +16,24 @@ import {
     categorizedTransactions,
 } from "./samples/transactions";
 
+import {
+    expectedFilteredTransaction1,
+    expectedFilteredTransaction2,
+    expectedFilteredTransaction3,
+    expectedFilteredTransaction4,
+    expectedFilteredTransaction5,
+    expectedFilteredTransaction6,
+    expectedSingleTransaction1,
+    expectedSingleTransaction2,
+    expectedSingleTransaction3,
+    expectedSingleTransaction4,
+    expectedSingleTransaction5,
+    expectedSingleTransaction6,
+    expectedFilteredTransaction7,
+    expectedSmallTransactionList1,
+    expectedSmallTransactionList2,
+} from "./samples/expected";
+
 describe("Test utils/filters", () => {
     describe("Test function filterTransactionsByDateString", () => {
         describe("Test falsy parameters", () => {
@@ -73,21 +91,6 @@ describe("Test utils/filters", () => {
 
         describe("Test filtering transactions by exactly one sample", () => {
             test("Filter transactions until 'before date' ", () => {
-                const expected = [
-                    {
-                        date: new Date(2021, 5, 1),
-                        initiator: "Rent for my crib",
-                        purpose: "Thanks landlord",
-                        value: 650,
-                    },
-                    {
-                        date: new Date(2021, 5, 1),
-                        initiator: "Almost Healthy Inc.",
-                        purpose: "We bet that you're going to be sick",
-                        value: 12.99,
-                    },
-                ];
-
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
@@ -96,39 +99,15 @@ describe("Test utils/filters", () => {
                         endDate: "02.06.2021",
                     },
                 );
-                expect(filteredTransactions).toHaveLength(expected.length);
-                expect(filteredTransactions).toStrictEqual(expected);
+                expect(filteredTransactions).toHaveLength(
+                    expectedFilteredTransaction1.length,
+                );
+                expect(filteredTransactions).toStrictEqual(
+                    expectedFilteredTransaction1,
+                );
             });
 
             test("Filter transactions from 'after date' ", () => {
-                const expected = [
-                    {
-                        date: new Date(2021, 10, 22),
-                        initiator: "my-online-shop.com",
-                        purpose:
-                            "my-online-shop.com; 22.11;  TES710928476309298",
-                        value: 9.99,
-                    },
-                    {
-                        date: new Date(2021, 11, 1),
-                        initiator: "Rent for my crib",
-                        purpose: "Thanks landlord",
-                        value: 650,
-                    },
-                    {
-                        date: new Date(2021, 11, 3),
-                        initiator: "Stay Healthy Corp.",
-                        purpose: "Your health is our mission",
-                        value: 14.99,
-                    },
-                    {
-                        date: new Date(2021, 10, 23),
-                        initiator: "Online Payments Group",
-                        purpose: "Game Suprise Box Subscription",
-                        value: 19.99,
-                    },
-                ];
-
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
@@ -137,27 +116,15 @@ describe("Test utils/filters", () => {
                         startDate: "20.11.2021",
                     },
                 );
-                expect(filteredTransactions).toHaveLength(expected.length);
-                expect(filteredTransactions).toStrictEqual(expected);
+                expect(filteredTransactions).toHaveLength(
+                    expectedFilteredTransaction2.length,
+                );
+                expect(filteredTransactions).toStrictEqual(
+                    expectedFilteredTransaction2,
+                );
             });
 
             test("Filter transactions from 'before date' to 'after date'", () => {
-                const expected = [
-                    {
-                        date: new Date(2021, 10, 22),
-                        initiator: "my-online-shop.com",
-                        purpose:
-                            "my-online-shop.com; 22.11;  TES710928476309298",
-                        value: 9.99,
-                    },
-                    {
-                        date: new Date(2021, 10, 23),
-                        initiator: "Online Payments Group",
-                        purpose: "Game Suprise Box Subscription",
-                        value: 19.99,
-                    },
-                ];
-
                 const filteredTransactions = filterTransactionsByDateString(
                     transactions,
                     {
@@ -167,8 +134,12 @@ describe("Test utils/filters", () => {
                         startDate: "20.11.2021",
                     },
                 );
-                expect(filteredTransactions).toHaveLength(expected.length);
-                expect(filteredTransactions).toStrictEqual(expected);
+                expect(filteredTransactions).toHaveLength(
+                    expectedFilteredTransaction3.length,
+                );
+                expect(filteredTransactions).toStrictEqual(
+                    expectedFilteredTransaction3,
+                );
             });
         });
     });
@@ -214,54 +185,12 @@ describe("Test utils/filters", () => {
                             categorizedTransactions,
                             TransactionType.Fixed,
                         );
-                    const expected: Transaction[] = [
-                        {
-                            date: new Date(2021, 5, 1),
-                            initiator: "Rent for my crib",
-                            purpose: "Thanks landlord",
-                            value: 650,
-                            category: {
-                                name: "rent",
-                                type: "fixed",
-                                period: undefined,
-                            },
-                        },
-                        {
-                            date: new Date(2021, 5, 1),
-                            initiator: "Almost Healthy Inc.",
-                            purpose: "We bet that you're going to be sick",
-                            value: 12.99,
-                            category: {
-                                name: "insurance",
-                                type: "fixed",
-                                period: undefined,
-                            },
-                        },
-                        {
-                            date: new Date(2021, 8, 1),
-                            initiator: "Rent for my crib",
-                            purpose: "Thanks landlord",
-                            value: 650,
-                            category: {
-                                name: "rent",
-                                type: "fixed",
-                                period: undefined,
-                            },
-                        },
-                        {
-                            date: new Date(2021, 8, 3),
-                            initiator: "Stay Healthy Corp.",
-                            purpose: "Your health is our mission",
-                            value: 14.99,
-                            category: {
-                                name: "insurance",
-                                type: "fixed",
-                                period: undefined,
-                            },
-                        },
-                    ];
-                    expect(filteredTransactions).toHaveLength(expected.length);
-                    expect(filteredTransactions).toStrictEqual(expected);
+                    expect(filteredTransactions).toHaveLength(
+                        expectedFilteredTransaction4.length,
+                    );
+                    expect(filteredTransactions).toStrictEqual(
+                        expectedFilteredTransaction4,
+                    );
                 });
 
                 test("Return filtered list by category type variable", () => {
@@ -270,65 +199,13 @@ describe("Test utils/filters", () => {
                             categorizedTransactions,
                             TransactionType.Variable,
                         );
-                    const expected: Transaction[] = [
-                        {
-                            date: new Date(2021, 9, 19),
-                            initiator: "Beef Burger Palace",
-                            purpose: "We hope that you had a beefy good time!",
-                            value: 49.55,
-                            category: {
-                                name: "food",
-                                type: "variable",
-                                period: undefined,
-                            },
-                        },
-                        {
-                            date: new Date(2021, 8, 1),
-                            initiator: "Melon the Man",
-                            purpose: "Juicy Melons",
-                            value: 39.38,
-                            category: {
-                                name: "food",
-                                type: "variable",
-                                period: undefined,
-                            },
-                        },
-                        {
-                            date: new Date(2021, 10, 11),
-                            initiator: "Presentable Presents",
-                            purpose: "Good luck!",
-                            value: 199.78,
-                            category: {
-                                name: "presents",
-                                type: "variable",
-                                period: undefined,
-                            },
-                        },
-                        {
-                            date: new Date(2021, 6, 7),
-                            initiator: "Grocerie Land",
-                            purpose: "VISA 23 GROCERIE LAND TES71234123423134",
-                            value: 109.56,
-                            category: {
-                                name: "groceries",
-                                type: "variable",
-                                period: undefined,
-                            },
-                        },
-                        {
-                            date: new Date(2021, 7, 11),
-                            initiator: "Grocerie Land",
-                            purpose: "VISA 11 GROCERIE LAND TES71234123423134",
-                            value: 88.86,
-                            category: {
-                                name: "groceries",
-                                type: "variable",
-                                period: undefined,
-                            },
-                        },
-                    ];
-                    expect(filteredTransactions).toHaveLength(expected.length);
-                    expect(filteredTransactions).toStrictEqual(expected);
+
+                    expect(filteredTransactions).toHaveLength(
+                        expectedFilteredTransaction5.length,
+                    );
+                    expect(filteredTransactions).toStrictEqual(
+                        expectedFilteredTransaction5,
+                    );
                 });
             });
 
@@ -339,33 +216,12 @@ describe("Test utils/filters", () => {
                             categorizedTransactions,
                             "food",
                         );
-
-                    const expected: Transaction[] = [
-                        {
-                            date: new Date(2021, 9, 19),
-                            initiator: "Beef Burger Palace",
-                            purpose: "We hope that you had a beefy good time!",
-                            value: 49.55,
-                            category: {
-                                name: "food",
-                                type: "variable",
-                                period: undefined,
-                            },
-                        },
-                        {
-                            date: new Date(2021, 8, 1),
-                            initiator: "Melon the Man",
-                            purpose: "Juicy Melons",
-                            value: 39.38,
-                            category: {
-                                name: "food",
-                                type: "variable",
-                                period: undefined,
-                            },
-                        },
-                    ];
-                    expect(filteredTransactions).toHaveLength(expected.length);
-                    expect(filteredTransactions).toStrictEqual(expected);
+                    expect(filteredTransactions).toHaveLength(
+                        expectedFilteredTransaction6.length,
+                    );
+                    expect(filteredTransactions).toStrictEqual(
+                        expectedFilteredTransaction6,
+                    );
                 });
             });
 
@@ -384,40 +240,19 @@ describe("Test utils/filters", () => {
                     );
                     expect(filteredTransactions).toHaveLength(0);
                 });
-                const expected = [
-                    {
-                        date: new Date(2021, 5, 1),
-                        initiator: "Rent for my crib",
-                        purpose: "Thanks landlord",
-                        value: 650,
-                    },
-                    {
-                        date: new Date(2021, 5, 1),
-                        initiator: "Almost Healthy Inc.",
-                        purpose: "We bet that you're going to be sick",
-                        value: 12.99,
-                    },
-                    {
-                        date: new Date(2021, 5, 13),
-                        initiator: "Tasty Deli and Grocerie Store",
-                        purpose: "Thanks for buying the freshest food",
-                        value: 33.97,
-                    },
-                    {
-                        date: new Date(2021, 5, 30),
-                        initiator: "Grocerie Land",
-                        purpose: "VISA 34 GROCERIE LAND TES412347123234334",
-                        value: 111.11,
-                    },
-                ];
+
                 test("Return filtered list by period", () => {
                     const filteredTransactions = filterTransactionsByPeriod(
                         transactions,
                         "2021.06",
                     );
 
-                    expect(filteredTransactions).toHaveLength(expected.length);
-                    expect(filteredTransactions).toStrictEqual(expected);
+                    expect(filteredTransactions).toHaveLength(
+                        expectedFilteredTransaction7.length,
+                    );
+                    expect(filteredTransactions).toStrictEqual(
+                        expectedFilteredTransaction7,
+                    );
                 });
 
                 test("Return filtered list by period, change date format", () => {
@@ -426,123 +261,67 @@ describe("Test utils/filters", () => {
                         "21/06",
                         "yy/MM",
                     );
-                    expect(filteredTransactions).toHaveLength(expected.length);
-                    expect(filteredTransactions).toStrictEqual(expected);
+                    expect(filteredTransactions).toHaveLength(
+                        expectedFilteredTransaction7.length,
+                    );
+                    expect(filteredTransactions).toStrictEqual(
+                        expectedFilteredTransaction7,
+                    );
                 });
             });
         });
     });
     describe("Test matching of samples", () => {
         test("Match transaction with exact sample", () => {
-            const transaction: Transaction = {
-                date: new Date(2021, 8, 7),
-                initiator: "Grocerie Land",
-                purpose: "VISA 34 GROCERIE LAND TES7123123",
-                value: 111.96,
-                category: {
-                    name: "groceries",
-                    type: "variable",
-                },
-            };
             const sample: Sample = { initiator: "Grocerie Land" };
             expect(
-                isTransactionMatchingSample(transaction, sample),
+                isTransactionMatchingSample(expectedSingleTransaction1, sample),
             ).toBeTruthy();
         });
 
         test("Don't match transaction with false sample", () => {
-            const transaction: Transaction = {
-                date: new Date(2021, 8, 7),
-                initiator: "Grocerie Land",
-                purpose: "VISA 34 GROCERIE LAND TES7123123",
-                value: 111.96,
-                category: {
-                    name: "groceries",
-                    type: "variable",
-                },
-            };
             const sample: Sample = { initiator: "test" };
             expect(
-                isTransactionMatchingSample(transaction, sample),
+                isTransactionMatchingSample(expectedSingleTransaction2, sample),
             ).toBeFalsy();
         });
 
         test("Matching initiators with unique purposes", () => {
-            const transaction: Transaction = {
-                date: new Date(2021, 8, 7),
-                initiator: "Grocerie Land",
-                purpose: "VISA 34 GROCERIE LAND TES7123123",
-                value: 111.96,
-                category: {
-                    name: "groceries",
-                    type: "variable",
-                },
-            };
             const sample: Sample = {
                 initiator: "Grocerie Land",
                 purpose: "grocerie",
             };
             expect(
-                isTransactionMatchingSample(transaction, sample),
+                isTransactionMatchingSample(expectedSingleTransaction3, sample),
             ).toBeTruthy();
         });
 
         test("Matching initiator with like match", () => {
-            const transaction: Transaction = {
-                date: new Date(2021, 8, 7),
-                initiator: "Grocerie Land",
-                purpose: "VISA 34 GROCERIE LAND TES7123123",
-                value: 111.96,
-                category: {
-                    name: "groceries",
-                    type: "variable",
-                },
-            };
             const sample: Sample = {
                 initiator: "~Land",
             };
             expect(
-                isTransactionMatchingSample(transaction, sample),
+                isTransactionMatchingSample(expectedSingleTransaction4, sample),
             ).toBeTruthy();
         });
 
         test("Matching initiator explicitly without purpose", () => {
-            const transaction: Transaction = {
-                date: new Date(2021, 8, 7),
-                initiator: "Grocerie Land",
-                purpose: "",
-                value: 111.96,
-                category: {
-                    name: "groceries",
-                    type: "variable",
-                },
-            };
             const sample: Sample = {
                 initiator: "~Land",
                 purpose: null,
             };
             expect(
-                isTransactionMatchingSample(transaction, sample),
+                isTransactionMatchingSample(expectedSingleTransaction5, sample),
             ).toBeTruthy();
         });
 
         test("Not matching initiator, which has a purpose, explicitly without purpose", () => {
-            const transaction: Transaction = {
-                date: new Date(2021, 8, 7),
-                initiator: "Grocerie Land",
-                purpose: "VISA 34 GROCERIE LAND TES7123123",
-                value: 111.96,
-                category: {
-                    name: "groceries",
-                    type: "variable",
-                },
-            };
             const sample: Sample = {
                 initiator: "~Land",
                 purpose: null,
             };
             expect(
-                isTransactionMatchingSample(transaction, sample),
+                isTransactionMatchingSample(expectedSingleTransaction6, sample),
             ).toBeFalsy();
         });
     });
@@ -552,20 +331,8 @@ describe("Test utils/filters", () => {
             expect(getLatestTransactionDate([])).toBeNull();
         });
         test("Return date of latest transaction, in a list of one transaction", () => {
-            const smallTransactionList: Transaction[] = [
-                {
-                    date: new Date(2021, 8, 7),
-                    initiator: "Grocerie Land",
-                    purpose: "VISA 34 GROCERIE LAND TES7123123",
-                    value: 111.96,
-                    category: {
-                        name: "groceries",
-                        type: "variable",
-                    },
-                },
-            ];
             expect(
-                getLatestTransactionDate(smallTransactionList),
+                getLatestTransactionDate(expectedSmallTransactionList1),
             ).toStrictEqual(new Date(2021, 8, 7));
         });
 
@@ -581,20 +348,8 @@ describe("Test utils/filters", () => {
             expect(getOldestTransactionDate([])).toBeNull();
         });
         test("Return date of oldest transaction, in a list of one transaction", () => {
-            const smallTransactionList: Transaction[] = [
-                {
-                    date: new Date(2021, 8, 7),
-                    initiator: "Grocerie Land",
-                    purpose: "VISA 34 GROCERIE LAND TES7123123",
-                    value: 111.96,
-                    category: {
-                        name: "groceries",
-                        type: "variable",
-                    },
-                },
-            ];
             expect(
-                getOldestTransactionDate(smallTransactionList),
+                getOldestTransactionDate(expectedSmallTransactionList2),
             ).toStrictEqual(new Date(2021, 8, 7));
         });
 

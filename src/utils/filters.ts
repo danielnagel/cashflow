@@ -10,9 +10,9 @@ import { isCategory } from "./typeguards";
  * @returns matched transactions
  */
 export const transactionsAfterDate = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     after: Date,
-): Transaction[] => {
+): ExtendedTransaction[] => {
     return transactions.filter((transaction) => {
         return transaction.date.getTime() > after.getTime();
     });
@@ -26,9 +26,9 @@ export const transactionsAfterDate = (
  * @returns matched transactions
  */
 export const transactionsBeforeDate = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     before: Date,
-): Transaction[] => {
+): ExtendedTransaction[] => {
     return transactions.filter((transaction) => {
         return transaction.date.getTime() < before.getTime();
     });
@@ -42,9 +42,9 @@ export const transactionsBeforeDate = (
  * @returns by given options filtered transactions.
  */
 export const filterTransactionsByDateString = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     options: Configuration,
-): Transaction[] => {
+): ExtendedTransaction[] => {
     if (transactions.length === 0) return transactions;
 
     if (typeof options.endDate !== "undefined") {
@@ -165,10 +165,10 @@ const isSameTransaction = (
  * @returns by given options filtered transactions.
  */
 export const filterTransactionsByCategoryType = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     categoryType: string,
-): Transaction[] => {
-    const matchedTransactions: Transaction[] = [];
+): ExtendedTransaction[] => {
+    const matchedTransactions: ExtendedTransaction[] = [];
     for (const transaction of transactions) {
         if (
             isCategory(transaction.category) &&
@@ -188,10 +188,10 @@ export const filterTransactionsByCategoryType = (
  * @returns by given options filtered transactions.
  */
 export const filterTransactionsByCategoryName = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     categoryName: string,
-): Transaction[] => {
-    const matchedTransactions: Transaction[] = [];
+): ExtendedTransaction[] => {
+    const matchedTransactions: ExtendedTransaction[] = [];
     for (const transaction of transactions) {
         if (
             isCategory(transaction.category) &&
@@ -212,10 +212,10 @@ export const filterTransactionsByCategoryName = (
  * @returns by given options filtered transactions.
  */
 export const filterTransactionsByPeriod = (
-    transactions: Transaction[],
+    transactions: ExtendedTransaction[],
     period: string,
     dateFormat = "yyyy.MM",
-): Transaction[] => {
+): ExtendedTransaction[] => {
     let periodStart = parseDateString(period, dateFormat);
     if (periodStart === null) return [];
 

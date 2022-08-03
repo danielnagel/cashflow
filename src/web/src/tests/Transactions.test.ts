@@ -4,24 +4,30 @@ import Transactions from "../components/Transactions.vue";
 
 describe("Transactions component test", () => {
     // test mock data
-    const mockedTransactions: Transaction[] = [
+    const mockedTransactions: ExtendedTransaction[] = [
         {
+            id: 0,
             purpose: "test-transaction1",
             date: new Date(2002, 5, 13),
             initiator: "friendly-test-mock",
             value: 11.11,
+            category: { name: "", type: "" },
         },
         {
+            id: 1,
             purpose: "test-transaction2",
             date: new Date(2020, 6, 12),
             initiator: "friendly-test-mock",
             value: 22.22,
+            category: { name: "", type: "" },
         },
         {
+            id: 2,
             purpose: "test-transaction3",
             date: new Date(2022, 3, 29),
             initiator: "friendly-test-mock",
             value: 33.33,
+            category: { name: "", type: "" },
         },
     ];
 

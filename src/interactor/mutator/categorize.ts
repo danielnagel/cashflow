@@ -17,52 +17,53 @@ import { isApplicationError } from "../../utils/typeguards";
 export const categorizeTransaction = (
     transactions: Transaction[],
     options: Configuration,
-): Transaction[] | ApplicationError => {
+    id = 0,
+): ExtendedTransaction[] | ApplicationError => {
     if (transactions.length === 0) return [];
 
     const copyOfTransactions = copy(transactions);
-    for (const category of options.categories) {
-        for (const sample of category.samples) {
-            for (const transaction of copyOfTransactions) {
+    const extendedTransactions: ExtendedTransaction[] = [];
+
+    for (const transaction of copyOfTransactions) {
+        const et: ExtendedTransaction = {
+            ...transaction,
+            id,
+            category: {
+                name: "unmatched",
+                type: TransactionType.Variable,
+            },
+        };
+        id++;
+        for (const category of options.categories) {
+            for (const sample of category.samples) {
                 if (isTransactionMatchingSample(transaction, sample)) {
-                    transaction.category = {
-                        name: category.name,
-                        type: category.type,
-                    };
+                    et.category.name = category.name;
+                    et.category.type = category.type;
                     if (
                         category.type === TransactionType.Fixed ||
                         category.type === TransactionType.Income
                     ) {
-                        transaction.category.period = Periods.Monthly;
+                        et.category.period = Periods.Monthly;
                         if (typeof category.period !== "undefined") {
-                            transaction.category.period = category.period;
+                            et.category.period = category.period;
                         }
                     }
                 }
             }
         }
+        extendedTransactions.push(et);
     }
 
-    const unmatchedTransactions = getUnmatchedTransactions(copyOfTransactions);
+    const unmatchedTransactions =
+        getUnmatchedTransactions(extendedTransactions);
     if (options.strict && unmatchedTransactions.length > 0) {
-        const error = generateError(copyOfTransactions, unmatchedTransactions);
+        const error = generateError(transactions, unmatchedTransactions);
         if (isApplicationError(error)) {
             return error;
         }
     }
 
-    if (!options.strict && unmatchedTransactions.length > 0) {
-        for (const transaction of copyOfTransactions) {
-            if (typeof transaction.category === "undefined") {
-                transaction.category = {
-                    name: "unmatched",
-                    type: TransactionType.Variable,
-                };
-            }
-        }
-    }
-
-    return copyOfTransactions;
+    return extendedTransactions;
 };
 
 const copy = (transactions: Transaction[]): Transaction[] => {
@@ -79,6 +80,7 @@ const generateError = (
     transactions: Transaction[],
     unmatchedTransactions: Transaction[],
 ): ApplicationError => {
+    // TODO: message als string[]? ApplicationError um string[] erweitern
     let message = "Couldn't match any transaction.";
 
     if (unmatchedTransactions.length < transactions.length) {
@@ -96,11 +98,11 @@ const generateError = (
 };
 
 const getUnmatchedTransactions = (
-    transactions: Transaction[],
-): Transaction[] => {
-    const unmatchedTransactions: Transaction[] = [];
+    transactions: ExtendedTransaction[],
+): ExtendedTransaction[] => {
+    const unmatchedTransactions: ExtendedTransaction[] = [];
     for (const transaction of transactions) {
-        if (typeof transaction.category === "undefined") {
+        if (transaction.category.name === "unmatched") {
             unmatchedTransactions.push(transaction);
         }
     }

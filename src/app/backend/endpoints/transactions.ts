@@ -6,7 +6,7 @@ import { isApplicationError } from "../../../utils/typeguards";
 
 export const getAllTransactions = async (
     options: Configuration,
-): Promise<Transaction[]> => {
+): Promise<ExtendedTransaction[]> => {
     const transactions = await loadCategorizedTransactions(options);
     if (isApplicationError(transactions)) {
         log({ level: LogLevel.Error, message: transactions });

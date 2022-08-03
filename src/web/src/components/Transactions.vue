@@ -9,13 +9,13 @@ const props = defineProps<{
 }>();
 
 const error = ref("");
-const transactions = ref([] as Transaction[]);
+const transactions = ref([] as ExtendedTransaction[]);
 
 const loadApiData = async () => {
     error.value = "";
     try {
         const result = await getApi("/transactions");
-        transactions.value = result as Transaction[];
+        transactions.value = result as ExtendedTransaction[];
     } catch (e: any) {
         if (typeof e === "string") error.value = e;
     }
@@ -48,6 +48,7 @@ watch(
                 class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400"
             >
                 <tr>
+                    <th class="px-6 py-3">ID</th>
                     <th class="px-6 py-3">Date</th>
                     <th class="px-6 py-3">Initiator</th>
                     <th class="px-6 py-3">Purpose</th>
@@ -63,6 +64,9 @@ watch(
                     class="border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-800"
                     data-testid="transaction"
                 >
+                    <td class="px-6 py-4">
+                        {{ t.id }}
+                    </td>
                     <th class="px-6 py-4">
                         {{ formatDate(new Date(t.date)) }}
                     </th>
@@ -73,8 +77,8 @@ watch(
                     <td class="px-6 py-4">
                         {{ roundToString(t.value) }}
                     </td>
-                    <td class="px-6 py-4">{{ t.category?.type }}</td>
-                    <td class="px-6 py-4">{{ t.category?.name }}</td>
+                    <td class="px-6 py-4">{{ t.category.type }}</td>
+                    <td class="px-6 py-4">{{ t.category.name }}</td>
                 </tr>
             </tbody>
         </table>

@@ -6,7 +6,7 @@ import {
     categorizedTransactionsWithUnmatchedTransactionCategory,
 } from "./samples/categorizedTransactions";
 
-describe("Test interactor/mutator/categorize", () => {
+describe.only("Test interactor/mutator/categorize", () => {
     describe("Test function categorizeTransactions", () => {
         describe("Test falsy parameters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
@@ -20,7 +20,7 @@ describe("Test interactor/mutator/categorize", () => {
                         },
                     ],
                 };
-                expect(categorizeTransaction([], options)).toHaveLength(0);
+                expect(categorizeTransaction([], options, 0)).toHaveLength(0);
             });
 
             test("Return an ApplicationError, if no transaction is matching and option strict is true", () => {
@@ -35,7 +35,7 @@ describe("Test interactor/mutator/categorize", () => {
                         },
                     ],
                 };
-                const result = categorizeTransaction(transactions, options);
+                const result = categorizeTransaction(transactions, options, 0);
                 const expected: ApplicationError = {
                     source: "categorize.ts",
                     message: `Couldn't match any transaction.`,
@@ -56,7 +56,7 @@ describe("Test interactor/mutator/categorize", () => {
                     },
                 ],
             };
-            const result = categorizeTransaction(transactions, options);
+            const result = categorizeTransaction(transactions, options, 0);
 
             expect(result).toStrictEqual(categorizedTransactionsAllUnmatched);
         });
@@ -178,7 +178,7 @@ describe("Test interactor/mutator/categorize", () => {
                     ],
                 };
 
-                const result = categorizeTransaction(transactions, options);
+                const result = categorizeTransaction(transactions, options, 0);
                 expect(result).toHaveLength(categorizedTransactions.length);
                 expect(result).toStrictEqual(categorizedTransactions);
             });
@@ -287,7 +287,7 @@ describe("Test interactor/mutator/categorize", () => {
                     ],
                 };
 
-                const result = categorizeTransaction(transactions, options);
+                const result = categorizeTransaction(transactions, options, 0);
                 const expected: ApplicationError = {
                     source: "categorize.ts",
                     message: `Couldn't match all transactions. Unmatched Transactions: "Beef Burger Palace;We hope that you had a beefy good time!", "Melon the Man;Juicy Melons", "Presentable Presents;Good luck!".`,
@@ -379,7 +379,7 @@ describe("Test interactor/mutator/categorize", () => {
                 ],
             };
 
-            const result = categorizeTransaction(transactions, options);
+            const result = categorizeTransaction(transactions, options, 0);
             expect(result).toStrictEqual(
                 categorizedTransactionsWithUnmatchedTransactionCategory,
             );

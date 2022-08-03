@@ -10,6 +10,7 @@ export const fixedPayDayReport: ReportFixedPayDay = {
                 isPaid: true,
                 transactions: [
                     {
+                        id: 0,
                         date: new Date(2021, 9, 1),
                         initiator: "Rent for my crib",
                         purpose: "Thanks landlord",
@@ -21,6 +22,7 @@ export const fixedPayDayReport: ReportFixedPayDay = {
                         },
                     },
                     {
+                        id: 0,
                         date: new Date(2021, 10, 1),
                         initiator: "Rent for my crib",
                         purpose: "Thanks landlord",
@@ -41,6 +43,7 @@ export const fixedPayDayReport: ReportFixedPayDay = {
                 isPaid: true,
                 transactions: [
                     {
+                        id: 0,
                         date: new Date(2021, 8, 3),
                         initiator: "Stay Healthy Corp.",
                         purpose: "Your health is our mission",
@@ -52,6 +55,7 @@ export const fixedPayDayReport: ReportFixedPayDay = {
                         },
                     },
                     {
+                        id: 0,
                         date: new Date(2021, 9, 1),
                         initiator: "Stay Healthy Corp.",
                         purpose: "Your health is our mission",
@@ -63,6 +67,7 @@ export const fixedPayDayReport: ReportFixedPayDay = {
                         },
                     },
                     {
+                        id: 0,
                         date: new Date(2021, 10, 2),
                         initiator: "Stay Healthy Corp.",
                         purpose: "Your health is our mission",
@@ -83,6 +88,7 @@ export const fixedPayDayReport: ReportFixedPayDay = {
                 isPaid: false,
                 transactions: [
                     {
+                        id: 0,
                         date: new Date(2021, 8, 22),
                         initiator: "Mobilio Ltd.",
                         purpose: "your mobile phone provider",
@@ -94,6 +100,7 @@ export const fixedPayDayReport: ReportFixedPayDay = {
                         },
                     },
                     {
+                        id: 0,
                         date: new Date(2021, 9, 22),
                         initiator: "Mobilio Ltd.",
                         purpose: "your mobile phone provider",
