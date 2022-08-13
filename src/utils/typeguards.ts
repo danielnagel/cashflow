@@ -99,3 +99,15 @@ export const isReportTrend = (object: unknown): object is ReportTrend => {
         (object as ReportTrend).trends !== undefined
     );
 };
+
+export const isExtendedTransactionStore = (
+    object: unknown,
+): object is ExtendedTransactionStore => {
+    if (!object) return false;
+    return (
+        (object as ExtendedTransactionStore).extendedTransactions !==
+            undefined &&
+        (object as ExtendedTransactionStore).latestEntry !== undefined &&
+        (object as ExtendedTransactionStore).size !== undefined
+    );
+};

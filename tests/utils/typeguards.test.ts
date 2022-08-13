@@ -9,7 +9,9 @@ import {
     isVariableCategoryTrendPeriod,
     isReportFixedPayDay,
     isReportTrend,
+    isExtendedTransactionStore,
 } from "../../src/utils/typeguards";
+import { extendedTransactionStore } from "../interactor/connector/samples/expected";
 
 describe("Test utils/typeguards", () => {
     describe("Check if object is CsvConnectorOptions", () => {
@@ -363,6 +365,41 @@ describe("Test utils/typeguards", () => {
                 trends: [],
             };
             expect(isReportTrend(expected)).toBeTruthy();
+        });
+    });
+
+    describe("Check if object is ExtendedTransactionStore", () => {
+        test("Null is not an ExtendedTransactionStore", () => {
+            expect(isExtendedTransactionStore(null)).toBeFalsy();
+        });
+
+        test("undefined is not an ExtendedTransactionStore", () => {
+            expect(isExtendedTransactionStore(undefined)).toBeFalsy();
+        });
+
+        test("Empty object is not an ExtendedTransactionStore", () => {
+            expect(isExtendedTransactionStore({})).toBeFalsy();
+        });
+
+        test("string is not an ExtendedTransactionStore", () => {
+            expect(isExtendedTransactionStore("hello")).toBeFalsy();
+        });
+
+        test("number is not an ExtendedTransactionStore", () => {
+            expect(isExtendedTransactionStore(123)).toBeFalsy();
+        });
+
+        test("ExtendedTransactionStore is not an ExtendedTransactionStore", () => {
+            const expected = {
+                type: "unknown",
+            };
+            expect(isExtendedTransactionStore(expected)).toBeFalsy();
+        });
+
+        test("ExtendedTransactionStore is an ExtendedTransactionStore", () => {
+            expect(
+                isExtendedTransactionStore(extendedTransactionStore),
+            ).toBeTruthy();
         });
     });
 });

@@ -272,3 +272,9 @@ type Arguments = {
     configurationPath: string;
     mode: string;
 };
+
+type ExtendedTransactionStore = {
+    extendedTransactions: ExtendedTransaction[];
+    size: number;
+    latestEntry: number;
+};
