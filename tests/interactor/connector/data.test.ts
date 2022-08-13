@@ -22,10 +22,9 @@ describe("Test connector/data", () => {
     });
 
     describe("Loading extended transaction store", () => {
-        test("Create extended transaction store (data.json), when there is none", () => {
+        test("Return null, when file from given path does not exist", () => {
             expect(existsSync(dataJsonTestPath)).toBeFalsy();
-            loadDataJson(dataJsonTestPath);
-            expect(existsSync(dataJsonTestPath)).toBeTruthy();
+            expect(loadDataJson(dataJsonTestPath)).toBeNull();
         });
 
         test("Return extended transaction store, when there is one", () => {
@@ -44,6 +43,18 @@ describe("Test connector/data", () => {
         test("Return null, when given path is an empty file", () => {
             // create store
             const content = "";
+            writeFileSync(dataJsonTestPath, content, {
+                encoding: "utf-8",
+                flag: "w+",
+            });
+            expect(existsSync(dataJsonTestPath)).toBeTruthy();
+
+            expect(loadDataJson(dataJsonTestPath)).toBeNull();
+        });
+
+        test("Return null, when file from path does not contain an extended transaction store", () => {
+            // create store
+            const content = '{ "test": 123 }';
             writeFileSync(dataJsonTestPath, content, {
                 encoding: "utf-8",
                 flag: "w+",
@@ -96,7 +107,12 @@ describe("Test connector/data", () => {
         });
 
         test("Write empty extended transaction store, when there are no transactions", () => {
-            loadDataJson(dataJsonTestPath);
+            // create store
+            const content = "";
+            writeFileSync(dataJsonTestPath, content, {
+                encoding: "utf-8",
+                flag: "w+",
+            });
             expect(existsSync(dataJsonTestPath)).toBeTruthy();
             updateDataJson(dataJsonTestPath, []);
 

@@ -2,33 +2,43 @@ import { isFile, loadFile, saveFile } from "../../utils/files";
 import { isExtendedTransactionStore } from "../../utils/typeguards";
 
 /**
- * load data/data.json or create data/data.json, if it does not exist
+ * Load and return file content with an extended transaction store
+ * or null when it is not an extended transaction store
+ *
+ * @param path to the file
+ * @returns extended transaction store
+ *          or null when it is not an extended transaction store
  */
 export const loadDataJson = (path: string): ExtendedTransactionStore | null => {
     if (!isFile(path)) {
-        saveFile("", path);
         return null;
     }
 
     const content = loadFile(path);
     if (!content) return null;
 
+    let result = null;
     try {
-        const result = JSON.parse(content);
-        if (isExtendedTransactionStore(result)) {
-            result.extendedTransactions.forEach((t) => {
-                t.date = new Date(t.date);
-            });
-        }
-        return result;
+        result = JSON.parse(content);
     } catch (e: unknown) {
         throw new Error(`Could not parse content of '${path}'.`);
     }
+
+    if (!isExtendedTransactionStore(result)) return null;
+
+    // parse date strings to date objects
+    result.extendedTransactions.forEach((t) => {
+        t.date = new Date(t.date);
+    });
+
+    return result;
 };
 
 /**
- * get latest id or -1, if ther are no transactions stored
- * @param store
+ * Get latest transaction id or -1, if ther are no transactions stored.
+ *
+ * @param store to check
+ * @returns latest transaction id, -1 otherwise
  */
 export const getLatestTransactionId = (
     store: ExtendedTransactionStore | null,
@@ -38,13 +48,17 @@ export const getLatestTransactionId = (
 };
 
 /**
- * update data.json
- * @param newExtendedTransactions
+ * Updates a file which contains an extended transaction store.
+ * The new extended transactions are added to the store
+ * and store meta data, latestEntry or size, is updated.
+ *
+ * @param path to a file which contains an extended transaction store
+ * @param newExtendedTransactions which should be added to an extended transaction store
  */
 export const updateDataJson = (
     path: string,
     newExtendedTransactions: ExtendedTransaction[],
-) => {
+): void => {
     if (!isFile(path) || newExtendedTransactions.length === 0) {
         const emptyExtendedTransactionStore: ExtendedTransactionStore = {
             extendedTransactions: [],
