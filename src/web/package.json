@@ -1,7 +1,7 @@
 {
     "name": "cashflow-frontend",
     "private": true,
-    "version": "0.16.3",
+    "version": "0.16.4",
     "scripts": {
         "dev": "vite",
         "prebuild": "npm run build:styles",

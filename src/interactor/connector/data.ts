@@ -58,25 +58,35 @@ export const getLatestTransactionId = (
 export const updateDataJson = (
     path: string,
     newExtendedTransactions: ExtendedTransaction[],
-): void => {
-    if (!isFile(path) || newExtendedTransactions.length === 0) {
-        const emptyExtendedTransactionStore: ExtendedTransactionStore = {
-            extendedTransactions: [],
-            latestEntry: -1,
-            size: 0,
-        };
-        saveFile(JSON.stringify(emptyExtendedTransactionStore, null, 2), path);
-        return;
+): ExtendedTransactionStore | ApplicationError => {
+    // empty default store
+    let currentStore: ExtendedTransactionStore = {
+        extendedTransactions: [],
+        latestEntry: -1,
+        size: 0,
+    };
+
+    if (isFile(path)) {
+        try {
+            const dataJson = loadDataJson(path);
+            if (dataJson === null) {
+                return {
+                    source: "data.ts",
+                    message: `Failed loading data.json.`,
+                };
+            }
+            currentStore = dataJson;
+        } catch (e: unknown) {
+            if (e instanceof Error)
+                return {
+                    source: "data.ts",
+                    message: `Failed loading data.json. Original message: "${e.message}"`,
+                };
+        }
     }
 
-    let currentStore = null;
-    try {
-        currentStore = loadDataJson(path);
-    } catch (e: unknown) {
-        if (e instanceof Error) throw new Error(e.message);
-    }
-
-    if (isExtendedTransactionStore(currentStore)) {
+    const newStore = { ...currentStore };
+    if (newExtendedTransactions.length > 0) {
         const latestEntryId = currentStore.latestEntry;
         if (latestEntryId + 1 !== newExtendedTransactions[0].id) {
             throw new Error(
@@ -85,18 +95,23 @@ export const updateDataJson = (
                 }', given was '${newExtendedTransactions[0].id}'.`,
             );
         }
-        const newStore = { ...currentStore };
         newStore.extendedTransactions = mergeExtendedTransactions(
             currentStore.extendedTransactions,
             newExtendedTransactions,
         );
-        newStore.size = newStore.extendedTransactions.length;
+    }
+
+    newStore.size = newStore.extendedTransactions.length;
+
+    if (newStore.size > 0) {
         newStore.latestEntry =
             newStore.extendedTransactions[
                 newStore.extendedTransactions.length - 1
             ].id;
-        saveFile(JSON.stringify(newStore, null, 2), path);
     }
+
+    saveFile(JSON.stringify(newStore, null, 2), path);
+    return newStore;
 };
 
 const mergeExtendedTransactions = (

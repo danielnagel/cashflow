@@ -117,8 +117,7 @@ describe("Test connector/data", () => {
             updateDataJson(dataJsonTestPath, []);
 
             const result = loadDataJson(dataJsonTestPath);
-            expect(isExtendedTransactionStore(result)).toBeTruthy();
-            expect(result).toStrictEqual(emptyExtendedTransactionStore);
+            expect(result).toBeNull();
         });
 
         test("Throw error, when given path is unparsable", () => {
@@ -141,9 +140,12 @@ describe("Test connector/data", () => {
                 },
             ];
 
-            expect(() =>
+            expect(
                 updateDataJson(dataJsonTestPath, newExtendedTransactions),
-            ).toThrowError(`Could not parse content of '${dataJsonTestPath}'.`);
+            ).toStrictEqual({
+                source: "data.ts",
+                message: `Failed loading data.json. Original message: "Could not parse content of '/home/daniel/git/cashflow/tests/interactor/connector/samples/data.json'."`,
+            });
         });
 
         test("Append data.json, when there are already transactions stored", () => {

@@ -8,6 +8,7 @@ import {
     saveFile,
     createFilePath,
     appendFile,
+    copyFile,
 } from "../../src/utils/files";
 import { rmSync } from "fs";
 
@@ -176,6 +177,58 @@ describe("Test utils/files", () => {
             const path = "/samples/test";
             const fileName = "";
             expect(createFilePath(path, fileName)).toBeNull();
+        });
+    });
+
+    describe("Copy file", () => {
+        const path = __dirname + "/samples/test";
+        const srcFilePath = path + "/test-file.txt";
+        const copyPath = __dirname + "/samples/test/copies";
+        const destFilePath = copyPath + "/test-file.txt";
+
+        beforeEach(() => {
+            if (isDirectory(copyPath)) rmSync(copyPath, { recursive: true });
+        });
+
+        test("Copy file and keep source", () => {
+            expect(isFile(path)).toBeFalsy();
+
+            // create sample file
+            saveFile("test", srcFilePath);
+
+            expect(isFile(srcFilePath)).toBeTruthy();
+            expect(loadFile(srcFilePath)).toBe("test");
+
+            expect(isDirectory(copyPath)).toBeFalsy();
+            expect(isFile(destFilePath)).toBeFalsy();
+
+            copyFile(srcFilePath, copyPath);
+
+            expect(isDirectory(copyPath)).toBeTruthy();
+            expect(isFile(destFilePath)).toBeTruthy();
+            expect(loadFile(destFilePath)).toBe("test");
+            expect(isFile(srcFilePath)).toBeTruthy();
+            expect(loadFile(srcFilePath)).toBe("test");
+        });
+
+        test("Copy file and delete source", () => {
+            expect(isFile(path)).toBeFalsy();
+
+            // create sample file
+            saveFile("test", srcFilePath);
+
+            expect(isFile(srcFilePath)).toBeTruthy();
+            expect(loadFile(srcFilePath)).toBe("test");
+
+            expect(isDirectory(copyPath)).toBeFalsy();
+            expect(isFile(destFilePath)).toBeFalsy();
+
+            copyFile(srcFilePath, copyPath, true);
+
+            expect(isDirectory(copyPath)).toBeTruthy();
+            expect(isFile(destFilePath)).toBeTruthy();
+            expect(loadFile(destFilePath)).toBe("test");
+            expect(isFile(srcFilePath)).toBeFalsy();
         });
     });
 

@@ -172,6 +172,8 @@ type Report = ReportFixedPayDay | ReportTrend | UnknownTypeOption;
  * source:          options for a data source, see CsvOptions for details
  * categories:      a list of categories to categorize every transaction
  *                  from source, can be used in combination with strict: true
+ * storePath:       path to the store. the store holds every extended transaction,
+ *                  default is "data/data.json"
  */
 type Configuration = {
     allowedLogLevel?: string;
@@ -184,6 +186,7 @@ type Configuration = {
     endDate?: string;
     source: CsvOptions | ApiOptions | UnknownTypeOption;
     categories: SampledCategory[];
+    storePath?: string;
 };
 
 interface CsvConfiguration extends Configuration {

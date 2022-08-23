@@ -4,6 +4,48 @@ import { generateFixedPayDayReport } from "./report/fixedPayDay";
 import { ConnectorType, ReportType } from "../types/enums";
 import { categorizeTransaction } from "./mutator/categorize";
 import { generateTrendReport } from "./report/trend";
+import {
+    getLatestTransactionId,
+    loadDataJson,
+    updateDataJson,
+} from "./connector/data";
+
+/**
+ * Loads all extended transactions from  store.
+ * If the store should not exist, e.g. the application is running for the first time,
+ * all transactions will be loaded from specified source and categorized by given options.
+ *
+ * @param options user configuration
+ * @returns Array of Transaction or an ApplicationError
+ */
+export const loadStoredExtendedTransactions = async (
+    options: Configuration,
+): Promise<ExtendedTransactionStore | ApplicationError> => {
+    if (typeof options.storePath === "undefined") {
+        options.storePath = "data/data.json"; // default path
+    }
+
+    const extendedTransactionStore = loadDataJson(options.storePath);
+    const nextEntryId = getLatestTransactionId(extendedTransactionStore) + 1;
+
+    const newExtendedTransactions = await loadCategorizedTransactions(
+        options,
+        nextEntryId,
+    );
+    if (isApplicationError(newExtendedTransactions)) {
+        return newExtendedTransactions;
+    }
+
+    const newExtendedTransactionStore = updateDataJson(
+        options.storePath,
+        newExtendedTransactions,
+    );
+    if (isApplicationError(newExtendedTransactionStore)) {
+        return newExtendedTransactionStore;
+    }
+
+    return newExtendedTransactionStore;
+};
 
 /**
  * Loads all transactions from specified source and categorizes them by given options.
@@ -13,6 +55,7 @@ import { generateTrendReport } from "./report/trend";
  */
 export const loadCategorizedTransactions = async (
     options: Configuration,
+    id?: number,
 ): Promise<ExtendedTransaction[] | ApplicationError> => {
     // when not load from csv files
     // also store which files where already loaded and stored in store
@@ -37,7 +80,7 @@ export const loadCategorizedTransactions = async (
             };
     }
 
-    return categorizeTransaction(transactions, options);
+    return categorizeTransaction(transactions, options, id);
 };
 
 /**
@@ -53,7 +96,19 @@ export const generateReport = async (
     options: Configuration,
     args: Arguments,
 ): Promise<Report | ApplicationError> => {
-    const transactions = await loadCategorizedTransactions(options);
+    const extendedTransactionStore = await loadStoredExtendedTransactions(
+        options,
+    );
+    if (extendedTransactionStore === null) {
+        return {
+            source: "interactor.ts",
+            message: "Failed loading extended transactions store.",
+        };
+    }
+    if (isApplicationError(extendedTransactionStore)) {
+        return extendedTransactionStore;
+    }
+    const transactions = extendedTransactionStore.extendedTransactions;
     if (isApplicationError(transactions)) return transactions;
 
     switch (args.report) {

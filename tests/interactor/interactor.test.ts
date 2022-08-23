@@ -1,45 +1,55 @@
 import { generateReport } from "../../src/interactor/interactor";
-import { TransactionType } from "../../src/types/enums";
 import {
     expectedReportFixedPayDay,
+    expectedReportFixedPayDayAndStoredEntries,
     expectedReportTrend,
+    expectedReportTrendAndStored,
 } from "./samples/expected";
+import { rmSync, existsSync, writeFileSync } from "fs";
+import {
+    unknownConnectorType,
+    malformedConnectorType,
+    unknownReportType,
+    strictIsTrue,
+    strictIsTrueAndSomeTransactionMatch,
+    csvFileDoesNotExist,
+    csvFileDoesNotEndWithCsv,
+    fixedPayDayNoTransactions,
+    trendNoTransactions,
+    fixedPayDayFromCsv,
+    fixedPayDayFromCsvAndStored,
+    trendFromCsv,
+} from "./samples/options";
+
+const dataJsonTestPath = __dirname + "/samples/data.json";
 
 describe("Test Interactor", () => {
+    beforeEach(() => {
+        if (existsSync(dataJsonTestPath)) rmSync(dataJsonTestPath);
+    });
+
+    afterAll(() => {
+        if (existsSync(dataJsonTestPath)) rmSync(dataJsonTestPath);
+    });
+
     describe("Test falsy parameters", () => {
         test("Unknown connector type", async () => {
-            const options: Configuration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "unknown",
-                },
-                categories: [],
-            };
+            const result = await generateReport(unknownConnectorType, {
+                report: "fixedpayday",
+                trendType: "",
+                configurationPath: "",
+                mode: "",
+            });
 
-            expect(
-                await generateReport(options, {
-                    report: "fixedpayday",
-                    trendType: "",
-                    configurationPath: "",
-                    mode: "",
-                }),
-            ).toStrictEqual({
+            expect(result).toStrictEqual({
                 source: "interactor.ts",
-                message: `Unkown connector type "${options.source.type}".`,
+                message: `Unkown connector type "${unknownConnectorType.source.type}".`,
             });
         });
 
         test("Unknown csv connector type, malformed object", async () => {
-            const options: Configuration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "csv",
-                },
-                categories: [],
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(malformedConnectorType, {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
@@ -52,39 +62,8 @@ describe("Test Interactor", () => {
         });
 
         test("Unknown report type", async () => {
-            const options: Configuration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample1.csv",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
-                },
-                categories: [],
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(unknownReportType, {
                     report: "unknown",
                     trendType: "",
                     configurationPath: "",
@@ -97,46 +76,8 @@ describe("Test Interactor", () => {
         });
 
         test("Unmatched transaction leads to error, when strict is true", async () => {
-            const options: Configuration = {
-                allowedLogLevel: "none",
-                strict: true,
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample1.csv",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
-                },
-                categories: [
-                    {
-                        name: "failingtest",
-                        type: "variable",
-                        samples: [{ initiator: "ishallfail" }],
-                    },
-                ],
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(strictIsTrue, {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
@@ -149,64 +90,8 @@ describe("Test Interactor", () => {
         });
 
         test("Unmatched transaction leads to error, when strict is true, some transactions matching", async () => {
-            const options: Configuration = {
-                allowedLogLevel: "none",
-                strict: true,
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample1.csv",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
-                },
-                categories: [
-                    {
-                        name: "rent",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Rent for my crib" }],
-                    },
-                    {
-                        name: "insurance",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Stay Healthy Corp." }],
-                    },
-                    {
-                        name: "mobile",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Mobilio Ltd." }],
-                    },
-                    {
-                        name: "shopping",
-                        type: TransactionType.Variable,
-                        samples: [
-                            { initiator: "my-online-shop.com" },
-                            { initiator: "cool-gadgets.com" },
-                        ],
-                    },
-                ],
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(strictIsTrueAndSomeTransactionMatch, {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
@@ -219,30 +104,8 @@ describe("Test Interactor", () => {
         });
 
         test("ApplicationError, when path to csv file doesn't exist", async () => {
-            const options: CsvConfiguration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample1_.csv",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [],
-                },
-                categories: [
-                    {
-                        name: "rent",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Rent for my crib" }],
-                    },
-                ],
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(csvFileDoesNotExist, {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
@@ -250,35 +113,13 @@ describe("Test Interactor", () => {
                 }),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: `CSV file with transaction data not found. Path: "${options.source.path}".`,
+                message: `CSV file with transaction data not found. Path: "${csvFileDoesNotExist.source.path}".`,
             });
         });
 
         test("ApplicationError, when file doesn't end with .csv", async () => {
-            const options: CsvConfiguration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample1.txt",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [],
-                },
-                categories: [
-                    {
-                        name: "rent",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Rent for my crib" }],
-                    },
-                ],
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(csvFileDoesNotEndWithCsv, {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
@@ -286,44 +127,13 @@ describe("Test Interactor", () => {
                 }),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: `Path needs to end with ".csv", path is "${options.source.path}"`,
+                message: `Path needs to end with ".csv", path is "${csvFileDoesNotEndWithCsv.source.path}"`,
             });
         });
 
         test("FixedPayDay ApplicationError, when there are no transactions", async () => {
-            const options: CsvConfiguration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample2.csv",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
-                },
-                categories: [],
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(fixedPayDayNoTransactions, {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
@@ -336,39 +146,8 @@ describe("Test Interactor", () => {
         });
 
         test("Trend ApplicationError, when there are no transactions", async () => {
-            const options: CsvConfiguration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample2.csv",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
-                },
-                categories: [],
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(trendNoTransactions, {
                     report: "trend",
                     trendType: "",
                     configurationPath: "",
@@ -383,57 +162,8 @@ describe("Test Interactor", () => {
 
     describe("Test generating reports with CSV connector", () => {
         test("Generate report 'FixedPayDay' from csv samples as expected", async () => {
-            const options: Configuration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample1.csv",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
-                },
-                categories: [
-                    {
-                        name: "rent",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Rent for my crib" }],
-                    },
-                    {
-                        name: "insurance",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Stay Healthy Corp." }],
-                    },
-                    {
-                        name: "mobile",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Mobilio Ltd." }],
-                    },
-                ],
-                startDate: "01.09.2021",
-                endDate: "15.11.2021",
-            };
-
             expect(
-                await generateReport(options, {
+                await generateReport(fixedPayDayFromCsv, {
                     report: "fixedpayday",
                     trendType: "",
                     configurationPath: "",
@@ -442,70 +172,108 @@ describe("Test Interactor", () => {
             ).toStrictEqual(expectedReportFixedPayDay);
         });
 
-        test("Generate report 'Trend' from csv samples as expected", async () => {
-            const options: Configuration = {
-                allowedLogLevel: "none",
-                source: {
-                    type: "csv",
-                    path: __dirname + "/samples/sample1.csv",
-                    dataKeys: {
-                        date: "booking",
-                        initiator: "initiator",
-                        purpose: "use",
-                        value: "amount",
-                    },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
+        test("Generate report 'FixedPayDay' from stored csv samples as expected, ", async () => {
+            // create store
+            const testStore: ExtendedTransactionStore = {
+                size: 2,
+                latestEntry: 1,
+                extendedTransactions: [
+                    {
+                        id: 0,
+                        date: new Date(2021, 8, 2),
+                        initiator: "Already in store insurance",
+                        purpose: "stored and healthy",
+                        value: -99.87,
+                        category: {
+                            name: "insurance",
+                            type: "fixed",
+                            period: "monthly",
                         },
-                    ],
-                },
-                categories: [
-                    {
-                        name: "rent",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Rent for my crib" }],
                     },
                     {
-                        name: "insurance",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Stay Healthy Corp." }],
-                    },
-                    {
-                        name: "mobile",
-                        type: TransactionType.Fixed,
-                        samples: [{ initiator: "Mobilio Ltd." }],
-                    },
-                    {
-                        name: "shopping",
-                        type: TransactionType.Variable,
-                        samples: [
-                            { initiator: "my-online-shop.com" },
-                            { initiator: "cool-gadgets.com" },
-                        ],
+                        id: 1,
+                        date: new Date(2021, 8, 2),
+                        initiator: "stored phone company",
+                        purpose: "your stored phone provider",
+                        value: -59.99,
+                        category: {
+                            name: "mobile",
+                            type: "fixed",
+                            period: "monthly",
+                        },
                     },
                 ],
             };
+            writeFileSync(dataJsonTestPath, JSON.stringify(testStore), {
+                encoding: "utf-8",
+                flag: "w+",
+            });
 
             expect(
-                await generateReport(options, {
+                await generateReport(fixedPayDayFromCsvAndStored, {
+                    report: "fixedpayday",
+                    trendType: "",
+                    configurationPath: "",
+                    mode: "",
+                }),
+            ).toStrictEqual(expectedReportFixedPayDayAndStoredEntries);
+        });
+
+        test("Generate report 'Trend' from csv samples as expected", async () => {
+            expect(
+                await generateReport(trendFromCsv, {
                     report: "trend",
                     trendType: undefined,
                     configurationPath: "",
                     mode: "",
                 }),
             ).toStrictEqual(expectedReportTrend);
+        });
+
+        test("Generate report 'Trend' from stored csv samples as expected, ", async () => {
+            // create store
+            const testStore: ExtendedTransactionStore = {
+                size: 2,
+                latestEntry: 1,
+                extendedTransactions: [
+                    {
+                        id: 0,
+                        date: new Date(2021, 7, 3),
+                        initiator: "Stay Healthy Corp.",
+                        purpose: "Your health is our mission",
+                        value: -14.99,
+                        category: {
+                            name: "insurance",
+                            type: "fixed",
+                            period: "monthly",
+                        },
+                    },
+                    {
+                        id: 1,
+                        date: new Date(2021, 7, 2),
+                        initiator: "cool-gadgets.com",
+                        purpose: "cool-gadgets.com.com",
+                        value: -99.99,
+                        category: {
+                            name: "shopping",
+                            type: "variable",
+                        },
+                    },
+                ],
+            };
+            writeFileSync(dataJsonTestPath, JSON.stringify(testStore), {
+                encoding: "utf-8",
+                flag: "w+",
+            });
+
+            expect(
+                await generateReport(trendFromCsv, {
+                    report: "trend",
+                    trendType: undefined,
+                    configurationPath: "",
+                    mode: "",
+                }),
+            ).toStrictEqual(expectedReportTrendAndStored);
         });
     });
 });

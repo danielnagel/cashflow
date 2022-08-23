@@ -5,6 +5,8 @@ import {
     statSync,
     writeFileSync,
     mkdirSync,
+    cpSync,
+    rmSync,
 } from "fs";
 
 /**
@@ -130,4 +132,34 @@ export const createFilePath = (
 
     if (!path.endsWith("/")) path += "/";
     return `${path}${fileName}`;
+};
+
+/**
+ * Copies a file from a source path to a destination path.
+ * The file name is kept.
+ *
+ * @param src source file to copy
+ * @param dest destination to move copied file to
+ * @param delSrc (optional) deletes the source file
+ */
+export const copyFile = (src: string, dest: string, delSrc = false): void => {
+    if (!isFile(src)) return;
+
+    if (!isDirectory(dest)) createDirectory(dest);
+
+    let fileName = src; // no path, just filename
+    if (fileName.includes("/")) {
+        // probably is a path
+        const startOfFileName = fileName.lastIndexOf("/") + 1;
+        fileName = fileName.substring(startOfFileName);
+    }
+
+    const destFileName = createFilePath(dest, fileName);
+    if (!destFileName) return;
+
+    cpSync(src, destFileName);
+
+    if (delSrc) {
+        rmSync(src);
+    }
 };
