@@ -86,10 +86,10 @@ export const updateDataJson = (
             );
         }
         const newStore = { ...currentStore };
-        newStore.extendedTransactions = [
-            ...newStore.extendedTransactions,
-            ...newExtendedTransactions,
-        ];
+        newStore.extendedTransactions = mergeExtendedTransactions(
+            currentStore.extendedTransactions,
+            newExtendedTransactions,
+        );
         newStore.size = newStore.extendedTransactions.length;
         newStore.latestEntry =
             newStore.extendedTransactions[
@@ -98,3 +98,44 @@ export const updateDataJson = (
         saveFile(JSON.stringify(newStore, null, 2), path);
     }
 };
+
+const mergeExtendedTransactions = (
+    extendedTransactions: ExtendedTransaction[],
+    newExtendedTransactions: ExtendedTransaction[],
+): ExtendedTransaction[] => {
+    if (
+        extendedTransactions.length === 0 &&
+        newExtendedTransactions.length === 0
+    )
+        return [];
+
+    const unknownNewExtendedTransactions: ExtendedTransaction[] = [];
+    for (const net of newExtendedTransactions) {
+        let isUnknown = true;
+        for (const et of extendedTransactions) {
+            if (isSameExtendedTransaction(et, net)) {
+                isUnknown = false;
+                break;
+            }
+        }
+        if (isUnknown) {
+            unknownNewExtendedTransactions.push(net);
+        }
+    }
+
+    const mergedExtendedTransactions = [
+        ...extendedTransactions,
+        ...unknownNewExtendedTransactions,
+    ];
+
+    return mergedExtendedTransactions;
+};
+
+const isSameExtendedTransaction = (
+    a: ExtendedTransaction,
+    b: ExtendedTransaction,
+): boolean =>
+    a.id === b.id &&
+    a.initiator === b.initiator &&
+    a.purpose === b.purpose &&
+    a.value === b.value;

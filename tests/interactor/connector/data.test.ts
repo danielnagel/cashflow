@@ -194,6 +194,61 @@ describe("Test connector/data", () => {
             expect(result).toStrictEqual(expectedStore);
         });
 
+        test("Append data.json and ignore already known ids", () => {
+            const newExtendedTransactions = [
+                {
+                    id: 4,
+                    date: new Date(2021, 10, 11),
+                    initiator: "Presentable Presents",
+                    purpose: "Good luck!",
+                    value: 199.78,
+                    category: { name: "presents", type: "variable" },
+                },
+                {
+                    id: 5,
+                    date: new Date(2021, 5, 1),
+                    initiator: "Rent for my crib",
+                    purpose: "Thanks landlord",
+                    value: 650,
+                    category: {
+                        name: "rent",
+                        type: "fixed",
+                        period: "monthly",
+                    },
+                },
+            ];
+
+            const extendedTransactionStoreCopy = {
+                ...extendedTransactionStore,
+            };
+            extendedTransactionStoreCopy.extendedTransactions.push(
+                newExtendedTransactions[0],
+            );
+
+            // create store
+            const content = JSON.stringify(extendedTransactionStoreCopy);
+            writeFileSync(dataJsonTestPath, content, {
+                encoding: "utf-8",
+                flag: "w+",
+            });
+            expect(existsSync(dataJsonTestPath)).toBeTruthy();
+
+            updateDataJson(dataJsonTestPath, newExtendedTransactions);
+
+            const result = loadDataJson(dataJsonTestPath);
+            expect(isExtendedTransactionStore(result)).toBeTruthy();
+
+            const expectedStore = { ...extendedTransactionStoreCopy };
+            expectedStore.extendedTransactions = [
+                ...expectedStore.extendedTransactions,
+                newExtendedTransactions[1],
+            ];
+            expectedStore.latestEntry = 5;
+            expectedStore.size = 6;
+
+            expect(result).toStrictEqual(expectedStore);
+        });
+
         test("Throw error, when extended transaction array does not have to correct id", () => {
             // create store
             const content = JSON.stringify(extendedTransactionStore);
