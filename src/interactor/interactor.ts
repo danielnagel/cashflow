@@ -127,6 +127,8 @@ export const generateReport = async (
             );
             if (isApplicationError(trendReport)) return trendReport;
             return { type: "trend", ...trendReport };
+        case ReportType.Transactions:
+            return { type: "transactions", transactions };
         default:
             return {
                 source: "interactor.ts",

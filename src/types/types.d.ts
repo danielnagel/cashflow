@@ -142,9 +142,21 @@ interface ReportTrend extends TrendReport {
 }
 
 /**
+ * Discriminating union to determine if the given report is from type ReportTransactions.
+ */
+interface ReportTransactions {
+    type: "transactions";
+    transactions: ExtendedTransaction[];
+}
+
+/**
  * Possible reports, that the interactor could generate.
  */
-type Report = ReportFixedPayDay | ReportTrend | UnknownTypeOption;
+type Report =
+    | ReportFixedPayDay
+    | ReportTrend
+    | ReportTransactions
+    | UnknownTypeOption;
 
 /**
  * Possible configurations, that a user could create.

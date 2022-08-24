@@ -4,9 +4,11 @@ import { loadConfigurationFile } from "../../configurator/loader";
 import { LogLevel, TransactionType } from "../../types/enums";
 import { log } from "../../utils/loggers";
 import { isApplicationError } from "../../utils/typeguards";
-import { getFixedPayDay } from "./endpoints/fixedPayDay";
-import { getAllTransactions } from "./endpoints/transactions";
-import { getTrendReportTable } from "./endpoints/trend";
+import {
+    getFixedPayDay,
+    getAllTransactions,
+    getTrendReportTable,
+} from "./endpoints";
 import { round } from "../../utils/numbers";
 import "dotenv/config";
 
@@ -35,8 +37,8 @@ export default async (args: Arguments) => {
         allowedLogLevel: options.allowedLogLevel,
         type: options.logType,
     });
-    const transactions = await getAllTransactions(options);
-    const fixedPayDay = await getFixedPayDay(options);
+    const transactions = await getAllTransactions(options, { ...args });
+    const fixedPayDay = await getFixedPayDay(options, { ...args });
     const allTrends = await getTrendReportTable(options, {
         ...args,
         trendType: undefined,
