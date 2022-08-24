@@ -9,6 +9,12 @@ import {
     loadDataJson,
     updateDataJson,
 } from "./connector/data";
+import {
+    createDirectory,
+    copyFile,
+    loadFileNamesFromDirectory,
+    createFilePath,
+} from "../utils/files";
 
 /**
  * Loads all extended transactions from  store.
@@ -34,6 +40,26 @@ export const loadStoredExtendedTransactions = async (
     );
     if (isApplicationError(newExtendedTransactions)) {
         return newExtendedTransactions;
+    }
+
+    if (options.source.type === ConnectorType.CSV) {
+        const source = options.source as CsvOptions;
+
+        if (typeof source.backUpPath === "undefined") {
+            source.backUpPath = "data/backup/"; // default
+        }
+
+        const filesInDirectory = loadFileNamesFromDirectory(
+            source.path,
+            ConnectorType.CSV,
+        );
+
+        createDirectory(source.backUpPath);
+        for (const fileName of filesInDirectory) {
+            const filePath = createFilePath(source.path, fileName);
+            if (!filePath) continue;
+            copyFile(filePath, source.backUpPath, true);
+        }
     }
 
     const newExtendedTransactionStore = updateDataJson(
