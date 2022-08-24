@@ -51,6 +51,7 @@ type CsvOptions = {
     dataKeys: DataKeys;
     formats: CsvColumnFormat[];
     dateFormat?: string;
+    backUpPath?: string;
 };
 
 /**

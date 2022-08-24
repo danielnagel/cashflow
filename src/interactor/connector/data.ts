@@ -1,3 +1,4 @@
+import { isSameDay } from "date-fns";
 import { isFile, loadFile, saveFile } from "../../utils/files";
 import { isExtendedTransactionStore } from "../../utils/typeguards";
 
@@ -150,7 +151,7 @@ const isSameExtendedTransaction = (
     a: ExtendedTransaction,
     b: ExtendedTransaction,
 ): boolean =>
-    a.id === b.id &&
+    isSameDay(a.date, b.date) &&
     a.initiator === b.initiator &&
     a.purpose === b.purpose &&
     a.value === b.value;

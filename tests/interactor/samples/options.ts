@@ -1,6 +1,7 @@
 import { TransactionType } from "../../../src/types/enums";
 
 const dataJsonTestPath = __dirname + "/data.json";
+const backUpPath = __dirname + "/backup/";
 
 export const unknownConnectorType: Configuration = {
     allowedLogLevel: "none",
@@ -15,6 +16,7 @@ export const malformedConnectorType: Configuration = {
     allowedLogLevel: "none",
     source: {
         type: "csv",
+        backUpPath,
     },
     categories: [],
     storePath: dataJsonTestPath,
@@ -47,6 +49,7 @@ export const unknownReportType: Configuration = {
                 ],
             },
         ],
+        backUpPath,
     },
     categories: [],
     storePath: dataJsonTestPath,
@@ -80,6 +83,7 @@ export const strictIsTrue: Configuration = {
                 ],
             },
         ],
+        backUpPath,
     },
     categories: [
         {
@@ -119,6 +123,7 @@ export const strictIsTrueAndSomeTransactionMatch: Configuration = {
                 ],
             },
         ],
+        backUpPath,
     },
     categories: [
         {
@@ -160,6 +165,7 @@ export const csvFileDoesNotExist: CsvConfiguration = {
             value: "amount",
         },
         formats: [],
+        backUpPath,
     },
     categories: [
         {
@@ -183,6 +189,7 @@ export const csvFileDoesNotEndWithCsv: CsvConfiguration = {
             value: "amount",
         },
         formats: [],
+        backUpPath,
     },
     categories: [
         {
@@ -221,6 +228,7 @@ export const fixedPayDayNoTransactions: CsvConfiguration = {
                 ],
             },
         ],
+        backUpPath,
     },
     categories: [],
     storePath: dataJsonTestPath,
@@ -253,6 +261,7 @@ export const trendNoTransactions: CsvConfiguration = {
                 ],
             },
         ],
+        backUpPath,
     },
     categories: [],
     storePath: dataJsonTestPath,
@@ -285,6 +294,7 @@ export const fixedPayDayFromCsv: Configuration = {
                 ],
             },
         ],
+        backUpPath,
     },
     categories: [
         {
@@ -335,6 +345,7 @@ export const fixedPayDayFromCsvAndStored: Configuration = {
                 ],
             },
         ],
+        backUpPath,
     },
     categories: [
         {
@@ -391,6 +402,7 @@ export const trendFromCsv: Configuration = {
                 ],
             },
         ],
+        backUpPath,
     },
     categories: [
         {

@@ -6,7 +6,9 @@ import {
     isFile,
     loadFileNamesFromDirectory,
     createFilePath,
+    createDirectory,
     loadFile,
+    copyFile,
 } from "../../utils/files";
 import {
     decimalNumberToFloat,
@@ -253,5 +255,13 @@ const loadTransactionDataFromFile = async (
         }
         transactions.push(transaction);
     }
+
+    if (typeof options.source.backUpPath === "undefined") {
+        options.source.backUpPath = "data/backup/"; // default
+    }
+
+    createDirectory(options.source.backUpPath);
+    copyFile(options.source.path, options.source.backUpPath, true);
+
     return transactions;
 };

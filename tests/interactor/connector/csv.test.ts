@@ -3,8 +3,31 @@ import {
     parseRecordToTransaction,
 } from "../../../src/interactor/connector/csv";
 import { LogLevel } from "../../../src/types/enums";
+import { existsSync, rmSync, cpSync } from "fs";
 
 describe("Test connector/csv", () => {
+    const backUpPath = __dirname + "/samples/backup/";
+
+    beforeEach(() => {
+        if (existsSync(backUpPath)) {
+            cpSync(backUpPath, __dirname + "/samples/", {
+                recursive: true,
+                force: true,
+            });
+            rmSync(backUpPath, { recursive: true });
+        }
+    });
+
+    afterAll(() => {
+        if (existsSync(backUpPath)) {
+            cpSync(backUpPath, __dirname + "/samples/", {
+                recursive: true,
+                force: true,
+            });
+            rmSync(backUpPath, { recursive: true });
+        }
+    });
+
     describe("Parse record to transaction", () => {
         const dataKeys = {
             date: "booking",
@@ -198,6 +221,7 @@ describe("Test connector/csv", () => {
                         },
                         formats: [],
                         dateFormat: "",
+                        backUpPath: backUpPath,
                     },
                     allowedLogLevel: "none",
                     categories: [],
@@ -224,6 +248,7 @@ describe("Test connector/csv", () => {
                         },
                         formats: [],
                         dateFormat: "",
+                        backUpPath: backUpPath,
                     },
                     allowedLogLevel: "none",
                     categories: [],
@@ -250,6 +275,7 @@ describe("Test connector/csv", () => {
                         },
                         formats: [],
                         dateFormat: "",
+                        backUpPath: backUpPath,
                     },
                     allowedLogLevel: "none",
                     categories: [],
@@ -278,6 +304,7 @@ describe("Test connector/csv", () => {
                             },
                         ],
                         dateFormat: "",
+                        backUpPath: backUpPath,
                     },
                     allowedLogLevel: "none",
                     categories: [],
@@ -316,6 +343,7 @@ describe("Test connector/csv", () => {
                         },
                     ],
                     dateFormat: "dd.MM.yyyy",
+                    backUpPath: backUpPath,
                 },
                 allowedLogLevel: "none",
                 categories: [],
@@ -369,6 +397,7 @@ describe("Test connector/csv", () => {
                         },
                     ],
                     dateFormat: "dd.MM.yyyy",
+                    backUpPath: backUpPath,
                 },
                 allowedLogLevel: "none",
                 categories: [],
@@ -455,6 +484,7 @@ describe("Test connector/csv", () => {
                             },
                         ],
                         dateFormat: "dd.MM.yyyy",
+                        backUpPath: backUpPath,
                     },
                     allowedLogLevel: "none",
                     categories: [],
@@ -569,6 +599,7 @@ describe("Test connector/csv", () => {
                         },
                     ],
                     dateFormat: "dd.MM.yyyy",
+                    backUpPath: backUpPath,
                 },
                 allowedLogLevel: "none",
                 categories: [],

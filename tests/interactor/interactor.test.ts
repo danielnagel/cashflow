@@ -5,7 +5,7 @@ import {
     expectedReportTrend,
     expectedReportTrendAndStored,
 } from "./samples/expected";
-import { rmSync, existsSync, writeFileSync } from "fs";
+import { rmSync, existsSync, writeFileSync, cpSync } from "fs";
 import {
     unknownConnectorType,
     malformedConnectorType,
@@ -22,14 +22,31 @@ import {
 } from "./samples/options";
 
 const dataJsonTestPath = __dirname + "/samples/data.json";
+const backUpPath = __dirname + "/samples/backup/";
 
 describe("Test Interactor", () => {
     beforeEach(() => {
         if (existsSync(dataJsonTestPath)) rmSync(dataJsonTestPath);
+
+        if (existsSync(backUpPath)) {
+            cpSync(backUpPath, __dirname + "/samples/", {
+                recursive: true,
+                force: true,
+            });
+            rmSync(backUpPath, { recursive: true });
+        }
     });
 
     afterAll(() => {
         if (existsSync(dataJsonTestPath)) rmSync(dataJsonTestPath);
+
+        if (existsSync(backUpPath)) {
+            cpSync(backUpPath, __dirname + "/samples/", {
+                recursive: true,
+                force: true,
+            });
+            rmSync(backUpPath, { recursive: true });
+        }
     });
 
     describe("Test falsy parameters", () => {
