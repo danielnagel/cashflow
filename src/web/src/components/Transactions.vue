@@ -14,8 +14,8 @@ const transactions = ref([] as ExtendedTransaction[]);
 const loadApiData = async () => {
     error.value = "";
     try {
-        const result = await getApi("/transactions");
-        transactions.value = result as ExtendedTransaction[];
+        const result = (await getApi("/transactions")) as ReportTransactions;
+        transactions.value = result.transactions;
     } catch (e: any) {
         if (typeof e === "string") error.value = e;
     }

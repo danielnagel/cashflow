@@ -15,6 +15,7 @@ import {
     loadFileNamesFromDirectory,
     createFilePath,
 } from "../utils/files";
+import { sortTransactionsByDate } from "../utils/sorters";
 
 /**
  * Loads all extended transactions from  store.
@@ -154,6 +155,7 @@ export const generateReport = async (
             if (isApplicationError(trendReport)) return trendReport;
             return { type: "trend", ...trendReport };
         case ReportType.Transactions:
+            sortTransactionsByDate(transactions, true);
             return { type: "transactions", transactions };
         default:
             return {

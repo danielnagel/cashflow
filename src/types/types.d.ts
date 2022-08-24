@@ -83,7 +83,6 @@ type Sample = {
 type FixedPayDay = {
     value: number;
     isPaid: boolean;
-    // TODO: list of ids
     transactions: ExtendedTransaction[];
 };
 
@@ -259,7 +258,6 @@ type CategoryTrend = {
 
 type CategoryTrendPeriod = {
     period: string;
-    // TODO: list of ids
     transactions: ExtendedTransaction[];
 };
 

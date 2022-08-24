@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import "./index.css";
-import "billboard.js/dist/theme/insight.css"; // TODO: move to index.css
 import App from "./App.vue";
 import {
     Alert,

@@ -80,7 +80,6 @@ const generateError = (
     transactions: Transaction[],
     unmatchedTransactions: Transaction[],
 ): ApplicationError => {
-    // TODO: store unmatched transactions as string[], to make it easier to process in frontend (only needed when strict option will be supported in the future)
     let message = "Couldn't match any transaction.";
 
     if (unmatchedTransactions.length < transactions.length) {

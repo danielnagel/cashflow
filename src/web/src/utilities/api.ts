@@ -9,7 +9,7 @@ import { isApplicationError } from "../../../utils/typeguards";
 export const getApi = async (
     relativeUrl: string,
 ): Promise<
-    TrendReportTableRow[] | CategorizedFixedPayDays | ExtendedTransaction[]
+    TrendReportTableRow[] | CategorizedFixedPayDays | ReportTransactions
 > => {
     if (relativeUrl.length > 0 && !relativeUrl.startsWith("/"))
         relativeUrl = "/" + relativeUrl;
