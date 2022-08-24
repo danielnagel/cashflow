@@ -38,6 +38,15 @@ export default async (args: Arguments) => {
         type: options.logType,
     });
     const transactions = await getAllTransactions(options, { ...args });
+    if (isApplicationError(transactions) && options.strict) {
+        log({
+            message: transactions,
+            level: LogLevel.Error,
+            allowedLogLevel: options.allowedLogLevel,
+            type: options.logType,
+        });
+        return;
+    }
     const fixedPayDay = await getFixedPayDay(options, { ...args });
     const allTrends = await getTrendReportTable(options, {
         ...args,
