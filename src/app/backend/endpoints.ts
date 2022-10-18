@@ -2,6 +2,7 @@ import { generateReport } from "../../interactor/interactor";
 import { isApplicationError } from "../../utils/typeguards";
 import { ReportType } from "../../types/enums";
 import { generateReportAsTable } from "../../interactor/mutator/tabularize";
+import { Application } from "express";
 
 export const getFixedPayDay = async (
     options: Configuration,
@@ -42,4 +43,29 @@ export const getTrendReportTable = async (
         return table;
     }
     return table as TrendReportTableRow[];
+};
+
+export const setupEndpoints = (app: Application, cache: BackendCache) => {
+    // register endpoints and handlers
+    app.get("/transactions", (_, res) =>
+        res.status(200).json(cache.transactions),
+    );
+    app.get("/fixedpayday", (_, res) =>
+        res.status(200).json(cache.fixedPayDay),
+    );
+    app.get("/trend", (_, res) => {
+        res.status(200).json(cache.allTrends);
+    });
+    app.get("/trend/variable", (_, res) => {
+        res.status(200).json(cache.variableTrend);
+    });
+    app.get("/trend/fixed", (_, res) => {
+        res.status(200).json(cache.fixedTrend);
+    });
+    app.get("/trend/income", (_, res) => {
+        res.status(200).json(cache.incomeTrend);
+    });
+    app.get("/trend/special", (_, res) => {
+        res.status(200).json(cache.specialTrend);
+    });
 };

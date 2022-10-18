@@ -292,3 +292,16 @@ type ExtendedTransactionStore = {
     size: number;
     latestEntry: number;
 };
+
+/**
+ * Stores all the cached data for the backend endpoints.
+ */
+type BackendCache = {
+    transactions: ApplicationError | ReportTransactions;
+    fixedPayDay: ApplicationError | CategorizedFixedPayDays;
+    allTrends: ApplicationError | TrendReportTableRow[];
+    variableTrend: ApplicationError | TrendReportTableRow[];
+    fixedTrend: ApplicationError | TrendReportTableRow[];
+    incomeTrend: ApplicationError | TrendReportTableRow[];
+    specialTrend: ApplicationError | TrendReportTableRow[];
+};
