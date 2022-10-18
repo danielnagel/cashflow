@@ -193,7 +193,7 @@ describe("Test interactor/mutator/categorize", () => {
                     ],
                 };
 
-                const result = categorizeTransaction(transactions, options, 0);
+                const result = categorizeTransaction(transactions, options);
                 expect(result).toHaveLength(categorizedTransactions.length);
                 expect(result).toStrictEqual(categorizedTransactions);
             });
