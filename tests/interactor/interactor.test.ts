@@ -4,6 +4,7 @@ import {
     expectedReportFixedPayDayAndStoredEntries,
     expectedReportTrend,
     expectedReportTrendAndStored,
+    transactions,
 } from "./samples/expected";
 import { rmSync, existsSync, writeFileSync, cpSync } from "fs";
 import {
@@ -305,6 +306,17 @@ describe("Test Interactor", () => {
                     mode: "",
                 }),
             ).toStrictEqual(expectedReportTrendAndStored);
+        });
+
+        test("Generate report 'Transactions' from csv samples as expected", async () => {
+            expect(
+                await generateReport(trendFromCsv, {
+                    report: "transactions",
+                    trendType: undefined,
+                    configurationPath: "",
+                    mode: "",
+                }),
+            ).toStrictEqual(transactions);
         });
     });
 });

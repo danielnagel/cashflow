@@ -126,12 +126,6 @@ export const generateReport = async (
     const extendedTransactionStore = await loadStoredExtendedTransactions(
         options,
     );
-    if (extendedTransactionStore === null) {
-        return {
-            source: "interactor.ts",
-            message: "Failed loading extended transactions store.",
-        };
-    }
     if (isApplicationError(extendedTransactionStore)) {
         return extendedTransactionStore;
     }
