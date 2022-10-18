@@ -5,6 +5,15 @@ import { log } from "../../src/utils/loggers";
 import { rmSync } from "fs";
 
 describe("Test utils/loggers", () => {
+    beforeAll(() => {
+        jest.useFakeTimers("modern");
+        jest.setSystemTime();
+    });
+
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+
     describe("Test function log, type console", () => {
         test("log 'TEST' to console", () => {
             const consoleLog = jest
