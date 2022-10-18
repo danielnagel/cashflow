@@ -1,6 +1,6 @@
 {
     "name": "cashflow",
-    "version": "0.16.6",
+    "version": "0.16.7",
     "description": "Generates reports from financial data csv files.",
     "keywords": [
         "financial",
@@ -19,9 +19,9 @@
         "build:backend": "tsc -p tsconfig.build.json",
         "build:frontend": "npm run build --prefix src/web",
         "dev": "npm run backend & npm run dev --prefix src/web -- --host",
-        "test": "jest",
+        "test": "TZ=UTC jest",
         "posttest": "npm test --prefix src/web",
-        "test:coverage": "jest --coverage --coverageReporters='text-summary'",
+        "test:coverage": "TZ=UTC jest --coverage --coverageReporters='text-summary'",
         "backend": "node dist/index.js -m server",
         "checkFormat": "prettier --check .",
         "format": "prettier --write .",

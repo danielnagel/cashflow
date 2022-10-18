@@ -1,6 +1,6 @@
 import { Periods, TransactionType } from "../../types/enums";
 import { formatDate } from "../../utils/dates";
-import { saveFile } from "../../utils/files";
+import { createDirectory, saveFile } from "../../utils/files";
 import { isTransactionMatchingSample } from "../../utils/filters";
 import { isApplicationError } from "../../utils/typeguards";
 
@@ -83,6 +83,7 @@ const generateError = (
 ): ApplicationError => {
     const fileName = `${formatDate(new Date(), "yyyy-MM-dd")}-unmatched.json`;
     const path = "data/logs/";
+    createDirectory(path);
     saveFile(JSON.stringify(unmatchedTransactions, null, 2), path + fileName);
 
     return {
