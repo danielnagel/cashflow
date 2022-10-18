@@ -144,7 +144,7 @@ describe("Test connector/data", () => {
                 updateDataJson(dataJsonTestPath, newExtendedTransactions),
             ).toStrictEqual({
                 source: "data.ts",
-                message: `Failed loading data.json. Original message: "Could not parse content of '/home/daniel/git/cashflow/tests/interactor/connector/samples/data.json'."`,
+                message: `Failed loading data.json. Original message: "Could not parse content of '${__dirname}/samples/data.json'."`,
             });
         });
 
