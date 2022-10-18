@@ -145,7 +145,7 @@ export const createFilePath = (
 export const copyFile = (src: string, dest: string, delSrc = false): void => {
     if (!isFile(src)) return;
 
-    if (!isDirectory(dest)) createDirectory(dest);
+    if (!isDirectory(dest) && dest !== "") createDirectory(dest);
 
     let fileName = src; // no path, just filename
     if (fileName.includes("/")) {

@@ -190,6 +190,28 @@ describe("Test utils/files", () => {
             if (isDirectory(copyPath)) rmSync(copyPath, { recursive: true });
         });
 
+        test("Don't copy, when source is not a file", () => {
+            const falsySrcPath = path + "teeeest-file.txt";
+            expect(isFile(falsySrcPath)).toBeFalsy();
+            copyFile(srcFilePath, copyPath);
+            expect(isFile(falsySrcPath)).toBeFalsy();
+        });
+
+        test("Don't copy, when dest is empty string", () => {
+            expect(isFile(path)).toBeFalsy();
+
+            // create sample file
+            saveFile("test", srcFilePath);
+
+            expect(isFile(srcFilePath)).toBeTruthy();
+            expect(loadFile(srcFilePath)).toBe("test");
+
+            copyFile(srcFilePath, "");
+
+            expect(isDirectory(copyPath)).toBeFalsy();
+            expect(isFile(destFilePath)).toBeFalsy();
+        });
+
         test("Copy file and keep source", () => {
             expect(isFile(path)).toBeFalsy();
 
