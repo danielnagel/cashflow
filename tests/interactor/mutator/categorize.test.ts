@@ -1,12 +1,27 @@
 import { categorizeTransaction } from "../../../src/interactor/mutator/categorize";
 import { transactions } from "./samples/transactions";
+import { strictUnmatched } from "./samples/unmatchedTransactions";
 import {
     categorizedTransactions,
     categorizedTransactionsAllUnmatched,
     categorizedTransactionsWithUnmatchedTransactionCategory,
 } from "./samples/categorizedTransactions";
+import { rmSync, existsSync } from "fs";
+import { loadFile } from "../../../src/utils/files";
 
-describe.only("Test interactor/mutator/categorize", () => {
+const unmatchedPath = "data/logs/2022-10-01-unmatched.json";
+
+describe("Test interactor/mutator/categorize", () => {
+    beforeAll(() => {
+        jest.useFakeTimers("modern");
+        jest.setSystemTime(new Date(2022, 9, 1));
+    });
+
+    afterAll(() => {
+        jest.useRealTimers();
+        if (existsSync(unmatchedPath)) rmSync(unmatchedPath);
+    });
+
     describe("Test function categorizeTransactions", () => {
         describe("Test falsy parameters", () => {
             test("Return an array of length 0, if there are no transactions", () => {
@@ -38,7 +53,7 @@ describe.only("Test interactor/mutator/categorize", () => {
                 const result = categorizeTransaction(transactions, options, 0);
                 const expected: ApplicationError = {
                     source: "categorize.ts",
-                    message: `Couldn't match any transaction.`,
+                    message: `Couldn't match all transactions. See ${unmatchedPath} for details.`,
                 };
                 expect(result).toStrictEqual(expected);
             });
@@ -290,9 +305,12 @@ describe.only("Test interactor/mutator/categorize", () => {
                 const result = categorizeTransaction(transactions, options, 0);
                 const expected: ApplicationError = {
                     source: "categorize.ts",
-                    message: `Couldn't match all transactions. Unmatched Transactions: "Beef Burger Palace;We hope that you had a beefy good time!", "Melon the Man;Juicy Melons", "Presentable Presents;Good luck!".`,
+                    message: `Couldn't match all transactions. See ${unmatchedPath} for details.`,
                 };
                 expect(result).toStrictEqual(expected);
+                expect(
+                    JSON.parse(loadFile(unmatchedPath) as string),
+                ).toStrictEqual(strictUnmatched);
             });
         });
 

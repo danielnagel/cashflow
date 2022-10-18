@@ -1,4 +1,6 @@
 import { Periods, TransactionType } from "../../types/enums";
+import { formatDate } from "../../utils/dates";
+import { saveFile } from "../../utils/files";
 import { isTransactionMatchingSample } from "../../utils/filters";
 import { isApplicationError } from "../../utils/typeguards";
 
@@ -57,7 +59,7 @@ export const categorizeTransaction = (
     const unmatchedTransactions =
         getUnmatchedTransactions(extendedTransactions);
     if (options.strict && unmatchedTransactions.length > 0) {
-        const error = generateError(transactions, unmatchedTransactions);
+        const error = generateError(unmatchedTransactions);
         if (isApplicationError(error)) {
             return error;
         }
@@ -77,23 +79,18 @@ const copy = (transactions: Transaction[]): Transaction[] => {
 };
 
 const generateError = (
-    transactions: Transaction[],
     unmatchedTransactions: Transaction[],
 ): ApplicationError => {
-    let message = "Couldn't match any transaction.";
+    const fileName = `${formatDate(new Date(), "yyyy-MM-dd")}-unmatched.json`;
+    const path = "data/logs/";
+    saveFile(JSON.stringify(unmatchedTransactions, null, 2), path + fileName);
 
-    if (unmatchedTransactions.length < transactions.length) {
-        message = "Couldn't match all transactions. Unmatched Transactions:";
-        for (let i = 0; i < unmatchedTransactions.length; i++) {
-            if (i === unmatchedTransactions.length - 1) {
-                message += ` "${unmatchedTransactions[i].initiator};${unmatchedTransactions[i].purpose}".`;
-            } else {
-                message += ` "${unmatchedTransactions[i].initiator};${unmatchedTransactions[i].purpose}",`;
-            }
-        }
-    }
-
-    return { source: "categorize.ts", message };
+    return {
+        source: "categorize.ts",
+        message: `Couldn't match all transactions. See ${
+            path + fileName
+        } for details.`,
+    };
 };
 
 const getUnmatchedTransactions = (

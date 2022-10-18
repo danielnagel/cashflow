@@ -20,11 +20,19 @@ import {
     fixedPayDayFromCsvAndStored,
     trendFromCsv,
 } from "./samples/options";
+import { loadFile } from "../../src/utils/files";
+import { strictUnmatched } from "./samples/unmatchedTransactions";
 
 const dataJsonTestPath = __dirname + "/samples/data.json";
 const backUpPath = __dirname + "/samples/backup/";
+const unmatchedPath = "data/logs/2022-10-02-unmatched.json";
 
 describe("Test Interactor", () => {
+    beforeAll(() => {
+        jest.useFakeTimers("modern");
+        jest.setSystemTime(new Date(2022, 9, 2));
+    });
+
     beforeEach(() => {
         if (existsSync(dataJsonTestPath)) rmSync(dataJsonTestPath);
 
@@ -47,6 +55,9 @@ describe("Test Interactor", () => {
             });
             rmSync(backUpPath, { recursive: true });
         }
+        if (existsSync(unmatchedPath)) rmSync(unmatchedPath);
+
+        jest.useRealTimers();
     });
 
     describe("Test falsy parameters", () => {
@@ -102,7 +113,7 @@ describe("Test Interactor", () => {
                 }),
             ).toStrictEqual({
                 source: "categorize.ts",
-                message: `Couldn't match any transaction.`,
+                message: `Couldn't match all transactions. See ${unmatchedPath} for details.`,
             });
         });
 
@@ -116,8 +127,11 @@ describe("Test Interactor", () => {
                 }),
             ).toStrictEqual({
                 source: "categorize.ts",
-                message: `Couldn't match all transactions. Unmatched Transactions: "FOOD SHOP 1;Thanks for paying the food", "ONLINE SHOP 3;Good choice mate 2345452", "ONLINE SHOP 3;Good choice mate 2344534", "Almost Healthy Inc.;We bet that you're going to be sick", "Grocerie Land;VISA 23 GROCERIE LAND TES71234123423134", "Grocerie Land;VISA 11 GROCERIE LAND TES71234123423134", "Almost Healthy Inc.;We bet that you're going to be sick", "Grocerie Land;VISA 23 GROCERIE LAND TES71234123423134", "Tasty Deli and Grocerie Store;Thanks for buying the freshest food", "Almost Healthy Inc.;We bet that you're going to be sick", "Tasty Deli and Grocerie Store;Thanks for buying the freshest food", "Grocerie Land;VISA 11 GROCERIE LAND TES71234123423134".`,
+                message: `Couldn't match all transactions. See ${unmatchedPath} for details.`,
             });
+            expect(JSON.parse(loadFile(unmatchedPath) as string)).toStrictEqual(
+                strictUnmatched,
+            );
         });
 
         test("ApplicationError, when path to csv file doesn't exist", async () => {
