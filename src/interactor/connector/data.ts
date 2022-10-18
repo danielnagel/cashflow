@@ -119,12 +119,6 @@ const mergeExtendedTransactions = (
     extendedTransactions: ExtendedTransaction[],
     newExtendedTransactions: ExtendedTransaction[],
 ): ExtendedTransaction[] => {
-    if (
-        extendedTransactions.length === 0 &&
-        newExtendedTransactions.length === 0
-    )
-        return [];
-
     const unknownNewExtendedTransactions: ExtendedTransaction[] = [];
     for (const net of newExtendedTransactions) {
         let isUnknown = true;
