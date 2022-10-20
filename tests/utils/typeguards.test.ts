@@ -175,7 +175,6 @@ describe("Test utils/typeguards", () => {
                 categories: [],
                 source: {
                     type: "csv",
-                    formats: [],
                     dataKeys: {
                         purpose: "",
                         date: "",

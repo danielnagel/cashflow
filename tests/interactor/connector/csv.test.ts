@@ -32,7 +32,8 @@ describe("Test connector/csv", () => {
                 parseRecordToTransaction({}, dataKeys, dateFormat),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: "Record doesn't match given data keys.",
+                message:
+                    'Couldn\'t parse record date. Date string is "undefined", date format is "dd.MM.yyyy".',
             });
         });
 
@@ -45,7 +46,8 @@ describe("Test connector/csv", () => {
                 ),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: "Record doesn't match given data keys.",
+                message:
+                    'Couldn\'t parse record date. Date string is "undefined", date format is "dd.MM.yyyy".',
             });
         });
 
@@ -63,7 +65,8 @@ describe("Test connector/csv", () => {
                 ),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: "Record doesn't match given data keys.",
+                message:
+                    'Couldn\'t parse record date. Date string is "undefined", date format is "dd.MM.yyyy".',
             });
         });
 
@@ -71,7 +74,7 @@ describe("Test connector/csv", () => {
             expect(
                 parseRecordToTransaction(
                     {
-                        booking: "1",
+                        booking: "01.11.2021",
                         initiator: undefined,
                         use: "3",
                         amount: "4",
@@ -81,15 +84,16 @@ describe("Test connector/csv", () => {
                 ),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: "Record doesn't match given data keys.",
+                message:
+                    "Couldn't parse record initiator. Initiator is undefined.",
             });
         });
 
-        test("Return ApplicationError, if data keys use is undefined", async () => {
+        test("Return ApplicationError, if data keys purpose is undefined", async () => {
             expect(
                 parseRecordToTransaction(
                     {
-                        booking: "1",
+                        booking: "01.11.2021",
                         initiator: "2",
                         use: undefined,
                         amount: "4",
@@ -99,7 +103,7 @@ describe("Test connector/csv", () => {
                 ),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: "Record doesn't match given data keys.",
+                message: "Couldn't parse record purpose. Purpose is undefined.",
             });
         });
 
@@ -107,7 +111,7 @@ describe("Test connector/csv", () => {
             expect(
                 parseRecordToTransaction(
                     {
-                        booking: "1",
+                        booking: "01.11.2021",
                         initiator: "2",
                         use: "3",
                         amount: undefined,
@@ -117,7 +121,8 @@ describe("Test connector/csv", () => {
                 ),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: "Record doesn't match given data keys.",
+                message:
+                    'Couldn\'t parse record value. Value string is "undefined".',
             });
         });
 
@@ -134,7 +139,7 @@ describe("Test connector/csv", () => {
                 parseRecordToTransaction(recordCopy, dataKeys, dateFormat),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: `Couldn't parse date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".`,
+                message: `Couldn't parse record date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".`,
             });
         });
 
@@ -145,7 +150,7 @@ describe("Test connector/csv", () => {
                 parseRecordToTransaction(recordCopy, dataKeys, dateFormat),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: `Couldn't parse date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".`,
+                message: `Couldn't parse record date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".`,
             });
         });
 
@@ -156,7 +161,7 @@ describe("Test connector/csv", () => {
                 parseRecordToTransaction(recordCopy, dataKeys, dateFormat),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: `Couldn't parse date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".`,
+                message: `Couldn't parse record date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".`,
             });
         });
 
@@ -167,7 +172,7 @@ describe("Test connector/csv", () => {
                 parseRecordToTransaction(recordCopy, dataKeys, dateFormat),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: `Couldn't parse date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".`,
+                message: `Couldn't parse record date. Date string is "${recordCopy.booking}", date format is "${dateFormat}".`,
             });
         });
 
@@ -178,7 +183,7 @@ describe("Test connector/csv", () => {
                 parseRecordToTransaction(recordCopy, dataKeys, dateFormat),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: `Couldn't parse value. Value string is "${recordCopy.amount}".`,
+                message: `Couldn't parse record value. Value string is "${recordCopy.amount}".`,
             });
         });
     });
@@ -196,7 +201,6 @@ describe("Test connector/csv", () => {
                             purpose: "",
                             value: "",
                         },
-                        formats: [],
                         dateFormat: "",
                     },
                     allowedLogLevel: "none",
@@ -222,7 +226,6 @@ describe("Test connector/csv", () => {
                             purpose: "",
                             value: "",
                         },
-                        formats: [],
                         dateFormat: "",
                     },
                     allowedLogLevel: "none",
@@ -236,7 +239,7 @@ describe("Test connector/csv", () => {
             });
         });
 
-        test("ApplicationError, when there are no formats", async () => {
+        test("ApplicationError, when delimeter was no in file", async () => {
             expect(
                 await loadTransactionData({
                     source: {
@@ -248,7 +251,7 @@ describe("Test connector/csv", () => {
                             purpose: "",
                             value: "",
                         },
-                        formats: [],
+                        delimiter: "§",
                         dateFormat: "",
                     },
                     allowedLogLevel: "none",
@@ -256,7 +259,7 @@ describe("Test connector/csv", () => {
                 }),
             ).toStrictEqual({
                 source: "csv.ts",
-                message: "There are no formats.",
+                message: `Delimiter "§" was not found in File sample1.csv.`,
             });
         });
 
@@ -272,11 +275,6 @@ describe("Test connector/csv", () => {
                             purpose: "",
                             value: "",
                         },
-                        formats: [
-                            {
-                                columns: [],
-                            },
-                        ],
                         dateFormat: "",
                     },
                     allowedLogLevel: "none",
@@ -299,22 +297,6 @@ describe("Test connector/csv", () => {
                         purpose: "use",
                         value: "amount",
                     },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
                     dateFormat: "dd.MM.yyyy",
                 },
                 allowedLogLevel: "none",
@@ -341,6 +323,43 @@ describe("Test connector/csv", () => {
             });
         });
 
+        test("Load data from existing sample file and generate transaction array using matcher data keys", async () => {
+            const transactionData = <Transaction[]>await loadTransactionData({
+                source: {
+                    type: "csv",
+                    path: __dirname + "/samples/sample3.csv",
+                    dataKeys: {
+                        date: "~boo",
+                        initiator: "~init",
+                        purpose: "~use",
+                        value: "~amount",
+                    },
+                    dateFormat: "dd.MM.yyyy",
+                },
+                allowedLogLevel: "none",
+                categories: [],
+            });
+            expect(transactionData).toHaveLength(3);
+            expect(transactionData[0]).toStrictEqual({
+                initiator: "ONLINE SHOP 4",
+                purpose: "Good choice mate 23454532",
+                value: -7.99,
+                date: new Date(2021, 10, 8),
+            });
+            expect(transactionData[1]).toStrictEqual({
+                initiator: "Grocerie Land",
+                purpose: "VISA 144 GROCERIE LAND TES71234234523452345",
+                value: -88.86,
+                date: new Date(2021, 7, 14),
+            });
+            expect(transactionData[2]).toStrictEqual({
+                initiator: "Rent for my crib",
+                purpose: "Thanks landlord",
+                value: -650,
+                date: new Date(2021, 9, 5),
+            });
+        });
+
         test("Load data from sample file, with german and american decimals, and generate transaction array", async () => {
             const transactionData = <Transaction[]>await loadTransactionData({
                 source: {
@@ -352,22 +371,6 @@ describe("Test connector/csv", () => {
                         purpose: "use",
                         value: "amount",
                     },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
                     dateFormat: "dd.MM.yyyy",
                 },
                 allowedLogLevel: "none",
@@ -438,22 +441,6 @@ describe("Test connector/csv", () => {
                             purpose: "use",
                             value: "amount",
                         },
-                        formats: [
-                            {
-                                columns: [
-                                    "booking",
-                                    "valuta",
-                                    "initiator",
-                                    "bookingtext",
-                                    "randominformation",
-                                    "use",
-                                    "balance",
-                                    "currency",
-                                    "amount",
-                                    "currency",
-                                ],
-                            },
-                        ],
                         dateFormat: "dd.MM.yyyy",
                     },
                     allowedLogLevel: "none",
@@ -461,7 +448,7 @@ describe("Test connector/csv", () => {
                 },
                 LogLevel.None,
             );
-            expect(transactionData).toHaveLength(10);
+            expect(transactionData).toHaveLength(13);
             expect(transactionData[0]).toStrictEqual({
                 initiator: "FOOD SHOP 1",
                 purpose: "Thanks for paying the food",
@@ -522,6 +509,24 @@ describe("Test connector/csv", () => {
                 value: -650,
                 date: new Date(2021, 7, 1),
             });
+            expect(transactionData[10]).toStrictEqual({
+                initiator: "ONLINE SHOP 4",
+                purpose: "Good choice mate 23454532",
+                value: -7.99,
+                date: new Date(2021, 10, 8),
+            });
+            expect(transactionData[11]).toStrictEqual({
+                initiator: "Grocerie Land",
+                purpose: "VISA 144 GROCERIE LAND TES71234234523452345",
+                value: -88.86,
+                date: new Date(2021, 7, 14),
+            });
+            expect(transactionData[12]).toStrictEqual({
+                initiator: "Rent for my crib",
+                purpose: "Thanks landlord",
+                value: -650,
+                date: new Date(2021, 9, 5),
+            });
         });
     });
 
@@ -537,37 +542,6 @@ describe("Test connector/csv", () => {
                         purpose: "use",
                         value: "amount",
                     },
-                    formats: [
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                        {
-                            columns: [
-                                "booking",
-                                "valuta",
-                                "initiator",
-                                "bookingtext",
-                                "note",
-                                "randominformation",
-                                "use",
-                                "balance",
-                                "currency",
-                                "amount",
-                                "currency",
-                            ],
-                        },
-                    ],
                     dateFormat: "dd.MM.yyyy",
                 },
                 allowedLogLevel: "none",

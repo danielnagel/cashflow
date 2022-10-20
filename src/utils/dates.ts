@@ -9,9 +9,10 @@ import { parse, format } from "date-fns";
  * @returns a javascript Date object or null
  */
 export const parseDateString = (
-    dateString: string,
+    dateString: string | undefined,
     dateFormat = "dd.MM.yyyy",
 ): Date | null => {
+    if (typeof dateString === "undefined") return null;
     let parsedDate: Date | null = null;
     try {
         parsedDate = parse(dateString, dateFormat, new Date());

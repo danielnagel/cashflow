@@ -34,17 +34,11 @@ export const parseRecordToTransaction = (
     dateFormat: string | undefined,
 ): Transaction | ApplicationError => {
     const matchedRecord = matchDataKeysWithRecord(record, dataKeys);
-    if (!matchedRecord) {
-        return {
-            source: "csv.ts",
-            message: "Record doesn't match given data keys.",
-        };
-    }
     const date = parseDateString(matchedRecord.date, dateFormat);
     if (date === null)
         return {
             source: "csv.ts",
-            message: `Couldn't parse date. Date string is "${matchedRecord.date}", date format is "${dateFormat}".`,
+            message: `Couldn't parse record date. Date string is "${matchedRecord.date}", date format is "${dateFormat}".`,
         };
 
     let parsedValue = germanDecimalNumberToFloat(matchedRecord.value);
@@ -53,9 +47,21 @@ export const parseRecordToTransaction = (
         if (isNaN(parsedValue))
             return {
                 source: "csv.ts",
-                message: `Couldn't parse value. Value string is "${matchedRecord.value}".`,
+                message: `Couldn't parse record value. Value string is "${matchedRecord.value}".`,
             };
     }
+
+    if (typeof matchedRecord.initiator === "undefined")
+        return {
+            source: "csv.ts",
+            message: `Couldn't parse record initiator. Initiator is undefined.`,
+        };
+
+    if (typeof matchedRecord.purpose === "undefined")
+        return {
+            source: "csv.ts",
+            message: `Couldn't parse record purpose. Purpose is undefined.`,
+        };
 
     return {
         initiator: matchedRecord.initiator,
@@ -77,20 +83,37 @@ export const parseRecordToTransaction = (
 const matchDataKeysWithRecord = (
     record: UnknownRecord,
     dataKeys: DataKeys,
-): MatchedRecord | null => {
-    const date = record[dataKeys.date];
-    if (typeof date === "undefined") return null;
+): MatchedRecord => {
+    const matchedRecord: MatchedRecord = {
+        date: undefined,
+        initiator: undefined,
+        purpose: undefined,
+        value: undefined,
+    };
+    matchedRecord.date = getRecordValue(record, dataKeys, "date");
+    matchedRecord.initiator = getRecordValue(record, dataKeys, "initiator");
+    matchedRecord.purpose = getRecordValue(record, dataKeys, "purpose");
+    matchedRecord.value = getRecordValue(record, dataKeys, "value");
+    return matchedRecord;
+};
 
-    const initiator = record[dataKeys.initiator];
-    if (typeof initiator === "undefined") return null;
-
-    const purpose = record[dataKeys.purpose];
-    if (typeof purpose === "undefined") return null;
-
-    const value = record[dataKeys.value];
-    if (typeof value === "undefined") return null;
-
-    return { date, initiator, purpose, value };
+const getRecordValue = (
+    record: UnknownRecord,
+    dataKeys: DataKeys,
+    key: string,
+): string | undefined => {
+    if (typeof dataKeys[key] === "undefined") return undefined;
+    let value = undefined;
+    if (dataKeys[key].startsWith("~")) {
+        for (const [k, v] of Object.entries(record)) {
+            if (k.includes(dataKeys[key].substring(1))) {
+                return v;
+            }
+        }
+    } else {
+        return record[dataKeys[key]];
+    }
+    if (typeof value === "undefined") return undefined;
 };
 
 /**
@@ -169,45 +192,6 @@ const loadTransactionDataFromDirectory = async (
     return mergedTransactions;
 };
 
-const getColumnFormat = (
-    options: CsvConfiguration,
-): string[] | ApplicationError => {
-    if (!options.source.formats || options.source.formats.length === 0)
-        return { source: "csv.ts", message: "There are no formats." };
-
-    const file = loadFile(options.source.path);
-    if (file === null || file.length === 0)
-        return {
-            source: "csv.ts",
-            message: `File ${options.source.path.substring(
-                options.source.path.lastIndexOf("/") + 1,
-            )} does not exist.`,
-        };
-
-    for (const format of options.source.formats) {
-        if (hasFormat(file, format)) {
-            return format.columns;
-        }
-    }
-
-    return {
-        source: "csv.ts",
-        message: `File ${options.source.path.substring(
-            options.source.path.lastIndexOf("/") + 1,
-        )} matches none of the given formats.`,
-    };
-};
-
-const hasFormat = (file: string, format: CsvColumnFormat): boolean => {
-    const lines = file.split("\n");
-    const stringFormat = format.columns.join(";");
-    for (const l of lines) {
-        if (l.length === 0) continue;
-        if (stringFormat === l) return true;
-    }
-    return false;
-};
-
 /**
  * Loads the content of a csv file and merges it to a list of Transaction objects.
  *
@@ -217,18 +201,18 @@ const hasFormat = (file: string, format: CsvColumnFormat): boolean => {
 const loadTransactionDataFromFile = async (
     options: CsvConfiguration,
 ): Promise<Transaction[] | ApplicationError> => {
-    const columns = getColumnFormat(options);
-    if (isApplicationError(columns)) {
-        return columns;
-    }
+    let { path, delimiter, dataKeys, dateFormat } = options.source;
+    if (typeof delimiter === "undefined") delimiter = ";";
 
+    const headLine = findHeadLineColumns(options);
+    if (isApplicationError(headLine)) return headLine;
     const transactions: Transaction[] = [];
-    const parser = createReadStream(options.source.path, {
+    const parser = createReadStream(path, {
         encoding: "latin1",
     }).pipe(
         parse({
-            delimiter: ";",
-            columns,
+            delimiter,
+            columns: headLine,
             relaxColumnCount: true,
             skipEmptyLines: true,
         }),
@@ -237,8 +221,8 @@ const loadTransactionDataFromFile = async (
     for await (const record of parser) {
         const transaction = parseRecordToTransaction(
             record,
-            options.source.dataKeys,
-            options.source.dateFormat,
+            dataKeys,
+            dateFormat,
         );
         if (isApplicationError(transaction)) {
             log({
@@ -255,4 +239,40 @@ const loadTransactionDataFromFile = async (
     }
 
     return transactions;
+};
+
+const findHeadLineColumns = (
+    options: CsvConfiguration,
+): string[] | ApplicationError => {
+    let { delimiter, minDelimiterCount, maxDelimiterCount, path } =
+        options.source;
+    if (typeof delimiter === "undefined") delimiter = ";";
+    if (typeof minDelimiterCount === "undefined") minDelimiterCount = 5;
+    if (typeof maxDelimiterCount === "undefined") maxDelimiterCount = 10;
+
+    const file = loadFile(path);
+    if (file === null || file.length === 0)
+        return {
+            source: "csv.ts",
+            message: `File ${path.substring(
+                path.lastIndexOf("/") + 1,
+            )} does not exist.`,
+        };
+
+    const linesOfContent = file.split("\n");
+    for (let i = 0; i < linesOfContent.length; i++) {
+        const matches = (
+            linesOfContent[i].match(new RegExp(delimiter, "g")) || []
+        ).length;
+        if (matches > minDelimiterCount && matches <= maxDelimiterCount) {
+            return linesOfContent[i].split(delimiter);
+        }
+    }
+
+    return {
+        source: "csv.ts",
+        message: `Delimiter "${delimiter}" was not found in File ${path.substring(
+            path.lastIndexOf("/") + 1,
+        )}.`,
+    };
 };

@@ -59,18 +59,13 @@ Example `data/config.json`:
         "type": "csv", // api will be supported some day
         "path": "", // either a directory where all .csv files are loaded and merged or a path directly to one csv file
         "dataKeys": {
-            // used to match the columns to generate transaction of every row in a csv file
+            // used to match the columns to generate transaction of every row in a csv file,
+            // when started with ~ the following string has to be included and has not to match exactly
             "initiator": "",
             "purpose": "",
             "value": "",
             "date": ""
         },
-        "formats": [
-            // multiple column formats are possible
-            {
-                "columns": [] // has to be filled apropriatly by the user
-            }
-        ],
         "dateFormat": "MM/dd/yyyy" // optional when date format in csv file and date format for logs and other output are different
     },
     // a list of categories to categorize every transaction from source, can be used in combination with strict: true

@@ -33,22 +33,6 @@ export const unknownReportType: Configuration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [
-            {
-                columns: [
-                    "booking",
-                    "valuta",
-                    "initiator",
-                    "bookingtext",
-                    "randominformation",
-                    "use",
-                    "balance",
-                    "currency",
-                    "amount",
-                    "currency",
-                ],
-            },
-        ],
         backUpPath,
     },
     categories: [],
@@ -67,22 +51,6 @@ export const strictIsTrue: Configuration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [
-            {
-                columns: [
-                    "booking",
-                    "valuta",
-                    "initiator",
-                    "bookingtext",
-                    "randominformation",
-                    "use",
-                    "balance",
-                    "currency",
-                    "amount",
-                    "currency",
-                ],
-            },
-        ],
         backUpPath,
     },
     categories: [
@@ -107,22 +75,6 @@ export const strictIsTrueAndSomeTransactionMatch: Configuration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [
-            {
-                columns: [
-                    "booking",
-                    "valuta",
-                    "initiator",
-                    "bookingtext",
-                    "randominformation",
-                    "use",
-                    "balance",
-                    "currency",
-                    "amount",
-                    "currency",
-                ],
-            },
-        ],
         backUpPath,
     },
     categories: [
@@ -164,7 +116,6 @@ export const csvFileDoesNotExist: CsvConfiguration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [],
         backUpPath,
     },
     categories: [
@@ -188,7 +139,6 @@ export const csvFileDoesNotEndWithCsv: CsvConfiguration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [],
         backUpPath,
     },
     categories: [
@@ -212,22 +162,6 @@ export const fixedPayDayNoTransactions: CsvConfiguration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [
-            {
-                columns: [
-                    "booking",
-                    "valuta",
-                    "initiator",
-                    "bookingtext",
-                    "randominformation",
-                    "use",
-                    "balance",
-                    "currency",
-                    "amount",
-                    "currency",
-                ],
-            },
-        ],
         backUpPath,
     },
     categories: [],
@@ -245,22 +179,6 @@ export const trendNoTransactions: CsvConfiguration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [
-            {
-                columns: [
-                    "booking",
-                    "valuta",
-                    "initiator",
-                    "bookingtext",
-                    "randominformation",
-                    "use",
-                    "balance",
-                    "currency",
-                    "amount",
-                    "currency",
-                ],
-            },
-        ],
         backUpPath,
     },
     categories: [],
@@ -278,22 +196,6 @@ export const fixedPayDayFromCsv: Configuration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [
-            {
-                columns: [
-                    "booking",
-                    "valuta",
-                    "initiator",
-                    "bookingtext",
-                    "randominformation",
-                    "use",
-                    "balance",
-                    "currency",
-                    "amount",
-                    "currency",
-                ],
-            },
-        ],
         backUpPath,
     },
     categories: [
@@ -329,22 +231,6 @@ export const fixedPayDayFromCsvAndStored: Configuration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [
-            {
-                columns: [
-                    "booking",
-                    "valuta",
-                    "initiator",
-                    "bookingtext",
-                    "randominformation",
-                    "use",
-                    "balance",
-                    "currency",
-                    "amount",
-                    "currency",
-                ],
-            },
-        ],
         backUpPath,
     },
     categories: [
@@ -386,22 +272,6 @@ export const trendFromCsv: Configuration = {
             purpose: "use",
             value: "amount",
         },
-        formats: [
-            {
-                columns: [
-                    "booking",
-                    "valuta",
-                    "initiator",
-                    "bookingtext",
-                    "randominformation",
-                    "use",
-                    "balance",
-                    "currency",
-                    "amount",
-                    "currency",
-                ],
-            },
-        ],
         backUpPath,
     },
     categories: [

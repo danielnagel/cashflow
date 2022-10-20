@@ -45,7 +45,6 @@ export const exampleConfiguration: Configuration = {
             value: "",
             date: "",
         },
-        formats: [],
         dateFormat: "dd.MM.yyyy",
     },
     categories: [

@@ -4,8 +4,7 @@ export const isCsvOptions = (object: unknown): object is CsvOptions => {
         (object as CsvOptions).type === "csv" &&
         (object as CsvOptions).path !== undefined &&
         (object as CsvOptions).dataKeys !== undefined &&
-        isDataKeys((object as CsvOptions).dataKeys) &&
-        (object as CsvOptions).formats !== undefined
+        isDataKeys((object as CsvOptions).dataKeys)
     );
 };
 

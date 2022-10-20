@@ -20,10 +20,10 @@ interface ExtendedTransaction extends Transaction {
  * A matched record, which is used to create a transaction object.
  */
 type MatchedRecord = {
-    initiator: string;
-    purpose: string;
-    value: string;
-    date: string;
+    initiator?: string;
+    purpose?: string;
+    value?: string;
+    date?: string;
 };
 
 /**
@@ -36,6 +36,7 @@ type UnknownRecord = { [key: string]: string | undefined };
  * DataKeys are used to map the keys in an unknown object to the keys in an transaction object.
  */
 type DataKeys = {
+    [key: string]: string;
     initiator: string;
     purpose: string;
     value: string;
@@ -49,16 +50,11 @@ type CsvOptions = {
     type: "csv";
     path: string;
     dataKeys: DataKeys;
-    formats: CsvColumnFormat[];
     dateFormat?: string;
     backUpPath?: string;
-};
-
-/**
- * Defines how exactly a csv file is structured
- */
-type CsvColumnFormat = {
-    columns: string[];
+    delimiter?: string;
+    minDelimiterCount?: number;
+    maxDelimiterCount?: number;
 };
 
 type UnknownTypeOption = {

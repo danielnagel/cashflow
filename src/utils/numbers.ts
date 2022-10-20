@@ -5,7 +5,10 @@
  * @param value a string that looks like this "1.234,56".
  * @returns The string as a number representation or NaN.
  */
-export const germanDecimalNumberToFloat = (value: string): number => {
+export const germanDecimalNumberToFloat = (
+    value: string | undefined,
+): number => {
+    if (typeof value === "undefined") return NaN;
     // equals to 1.234,56
     const germanNumberRegex = /^-?\d{1,3}(?:\.\d{3})*(?:,\d+)?$/;
     if (!germanNumberRegex.test(value)) return NaN;
@@ -18,7 +21,8 @@ export const germanDecimalNumberToFloat = (value: string): number => {
  * @param value a string that looks like this "1234.56".
  * @returns The string as a number representation or NaN.
  */
-export const decimalNumberToFloat = (value: string): number => {
+export const decimalNumberToFloat = (value: string | undefined): number => {
+    if (typeof value === "undefined") return NaN;
     // equals to 1234.56
     const decimalRegex = /^-?\d+(?:\.\d+)?$/;
     if (!decimalRegex.test(value)) return NaN;
