@@ -126,6 +126,15 @@ describe("Test connector/csv", () => {
             });
         });
 
+        test("Return transaction, ApplicationError when DataKeys object is malformed", async () => {
+            expect(
+                parseRecordToTransaction(record, {} as any, dateFormat),
+            ).toStrictEqual({
+                source: "csv.ts",
+                message: `Couldn't parse record date. Date string is "undefined", date format is "${dateFormat}".`,
+            });
+        });
+
         test("Return transaction, if data keys match record", async () => {
             expect(
                 parseRecordToTransaction(record, dataKeys, dateFormat),
