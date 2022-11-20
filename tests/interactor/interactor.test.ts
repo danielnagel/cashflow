@@ -46,6 +46,10 @@ describe("Test Interactor", () => {
         }
     });
 
+    afterEach(() => {
+        jest.setSystemTime(new Date(2022, 9, 2));
+    });
+
     afterAll(() => {
         if (existsSync(dataJsonTestPath)) rmSync(dataJsonTestPath);
 
@@ -194,6 +198,7 @@ describe("Test Interactor", () => {
 
     describe("Test generating reports with CSV connector", () => {
         test("Generate report 'FixedPayDay' from csv samples as expected", async () => {
+            jest.setSystemTime(new Date(2021, 9, 2));
             expect(
                 await generateReport(fixedPayDayFromCsv, {
                     report: "fixedpayday",
@@ -205,6 +210,7 @@ describe("Test Interactor", () => {
         });
 
         test("Generate report 'FixedPayDay' from stored csv samples as expected, ", async () => {
+            jest.setSystemTime(new Date(2021, 9, 2));
             // create store
             const testStore: ExtendedTransactionStore = {
                 size: 2,

@@ -20,6 +20,19 @@ import {
 } from "./samples/expected";
 
 describe("Test fixCostReport", () => {
+    beforeAll(() => {
+        jest.useFakeTimers("modern");
+        jest.setSystemTime(new Date(2021, 9, 2));
+    });
+
+    afterEach(() => {
+        jest.setSystemTime(new Date(2021, 9, 2));
+    });
+
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+
     describe("Test function generateFixedPayDay", () => {
         describe("Test falsy parameters", () => {
             test("Return ApplicationError, if transactions array is empty", () => {

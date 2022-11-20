@@ -1,4 +1,4 @@
-import { parseDateString } from "../../utils/dates";
+import { formatDate, parseDateString } from "../../utils/dates";
 import {
     filterTransactionsByCategoryName,
     filterTransactionsByCategoryType,
@@ -7,7 +7,12 @@ import {
 import { sortTransactionsByDate } from "../../utils/sorters";
 import { isApplicationError, isCategory } from "../../utils/typeguards";
 import { Periods, TransactionType } from "../../types/enums";
-import { differenceInYears, isSameMonth, isSameQuarter } from "date-fns";
+import {
+    differenceInMonths,
+    differenceInYears,
+    isSameMonth,
+    isSameQuarter,
+} from "date-fns";
 
 /**
  * Generates a FixedPayDay object from a list of Transaction considering given FilterTransactionsBySampleOptions.
@@ -40,6 +45,13 @@ export const generateFixedPayDay = (
     const isPaid = isPaidThisPeriod(lastTransaction, period, options);
     if (isApplicationError(isPaid)) return isPaid;
 
+    if (isOldCategory(period, lastTransaction)) {
+        return {
+            source: "fixedPayDay.ts",
+            message: `Category "${categoryName}" is to old and got removed from report.`,
+        };
+    }
+
     const result: FixedPayDay = {
         value: 0,
         isPaid,
@@ -57,6 +69,31 @@ export const generateFixedPayDay = (
     result.transactions = matchedTransactions;
 
     return result;
+};
+
+/**
+ * Checks if a category is to old and should be removed from report.
+ * To old means:
+ * Period = monthly => latest transaction not older than 3 months
+ * Period = quarter => latest transaction not older than 9 months
+ * Period = yearly => latest transaction not older than 2 years
+ *
+ * @param period of the category
+ * @param transaction to check
+ * @returns true if its to old, false otherwise
+ */
+const isOldCategory = (
+    period: string,
+    transaction: ExtendedTransaction,
+): boolean => {
+    return (
+        (period === Periods.Monthly &&
+            differenceInMonths(new Date(), transaction.date) > 3) ||
+        (period === Periods.Quarter &&
+            differenceInMonths(new Date(), transaction.date) > 9) ||
+        (period === Periods.Yearly &&
+            differenceInYears(new Date(), transaction.date) > 2)
+    );
 };
 
 /**
@@ -120,7 +157,8 @@ const isPaidThisPeriod = (
  * Result is sorted by date.
  *
  * @param transactions which are used as a data basis
- * @param filterOptions specify how to filter the transactions
+ * @param categoryName to filter by
+ * @param options Configuration
  * @returns sorted matched transactions
  */
 const getSortedMatchedTransactions = (
@@ -171,8 +209,7 @@ const getComparsionDate = (options: Configuration): Date | ApplicationError => {
  * Configuration made by the user affects the accuracy of this report.
  *
  * @param transactions which are used as a data basis
- * @param categorizeOptions specifies how to categorize generated fix costs
- * @param loggerOptions (optional) to control logging behaviour
+ * @param options specifies how to categorize generated fix costs
  * @returns FixedPayDay object or ApplicationError when there are no transaction,
  * no categories or no categories could be matched.
  */
