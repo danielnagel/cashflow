@@ -270,7 +270,7 @@ export const generateCategoryTrendPeriod = (
         stringPeriod,
     );
 
-    if (type === TransactionType.Fixed || type === TransactionType.Income)
+    if (type === TransactionType.Fixed)
         return createFixedCategoryTrendPeriod(
             matchedTransactions,
             stringPeriod,

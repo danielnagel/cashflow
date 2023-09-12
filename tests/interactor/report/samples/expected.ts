@@ -45,9 +45,8 @@ export const variableTrendPeriodForOneCategory: VariableCategoryTrendPeriod = {
     ],
 };
 
-export const incomeTrendPeriodForOneCategory: FixedCategoryTrendPeriod = {
-    value: 1667.99,
-    bookingDate: "28.09.2021",
+export const incomeTrendPeriodForOneCategory: VariableCategoryTrendPeriod = {
+    sum: 1667.99,
     period: "2021.09",
     transactions: [
         {
@@ -237,8 +236,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
     name: "salary",
     periods: [
         {
-            value: 1667.99,
-            bookingDate: "28.01.2021",
+            sum: 1667.99,
             period: "2021.01",
             transactions: [
                 {
@@ -252,8 +250,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "26.02.2021",
+            sum: 1667.99,
             period: "2021.02",
             transactions: [
                 {
@@ -267,8 +264,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "29.03.2021",
+            sum: 1667.99,
             period: "2021.03",
             transactions: [
                 {
@@ -282,8 +278,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "28.04.2021",
+            sum: 1667.99,
             period: "2021.04",
             transactions: [
                 {
@@ -297,8 +292,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "27.05.2021",
+            sum: 1667.99,
             period: "2021.05",
             transactions: [
                 {
@@ -312,8 +306,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "28.06.2021",
+            sum: 1667.99,
             period: "2021.06",
             transactions: [
                 {
@@ -327,8 +320,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "29.07.2021",
+            sum: 1667.99,
             period: "2021.07",
             transactions: [
                 {
@@ -342,8 +334,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "27.08.2021",
+            sum: 1667.99,
             period: "2021.08",
             transactions: [
                 {
@@ -357,8 +348,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "28.09.2021",
+            sum: 1667.99,
             period: "2021.09",
             transactions: [
                 {
@@ -372,8 +362,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1667.99,
-            bookingDate: "28.10.2021",
+            sum: 1667.99,
             period: "2021.10",
             transactions: [
                 {
@@ -387,8 +376,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1822.37,
-            bookingDate: "29.11.2021",
+            sum: 1822.37,
             period: "2021.11",
             transactions: [
                 {
@@ -402,8 +390,7 @@ export const incomeSingleCategoryTrend: CategoryTrend = {
             ],
         },
         {
-            value: 1822.37,
-            bookingDate: "28.12.2021",
+            sum: 1822.37,
             period: "2021.12",
             transactions: [
                 {
@@ -1710,8 +1697,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
             name: "salary",
             periods: [
                 {
-                    value: 1667.99,
-                    bookingDate: "09/28/2021",
+                    sum: 1667.99,
                     period: "2021.09",
                     transactions: [
                         {
@@ -1725,8 +1711,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                     ],
                 },
                 {
-                    value: 1667.99,
-                    bookingDate: "10/28/2021",
+                    sum: 1667.99,
                     period: "2021.10",
                     transactions: [
                         {
@@ -1740,8 +1725,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                     ],
                 },
                 {
-                    value: 1822.37,
-                    bookingDate: "11/29/2021",
+                    sum: 1822.37,
                     period: "2021.11",
                     transactions: [
                         {
@@ -1755,8 +1739,7 @@ export const trendForIncomeSingleCategoryAfter: Trend = {
                     ],
                 },
                 {
-                    value: 1822.37,
-                    bookingDate: "12/28/2021",
+                    sum: 1822.37,
                     period: "2021.12",
                     transactions: [
                         {
