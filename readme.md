@@ -18,6 +18,21 @@ This is why I created cashflow.
 There will be plenty of reports in the future,
 so you (and me) can get the best overview on what your (or my) current financial situation looks like.
 
+⚠ I am currently not working on this project! ⚠
+
+There are two main reasons:
+
+1. The configuration is very tedious, and I have also lost my painstakingly crafted configuration.
+  - In the future, I will adjust the project so that it will only be necessary to enter the fixed costs.
+    Additionally, configuration should be possible through the web interface.
+2. It is very tedious to manually transfer the transactions from your own bank account into the application,
+   especially since they become outdated again after 24 hours.
+  - My hope was that the European PSD2 Payment Services Directive would provide a simple interface to access my data, which it does.
+    However, I need to be registered as an Account Information Service Provider (AISP) and/or Account Servicing Payment Service Provider (ASPSP)
+    and/or Payment Initiation Services Provider (PISP) for only €1000 a year ...
+  - Alternatively, there are service providers like [Enable Banking](https://enablebanking.com/sa) and [SaltEdge](https://www.saltedge.com/), but €50 a month to get MY DATA is too expensive for me,
+    especially since there are apps that can do all of this for less than €10 a month.
+
 ## Setup
 
 Run `npm start` to install, build and run the project.
