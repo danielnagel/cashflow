@@ -1,0 +1,21 @@
+# Secrets
+.env
+
+# Python
+.venv/
+__pycache__/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+
+# Playwright
+e2e/test-results/
+e2e/playwright-report/
+
+# Editors
+.vscode/
+.idea/

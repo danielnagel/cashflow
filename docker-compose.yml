@@ -1,0 +1,111 @@
+# Local development stack. Copy .env.example to .env first.
+name: cashflow
+
+x-hardening: &hardening
+  read_only: true
+  tmpfs:
+    - /tmp
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  cashflow-db:
+    image: postgres:16-alpine
+    container_name: cashflow-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+      CASHFLOW_DB: cashflow
+      CASHFLOW_OWNER_PASSWORD: ${CASHFLOW_OWNER_PASSWORD:?set CASHFLOW_OWNER_PASSWORD in .env}
+      CASHFLOW_APP_PASSWORD: ${CASHFLOW_APP_PASSWORD:?set CASHFLOW_APP_PASSWORD in .env}
+    volumes:
+      - cashflow-db-data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      # Only for tools on this machine; Docker would otherwise bypass the host firewall.
+      - '127.0.0.1:${DB_PORT:-5432}:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U postgres -d cashflow']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - internal-cashflow
+
+  cashflow-migrate:
+    build: ./backend
+    image: cashflow-backend:dev
+    command: ['alembic', 'upgrade', 'head']
+    environment:
+      DB_USER: cashflow_owner
+      DB_PASSWORD: ${CASHFLOW_OWNER_PASSWORD}
+    depends_on:
+      cashflow-db:
+        condition: service_healthy
+    networks:
+      - internal-cashflow
+    <<: *hardening
+
+  cashflow-backend:
+    image: cashflow-backend:dev
+    container_name: cashflow-backend
+    restart: unless-stopped
+    # --reload watches the mounted sources; it is still a single serving process.
+    command:
+      - uvicorn
+      - cashflow.main:create_app
+      - --factory
+      - --host=0.0.0.0
+      - --port=8000
+      - --reload
+      - --reload-dir=/app/src
+    environment:
+      MODE: dev
+      PYTHONPATH: /app/src
+      DB_USER: cashflow_app
+      DB_PASSWORD: ${CASHFLOW_APP_PASSWORD}
+      TRANSACTION_SOURCE: ${TRANSACTION_SOURCE:-fake}
+      FINTS_BLZ: ${FINTS_BLZ:-}
+      FINTS_SERVER: ${FINTS_SERVER:-}
+      FINTS_LOGIN: ${FINTS_LOGIN:-}
+      FINTS_PRODUCT_ID: ${FINTS_PRODUCT_ID:-}
+    volumes:
+      - ./backend/src:/app/src:ro
+    ports:
+      - '127.0.0.1:8000:8000'
+    depends_on:
+      cashflow-migrate:
+        condition: service_completed_successfully
+    networks:
+      - internal-cashflow
+    <<: *hardening
+
+  cashflow-frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: dev
+    image: cashflow-frontend:dev
+    container_name: cashflow-frontend
+    restart: unless-stopped
+    environment:
+      BACKEND_URL: http://cashflow-backend:8000
+    volumes:
+      - ./frontend/src:/app/frontend/src:ro
+      - ./frontend/index.html:/app/frontend/index.html:ro
+    ports:
+      - '127.0.0.1:5173:5173'
+    depends_on:
+      - cashflow-backend
+    networks:
+      - internal-cashflow
+
+networks:
+  internal-cashflow:
+
+volumes:
+  cashflow-db-data:

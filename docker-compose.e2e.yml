@@ -1,0 +1,83 @@
+# Production images with the fake bank and a throwaway database, used by the Playwright tests.
+name: cashflow-e2e
+
+x-hardening: &hardening
+  read_only: true
+  tmpfs:
+    - /tmp
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  cashflow-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: e2e-superuser
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+      CASHFLOW_DB: cashflow
+      CASHFLOW_OWNER_PASSWORD: e2e-owner
+      CASHFLOW_APP_PASSWORD: e2e-app
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U postgres -d cashflow']
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    networks:
+      - internal-cashflow
+
+  cashflow-migrate:
+    build: ./backend
+    image: cashflow-backend:e2e
+    command: ['alembic', 'upgrade', 'head']
+    environment:
+      DB_USER: cashflow_owner
+      DB_PASSWORD: e2e-owner
+    depends_on:
+      cashflow-db:
+        condition: service_healthy
+    networks:
+      - internal-cashflow
+    <<: *hardening
+
+  cashflow-backend:
+    image: cashflow-backend:e2e
+    environment:
+      MODE: e2e
+      DB_USER: cashflow_app
+      DB_PASSWORD: e2e-app
+      TRANSACTION_SOURCE: fake
+    depends_on:
+      cashflow-migrate:
+        condition: service_completed_successfully
+    networks:
+      - internal-cashflow
+    <<: *hardening
+
+  cashflow-frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: cashflow-frontend:e2e
+    ports:
+      - '127.0.0.1:8090:8080'
+    depends_on:
+      cashflow-backend:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1:8080/']
+      interval: 2s
+      timeout: 3s
+      retries: 15
+    networks:
+      - internal-cashflow
+    <<: *hardening
+
+networks:
+  internal-cashflow:

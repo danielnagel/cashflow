@@ -1,0 +1,55 @@
+[project]
+name = "cashflow"
+version = "0.1.0"
+description = "Backend of cashflow: fetches bank transactions via FinTS and serves the API"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "alembic>=1.20.1",
+    "fastapi>=0.163.1",
+    # Pinned: transaction hashes are built from raw fields, a parser change must be deliberate.
+    "fints==5.0.1",
+    "mt-940==5.1.1",
+    "psycopg[binary]>=3.3.9",
+    "pydantic-settings>=2.16.3",
+    "sqlalchemy>=2.1.9",
+    "tzdata>=2026.6",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.2,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.16.2",
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "S", "SIM", "RUF", "PT", "DTZ"]
+
+[tool.ruff.lint.per-file-ignores]
+# assert is how pytest works; fixed test credentials are not secrets.
+"tests/**" = ["S101", "S105", "S106"]
+
+[tool.mypy]
+strict = true
+python_version = "3.13"
+files = ["src", "tests", "migrations"]
+
+[[tool.mypy.overrides]]
+module = ["fints.*", "mt940.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers -ra"
+xfail_strict = true
+filterwarnings = ["error"]

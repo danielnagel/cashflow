@@ -1,0 +1,13 @@
+{
+  "app": {
+    "name": "cashflow",
+    "tagline": "Income, expenses and fixed costs of your bank accounts"
+  },
+  "health": {
+    "label": "Backend",
+    "checking": "checking …",
+    "ok": "connected",
+    "unavailable": "database unreachable",
+    "error": "not reachable"
+  }
+}
