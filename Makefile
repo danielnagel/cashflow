@@ -3,6 +3,13 @@
 
 .NOTPARALLEL:
 
+# Node.js in the version from .nvmrc if nvm is installed; otherwise (CI) whatever is on PATH.
+NVM_SH := $(wildcard $(or $(NVM_DIR),$(HOME)/.nvm)/nvm.sh)
+ifneq ($(NVM_SH),)
+NODE_BIN := $(shell bash -c '. "$(NVM_SH)" >/dev/null && nvm use --silent >/dev/null && dirname "$$(command -v node)"')
+export PATH := $(if $(NODE_BIN),$(NODE_BIN):)$(PATH)
+endif
+
 TEST_COMPOSE := docker compose -f docker-compose.test.yml
 E2E_COMPOSE := docker compose -f docker-compose.e2e.yml
 

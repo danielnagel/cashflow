@@ -2,8 +2,17 @@ from collections import Counter
 from datetime import date, timedelta
 from decimal import Decimal
 
-from cashflow.sources.base import Statement, TransactionSource
-from cashflow.sources.fake import CHECKING, LOAN, SAVINGS, FakeSource
+import pytest
+
+from cashflow.sources.base import (
+    BankError,
+    BankUnreachableError,
+    PinWrongError,
+    Statement,
+    TanRequiredError,
+    TransactionSource,
+)
+from cashflow.sources.fake import CHECKING, LOAN, SAVINGS, FakeControl, FakeScenario, FakeSource
 from tests import camt
 
 TODAY = date(2026, 11, 17)
@@ -81,3 +90,51 @@ def test_pending_entries_lie_in_the_future() -> None:
     assert pending
     assert {camt.status(e) for e in pending} == {"PDNG"}
     assert all(TODAY < camt.booking_date(e) <= TODAY + timedelta(days=10) for e in pending)
+
+
+def test_pending_entries_are_booked_unchanged_once_their_day_has_come() -> None:
+    pending = camt.read(fetch(FakeSource(today=TODAY), CHECKING.iban).pending[0]).entries
+    later = camt.read(fetch(FakeSource(today=TODAY + timedelta(days=10)), CHECKING.iban).booked[0])
+    booked = Counter(camt.serialize(e) for e in later.entries)
+
+    for entry in pending:
+        as_booked = camt.serialize(entry).replace(b">PDNG<", b">BOOK<")
+        assert booked[as_booked] >= 1
+
+
+def test_a_month_looks_the_same_whenever_the_bank_is_asked() -> None:
+    def october(today: date) -> list[bytes]:
+        entries = camt.read(fetch(FakeSource(today=today), CHECKING.iban).booked[0]).entries
+        return [camt.serialize(e) for e in entries if camt.booking_date(e).month == 10]
+
+    assert october(TODAY) == october(TODAY + timedelta(days=20))
+
+
+def test_wrong_pin_is_rejected_on_the_first_login() -> None:
+    control = FakeControl()
+    source = FakeSource(today=TODAY, pin="0000", expected_pin="12345", control=control)
+
+    with pytest.raises(PinWrongError), source.session():
+        pass
+    assert control.logins == 1
+
+
+@pytest.mark.parametrize(
+    ("scenario", "error"),
+    [
+        (FakeScenario.TAN_REQUIRED, TanRequiredError),
+        (FakeScenario.UNREACHABLE, BankUnreachableError),
+    ],
+)
+def test_scenarios_make_the_bank_fail(scenario: FakeScenario, error: type[BankError]) -> None:
+    source = FakeSource(today=TODAY, control=FakeControl(scenario=scenario))
+
+    with pytest.raises(error), source.session():
+        pass
+
+
+def test_days_ahead_moves_the_bank_into_the_future() -> None:
+    source = FakeSource(today=TODAY, control=FakeControl(days_ahead=3))
+
+    with source.session() as session:
+        assert session.balance(CHECKING.iban).date == TODAY + timedelta(days=3)

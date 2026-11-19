@@ -31,8 +31,28 @@ class Statement:
     pending: list[str]
 
 
-class TanRequiredError(Exception):
+class BankError(Exception):
+    """Base of all errors the bank or the connection to it can cause."""
+
+
+class PinWrongError(BankError):
+    """The bank rejected the PIN. It must not be used again."""
+
+
+class TanRequiredError(BankError):
     """The bank asked for a TAN approval, which cashflow does not support."""
+
+
+class AccountLockedError(BankError):
+    """The bank has temporarily locked the online banking access."""
+
+
+class BankUnreachableError(BankError):
+    """The bank's server could not be reached or did not answer properly."""
+
+
+class BankRejectedError(BankError):
+    """The bank answered with an error that has no more specific meaning."""
 
 
 class BankSession(Protocol):

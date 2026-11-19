@@ -28,12 +28,15 @@ class Settings(BaseSettings):
     db_user: str = "cashflow_app"
     db_password: SecretStr = SecretStr("")
 
+    totp_encryption_key: SecretStr = SecretStr("")
+
     fints_blz: str = ""
     fints_server: str = ""
     fints_login: SecretStr = SecretStr("")
     fints_product_id: SecretStr = SecretStr("")
 
     fake_seed: int = 1
+    fake_pin: SecretStr = SecretStr("12345")
 
     @property
     def database_url(self) -> URL:

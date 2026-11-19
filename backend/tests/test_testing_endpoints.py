@@ -12,6 +12,9 @@ def test_testing_endpoints_do_not_exist_outside_e2e_mode(migrated: None, mode: M
     with client_for(APP.model_copy(update={"mode": mode})) as client:
         assert client.post("/api/_test/reset").status_code == 404
         assert client.get("/api/_test/reset").status_code == 404
+        assert client.put("/api/_test/bank", json={"scenario": "ok"}).status_code == 404
+        assert client.get("/api/_test/bank").status_code == 404
+        assert client.post("/api/_test/age", json={"days": 100}).status_code == 404
 
 
 def test_reset_empties_all_tables_in_e2e_mode(app_engine: Engine) -> None:

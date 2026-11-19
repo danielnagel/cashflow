@@ -3,11 +3,114 @@
     "name": "cashflow",
     "tagline": "Income, expenses and fixed costs of your bank accounts"
   },
+  "common": {
+    "loading": "Loading …"
+  },
   "health": {
     "label": "Backend",
     "checking": "checking …",
     "ok": "connected",
     "unavailable": "database unreachable",
     "error": "not reachable"
+  },
+  "login": {
+    "username": "User name",
+    "password": "Password",
+    "code": "Code from the authenticator app",
+    "submit": "Log in",
+    "failed": "Login failed.",
+    "tooManyAttempts": "Too many failed attempts. Please wait a moment and try again."
+  },
+  "nav": {
+    "label": "Pages",
+    "overview": "Overview",
+    "transactions": "Transactions",
+    "logout": "Log out"
+  },
+  "pin": {
+    "title": "Unlock bank access",
+    "description": "The PIN of your online banking is kept in memory only, until the app restarts or you lock the bank access.",
+    "label": "PIN",
+    "unlock": "Unlock",
+    "skip": "Skip"
+  },
+  "accounts": {
+    "chooseTitle": "Choose an account",
+    "chooseDescription": "All views refer to this account. You can switch at any time.",
+    "switcher": "Accounts",
+    "loading": "Loading accounts from the bank …",
+    "none": "No accounts yet. Unlock the bank access to load them.",
+    "status": {
+      "fetching": "updating …",
+      "done": "up to date",
+      "failed": "update failed",
+      "asOf": "as of {{date}}",
+      "never": "not fetched yet"
+    }
+  },
+  "bank": {
+    "region": "Bank access",
+    "label": "Bank access",
+    "unlocked": "unlocked",
+    "locked": "locked",
+    "fetching": "Updating …",
+    "lastFetch": "Last fetch {{date}}: {{new}} new, {{skipped}} already known",
+    "neverFetched": "Not fetched yet",
+    "balance": "Balance {{amount}} on {{date}}",
+    "fetchNow": "Fetch now",
+    "lock": "Lock bank access",
+    "unlock": "Unlock bank access",
+    "fetchFailed": "Fetch failed",
+    "gap": "Transactions from {{from}} to {{to}} are missing. Please import the account statement."
+  },
+  "errors": {
+    "pin_wrong": "The bank rejected the PIN. Please enter it again.",
+    "tan_required": "The bank requires an approval, which cashflow does not support yet.",
+    "account_locked": "The bank has locked the online banking access. Please unlock it with your bank first.",
+    "bank_unreachable": "The bank is not reachable. Please try again later.",
+    "bank_error": "The bank answered with an error. Please try again later.",
+    "bank_not_configured": "The connection to the bank is not configured.",
+    "statement_invalid": "The bank delivered transactions that could not be read.",
+    "internal_error": "Something went wrong. Please try again later."
+  },
+  "warnings": {
+    "statement_inconsistent": "The bank's opening and closing balance do not match the delivered transactions.",
+    "balance_mismatch": "The balance calculated from the transactions differs from the balance reported by the bank."
+  },
+  "overview": {
+    "previous": "Previous month",
+    "next": "Next month",
+    "today": "Today",
+    "detail": {
+      "income": "Income {{month}}",
+      "expense": "Expenses {{month}}",
+      "truncated": "Showing {{shown}} of {{total}} transactions."
+    }
+  },
+  "chart": {
+    "income": "Income",
+    "expense": "Expenses",
+    "difference": "Difference",
+    "bar": {
+      "income": "Income {{month}}: {{amount}}",
+      "expense": "Expenses {{month}}: {{amount}}"
+    }
+  },
+  "transactions": {
+    "date": "Date",
+    "counterparty": "From/To",
+    "purpose": "Purpose",
+    "amount": "Amount",
+    "balanceAfter": "Balance after",
+    "pending": "pending",
+    "empty": "No transactions.",
+    "from": "From",
+    "to": "To",
+    "search": "Search name or purpose",
+    "count_one": "{{count}} transaction",
+    "count_other": "{{count}} transactions",
+    "page": "Page {{page}} of {{pages}}",
+    "previousPage": "Previous",
+    "nextPage": "Next"
   }
 }

@@ -52,7 +52,9 @@ services:
       MODE: e2e
       DB_USER: cashflow_app
       DB_PASSWORD: e2e-app
+      TOTP_ENCRYPTION_KEY: e2e-totp-encryption-key-0123456789
       TRANSACTION_SOURCE: fake
+      FAKE_PIN: '12345'
     depends_on:
       cashflow-migrate:
         condition: service_completed_successfully

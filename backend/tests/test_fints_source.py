@@ -6,8 +6,23 @@ from typing import Any, Self
 
 import pytest
 from fints.client import FinTSOperations, NeedTANResponse
+from fints.exceptions import (
+    FinTSClientPINError,
+    FinTSClientTemporaryAuthError,
+    FinTSConnectionError,
+    FinTSDialogError,
+    FinTSDialogInitError,
+    FinTSSCARequiredError,
+)
 
-from cashflow.sources.base import TanRequiredError
+from cashflow.sources.base import (
+    AccountLockedError,
+    BankError,
+    BankRejectedError,
+    BankUnreachableError,
+    PinWrongError,
+    TanRequiredError,
+)
 from cashflow.sources.fints import FintsCredentials, FintsSource
 
 CREDENTIALS = FintsCredentials(
@@ -35,8 +50,11 @@ class FakeClient:
     init_tan_response: Any = None
     tan_on: set[str] = field(default_factory=set)
     calls: list[str] = field(default_factory=list)
+    enter_error: Exception | None = None
 
     def __enter__(self) -> Self:
+        if self.enter_error is not None:
+            raise self.enter_error
         return self
 
     def __exit__(self, *exc: object) -> None:
@@ -142,3 +160,27 @@ def test_session_exposes_no_transfer_operations() -> None:
         public = {name for name in dir(session) if not name.startswith("_")}
 
     assert public == {"accounts", "balance", "statement"}
+
+
+@pytest.mark.parametrize(
+    ("raised", "expected"),
+    [
+        (FinTSClientPINError("PIN wrong?"), PinWrongError),
+        (FinTSClientTemporaryAuthError("locked"), AccountLockedError),
+        (FinTSSCARequiredError("sca"), TanRequiredError),
+        (FinTSConnectionError("no route"), BankUnreachableError),
+        (FinTSDialogInitError("init failed"), BankRejectedError),
+        (FinTSDialogError("dialog"), BankRejectedError),
+    ],
+)
+def test_fints_errors_become_bank_errors(raised: Exception, expected: type[BankError]) -> None:
+    with pytest.raises(expected), source_with(FakeClient(enter_error=raised)).session():
+        pass
+
+
+def test_other_errors_pass_through_unchanged() -> None:
+    with (
+        pytest.raises(KeyError),
+        source_with(FakeClient()).session() as session,
+    ):
+        session.balance("DE00UNKNOWN")

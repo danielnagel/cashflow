@@ -3,6 +3,10 @@
 The generated ledger mimics a typical German checking account: salary at the end of the month,
 rent and savings by standing order, SEPA direct debits with creditor ID and mandate, Visa card
 payments and, every month, two identical bakery payments on the same day.
+
+Every month is generated from its own seed, so a month looks the same no matter on which day the
+bank is asked. Direct debits and card payments of the next days are delivered as pending and
+turn into the identical booked entry once their day has come.
 """
 
 import calendar
@@ -12,15 +16,26 @@ from contextlib import contextmanager
 from dataclasses import dataclass, field, replace
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
+from enum import StrEnum
 from zoneinfo import ZoneInfo
 
 from cashflow.sources import camt_writer
-from cashflow.sources.base import Balance, BankAccount, BankSession, Statement
+from cashflow.sources.base import (
+    Balance,
+    BankAccount,
+    BankSession,
+    BankUnreachableError,
+    PinWrongError,
+    Statement,
+    TanRequiredError,
+)
 from cashflow.sources.camt_writer import Entry
 
 BIC = "EXMPDEFFXXX"
 BANK_CODE = "12345678"
-HISTORY_DAYS = 400
+EPOCH = date(2025, 1, 1)
+"""The generated ledgers start here with their opening balance."""
+PENDING_DAYS = 10
 
 CHECKING = BankAccount(
     iban="DE94123456780000001234",
@@ -105,6 +120,22 @@ CARD_MERCHANTS = (
 BAKERY = "BAECKEREI KORN"
 
 
+class FakeScenario(StrEnum):
+    OK = "ok"
+    TAN_REQUIRED = "tan_required"
+    UNREACHABLE = "unreachable"
+
+
+@dataclass
+class FakeControl:
+    """Lets the E2E tests steer the fake bank."""
+
+    scenario: FakeScenario = FakeScenario.OK
+    days_ahead: int = 0
+    """Shifts the bank's today into the future, e.g. to get pending entries booked."""
+    logins: int = 0
+
+
 def _day(year: int, month: int, day: int) -> date:
     return date(year, month, min(day, calendar.monthrange(year, month)[1]))
 
@@ -122,11 +153,15 @@ class _Ledger:
     entries: list[Entry] = field(default_factory=list)
 
 
-class _Generator:
-    def __init__(self, seed: int, today: date) -> None:
-        self.random = random.Random(f"cashflow-fake-{seed}")  # noqa: S311 - test data, not crypto
-        self.today = today
-        self.start = today - timedelta(days=HISTORY_DAYS)
+class _Month:
+    def __init__(self, seed: int, year: int, month: int) -> None:
+        # Test data, not crypto.
+        self.random = random.Random(f"cashflow-fake-{seed}-{year}-{month:02d}")  # noqa: S311
+        self.year = year
+        self.month = month
+
+    def day(self, day: int) -> date:
+        return _day(self.year, self.month, day)
 
     def reference(self) -> str:
         return str(self.random.randint(100000, 999999))
@@ -143,7 +178,6 @@ class _Generator:
         name: str,
         purpose: tuple[str, ...],
         iban: str | None = None,
-        pending: bool = False,
     ) -> Entry:
         code, domain, posting_text = kind
         return Entry(
@@ -158,7 +192,6 @@ class _Generator:
             reference=self.reference(),
             counterparty_iban=iban,
             counterparty_bic=BIC if iban else None,
-            pending=pending,
         )
 
     def card_payment(self, booking_date: date, merchant: str, city: str, amount: Decimal) -> Entry:
@@ -175,7 +208,7 @@ class _Generator:
             DIRECT_DEBIT, booking_date, -amount, f"VISA {merchant}".ljust(60), card_purpose
         )
 
-    def direct_debit(self, booking_date: date, subscription: _Subscription, pending: bool) -> Entry:
+    def direct_debit(self, booking_date: date, subscription: _Subscription) -> Entry:
         purpose = (
             f"{subscription.purpose} {booking_date:%m/%Y}",
             f"EREF+{subscription.mandate}-{booking_date:%Y%m}",
@@ -183,134 +216,118 @@ class _Generator:
             f"CRED+{subscription.creditor_id}",
         )
         return self.entry(
-            DIRECT_DEBIT,
-            booking_date,
-            -subscription.amount,
-            subscription.name,
-            purpose,
-            pending=pending,
+            DIRECT_DEBIT, booking_date, -subscription.amount, subscription.name, purpose
         )
 
-    def ledgers(self) -> dict[str, _Ledger]:
-        checking = _Ledger(opening=Decimal("1500.00"))
-        savings = _Ledger(opening=Decimal("5000.00"))
-        pending: list[Entry] = []
+    def generate(self, checking: _Ledger, savings: _Ledger) -> None:
+        rent_day = self.day(1)
+        checking.entries.append(
+            self.entry(
+                STANDING_ORDER_OUT,
+                rent_day,
+                Decimal("-950.00"),
+                "Hausverwaltung Beispiel",
+                ("Miete Wohnung 3. OG",),
+                iban="DE89370400440532013000",
+            )
+        )
+        checking.entries.append(
+            self.entry(
+                STANDING_ORDER_OUT,
+                rent_day,
+                Decimal("-200.00"),
+                CHECKING.owner_name,
+                ("Sparen",),
+                iban=SAVINGS.iban,
+            )
+        )
+        savings.entries.append(
+            self.entry(
+                STANDING_ORDER_IN, rent_day, Decimal("200.00"), CHECKING.owner_name, ("Sparen",)
+            )
+        )
 
-        for year, month in _months(self.start, self.today):
-            rent_day = _day(year, month, 1)
+        checking.entries.append(
+            self.entry(
+                SALARY,
+                self.day(self.random.randint(26, 30)),
+                Decimal("3245.67"),
+                "Muster Software GmbH",
+                (
+                    f"LOHN / GEHALT {self.month:02d}/{self.year % 100:02d}",
+                    f"EREF+{self.year}{self.month:02d}SAL",
+                ),
+            )
+        )
+
+        for subscription in SUBSCRIPTIONS:
+            checking.entries.append(self.direct_debit(self.day(subscription.day), subscription))
+
+        for _ in range(self.random.randint(2, 4)):
             checking.entries.append(
                 self.entry(
-                    STANDING_ORDER_OUT,
-                    rent_day,
-                    Decimal("-950.00"),
-                    "Hausverwaltung Beispiel",
-                    ("Miete Wohnung 3. OG",),
-                    iban="DE89370400440532013000",
+                    DIRECT_DEBIT,
+                    self.day(self.random.randint(1, 28)),
+                    -self.money(Decimal("9"), Decimal("120")),
+                    "AMAZON PAYMENTS EUROPE S.C.A.",
+                    (f"302-{self.random.randint(1_000_000, 9_999_999)}", "Amazon.de"),
                 )
             )
+
+        for _ in range(self.random.randint(10, 16)):
+            merchant, city, low, high = self.random.choice(CARD_MERCHANTS)
             checking.entries.append(
-                self.entry(
-                    STANDING_ORDER_OUT,
-                    rent_day,
-                    Decimal("-200.00"),
-                    CHECKING.owner_name,
-                    ("Sparen",),
-                    iban=SAVINGS.iban,
+                self.card_payment(
+                    self.day(self.random.randint(1, 28)), merchant, city, self.money(low, high)
                 )
             )
+
+        twin = self.card_payment(
+            self.day(self.random.randint(1, 28)), BAKERY, "BEISPIELSTADT", Decimal("3.50")
+        )
+        checking.entries.extend([twin, twin])
+
+        if self.month == 12:
             savings.entries.append(
                 self.entry(
-                    STANDING_ORDER_IN,
-                    rent_day,
-                    Decimal("200.00"),
-                    CHECKING.owner_name,
-                    ("Sparen",),
+                    CLOSING,
+                    self.day(31),
+                    self.money(Decimal("20"), Decimal("80")),
+                    "Abschluss",
+                    ("Zinsen",),
                 )
             )
 
-            salary_day = _day(year, month, self.random.randint(26, 30))
-            checking.entries.append(
-                self.entry(
-                    SALARY,
-                    salary_day,
-                    Decimal("3245.67"),
-                    "Muster Software GmbH",
-                    (f"LOHN / GEHALT {month:02d}/{year % 100:02d}", f"EREF+{year}{month:02d}SAL"),
-                )
-            )
 
-            for subscription in SUBSCRIPTIONS:
-                due = _day(year, month, subscription.day)
-                checking.entries.append(self.direct_debit(due, subscription, pending=False))
-                if due > self.today and due <= self.today + timedelta(days=10):
-                    pending.append(self.direct_debit(due, subscription, pending=True))
-
-            for _ in range(self.random.randint(2, 4)):
-                checking.entries.append(
-                    self.entry(
-                        DIRECT_DEBIT,
-                        _day(year, month, self.random.randint(1, 28)),
-                        -self.money(Decimal("9"), Decimal("120")),
-                        "AMAZON PAYMENTS EUROPE S.C.A.",
-                        (f"302-{self.random.randint(1_000_000, 9_999_999)}", "Amazon.de"),
-                    )
-                )
-
-            for _ in range(self.random.randint(10, 16)):
-                merchant, city, low, high = self.random.choice(CARD_MERCHANTS)
-                checking.entries.append(
-                    self.card_payment(
-                        _day(year, month, self.random.randint(1, 28)),
-                        merchant,
-                        city,
-                        self.money(low, high),
-                    )
-                )
-
-            twin = self.card_payment(
-                _day(year, month, self.random.randint(1, 28)),
-                BAKERY,
-                "BEISPIELSTADT",
-                Decimal("3.50"),
-            )
-            checking.entries.extend([twin, twin])
-
-            if month == 12:
-                savings.entries.append(
-                    self.entry(
-                        CLOSING,
-                        _day(year, month, 31),
-                        self.money(Decimal("20"), Decimal("80")),
-                        "Abschluss",
-                        ("Zinsen",),
-                    )
-                )
-
-        card_pending = self.card_payment(
-            self.today + timedelta(days=2), "ARAL STATION", "BEISPIELSTADT", Decimal("61.30")
-        )
-        pending.append(replace(card_pending, pending=True))
-
-        for ledger in (checking, savings):
-            ledger.entries = sorted(
-                (e for e in ledger.entries if self.start <= e.booking_date <= self.today),
-                key=lambda e: e.booking_date,
-            )
-        checking.entries.extend(pending)
-        return {CHECKING.iban: checking, SAVINGS.iban: savings}
+def _ledgers(seed: int, until: date) -> dict[str, _Ledger]:
+    checking = _Ledger(opening=Decimal("1500.00"))
+    savings = _Ledger(opening=Decimal("5000.00"))
+    for year, month in _months(EPOCH, until):
+        _Month(seed, year, month).generate(checking, savings)
+    for ledger in (checking, savings):
+        ledger.entries.sort(key=lambda e: e.booking_date)
+    return {CHECKING.iban: checking, SAVINGS.iban: savings}
 
 
 class _FakeSession:
-    def __init__(self, source: "FakeSource", today: date) -> None:
+    def __init__(self, seed: int, today: date) -> None:
         self._today = today
-        self._ledgers = _Generator(source.seed, today).ledgers()
+        self._ledgers = _ledgers(seed, today + timedelta(days=PENDING_DAYS))
         self._created = datetime.combine(today, time(12))
 
     def accounts(self) -> list[BankAccount]:
         return list(ACCOUNTS)
 
     def _booked(self, iban: str) -> list[Entry]:
-        return [e for e in self._ledgers[iban].entries if not e.pending]
+        return [e for e in self._ledgers[iban].entries if e.booking_date <= self._today]
+
+    def _pending(self, iban: str) -> list[Entry]:
+        until = self._today + timedelta(days=PENDING_DAYS)
+        return [
+            replace(e, pending=True)
+            for e in self._ledgers[iban].entries
+            if self._today < e.booking_date <= until and e.proprietary_code == DIRECT_DEBIT[0]
+        ]
 
     def _balance_until(self, iban: str, before: date) -> Decimal:
         ledger = self._ledgers[iban]
@@ -328,7 +345,6 @@ class _FakeSession:
     def statement(self, iban: str, start: date) -> Statement:
         account = next(a for a in ACCOUNTS if a.iban == iban)
         booked = [e for e in self._booked(iban) if e.booking_date >= start]
-        pending = [e for e in self._ledgers[iban].entries if e.pending]
         report_id = f"{account.account_number}-{start:%Y%m%d}-{self._today:%Y%m%d}"
         booked_xml = camt_writer.render(
             iban=iban,
@@ -344,16 +360,34 @@ class _FakeSession:
             bic=account.bic,
             report_id=f"{report_id}-P",
             created=self._created,
-            entries=pending,
+            entries=self._pending(iban),
         )
         return Statement(booked=[booked_xml], pending=[pending_xml])
 
 
 class FakeSource:
-    def __init__(self, seed: int = 1, today: date | None = None) -> None:
+    def __init__(
+        self,
+        seed: int = 1,
+        today: date | None = None,
+        pin: str = "",
+        expected_pin: str = "",
+        control: FakeControl | None = None,
+    ) -> None:
         self.seed = seed
         self._today = today
+        self._pin = pin
+        self._expected_pin = expected_pin
+        self.control = control or FakeControl()
 
     @contextmanager
     def session(self) -> Iterator[BankSession]:
-        yield _FakeSession(self, self._today or datetime.now(ZoneInfo("Europe/Berlin")).date())
+        self.control.logins += 1
+        if self._pin != self._expected_pin:
+            raise PinWrongError
+        if self.control.scenario is FakeScenario.TAN_REQUIRED:
+            raise TanRequiredError
+        if self.control.scenario is FakeScenario.UNREACHABLE:
+            raise BankUnreachableError
+        today = self._today or datetime.now(ZoneInfo("Europe/Berlin")).date()
+        yield _FakeSession(self.seed, today + timedelta(days=self.control.days_ahead))

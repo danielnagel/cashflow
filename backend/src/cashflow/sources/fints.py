@@ -11,8 +11,26 @@ from datetime import date
 from typing import Any
 
 from fints.client import FinTS3PinTanClient, FinTSOperations, NeedTANResponse
+from fints.exceptions import (
+    FinTSClientPINError,
+    FinTSClientTemporaryAuthError,
+    FinTSConnectionError,
+    FinTSError,
+    FinTSSCARequiredError,
+)
 
-from cashflow.sources.base import Balance, BankAccount, BankSession, Statement, TanRequiredError
+from cashflow.sources.base import (
+    AccountLockedError,
+    Balance,
+    BankAccount,
+    BankError,
+    BankRejectedError,
+    BankSession,
+    BankUnreachableError,
+    PinWrongError,
+    Statement,
+    TanRequiredError,
+)
 
 
 @dataclass(frozen=True)
@@ -30,6 +48,19 @@ def _no_tan[T](response: T) -> T:
     if isinstance(response, NeedTANResponse):
         raise TanRequiredError
     return response
+
+
+def bank_error(error: FinTSError) -> BankError:
+    """Maps the exceptions of python-fints to the bank errors of the app."""
+    if isinstance(error, FinTSClientPINError):
+        return PinWrongError()
+    if isinstance(error, FinTSClientTemporaryAuthError):
+        return AccountLockedError()
+    if isinstance(error, FinTSSCARequiredError):
+        return TanRequiredError()
+    if isinstance(error, FinTSConnectionError):
+        return BankUnreachableError()
+    return BankRejectedError()
 
 
 class _FintsSession:
@@ -93,13 +124,16 @@ class FintsSource:
 
     @contextmanager
     def session(self) -> Iterator[BankSession]:
-        client = self._client_factory(
-            self._credentials.blz,
-            self._credentials.login,
-            self._pin,
-            self._credentials.server,
-            product_id=self._credentials.product_id,
-        )
-        with client:
-            _no_tan(client.init_tan_response)
-            yield _FintsSession(client)
+        try:
+            client = self._client_factory(
+                self._credentials.blz,
+                self._credentials.login,
+                self._pin,
+                self._credentials.server,
+                product_id=self._credentials.product_id,
+            )
+            with client:
+                _no_tan(client.init_tan_response)
+                yield _FintsSession(client)
+        except FinTSError as error:
+            raise bank_error(error) from error
